@@ -1,0 +1,84 @@
+<div class="dash_user_name"><%= current_user.title %> <span class="dash_user_edit"><a href="#" onclick="$('#usr_profile_info').modal('show'); /*_kmq.push(['record', 'dashboard sidenav link edit profilename',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_editprofilename', 'Edit Profile Name in Dashboard']);*/">edit</a></span></div>
+<div class="dash_user_city">in <%= current_user.location %></div>
+<% if @user_tradeyas_count > 0 %>
+	<% if isMozilla? %>
+		<div class="see_all_user_trd" style="margin-top: 7px;"><a href='<%= items_url %>?u=<%=current_user.id %>' onclick="/*_kmq.push(['record', 'dashboard sidenav link seealltradeyas',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_seealltrades', 'See All TradeYas text link in Dashboard']);*/">See <%= @user_tradeyas_count == 1 ? '' : 'all' %> <%= @user_tradeyas_count %> <%= @user_tradeyas_count == 1 ? '' : 'of' %> <%= current_user.first_name_with_s %> TradeYas</a></div>
+	<% else %>
+		<div class="see_all_user_trd"><a href='<%= items_url %>?u=<%=current_user.id %>' onclick="/*_kmq.push(['record', 'dashboard sidenav link seealltradeyas',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_seealltrades', 'See All TradeYas text link in Dashboard']);*/">See <%= @user_tradeyas_count == 1 ? '' : 'all' %> <%= @user_tradeyas_count %> <%= @user_tradeyas_count == 1 ? '' : 'of' %> <%= current_user.first_name_with_s %> TradeYas</a></div>
+	<% end  %>
+<% end %>
+<% if current_user.goods_sub_cat_ids.blank? and current_user.services_sub_cat_ids.blank? and current_user.interests_sub_cat_ids.blank? and (current_user.wish.blank? or current_user.wish.nil?) %>
+	<% if isMozilla? %>
+		<div class="empty_bio" style="padding-bottom: 8px">
+	<% else %>
+		<div class="empty_bio">
+	<% end  %>
+
+	Oh noes! It looks like your profile bio is empty, but that could change if you <% if not current_user.is_guest_user then %> <a href="<%= profile_url %>" onclick="/*_kmq.push(['record', 'dashboard sidenav link onboardingquiz',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_OnboardLdnPg', 'Onboarding Text Link in Dashboard']);*/">tell us about yourself</a><% else %><a href="#" onclick="return guest_user_final_signup();">upgrade to an official account</a><% end %>.
+</div>
+<% else %>
+<% if isMozilla? %>
+	<div class="dash_user_abt" style="margin-top: 13px; padding-left: 1px;">
+<% else %>
+	<div class="dash_user_abt" style="margin-top: 15px">
+<% end  %>
+	My Wish <span class="dash_user_edit"><a href="<%= profile_url + '?step=3&edit=true' %>" onclick="/*_kmq.push(['record', 'dashboard sidenav link edit mywish',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_Onboardstep3', 'Edit My Wish for Onboarding in Dashboard']);*/">edit</a></span>
+</div>
+<% if isMozilla? %>
+	<div class="dash_usr_abt_detail" style="padding-left: 1px;">
+<% else %>
+	<div class="dash_usr_abt_detail">
+<% end  %>
+	<%= current_user.wish %>
+</div>
+
+<div class="dash_user_abt" style="margin-top: 21px">Goods I Want <span class="dash_user_edit"><a href="<%= profile_url + '?step=1&edit=true' %>" onclick="/*_kmq.push(['record', 'dashboard sidenav link edit goodsIwant',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_Onboardstep1', 'Edit Goods I Want for Onboarding in Dashboard']);*/">edit</a></span></div>
+<% if isMozilla? %>
+	<div class="dash_usr_abt_detail" style="padding-left: 1px;">
+<% else %>
+	<div class="dash_usr_abt_detail">
+<% end  %>
+	<%= current_user.goods %>
+</div>
+
+<% if isMozilla? %>
+	<div class="dash_user_abt" style="margin-top: 18px; padding-left: 1px;">
+<% else %>
+	<div class="dash_user_abt" style="margin-top: 20px">
+<% end  %>
+Services I Want <span class="dash_user_edit"><a href="<%= profile_url + '?step=2&edit=true' %>" onclick="/*_kmq.push(['record', 'dashboard sidenav link edit servicesIwant',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_Onboardstep2', 'Edit Services I Want for Onboarding in Dashboard']);*/">edit</a></span></div>
+<% if isMozilla? %>
+	<div class="dash_usr_abt_detail" style="padding-left: 1px;">
+<% else %>
+	<div class="dash_usr_abt_detail">
+<% end  %>
+	<%= current_user.services %>
+</div>
+
+<% if isMozilla? %>
+	<div class="dash_user_abt" style="margin-top: 20px; padding-left: 1px;">
+<% else %>
+	<div class="dash_user_abt" style="margin-top: 22px">
+<% end  %>
+My Interests <span class="dash_user_edit"><a href="<%= profile_url + '?step=3&edit=true' %>" onclick="/*_kmq.push(['record', 'dashboard sidenav link edit myInterests',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_Onboardstep3', 'Edit My Interests for Onboarding in Dashboard']);*/">edit</a></span></div>
+<% if isMozilla? %>
+	<div class="dash_usr_abt_detail" style="padding-left: 1px;">
+<% else %>
+	<div class="dash_usr_abt_detail">
+<% end  %>
+	<%= current_user.interests %>
+</div>
+<% end %>
+
+<!-- <div class="dash_user_abt">About Me</div>
+<div id = "user_about_me" class="dash_user_det_short">
+	<%# if current_user.about.nil? || current_user.about.blank? %>
+		<div>Write a little something about yourself!</div>
+	<% #else %>	
+	<div id="user_about-less"><%= current_user.about.slice(0..49).to_s.gsub(/(?:\n\r?|\r\n?)/, '<br>').html_safe %> </div>
+	<%# if current_user.about.size > 50 %>
+		<div id="user-about-more" style="display:none;"><%= current_user.about.slice(50..-1).to_s.gsub(/(?:\n\r?|\r\n?)/, '<br>').html_safe %></div>
+		<a id ="show-more-less" href="#" onclick="return aboutMe();" class="read_more">read more >></a>
+	<%# end %>
+<%# end %>
+</div> -->

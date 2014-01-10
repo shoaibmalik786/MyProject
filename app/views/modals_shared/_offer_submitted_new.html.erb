@@ -1,0 +1,25 @@
+<div id="offer_submitted_new" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div id="crossimg"> <a href="#" data-dismiss="modal" aria-hidden="true">X</a></div>
+	<div align="center" id="submit_tr_head" style="margin-top: 15px">
+		Congrats!<br/>
+		Your offer has been successfully submitted.
+		<div style="margin-top: 10px;">Would you like people to be able to make you offers too for your '<%=session[:new_offer_title]%>'?</div>
+		Click Yes to submit your offer as a TradeYa.
+	</div>
+	<% if session[:new_offer_title] and session[:new_offer_title].present? %>
+		<div align="center" id="ok_btn" style="margin-top: 17px;">
+			<ul class="new_offer_submit">
+				<li>
+					<a href="<%= edit_item_path(session[:new_offer_id],:cancel => 'dashboard') %>"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/yes_new.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/yes_new_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/yes_new.png';"  /></a>
+				</li>
+				<li style="margin-top: 12px; margin-left: 5px;">
+					<a href="#" data-dismiss="modal" aria-hidden="true"><span>Cancel</span></a>
+				</li>
+			</ul>
+		</div>
+		<% session[:new_offer_id] = nil %>
+		<% session[:new_offer_title] = nil %>
+	<% else %>
+		<div align="center" id="ok_btn" style="margin-top: 17px;"><a href="#" data-dismiss="modal" aria-hidden="true"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/ok.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/ok_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/ok.png';"  /></a></div>
+	<% end %>
+</div>

@@ -1,0 +1,65 @@
+<div id='left_section_dash'>
+	<div class="user_name_self_dash"><%=@user.title%></div>
+	<%= render 'users/image_section_dash'%>
+	<div class="user_verified_dash">
+		<p>Verified by:</p>
+		<div class="icons">
+			<% if @user.facebook_authenticated? %>
+			<img src="http://d3md9h2ro575fr.cloudfront.net/images/fb_icon_unfade.png">
+			<% else %>
+			<a href="<%= edit_user_path(current_user, :anchor => "veri_images")%>"><img src="http://d3md9h2ro575fr.cloudfront.net/images/fb_icon_fade.png"></a>
+			<%end%>
+			<!--a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/icon_pin.png"></a-->
+			<% if @user.twitter_authenticated? %>
+			<img src="http://d3md9h2ro575fr.cloudfront.net/images/twitter_icon_unfade.png">
+			<%else%>
+			<a href="<%= edit_user_path(current_user, :anchor => "veri_images")%>"><img src="http://d3md9h2ro575fr.cloudfront.net/images/twitter_icon_fade.png"></a>
+			<%end%>
+		</div>
+	</div>
+	<div class="profile_since">Member Since:  <%= @user.created_at.strftime("%B-%d-%Y")%></div>
+	<div class="edit_profile_btn_dash"><a href="<%=edit_user_path(current_user)%>" onclick="_gaq.push(['_trackEvent', 'User Card', 'clk_EditPrfl', 'Click Edit Profile on User Card']);mixpanel.track('Click Edit Profile on User Card');addDelay(this,event);return false;">Edit Profile</a></div>
+
+	<div class="profile_rating_section">
+		<!-- <a href="<%#= reviews_user_path(@user) %>"> -->
+		<a href="<%= reviews_user_path(@user) %>">
+			<div class="rating_figures_wrapper">					
+				<div class="rating_header_text">Overall Rating</div>
+				<div class="rating_number_text"><%=(@overall_rating.present?)? @overall_rating : 0.0%></div>
+				<div class="rating_star"><span class="d_star_rating_large" id="rating_star_dash"></span></div>
+				<div class="rating_footer_text"><%= @user.reviews.size %> total</div>
+
+			</div>	
+			</a>
+	</div>
+	<div class="invite_frnds_btn"><a href="<%= invite_user_path(current_user) %>" onclick="mixpanel.track('Click on Invite Friends from top nav'); _gaq.push(['_trackEvent', 'Activity', 'clk_InvFrnds', 'Click on Invite Friends from top nav']);addDelay(this,event);return false;">Invite Friends</a></div>
+	<div class="stats_div">
+		<div class="stats_text">Stats</div>
+		<div class="haves_text"><a href="<%= haves_user_path(@user) %>"><span><%= @user.have_items.count %></span> Haves</a></div>
+		<div class="wants_text"><a href="<%= activity_feed_user_path(@user) %>"><span><%= @user.wanted_items.count %></span> Wants</a></div>
+		<div class="likes_text"><a href="<%= likes_user_path(@user) %>"><span><%= @user.liked_items.count %></span> Likes</a></div>
+	</div>
+</div>
+<div id="right_section_dash">
+	<%= render 'shared/dashboard_feed', :current_user => current_user, :dashboard_items => @dashboard_items %>
+
+	<%= render 'shared/alert_feeds', :current_user => current_user, :activities => @alert_activities %>
+
+	<div id="friends_feed" class="alerts_dash_div">
+		<div class="alert_dash_heading">Friends Feed</div>
+		<%= render 'shared/inbox_activity_feeds', :activity_feed=>@activity_feed%>
+	</div>
+</div>
+<script>
+	$('#spinner').hide();
+	$('#rating_star_dash').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/green_star_dash.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/grey_star_dash.png',
+		 starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		 halfShow: true,
+		readOnly: true,
+		score: <%=(@overall_rating.present?)? @overall_rating : 0%>
+	});
+
+</script>

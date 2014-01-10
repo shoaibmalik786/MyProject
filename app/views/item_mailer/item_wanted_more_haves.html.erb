@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+	</head>
+	<body style="background-color: #eeeeee; padding: 0px; margin: 0px">
+		<div><font face="null"></font>&nbsp;</div>
+		<table border="0" cellpadding="0" cellspacing="0" width="100%" bordercolor="#666666">
+			<tbody>
+				<tr bgcolor="#ffffff">
+					<td style="margin: 0pt" align="center" bgcolor="#eeeeee">
+						<table style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333333" border="0" cellpadding="20" cellspacing="0" width="560" bordercolor="#333333">
+							<tbody>
+								<tr align="center">
+									<td style="background-color: #463f36"><img alt="" src="http://d3md9h2ro575fr.cloudfront.net/images/tradeya_logo.png" title="" align="left" /></td>
+								</tr>
+								<tr align="center" bgcolor="#ffffff">
+
+									<td align="left">
+
+										<span style="font-size: 15px">Hey <%=@user.first_name.titleize%>,</span>
+
+										<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px"></blockquote><br />
+
+										<span style="font-size: 15px">You did it again! <%=@item.title%> has been added to your Wants Board, and we’ve let <%=@item.user.title%> know you’re interested to get the ball rolling. </span>
+
+										<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px"></blockquote><br />
+
+										<span style="font-size: 15px">
+											We also noticed that you’ve made some good headway on your Haves Board. Nice work!<br /><br />
+											Remember, the only way you can trade is to post things you have. Could be anything -  from something you’re just not using to something you can do (like carpentry, accounting, making a basket of your awesome homemade cookies, or maybe even a lesson in how to make them). 
+										</span>
+
+										<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px"></blockquote><br />
+
+										<span style="font-size: 15px"><%=link_to "Click here", new_item_url%> to add a few more things to your Haves Board!</span>
+
+										<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px"></blockquote><br />
+
+										<span style="font-size: 15px"><br />
+											Happy trading!
+										</span><br />
+										<span style="font-size: 15px">The TradeYa Team</span>
+										
+										<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px">
+										<span style="font-size: 15px"><br /></span>
+										</blockquote>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee">
+						<span style="font-size: 10px; display: block; margin-top:5px; margin-bottom:5px;">TradeYa.com © 2013, All Rights Reserved <a href="<%= unsubscribe_mail_url %>">Unsubscribe/Change Notification</a></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

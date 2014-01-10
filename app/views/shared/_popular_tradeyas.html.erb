@@ -1,0 +1,239 @@
+<script>
+	// $(document).ready(function() {
+	// 	$('#popular_tradeya_tab').BlocksIt({
+	// 		numOfCol: 4,
+	// 		offsetX: 10,
+	// 		offsetY: 10,
+	// 		blockElement: '.user_wants_card'
+	// 	});
+	// });
+	// $("img").one("load",function(){
+	// 	$('#popular_tradeya_tab').BlocksIt({
+	// 		numOfCol: 4,
+	// 		offsetX: 10,
+	// 		offsetY: 10,
+	// 		blockElement: '.user_wants_card'
+	// 		});
+	// });
+</script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+ var currentWidth = 980;
+ $(window).resize(function() {
+   // alert("resized");
+   var winWidth = $(window).width();
+   var conWidth;
+   if(winWidth<480){
+     conWidth=225;
+     col=1;
+     ox=7.5,
+     oy = 9
+   }
+   else if(winWidth<730){
+     conWidth=480;
+     col=2;
+     ox=7.5,
+     oy = 9
+     $("#popular_tradeya_tab").css("margin-left","5px");
+      
+   }
+   else if(winWidth < 980 ){
+     conWidth = 730;
+     col = 3,
+     ox = 9,
+     oy = 10
+     
+     $("#popular_tradeya_tab").css("margin-left","10px");
+   }
+   else if(winWidth <1200) {
+     conWidth = 980;
+     col = 4;
+     ox = 9.8;
+     oy = 9
+   }
+    
+   else if(winWidth >1500) {
+     conWidth = 980;
+     col = 4;
+     ox = 9.8;
+     oy = 9
+      $("#popular_tradeya_tab").css("margin-left","10px");
+   }
+   if(conWidth != currentWidth) {
+     currentWidth = conWidth;
+     $('#popular_tradeya_tab').width(conWidth);
+     $('#popular_tradeya_tab').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+
+   }
+   $("img").one("load",function(){
+     $('#popular_tradeya_tab').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   });
+
+ })
+
+</script>
+<!-- On window resizing end -->
+<script type="text/javascript">
+ $(document).ready(function(){
+   // alert("document loaded");
+   var currentWidth = 980;
+   var winWidth = $(window).width();
+   var conWidth;
+   if(winWidth<480){
+     conWidth=225;
+     col=1;
+     ox=7.5,
+     oy = 9
+   }
+   else if(winWidth<730){
+     conWidth=480;
+     col=2;
+     ox=7.5,
+     oy = 9
+     $("#popular_tradeya_tab").css("margin-left","5px");
+      
+   }
+   else if(winWidth < 980 ){
+     conWidth = 730;
+     col = 3,
+     ox = 9,
+     oy = 10
+     
+     $("#popular_tradeya_tab").css("margin-left","10px");
+   }
+   else if(winWidth <1200) {
+     conWidth = 980;
+     col = 4;
+     ox = 9.8;
+     oy = 9
+   }
+    
+   else if(winWidth >1500) {
+     conWidth = 980;
+     col = 4;
+     ox = 9.8;
+     oy = 9
+      $("#popular_tradeya_tab").css("margin-left","10px");
+   }
+   if(conWidth != currentWidth) {
+     currentWidth = conWidth;
+     $('#popular_tradeya_tab').width(conWidth);
+     // alert(col);
+     $('#popular_tradeya_tab').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   }
+   $("img").one("load",function(){
+     $('#popular_tradeya_tab').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   });
+ 
+ });
+</script>
+
+
+<%@items.each do |item|%>
+	<!-- User Card Start-->
+	<div class="user_wants_card">
+		<div class="user_card_heading">
+			<div class="clip">
+				<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+			</div>
+			<div class="item_title_card"><%=link_to item.title, item_path(item),:onclick=>"_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmTitle', 'Click On Item Title']);mixpanel.track('Click On Item Title');addDelay(this,event); return false;"%></div>
+			<div class="card_heading_middle_left">
+				<a href="<%=user_path(item.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrImg', 'Click User image on Item Card']);mixpanel.track('Click User image on Item card');addDelay(this,event); return false;"><img src="<%=item.user.user_image(:thumb)%>"></a>
+			</div>
+			<div class="card_heading_middle_right">
+					<div class="item_card_name"><a href="<%=user_path(item.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrTtl', 'Click User Title on Item Card']);mixpanel.track('Click User Title on Item card');addDelay(this,event); return false;"><%=item.user.title%></a></div>
+					<div class="item_city_card"><%=item.user.city%></div>
+					<%if item.user.location != "-" and item.user != current_user%>
+						<div class="item_distance_card"><%=item.user.user_distance(session[:user_ll])%> miles</div>
+					<%end%>
+			</div>
+
+			<%if current_user.present? and item.user == current_user %>
+			<%else%>
+				<div class="item_heading_bottom">
+					<!-- <div class="card_details" >Details</div> -->
+					<div class="heading_trade_want_like">
+						
+							<div id="item_card_want_icon_<%=item.id%>">
+								<%= render 'shared/item_card_want', :@item => item, :@icon => true%>
+							</div>
+							<div>
+								<%= form_for :passive_trade, :url => {:controller => :passive_trades, :action => :create}, :html => {:id => "passive_trade_form_"+item.id.to_s} do |f| %>
+									<%= f.hidden_field :item_id, :value => item.id %>
+									<%= f.hidden_field :user_id, :value => current_user.id %>
+									<a href=#><img src="http://d3md9h2ro575fr.cloudfront.net/images/card_trade.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_trade_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_trade.png'" onclick="$('#passive_trade_form_<%=item.id.to_s%>').submit();return false;"></a>
+								<%end%>
+							</div> 
+							<div>
+								<%if current_user and current_user.has_item?(item.id)%>
+									<img src="http://d3md9h2ro575fr.cloudfront.net/images/card_have_selected.png">
+								<%else%>
+									<a href ="/items/new?have=<%=item.id%>" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmHv', 'Click Have on Item Card']);mixpanel.track('Click Have on Item card');addDelay(this,event); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/card_have.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_have_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_have.png'"></a>
+								<%end%>
+							</div>
+							<div id="item_card_like_<%=item.id%>">
+							  <%= render 'shared/item_card_like', :@item => item%>
+							</div>
+					</div>
+				</div>
+			<%end%>
+		</div>
+
+		<div class="item_wants_image">
+			<%=link_to image_tag(item.item_image), item_path(item), :onclick=>"_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmImg', 'Click On Item Image']);mixpanel.track('Click On Item Image'); addDelay(this,event); return false;"%>
+		</div>
+
+		<%if current_user.present? and item.user.id == current_user.id %>
+
+		<%else%>
+				<div id="item_card_want_<%=item.id%>">
+					<%= render 'shared/item_card_want', :@item => item, :@icon => false%>
+				</div>
+		<% end %>
+
+	</div>	
+	<!-- User Card End -->
+<%end%>
+
+<!-- script for items hover start -->
+<script type="text/javascript">
+	$(document).ready(function(){
+	  $(".user_wants_card").find(".wanted_div").hide();
+
+		$(".user_wants_card").hover(function(){
+			$(this).find(".wanted_div").show();
+			
+		},function(){
+		$(".user_wants_card").find(".wanted_div").hide();
+		});			 
+	})		
+</script>
+<!-- script for items hover ends -->

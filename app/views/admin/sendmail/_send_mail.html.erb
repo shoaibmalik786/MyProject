@@ -1,0 +1,35 @@
+<%= javascript_include_tag "adminscripts/admin" %>
+<% if redirect %>
+<script type="text/javascript">
+	document.location = "<%= admin_sendmail_url %>"
+</script>
+<% end %>
+<div style="width: 600px;">
+	<%= semantic_form_for :mail, :builder => ActiveAdmin::FormBuilder do |f|
+	   f.inputs do
+	     f.input :to, :required => false
+	     f.input :from, :required => false
+	     f.input :to_all_users, :required => false, :as => :boolean, :label => "Send to all Users"
+	   end
+	   f.actions
+	end %>
+</div>
+
+<table>
+	<tr>
+		<td width="75%">
+			<table class="data_point_table" style="border: solid 1px; width: 90%; margin-left: auto; margin-right: auto;">
+				<tr>
+					<th>Moving on mail</th><th>send to</th><th>status</th>
+				</tr>
+				<% notifications.each do |n| %>
+					<tr>
+						<th><%= n.id %></th>
+						<td><%= n.email_ids + " And send to all = " + n.data_by_key('send2all').to_s %></td>
+						<td><%= n.status %></td>
+					</tr>
+				<% end %>
+			</table>
+		</td>
+	</tr>
+</table>

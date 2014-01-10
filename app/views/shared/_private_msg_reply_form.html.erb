@@ -1,0 +1,106 @@
+<%= form_tag(reply_conversation_path, :method => "post", :remote => true) do %>
+			<%#= form_tag(conversations_path, :remote => true) do %>
+				<%= text_area_tag "body", nil, :class => "chat_input", :placeholder => "Write a reply..." %>
+				<!-- <textarea class="chat_input" placeholder="Write a reply..."></textarea> -->
+				<div class="chat_input_options">
+					<span class="file_wrapper">
+						<input type="file" class="chat_files" id="photo">
+						<span class="upload_button">Add Files</span>
+					</span>
+					<%= submit_tag 'Send', :class => "chat_send" %>
+					<!-- <input type="submit" value="Send" class="chat_send"> -->
+				</div>
+			
+		<% end %>
+
+
+
+
+
+
+
+<%= form_tag(conversations_path, :remote => true) do %>
+			<div class="pvt_msg_right_top_header">
+				<div class="new_msg_heading">New Message</div>
+			</div>
+			<div class="new_msg_inner">
+					<p><span class="control_label">To:</span><span class="control_input">
+						<!-- <input type="text" class="to_msg"> -->
+						<%#= text_field_tag "recipients", nil, :class=>"to_msg"%>
+						<select class="chosen-select" multiple name="recipients[]">
+							<% User.all.each do |u| %>
+							<option value="<%= u.email %>"> <%= u.email %>
+							</option>
+							<% end %>
+						</select>
+					</span></p>
+					<p><span class="control_label">Subject:</span>
+						<span class="control_input">
+							<!-- <input type="text" class="new_msg_input"> -->
+							<%= text_field_tag "subject", nil, 
+							:class=>"new_msg_input"%>
+						</span></p>
+			</div>
+			<div class="textarea_wrapper">
+				<!-- <textarea class="chat_input" placeholder="Enter your Message..."></textarea> -->
+				<%= text_area_tag "body", nil, :placeholder=>"Enter your message...", 
+				:class=>"chat_input"%>
+				<div class="chat_input_options">
+					<span class="file_wrapper">
+						<input type="file" class="chat_files" id="photo">
+						<span class="upload_button">Add Files</span>
+					</span>
+					<!-- <input type="submit" value="Send" class="chat_send"> -->
+					<%= submit_tag 'Send', :class => "chat_send" %>
+				</div>
+			</div>
+		<% end %>
+
+
+
+
+
+
+<div class="new_message_block_right_wrapper">
+		<%#= form_tag conversations_path, :id => "new_message", :remote => true do %>
+
+		<%= form_for(conversations_path,  :url => {:controller=>"conversations", :action=>"create" }, :html => {:multipart => true, :id => "new_message", :onsubmit => "return false;"} ) do |f| %>
+			<div class="pvt_msg_right_top_header">
+				<div class="new_msg_heading">New Message</div>
+			</div>
+			<div class="new_msg_inner">
+					<p><span class="control_label">To:</span><span class="control_input">
+						<!-- <input type="text" class="to_msg"> -->
+						<%#= text_field_tag "recipients", nil, :class=>"to_msg"%>
+						<select class="chosen-select" multiple name="recipients[]">
+							<% User.all.each do |u| %>
+							<option value="<%= u.email %>"> <%= u.email %>
+							</option>
+							<% end %>
+						</select>
+					</span></p>
+					<p><span class="control_label">Subject:</span>
+						<span class="control_input">
+							<!-- <input type="text" class="new_msg_input"> -->
+							<%= text_field_tag "subject", nil, 
+							:class=>"new_msg_input"%>
+						</span></p>
+			</div>
+			<div class="textarea_wrapper">
+				<!-- <textarea class="chat_input" placeholder="Enter your Message..."></textarea> -->
+				<%= text_area_tag "body", nil, :placeholder=>"Enter your message...", 
+				:class=>"chat_input"%>
+				<div class="chat_input_options">
+					<span class="file_wrapper">
+						<input type="file" class="chat_files" id="photo">
+						<span class="upload_button">Add Files</span>
+					</span>
+					<!-- <input type="submit" value="Send" class="chat_send"> -->
+					<%#= submit_tag 'Send', :class => "chat_send" %>
+					<!-- <a href="#" onclick="$(this).parents('#new_message').
+					submit(); return false;">Send</a> -->
+					<input class="chat_send" value="Send" onclick="$('#new_message').submit();" type="submit">
+				</div>
+			</div>
+		<% end %>
+	</div>

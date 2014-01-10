@@ -1,0 +1,64 @@
+<div class="sbmt_rev_div">
+	<div align="center" class="sbt_inner_div">
+		<div id="azk71567" style="width:728px; height: 90px;margin-left: auto;margin-right: auto;padding-top: 20px;clear: both;">
+		</div>
+		<div class="sbmt_rev_heading">
+			Write a review about <%= @trade.item.user.first_name.titleize%> <%= @trade.item.user.last_name.present? ? @trade.item.user.last_name : '' %> on TradeYa
+		</div>
+		<table id="sbmt_rev_table">
+				<tr valign="top">
+					<td width="16%">
+						<div class="browse_user_image_smaller">
+							<img src="<%= @trade.item.user.user_image %>" style="width: 52px; height: auto;">
+						</div>
+						<div class="browse_user_name"><%= @trade.item.user.first_name.titleize%> <%= @trade.item.user.last_name.present? ? @trade.item.user.last_name : '' %></div>
+						<div class="browse_user_city"><%= @trade.item.user.city %> <%= @trade.item.user.state.present? ? ',' + @trade.item.user.state.to_s : '' %></div>
+					</td>
+					<td width="26%">
+						<div class="browse_item_image">
+							<img src="<%= @trade.item.item_image %>" style="width: 135px; height: auto">
+						</div>
+					</td>
+					<td width="47%">
+						<div class="browse_item_title">
+							<a href="#" onclick="return false;"><%= @trade.item.item_title %></a>
+						</div>
+						<div class="browse_item_desc" style="margin-top: 3px;">
+							<%= @trade.item.desc %>
+							<a href=""><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/ellipses.png" /></a>
+						</div>
+					</td>
+				</tr>
+		</table>
+		<div class="sbmt_rev_section">
+			<div class="sbmt_rev_text">
+				These reviews help build trust amongst everyone here at TradeYa. If you thought the person you traded with was just super great, 
+				then let the world know!
+			</div>
+			<%= form_for @review,:html => {:id => "user_review_form"} do |f| %>
+				  <% if @review and @review.errors.any? %>
+				    <div id="error_explanation">
+				      <h2><%= pluralize(@review.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+				      <ul>
+				      <% @review.errors.full_messages.each do |msg| %>
+				        <li><%= msg %></li>
+				      <% end %>
+				      </ul>
+				    </div>
+				  <% end %>
+				<textarea id="submit_review_field" name="review[review_text]"></textarea>
+				<input type="hidden" name="review[reviewee_id]" value="<%= @trade.item.user.id %>">
+				<input type="hidden" name="review[reviewer_id]" value="<%= @trade.offer.user.id %>">
+				<input type="hidden" name="review[accepted_offer_id]" value="<%= @trade.accepted_offer.id %>">
+				<input type="hidden" name="token" value="<%= params[:token] %>">
+			<% end %>
+			<div class="sbmt_rev_note">
+				Note: Your review is always posted publicly.
+			</div>
+			<a href="#" onclick="submitReviewForm(); return false;">
+				<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/submit_rev_btn.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/submit_rev_btn_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/submit_rev_btn.png';" style="margin-top: 20px;" />
+			</a>
+		</div>
+	</div>
+</div>

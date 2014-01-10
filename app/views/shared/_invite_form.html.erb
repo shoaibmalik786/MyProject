@@ -1,0 +1,41 @@
+<div id="signup_box" class="modal hide fade" aria-hidden="false">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="/*_kmq.push(['record', 'modal signup form close X icon',{ 'SignedIn' : get_KMSignedIn(), 'ErrorMessage' : $('#signupmessage > #error_explanation').text()}]); _gaq.push(['_trackEvent', 'register', 'Clk_SignUpModalCancelIcn', 'clicks on x icon on Sign Up form']);*/ return signupFormClose();">&times;</button>
+  <div class="signup_heading">Sign Up</div>
+  <div class="recommend">We Recommend Connecting with Social Sites</div>
+  <div class="social_sharing_section">
+    <div class="social_icons"><img src="http://d3md9h2ro575fr.cloudfront.net/images/fb_signup.png"></div>
+    <!-- <div class="social_icons"><img src="http://d3md9h2ro575fr.cloudfront.net/images/gplus_signup.png"></div> -->
+    <div class="social_icons"><img src="http://d3md9h2ro575fr.cloudfront.net/images/twitter_signup.png"></div>
+  </div>
+  <hr class="signup_hr">
+
+
+
+  <div class="signup_form_div">
+    <div class="recommend">OR Please provide your Email for an Invite!</div>
+    <%= form_for(:user, :url => {:controller =>"registrations", :action=>"create"}, :html => {:multipart => true, :id => "signUpForm", :target => 'if_ip_upload', :class => "form-horizontal signup_form"}) do |f| %>
+    <div id="signupmessage">
+      <div id="error_explanation"></div>
+    </div>
+    <div class="control-group full_name_control">
+    <div class="control-group">
+      <label class="control-label" for="inputPassword">Email</label>
+      <div class="controls">
+        <%= f.email_field :email, :id => 'signup_email', :placeholder => "", :class => "inputPassword ", :TABINDEX => "3" %>
+      </div>
+    </div>
+    </div>
+    <div class="control-group signup_button">
+      <div class="controls">
+        <a href="#" onclick="submitSignUpForm(); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/create_account.png" id="submitSignUpFormImg" class="position-click" /></a>
+      </div>
+    </div>
+    <% end %>
+  </div>
+  <div class="clear"></div>
+  <hr class="signup_hr">
+  <div class="already_account">already have an account? <span><a href="#" onclick="$('#signin_modal').modal('show');$('#signup_box').modal('hide'); return false;">Log In</a></span></div>
+</div>
+
+<!-- <div id="signup_guest_modal_div"><%= render 'modals_shared/signup_guest' %></div> -->
+<!-- <div id="guest_validate_div"><%= render 'modals_shared/guest_user_validate' %></div> -->

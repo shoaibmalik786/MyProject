@@ -1,0 +1,26 @@
+ <form action="/transactions/trade_review" method="post" data-remote = "true">
+      <div class="control-group step1_control_group">
+        
+        <label class="control-label" for="inputfname">Credit Card</label>
+        <% if @my_transaction.user.charge_cards.present? %>
+                <% @my_transaction.user.charge_cards.each do |card| %>
+        <div class="controls edit_payment_info" id="cardsinformation">
+          <label class="radio credit_card">
+            <input type="radio" class="card_select" name="cardtype" value="<%= card.id %>" /><label><img src="http://d3md9h2ro575fr.cloudfront.net/images/visaicon.png" style="margin-top: -7px;"></span><span class="same_shipping_text">Ending in <%= card.last_4 %></span>&nbsp;&nbsp;<%= link_to "X", charge_card_path(card.id), method: :delete, class: "remove_card shipping_cross", data: {confirm: "Are you sure you want to delete the card?", remote: true}%></label>
+          </label>
+          <span class="billing_text"></span>&nbsp;&nbsp;<span class="same_shipping_text_right"></span>
+          <hr class="password_control_group" />
+        </div>
+        <% end %>
+      <% end %>
+        <input type = "hidden" name = "id" value = "<%= @my_transaction.id%>">
+        <div class="control-group">
+        <div class="controls save_cancel_btn next_step3" id="cards_div_step">
+          <input type="submit" class="edit_save" value="Next Step" id="card_step">
+        </div>
+      </div>
+      
+      </div>
+    </form>
+     <!-- <div class="control-group"> -->
+     <!-- </div> -->

@@ -1,0 +1,31 @@
+<div id="suggest_cat" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div id="crossimg"> <a href="#" data-dismiss="modal" aria-hidden="true">X</a></div>
+	<div id="contact_heading">Sub-Category Suggestion Box</div>
+	<div id="cat_select_content">If you don't see a Sub-Category that works for you, please suggest one<br />for us to include:</div>
+	<div id = "selected_category" class="new_cat_drpdwn" onclick="$('.selected_dropdown').toggleClass('hidedrop');">Arts, Collectibles + Antiques</div>
+	<div>
+		<% Category.root.categories.each do |s| %>
+		<div class="hidedrop suggest_cat_drpdown" id="<%=s.name %>_category" >
+		<ul onclick="$('.suggest_cat_drpdown').addClass('hidedrop');">
+			<% s.categories.each do |g| %>
+			<li onclick="selectCategory(this,'selected_category','<%=s.name %>_category', 'selected', <%= g.id %>); $('#suggest_cat_dropdown_box').hide(); $('#suggest_cat_resultdiv').hide(); $('#ul_suggest_cat_list').empty();" v="<%= g.name %>" cat_name="<%= g.name %>" cat_p_name="<%= g.parent.name %>"><%= g.name %></li>
+		<% end %>
+		</ul>
+		</div>	
+		<% end %>
+		<input type="hidden" id = "selected_category_id">
+	</div>
+	<div style = "margin-bottom:15px;">
+		<input type="text" class="removeborder" id="new_cat_text" value="Your Most Awesome New Sub-Category..." maxlength = "50" onfocus="clearText(this); $(this).addClass('addborder'); $(this).removeClass('removeborder'); $('#error_message_select_cat').hide();" onblur="clearText(this); $(this).addClass('removeborder'); $(this).removeClass('addborder');" onkeyup = <%=((current_user.present?) ? "search_suggested_cat(event);" : "") %> onkeydown = <%= ((current_user.present?) ? "search_suggest_down(event);" : "") %> />
+		<div id="suggest_cat_dropdown_box" class="suggest_cat_dropdown-box" style="display:none;z-index:1;">
+					<div id="suggest_cat_dropdown-body" >
+						<div id="suggest_cat_spinner"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/spinner.gif" style="height: 20px;"> Similar Suggestions....</div>
+						<div id="suggest_cat_resultdiv" class="to"  style="margin-top: -15px;">
+							<ul id="ul_suggest_cat_list"></ul>
+						</div>
+					</div>
+				</div>
+		</div>
+	<div id = "error_message_select_cat" class="error_msg_step" style = "margin-right:50px; margin-top:0px;">Suggested Sub-Category cannot be blank.</div>
+	<div class="div_mrgn"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/submit_thumbs.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/submit_thumbs_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/submit_thumbs.png'"onclick = "submit_new_category();"  /></div>
+</div>

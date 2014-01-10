@@ -1,0 +1,36 @@
+<div id="welcome_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div id="cross_image"> <a href="#" onclick="$('#welcome_modal').modal('hide');">X</a></div>
+    <div class="welcome_main_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/welcome_image_new2.png"></div>
+    <div class="got_it_btn"><a href="#" onclick="$('#welcome_modal').modal('hide');"><img src="http://d3md9h2ro575fr.cloudfront.net/images/got_it.png"></a></div>
+  </div>
+  
+  <script>
+   $("#welcome_modal").modal("show");
+   $(document).ready(function(){
+     <% if session[:previous_url].present? and session[:previous_url].to(21) == "/auth/twitter/callback" %>
+     analytics.alias('<%= current_user.id %>', {providers: {All: FALSE, Mixpanel = TRUE}});
+     analytics.identify(current_user.id);
+     analytics.track('Signed up', {
+       Login method: 'Facebook, Twitter, TradeYa'
+     });
+ 
+    <% else %>
+    analytics.alias('<%= current_user.id %>', {providers: {All: FALSE, Mixpanel = TRUE}});
+    analytics.identify(current_user.id);
+    analytics.track('Signed up', {
+      Login method: 'Facebook, Twitter, TradeYa'
+    });
+     <% end %>
+ 
+     <% current_user.welcome_user = true %>
+     <% current_user.save %>
+     // It changes the fb_pixel div class to load the fb conversion pixel
+     $("#fb_pixel").attr('class', 'fb_pixel_signup');
+  
+     // A Google Analytics event to track conversions in GA
+     //_gaq.push(['_trackEvent', 'Account', 'Signup']);
+     mixpanel.track('Signup');
+  
+   })
+  
+  </script>

@@ -1,0 +1,52 @@
+<!-- Item Details Card start -->
+<%if disp == 'true' %>
+  <div class="user_wants_card no_ml past_trades" id="item_info_<%=item.id%>" style="">
+<%else%>
+  <div class="user_wants_card no_ml past_trades" id="item_info_<%=item.id%>" style="display:none;">
+<%end%>
+  <div class="user_card_header_past_trades">
+		<div class="clip">
+			<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+		</div>
+		<div class="pt_heading">Item Information</div>
+		<div class="past_trades_desc">
+			<p>
+				Condition:
+				<%if item.condition == USED_CONDITION %>
+					<span class="clr_o"> Used</span><br>
+				<%elsif item.condition == NEW_CONDITION %>
+					<span class="clr_o"> New</span><br>
+				<%end%>
+				<%=h truncate(item.desc, :length => 350) %>
+				<br>
+			</p>
+			<div class="line"></div>
+			<p>
+				Shipping :
+				<%if item.come_and_get_it == true %>
+					<span class="clr_o">You come get it</span><br>
+				<%end%>
+				<%if item.bring_it_to_you == true%>
+					<span class="clr_o">I'll bring it to you</span><br>
+				<%end%>
+				<%if item.lets_meet_up == true%>
+					<span class="clr_o">Let's meet up</span><br>
+				<%end%>
+				<%if item.come_to_you == true%>
+				  <span class="clr_o">I'll come to you</span><br>
+				<%end%>
+				<%if item.come_to_me == true%>
+				  <span class="clr_o">You come to me</span><br>
+				<%end%>
+				<%if item.done_remotely == true%>
+				  <span class="clr_o">You come to me</span><br>
+				<%end%>
+				<%if item.lets_meet_service == true%>
+					<span class="clr_o">Let's meet up</span><br>
+				<%end%>
+			</p>
+		</div>
+			
+	</div>
+</div>
+<!-- Item Details Card end -->

@@ -1,0 +1,215 @@
+<div class="dash_back">
+	<div id="azk71567" style="width:728px; height: 90px;margin-left: auto;margin-right: auto;padding-top: 25px;clear: both;">
+	</div>
+	<div class="dash_nav">
+		<ul>
+			<li><a href="#" onclick="/*_kmq.push(['record', 'dashboard subnav link dashboard',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'dashboard', 'dashboard_LdnPg', 'Dashboard in Sub Nav']);*/ return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/dashboard_selected.png" /></a></li>
+			<li id="" style="margin-left: 23px; margin-top: 1px;"><a href="manage_tradeyas" class='click' onclick="/*_kmq.push(['record', 'dashboard manageTradeyas subnav link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'dashboard', 'manageTradeyas_LdnPg', 'Manage TradeYas in Sub Nav']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/manageTY.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/manageTY_line.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/manageTY.png';" /></a></li>
+			<li id="" style="margin-top: 1px; margin-left: 25px;"><a href="manage_offers" class='click' onclick="/*_kmq.push(['record', 'dashboard manageOffers subnav link',{ 'SignedIn' : get_KMSignedIn()}]);  _gaq.push(['_trackEvent', 'dashboard', 'manageOffers_LdnPg', 'Manage Offers in Sub Nav']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/manageOF.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/manageOF_line.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/manageOF.png';" /></a></li>
+			<li id="" style="margin-top: 2px; margin-left: 25px;"><a href="edit_settings" class='click' onclick="/*_kmq.push(['record', 'dashboard editAccountSettings subnav link',{ 'SignedIn' : get_KMSignedIn()}]);  _gaq.push(['_trackEvent', 'dashboard', 'editAccount_LdnPg', 'Edit Account Settings in Sub Nav']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/account.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/account_line.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/account.png';" /></a></li>
+			<% if not current_user.is_guest_user %>
+				<li id="" style="margin-top: 0px; margin-left: 17px;"><a href="edit_verifications" class='click' onclick="/*_kmq.push(['record', 'dashboard editVerifications subnav link',{ 'SignedIn' : get_KMSignedIn()}]);  _gaq.push(['_trackEvent', 'dashboard', 'editVerifications_LdnPg', 'Edit Verifications in Sub Nav']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/editverification.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/editverification_line.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/editverification.png';" /></a></li>
+			<% end %>
+		</ul>
+	</div>
+	<div class="dash_det" style="width: 958px" >
+		<table>
+		<tr valign="top">
+			<td>
+				<!-- Left Section Start -->
+				<div class="dash_left_section">
+					<!-- User Image Section Start -->
+					<div class="dash_user_img">
+						<div style="max-height: 230px"><img id = "user_profile_image" class="<%= (current_user.user_photos.nil?)? 'user_profile_image_none' : '' %>" src="<%= current_user.user_image(:large) %>" /></div>
+						<div class="edit_photo <%= (current_user.user_photos.nil?)? 'edit_photo_none' : '' %>"><a href="#" onclick=" $('#usr_profile_pic').modal('show'); /*_kmq.push(['record', 'dashboard body link editPhoto',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'dashboard', 'Clk_editphoto', 'Edit Photo Link in Dashboard']);*/ return false;">edit photo</a></div>
+					</div>
+					<!-- User Image Section End -->
+					<!-- User Detail Section Start -->
+						<div id = "user_details_dahsboard" class="dash_user_det">
+							<%= render 'home/usr_detail_dashboard' %>
+						</div>
+					<!-- User Detail Section End -->
+					<!-- Verification Section for Guest User -->
+					<% if current_user.is_guest_user and !current_user.facebook_authenticated? %>
+							<div class="dash_user_ver">
+							<div class="dash_ver_head">
+								<span>Add Facebook</span>
+							</div>
+							<div class="dash_veri_present">
+								<table align="center">
+									<tr class="last" valign="top">
+										<td>
+											<a href="/auth/facebook" class="auth_provider position-click auth_provider_more" style="margin: 0px;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/connect_fb.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/connect_fb_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/connect_fb.png';"/ style="width:220px;"></a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							</div>
+							<!-- If Verifications Present -->
+						
+					<% else %>
+
+					<!-- User Verification Section Start -->
+						<div class="dash_user_ver">
+							<div class="dash_ver_head">
+								<span>Verifications</span>
+								<!-- If No Verifications -->
+								<!-- <span><a href="#" onclick="return false;">add some</a></span> -->
+								<!-- If No Verifications -->
+								<!-- If Verifications Present -->
+								<span><a href="<%=edit_verifications_path %>" onclick="/*_kmq.push(['record', 'dashboard sidenav link add more verifications',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'dashboard', 'editVerifications_LdnPg', 'Add More Text link in Dashboard']);*/">add more</a></span>
+								<!-- If Verifications Present -->
+							</div>
+							<!-- If No Verifications -->
+							<% if !current_user.has_authentications? %>
+								<div class="dash_no_veri">
+									<b>Why verify?</b> Its helps you vali-date your identity, build a repu-tation and be yourself! (And all the cool kids are doing it.)
+								</div>
+							<!-- If No Verifications -->
+							<% else %>
+							<!-- If Verifications Present -->
+							<div class="dash_veri_present">
+								<table align="center">
+									<% if current_user.phone_verified? %>
+										<% @v_phone_numbers.each do |pn| %>
+											<tr valign="top">
+												<td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/ph_org.png" /></td>
+												<td>Phone Number Verified <br />(***)***-**<%= pn.phone_number.last(2) %></td>
+												<td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/tick.png" /></td>
+											</tr>
+										<% end %>
+									<% end %>
+									<% if current_user.facebook_authenticated? %>
+										<tr class="last" valign="top">
+											<td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/fb_icon.png" /></td>
+											<td>Facebook Connected <br />(<%= @fb_friend_count %>) Friends</td>
+											<td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/tick.png" /></td>
+										</tr>
+									<% end %>
+									<% if current_user.twitter_authenticated? %>
+										<tr class="last" valign="top">
+											<td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/tw_icon.png" /></td>
+											<td>Twitter Connected <br />(<%= @twitter_friend_count %>) Friends</td>
+											<td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/tick.png" /></td>
+										</tr>
+									<% end %>
+									<% if current_user.linkedin_authenticated? %>
+										<tr class="last" valign="top">
+											<td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/in_icon.png" /></td>
+											<td>LinkedIn Connected <br />(<%= @linkedin_friend_count %>) Friends</td>
+											<td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/tick.png" /></td>
+										</tr>
+									<% end %>
+								</table>
+							</div>
+							<% end %>
+							<!-- If Verifications Present -->
+						</div>
+					<% end %>
+					<!-- User Verification Section End -->
+					<!-- User Review Section Start -->
+						<div class="dash_user_rev">
+							<div class="dash_rev_head">Reviews</div>
+							<% if @reviews.length == 0 %>
+								<!-- If No Reviews -->
+								<div class="dash_no_review">
+									Looks like you don't have any reviews! Only one way to get 'em, <a href="/items?category=newest">start trading!</a>
+									<!-- <b>How do you get good reviews?</b> people who had a good experi-ence trading with you write then. So play nice! -->
+								</div>
+								<!-- If No Reviews -->
+							<% else %>
+								<!-- If Reviews Present -->
+							<div class="dash_review_present">
+								You have <b><%= @reviews.length %></b> reviews. Read and edit them <a href="#" onclick="customScroll('#user_reviews'); return false;">here</a>.
+							</div>
+							<!-- If Reviews Present -->
+							<% end %>
+						</div>
+					<!-- User Review Section End -->
+						<div id="azk96021" style="width: 160px; height: 600px;">
+						</div>
+				</div>
+				<!-- Left Section End -->
+				
+			</td>
+			<td>
+				<!-- Right Section Start -->
+				<div class="dash_right_section">
+					<!-- Alerts Header Section -->
+					<div class="alert_section">
+						<span id="spn_new_alert_count" class="alert_div">
+							<% if @user_alert_count == 0 %>
+								You have no alerts.
+							<% elsif @new_alert_count == 0 and @user_alert_count > 0 %>
+								You have no new alerts.
+							<% elsif @new_alert_count > 0 %>
+								You have <%= @new_alert_count.to_s %> new alerts.
+							<% end %>
+						</span>
+						<div class="alert_filter">
+							<div class="filter_text">FILTER BY:</div>
+							<div class="alert_drop" onclick="$('#filter_dropdown').toggleClass('hidedrop'); /*_kmq.push(['record', 'dashboard body dropdown filter',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'dashboard', 'DropDown_filter', 'Filter Drop Down in Dashboard']);*/"><a id="a_alert_filter" href="#" onclick="return false;">All Alerts</a></div>
+							<div id="filter_dropdown" class="hidedrop">
+								<ul>
+									<li><a href="#" onclick="return filterAlerts(this, 'all');">All Alerts</a></li>
+									<li><a href="#" onclick="return filterAlerts(this, <%= ALERT_TYPE_TRADEYA %>);">TradeYa Alerts</a></li>
+									<li><a href="#" onclick="return filterAlerts(this, <%= ALERT_TYPE_OFFER %>);">Offer Alerts</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- Alerts Header Section -->
+					<!-- If No alerts present -->
+						<!-- <div class="alert_section_noalerts">
+							<span class="alert_div">You have no new alerts.</span>
+						</div> -->
+					<!-- If No alerts present -->
+					<!-- Alerts Detail Section -->
+					<div class="alert_detail">
+						<table id="tbl_alerts" width="100%">
+							<%= render "alerts" %>
+						</table>
+					</div>
+					<div id="user_reviews">
+						<% if @reviews.length > 0 %>
+						<%= render "shared/dash_user_review" %>
+						<% end %>
+					</div>
+				</div>
+				<!-- Right Section End -->
+			</td>
+		</tr>
+	</table>
+	</div>
+</div>
+<div id="edit_profile_info_div"><%= render 'modals_shared/edit_profile_info' %></div>
+<%= render 'modals_shared/promote_now' %>
+<%= render 'modals_shared/upload_profile_pic' %>
+
+<script>
+var usr_prof_pic = '<%= current_user.user_image(:large) %>';
+
+function aboutMe(){
+	if ($("#show-more-less").text() == "read more >>"){
+		$("#show-more-less").text("<< read less");
+	}else{
+		$("#show-more-less").text("read more >>");
+	}
+	$('#user-about-more').toggle(function() {});
+	return false;
+}
+function user_ban(){
+	var pw = $("#user_profile_image").width();
+	if(pw > 0){
+		$(".edit_photo").css("width", pw);
+	}else{
+		setTimeout(function() {user_ban();}, 1000);
+	}
+}
+$(function(){setTimeout(function() {user_ban();}, 1000);});
+// $(function(){setTimeout(function() {refreshAlertCountAndShowNew();}, 7000);});
+$(".alert_td_dash").click(function(){
+	// _kmq.push(['record', 'dashboard body link tradeyas',{ 'SignedIn' : get_KMSignedIn()}]);
+	// _gaq.push(['_trackEvent', 'dashboard', 'Clk_TryaLnkLdnPg', 'Click Any Link in Alerts Dashboard']);
+});
+</script>

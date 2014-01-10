@@ -1,0 +1,17 @@
+<div class="alert_rows" id= <%= "activity_#{activity.id}" %>>
+	<div class="alert_date"><%=activity.created_at.strftime("%b %d %Y")%></div>
+	<div class="alert_content">
+		<div class="alert_images">
+			<div class="alert_user_image friends_feed">
+				<%= link_to image_tag(activity.owner.user_image(:thumb) ), user_path(activity.owner) %>
+			</div>
+		</div>
+		<div class="alert_text_wrapper">
+			<div class="alert_text friends_feed"><span class="name"><%= activity.owner.title %></span> added <strong><%= activity.trackable.title %></strong> to their Haves. Check it out</div>
+		</div>
+	</div>
+	<div class="alert_cross">
+		<a href="#" onclick="<%= "delete_dashboard_item(\"/users/#{current_user.id}/delete_activity?activity_id=#{activity.id}\", \"activity_#{activity.id}\");" %>" ><img src="http://d3md9h2ro575fr.cloudfront.net/images/dash_cross.png"></a>
+	</div>
+	<div class="action_button"><%=link_to "View Haves", user_path(activity.owner)%></div>
+</div>

@@ -1,0 +1,97 @@
+<div class="item_info">
+  <div class="item_info_heading">
+    <span>Item Information</span>
+    <span class="pull-right">
+      <span id="item_like_count" class="like_count"><%=@like_count %></span>
+      <span> <%= "Like".pluralize(@like_count) %></span>
+    </span>
+  </div>
+  <%if !@item.category.present? or (@item.category.present? and @item.category.parent.name.downcase != "services") %>
+    <div class="info_condition">
+      <span class="item_info_prop">Condition: </span>
+      <%if @item.condition == USED_CONDITION %>
+      <span class="item_info_type">Used</span>
+      <%elsif @item.condition == NEW_CONDITION %>
+      <span class="item_info_type">New</span>
+      <%end%>
+    </div>
+  <%end%>
+  <hr />
+  <div class="info_description">
+    <span class="item_info_prop">Details: </span>
+    <!-- <p class="item_info_detail"> -->
+    <%=simple_format(@item.desc).html_safe%>
+    <!-- </p> -->
+    <div class="clear"></div>
+  </div>
+  <hr />
+
+  <!-- TODO Commented shipping information because of REQUIREMENT CHANGE (https://www.pivotaltracker.com/story/show/62299176) -->
+
+  <!-- <div class="info_delivery">
+    <span class="item_info_prop">Shipping: </span>
+     <div class="shipping_info">-->
+      <%#if @item.category.present? and @item.category.parent.name.downcase == "services" %>  
+        <%#if @item.come_to_you == true %>
+          <!--<span class="item_info_type2">I'll come to you </span>-->
+        <%#end%>
+        <%#if @item.come_to_me == true%>
+          <%#if @item.come_to_you == true %>
+            <!--<span class="ship_or">or</span>-->
+          <%#end%>
+          <!--<span class="item_info_type2">You come to me </span>-->
+        <%#end%>
+        <%#if @item.done_remotely == true%>
+          <%#if @item.come_to_you == true or @item.come_to_me == true%>
+            <!--<span class="ship_or">or</span>-->
+          <%#end%>
+          <!--<span class="item_info_type2">Done Remotely</span>-->
+        <%#end%>
+        <%#if @item.lets_meet_service == true%>
+          <%#if @item.come_to_you == true or @item.come_to_me == true or @item.done_remotely == true%>
+            <!--<span class="ship_or">or</span>-->
+          <%#end%>
+          <!--<span class="item_info_type2">Let's meet up</span>-->
+        <%#end%>
+
+      <%#else%>
+        <%#if @item.bring_it_to_you == true %>
+          <!--<span class="item_info_type2">I'll bring it to you </span>-->
+          <!-- <p class="item_info_detail">We will not trade it with someone who does not have proper moving supplies. </p> -->
+        <%#end%>
+        <%#if @item.come_and_get_it == true%>
+          <%#if @item.bring_it_to_you == true%>
+            <!--<span class="ship_or">or</span>-->
+          <%#end%>
+          <!--<span class="item_info_type2">You come get it </span>-->
+          <!-- <p class="item_info_detail">We will not trade it with someone who does not have proper moving supplies. </p> -->
+        <%#end%>
+        <%#if @item.lets_meet_up == true%>
+          <%#if @item.bring_it_to_you == true or @item.come_and_get_it == true%>
+            <!--<span class="ship_or">or</span>-->
+          <%#end%>
+          <!--<span class="item_info_type2">Let's meet up</span>-->
+          <!-- <p class="item_info_detail">We will not trade it with someone who does not have proper moving supplies. </p> -->
+        <%#end%>
+        <%#if @item.ship_it == true%>
+          <%#if @item.bring_it_to_you == true or @item.come_and_get_it == true or @item.lets_meet_up == true%>
+            <!-- <span class="ship_or">or</span> -->
+          <%#end%>
+          <!-- <span class="item_info_type2">I'll ship it</span> -->
+          <!-- <p class="item_info_detail">We will not trade it with someone who does not have proper moving supplies. </p> -->
+        <%#end%>
+        <%#end%>
+      <!--</div>
+    
+
+    
+    
+  </div>
+  <div class="info_description ship_details">
+    <span class="item_info_prop">  </span>-->
+    <!-- <p class="item_info_detail"> -->
+   <%#=simple_format(@item.delivery_desc).html_safe%>
+    <!-- </p> -->
+    <!--<div class="clear"></div>
+  </div> -->
+</div>

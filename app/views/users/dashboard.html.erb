@@ -1,0 +1,87 @@
+<%= stylesheet_link_tag "bootstrap-tour" %>
+<% if @user.present? %>
+	<% if @user == current_user %>
+		<%= render "users/user_page_common_top_own" %>
+	<% else %>
+		<%= render "users/user_page_common_top_new" %>
+	<% end %>
+<script>
+	$(function() {
+			$("#tab-content").html("<%= escape_javascript render('shared/dashboard_section') %>");
+			$("#tab_following").parent().removeClass('active');
+			$("#tab_dashboard").parent().addClass('active');
+			$("#tab_haves").parent().removeClass('active');
+			$("#tab_wants").parent().removeClass('active');
+			$("#tab_likes").parent().removeClass('active');
+			$("#tab_myoffers").parent().removeClass('active');
+			$("#tab_past_trades").parent().removeClass('active');
+			$("#tab_reviews").parent().removeClass('active');
+			$("#tab_inbox").parent().removeClass('active');
+	});
+</script>
+<% end %>
+<script>
+var onboard_check = "<%= current_user.onboarding_at %>";
+//alert(onboard_check);
+if(!onboard_check){
+$(function(){
+var tour = new Tour({
+  name: "tour",
+  container: "body",
+  keyboard: true,
+  storage: false,
+  debug: false,
+  backdrop: true,
+  redirect: true,
+  orphan: false,
+  duration: false,
+  basePath: "",
+  template: "<div class='popover tour'><div class='arrow'></div><h3 class='popover-title'></h3><div class='popover-content'></div><div class='popover-navigation'><button class='btn btn-default' data-role='prev'>« Prev</button><span data-role='separator'>|</span><button class='btn btn-default' data-role='next'>Next »</button></div><button class='btn btn-default' data-role='end'>End tour</button></nav></div>",
+  afterGetState: function(key, value) {},
+  afterSetState: function(key, value) {},
+  afterRemoveState: function(key, value) {},
+  onStart: function(tour) {},
+  onEnd: function(tour) {},
+  onShow: function(tour) {},
+  onShown: function(tour) {},
+  onHide: function(tour) {},
+  onHidden: function(tour) {},
+  onNext: function(tour) {},
+  onPrev: function(tour) {},
+  onPause: function(tour, duration) {},
+  onResume: function(tour, duration) {}
+});
+
+// Add your steps. Not too many, you don't really want to get your users sleepy
+tour.addSteps([
+
+
+
+  {
+    //element: "body", // string (jQuery selector) - html element next to which the step popover should be shown
+    orphan:true,
+    title: "One stop control center...", // string - title of the popover
+    content: "This is the place where you can view and edit your activity on Tradeya. Take time and go through the tabs at the top, add a profile image and edit your profile. " ,// string - content of the popover
+    template:"<div class='popover tour o2'><a href='#' class='cross-button' data-role='end'><img src='http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png'></a> <h3 class='popover-title t2'></h3><div class='popover-content c2'></div><div class='popover-navigation n5'><button class='big-button' data-role='next'>Next</button></div></div>"
+  },
+
+   {
+    element: ".welcome_tradeya_dashboard",
+    title: "Add Some quick items",
+    placement: "bottom",
+    content: "Here's an easy way for you to add a bunch of haves without too much work. Go through and add the ones that apply and skip the ones that don't",
+    template:"<div class='popover tour'><div class='arrow'></div><a href='#' class='cross-button' data-role='end'><img src='http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png'></a> <h3 class='popover-title t2'></h3><div class='popover-content c2'></div><div class='popover-navigation n6'> <button class='big-button b2' data-role='end'>Start Trading!</button>  </div></div>"
+  }
+]);
+
+// Initialize the tour
+tour.init();
+
+// Start the tour
+tour.start(true);
+<% current_user.onboarding_at = Time.now.to_datetime.utc.strftime("%Y-%m-%d %H:%M:%S") %>
+<% current_user.save! %>
+});
+}
+
+</script>

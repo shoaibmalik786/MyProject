@@ -1,0 +1,68 @@
+<div id="signin_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+  <div id="cross_image"> <a href="#" onclick="/*_kmq.push(['record', 'login modal close X icon',{ 'SignedIn' : get_KMSignedIn(), 'ErrorMessage' : $('#signinmessage').text()}]); _gaq.push(['_trackEvent', 'register', 'Clk_LoginModalCancelIcn', 'clicks on x icon on Login form']);*/ mixpanel.track('clicks on x icon on Login form'); closeLoginForm(); return false;">X</a></div>
+  <div class="request_text" id="login_text">Login</div>
+  <div id="signinmessage"></div>
+  <div class="social_login">
+    <a id="fb_login_icon" href="/auth/facebook" class="auth_provider position-click auth_provider_more" onclick="/*_kmq.push(['record', 'Modal Login Connect Facebook Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'register', 'login', 'Successful Login Facebook']);*/ mixpanel.track('Successful Login Facebook');"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png'" id="fb_login_img"</a>
+    <a id="tw_login_icon" href="auth/twitter" onclick="/*_kmq.push(['record', 'Modal Login Connect Twitter Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'register', 'login', 'Login Twitter from Login Modal']);*/ mixpanel.track('Login Twitter from Login Modal');"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png'" id="tw_login_img"></a>
+  </div>
+  <%= form_for(:user, :url => user_session_path, :html => {:multipart => true, :id => "signInForm", :target => "if_ip_upload", :class => "form-horizontal"} ) do |f| %>
+  <div class="control-group">
+    <label class="control-label invite_heading">Email</label>
+    <div class="controls">
+      <%= f.email_field :login_email, :onKeyPress => "submitOnEnterSigninForm(event);", :TABINDEX => "1",:class => 'resend_input', :value => nil %>
+        
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label invite_heading">Password</label>
+    <div class="controls">
+        <%= f.password_field :password, :onKeyPress => "submitOnEnterSigninForm(event);",:class => "resend_input", :TABINDEX => "2",:type=>"password"  %>
+         <br />
+        <a href="<%= new_user_password_url %>">Forgot Password?</a>
+    </div>
+  </div>
+   <%= f.hidden_field :remember_me, :TABINDEX => "3", :onFocus => "$('#user_password').addClass('addborder'); $('#user_password').removeClass('removeborder');", :onBlur => "clearText(this); $('#user_password').addClass('removeborder'); $('#user_password').removeClass('addborder');", :value => "1" %>
+  <div class="control-group">
+    <div class="controls">
+      <div class="request_submit_btn login_button" ><a id="signInFormSubmitImg" class="login_btn position-click" onclick="sign_in(); return false;" href="#">Continue</a></div>
+    </div>
+  </div>
+   <% end %>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- <div id="signin2_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<img id="full_screen_img" src="http://d3md9h2ro575fr.cloudfront.net/images/login_bg.png">
+  <div class="login_content_body">
+    <div class="login_heading"><p>Login</p><a href="#" class="close" onclick="_kmq.push(['record', 'login modal close X icon',{ 'SignedIn' : get_KMSignedIn(), 'ErrorMessage' : $('#signinmessage').text()}]); _gaq.push(['_trackEvent', 'register', 'Clk_LoginModalCancelIcn', 'clicks on x icon on Login form']); closeLoginForm();">X</a></div>
+    <div id="signinmessage"></div>
+    <div class="login_right">
+      <a href="/auth/facebook" class="auth_provider position-click auth_provider_more" onclick="_kmq.push(['record', 'Modal Login Connect Facebook Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'register', 'login', 'Successful Login Facebook']);"> <img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png'" id="fb_login_img"> </a>
+      <a href="auth/twitter"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png'" id="tw_login_img"> </a>
+       <a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_google_off.png" id="google_login_img"> </a>  
+    </div>
+    <div class="login_left">
+      <%#= form_for(:user, :url => user_session_path, :html => {:multipart => true, :id => "signInForm", :target => "if_ip_upload", :class => "form-horizontal"} ) do |f| %>
+      <p>
+				<%#= f.email_field :login_email, :onKeyPress => "submitOnEnterSigninForm(event);",:placeholder=>"Email", :TABINDEX => "1",:class => 'login_input', :value => nil %>
+      </p>
+      <p class="password_input">
+				<%#= f.password_field :password, :onKeyPress => "submitOnEnterSigninForm(event);",:class => "login_input", :TABINDEX => "2", :placeholder=>"Password" %>
+      </p>
+      <%#= f.hidden_field :remember_me, :TABINDEX => "3", :onFocus => "$('#user_password').addClass('addborder'); $('#user_password').removeClass('removeborder');", :onBlur => "clearText(this); $('#user_password').addClass('removeborder'); $('#user_password').removeClass('addborder');", :value => "0" %>
+      <p id="signInFormSubmitImg" class="login_btn position-click" onclick="sign_in(); return false;"><a href="#" >Continue</a></p>
+      <p class="forgot_link"><a href="<%= new_user_password_url %>">Forgot password?</a></p>
+      <p class="or">or</p>
+      <p class="signup_btn" onclick="_kmq.push(['record', 'login modal signup link',{ 'SignedIn' : get_KMSignedIn()}]); $('#signin_modal').modal('hide'); showSignUpForm(); return false;"><a href="signup.html">Sign up</a></p> 
+      <%# end %>
+    </div>
+  </div>
+</div> -->

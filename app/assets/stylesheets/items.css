@@ -1,0 +1,12 @@
+#accepted_offer{
+	border-collapse: collapse;
+	margin-top: 10px; 
+	width: 728px;
+}
+#accepted_offer tr{
+	border-bottom: 1px solid #e6e6e6;
+}
+#accepted_offer td{
+	padding-top: 20px;
+	padding-bottom: 20px;
+}

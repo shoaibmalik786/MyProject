@@ -1,0 +1,145 @@
+<% @completed.each do |cmp|%>
+<div id="completed_carousal_<%= counter%>">
+<table id="browse_cmpltd" width="100%">
+	<tr valign="top">
+		<td width="36%">
+			<table width-"100%">
+				<tr>
+					<td width="50%">
+					 <!-- onmouseout="hideModal('usr_rev_box_s'); hideModal('usr_rev_box');"> -->
+						<div class="cmpltd_user_image_smaller user_image_border">
+							<img src="<%= cmp[0].user.user_image(:small) %>"<%= (cmp[0].user.isFacebookUser? ? ' width=50px' : "") %> />
+						</div>
+						<div class="cmpltd_user_name profile_hover" onclick="callHoverProfile(<%= cmp[0].user.id %>)"><%= cmp[0].user.title %><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/trd_icon.png" style="margin-left: 5px;" /></div>
+						<div class="cmpltd_user_city"><%= if cmp[0].user.state then cmp[0].user.state elsif cmp[0].user.city then cmp[0].user.city end %></div>
+					</td>
+					<td width="50%">
+						<div class="browse_item_image user_image_border" onclick="/*_kmq.push(['record', 'Completed Main TradeYa Image Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaImgComplete', 'Click Any tradeya image on Completed tab']);*/">
+							<% if !cmp[0].item_photos.nil? and cmp[0].item_photos.length > 0 %>
+								<a class = 'click' href="<%= cmp[0].item_url %>"><img src="<%= cmp[0].item_image(:thumb) %>" /></a>
+							<% elsif !cmp[0].item_videos.nil? and cmp[0].item_videos.length > 0 %>
+								<div style="display:block;width: 135px; height:auto" id="itemPlayerCompTab_<%= counter %>"></div>
+								<script>$(function(){videoAsRedirect('itemPlayerCompTab_<%= counter %>', '<%= cmp[0].item_videos[0].video %>','<%=cmp[0].item_url %>');});</script>
+							<% else %>
+								<a class = 'click' href="<%= cmp[0].item_url %>"><img src="<%= cmp[0].item_image%>" style="width: 135px; height: auto" /></a>
+							<% end %>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="padding-top: 10px; padding-left: 14px;">
+						<div class="user_traded_cmplt">
+							<%= cmp[0].user.title %> traded:
+						</div>
+						<div class="user_title_cmplt">
+							<a class = 'click' href="<%= cmp[0].item_url %>" onclick="/*_kmq.push(['record', 'Completed Main TradeYa Title Text Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaLnkComplete', 'Click Any tradeya link on Completed tab']);*/"><%= truncate(cmp[0].title, :length => 62) %></a>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td width="6%" style="text-align: center;" valign="middle"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/circle_small_grey.png" style="padding-top: 32px;" /></td>
+		<td width="35%">
+			<div class="cmp_carousel">
+				<div class="slides_container">
+					<% inner_counter = 1 %>
+					<% cmp[3].each do |acc| %>
+						<% offer = acc.offer %>
+						<% usr = offer.user %>
+						<script>
+							if(slideCount[n] == undefined){
+								slideCount[n] = 1;
+							}else{
+								slideCount[n] += 1;
+							}
+						</script>
+						<table width="90%">
+							<tr>
+								<td width="10%">
+									<div class="browse_item_image user_image_border" onclick="/*_kmq.push(['record', 'Completed Main TradeYa Image Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaImgComplete', 'Click Any tradeya image on Completed tab']);*/">
+										<% if !offer.item_photos.nil? and offer.item_photos.length > 0 %>
+											<a class = 'click' href="<%= cmp[0].item_url %>#aoc_section_<%= cmp[1].id%>"><img src="<%= offer.item_image(:thumb) %>" /></a>
+										<% elsif !offer.item_videos.nil? and offer.item_videos.length > 0 %>
+											<a href="<%= cmp[0].item_url %>#aoc_section_<%= cmp[1].id%>"><div style="position:absolute;height:105px;width:135px;filter:alpha(opacity=60);-moz-opacity: 0.6;opacity: 0.6;"></div></a>
+											<div style="display:block;width: 135px; height:auto" id="itemPlayerOffer_<%= inner_counter %>"></div>
+											<script>$(function(){videoAsRedirect('itemPlayerOffer_<%= inner_counter %>', '<%= offer.item_videos[0].video %>','<%= cmp[0].item_url %>#aoc_section_<%= cmp[1].id%>');});</script>
+										<% else %>
+											<a class = 'click' href="<%= cmp[0].item_url %>#aoc_section_<%= cmp[1].id%>"><img src="<%= offer.item_image%>" style="width: 135px; height: auto" /></a>
+										<% end %>
+									</div>
+								</td>
+								<td width="40%" class="userprofilelink">
+									<div class="browse_user_image_smallerleft user_image_border">
+										<img src="<%= usr.user_image(:small) %>"<%= (usr.isFacebookUser? ? ' width=50px' : "") %> />
+									</div>
+									<div class="browse_user_nameleft profile_hover" onclick="callHoverProfile(<%= usr.id %>)"><%=  usr.title %><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/trd_icon.png" style="margin-left: 5px;" /></div>
+									<div class="browse_user_cityleft"><%= if usr.state then usr.state elsif usr.city then usr.city end %></div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" style="padding-top: 10px; padding-left: 6px;">
+									<div class="user_traded_cmplt">
+										<%= usr.title %>'s offer:
+									</div>
+									<div class="user_title_cmplt">
+										<a class = 'click' href="<%= cmp[0].item_url %>#aoc_section_<%= cmp[1].id%>" onclick="/*_kmq.push(['record', 'Completed Main TradeYa Title Text Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaLnkComplete', 'Click Any tradeya link on Completed tab']);*/"><%= truncate(offer.title, :length => 62) %></a>
+									</div>
+								</td>
+							</tr>
+						</table>
+						<% inner_counter += 1 %>
+					<% end %>
+				</div>
+			</div>
+		</td>
+		<td width="24%" style="text-align: center; padding-right: 17px;">
+			<table width="100%">
+				<tr>
+					<div class="completed_date">
+						Completed <%= cmp[4].strftime("%m/%d/%Y") %>
+					</div>
+					<div class="completed_ofr_md">
+						<span style="color: #ff6633; margin-right: 5px;"><%= cmp[2]%></span><%= cmp[2].to_i > 1 ? 'Offers Made' : 'Offer Made' %>
+					</div>
+					<div class="completed_ofr_cpl" style="padding-bottom: 5px;">
+						<span style="color: #ff6633; margin-right: 5px;"><%= cmp[3].count%></span><%= cmp[3].count > 1 ? 'Offers Accepted' : 'Offer Accepted'%>
+					</div>
+				</tr>
+				<tr>
+					<div id="dis_<%= cmp[0].id %>" class="browse_distance_left" style="margin-top :5px;">
+						<% if @comp_distance and @comp_distance[cmp[0].id] and @comp_distance[cmp[0].id].present?%>
+							<%= @comp_distance[cmp[0].id] %> miles
+						<% else %>
+							<script type="text/javascript">itm_ids = itm_ids + ((itm_ids.length > 0) ? ",<%= cmp[0].id %>" : "<%= cmp[0].id %>")</script>
+						<% end %>
+					</div>
+				</tr>
+				<% if cmp[3].count > 1%>
+					<tr style="padding-top: 10px;">
+						<div class="scroll_offers_text">
+							Scroll Offers Accepted
+						</div>
+						<div class="scroll_offers">
+							<ul styles="none">
+								<li class="previous prv_<%=counter%>"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrow_scroll_left.png" /></li>
+								<li class="next nxt_<%=counter%>"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrow_scroll_right.png" /></li>
+							</ul>
+						</div>
+					</tr>
+				<%else%>
+					<tr></tr>
+				<% end %>
+			</table>
+		</td>
+	</tr>
+</table>
+</div>
+<% counter += 1%>
+<script>
+	n += 1;
+	$(".browse_user_nameleft, .cmpltd_user_name").click(function(e) {
+		e.stopPropagation(); 
+		return false;
+	});
+</script>
+<%end%>

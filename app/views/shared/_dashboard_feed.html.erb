@@ -1,0 +1,52 @@
+<%# if dashboard_items.where(:id => 1) %>
+<% unless current_user.facebook_authenticated? and current_user.twitter_authenticated? %>
+	<div class="welcome_tradeya_dashboard">
+		<!-- <a href="#" class="item_feed_cross"><img src="http://d3md9h2ro575fr.cloudfront.net/images/dash_cross.png"></a> -->
+		<p class="welcome_heading_text">Welcome to TradeYa!</p>
+		<p class="welcome_subheading_text">TradeYa works best with friends. Connect below to find yours...</p>
+		<div class="dash_social_icon">
+			<% if current_user.facebook_authenticated? %>
+		    	<img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_on.png">
+		    <% else %>
+			    <a href="/auth/facebook?add_verification=true">
+			      <img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png'" >
+			    </a>
+		    <% end %>
+		    <% if current_user.twitter_authenticated? %>
+		    	<img src="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_on.png">
+		    <% else %>
+		    	<a href="/auth/twitter?add_verification=true">
+		    		<img src="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_on.png'" onmouseout="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png'" >
+		    	</a>
+		    <% end %><!-- 
+		    <a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_google_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_google_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_google_off.png'" ></a> -->
+
+		</div>
+		<p class="welcome_footer_text">(We will never, ever post on your behalf without your permission.)</p>
+	</div>
+<%# elsif dashboard_items.where(:id => 2) %>
+<!-- 	<div class="item_feed_section">
+		<div class="get_started_heading">
+			Welcome to TradeYa!
+		</div>
+		<div class="get_started_heading_small">
+			See something you want?
+		</div>
+		<div class="get_started_text">
+			Just click<span><img src="http://d3md9h2ro575fr.cloudfront.net/images/dash_want.png"></span>and we’ll send the owner a note letting them know you want their item.
+		</div>
+		<div class="get_started_button">
+			<a href="#">Get Started</a>
+		</div>
+	</div> -->
+<%# else %>
+<!-- 	<div class="item_feed_section">
+		<a href="#" class="item_feed_cross"><img src="http://d3md9h2ro575fr.cloudfront.net/images/dash_cross.png"></a>
+		<div class="item_feed_heading">Can you bake cookies?</div>
+		<div class="item_feed_text">
+			If so, then you have something you can trade that people want! Go ahead and click the button to add it to your haves and lets see what you can get for it.
+		</div>
+		<div class="clear"></div>
+		<div class="item_feed_button_wrapper"><a href="#">Yes, I bake cookies!</a></div>
+	</div> -->
+<% end %>

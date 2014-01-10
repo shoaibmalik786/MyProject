@@ -1,0 +1,48 @@
+<% counter = 1 %>
+<% @tradeyas.each do |item| %>
+<div class="tycarousel_left">
+  <table width="100%">
+    <tr valign="top">
+      <td colspan="2">
+        <div class="item_title"><a class='click' href="<%= item.item_url %>" onclick="/*_kmq.push(['record', 'Landing Page TradeYa Title Text Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaLnkLdnPg', 'Click Any Link on Landing Page']);*/"><p style="white-space: nowrap;overflow: hidden; text-overflow: ellipsis;"><%= truncate(item.item_title, :length => 65) %> <% if (item.item_title.length > 65) then  "..." end %></p></a></div>
+        <div class="service"><%= item.category_title %></div>
+      </td>
+    </tr>
+  </table>
+  <table width="100%">
+    <tr valign="top">
+      <td rowspan="2" style="width: 340px; text-align: center; height: 256px;" valign="middle">
+        <% if not item.item_videos[0].nil? %>
+        <div class="item_image user_image_border" onclick="/*_kmq.push(['record', 'Landing Page TradeYa Image Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaImgLnkLdnPg', 'Click Any Link on Landing Page']);*/" >
+          <a href="#" onclick="return false;" style="display:block;width:340px;height:251px; vertical-align: middle;" id="itemPlayerTrd_<%= counter %>"></a>
+        </div>
+        <% else %>
+        <div class="item_image user_image_border">
+          <a href = "<%= item.item_url %>" onclick="/*_kmq.push(['record', 'Landing Page TradeYa Image Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaImgLnkLdnPg', 'Click Any Link on Landing Page']);*/" ><img src="<%= item.item_image(:large) %>"  style="vertical-align: middle;" /></a>
+        </div>
+        <% end %>
+      </td>
+      <td style="width: 110px; height: 156px;padding-left: 16px;">
+        <div class="user_image user_image_border"><img src="<%= item.user.user_image(:thumb) %>"<%= (item.user.isFacebookUser? ? ' width=100px' : "") %> /></div>
+        <div class="user_name"><%= item.user.title %></div>
+        <div class="user_city"><%= item.user.location %></div>
+      </td>
+      <td>
+        <div class="item_desc"><%= auto_link(truncate(item.desc, :length => 140, :omission => '').strip + '<a class="click" href="' + item.item_url + '"><img class="item_desc_img" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/ellipses.png" /></a>', :html => { :target => '_blank' }) %></div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" style="padding-left: 16px;">
+        <div class="dot_line" style="margin-top: -27px;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/dottedline.png" /></div>
+      </td>
+    </tr>
+  </table>
+  <div class="cat_desc_staff">
+    <a class='click' href='<%=items_path%>?category=<%=item.category_id%>' >see more <%=item.category.name if !item.category.blank?%> TradeYas</a>
+  </div>
+  <% if not item.item_videos[0].nil? %>
+  <script>$(function(){videoAsRedirect('itemPlayerTrd_<%= counter %>', '<%= item.item_videos[0].video %>', '<%= item.item_url %>', ['record', 'Landing Page TradeYa Image Link',{ 'SignedIn' : get_KMSignedIn()}], ['_trackEvent', 'Activity', 'Clk_TryaImgLnkLdnPg', 'Click Any Link on Landing Page']);});</script>
+  <% end %>
+</div>
+<% counter += 1 %>
+<% end %>

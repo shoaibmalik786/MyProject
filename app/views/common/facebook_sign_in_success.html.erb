@@ -1,0 +1,15 @@
+<script>
+ $(function(){
+   if (window.location.hash == 'facebook_sign_in_success#_=_'){
+     history.replaceState
+                            ? history.replaceState(null, null, window.location.href.split('#')[0])
+                                                                                         : window.location.hash = '';
+   }
+   if (window.opener != null){
+     window.opener.location = '/items?category=all';
+     window.close() ;
+   } else {
+     window.top.location = '/items?category=all'
+   }
+ });
+</script>

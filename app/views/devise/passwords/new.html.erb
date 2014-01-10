@@ -1,0 +1,47 @@
+<% 
+	if !session["user"].nil?
+		@user_resetpwd = session["user"]
+		session["user"] = nil
+	end
+%>
+<div id="pwd_header">
+	<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/pwd_asst.png" />
+</div>
+<div id="pwd_subheader">
+	<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/email_selected.png" />
+</div>
+<div id="panel">
+	<div id="password_asst">
+	Enter the e-mail address associated with your TradeYa account, then click continue. We’ll email you a link to a page where you can easily create a new password.
+	<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, :id => 'password_new' }) do |f| %>
+		<%= devise_error_messages! %>
+		<div id="send_email">
+			
+			<% if (@user_resetpwd and @user_resetpwd.errors.any?) %>
+			    <div id="error_explanation">
+			      <h2 id="pwd_error_title"><%= pluralize(@user_resetpwd.errors.count, "error") %> prohibited this record from being saved:</h2>
+
+			      <ul id="pwd_error_msg">
+			      <% @user_resetpwd.errors.full_messages.each do |msg| %>
+			        <li><%= msg %></li>
+			      <% end %>
+			      </ul>
+			    </div>
+			<%# elsif @user_resetpwd and @user_resetpwd.authentications.length > 0 %>
+				<!-- <div id="error_explanation">
+								  <h2 id="pwd_error_title"><%= pluralize(@user_resetpwd.errors.count, "error") %> prohibited this record from being saved:</h2>
+
+								  <ul id="pwd_error_msg">
+								    <li>Email used by Facebook</li>
+								  </ul>
+								</div> -->
+			<% end %>
+
+			<div id="pwdmessage"></div><br />
+	  		<span>EMAIL</span>
+	  		<%= f.email_field :email, :class => "addborder", :id => "password_reset_email" %><br />
+	  	</div>
+		  	<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/continue.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/continue_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/continue.png'" id="continue_btn" onclick="submitPasswordForm();" />
+		<% end %>
+	</div>
+</div>

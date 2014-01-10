@@ -1,0 +1,42 @@
+<%= javascript_include_tag "adminscripts/admin" %>
+<table>
+	<tr>
+		<td width="75%">
+			<table class="data_point_table" style="border: solid 1px; width: 50%; margin-left: auto; margin-right: auto;">
+				<tr><th style="min-width:100px;"> Last Sign-up Date</th><th>Active Users (who have logged in more than once)</th></tr>
+					<% total = 0 %>
+					<% count_users.each do |r| %>
+					<tr>
+						<td><%= r[0].to_s %></td>
+						<td><%= r[1].to_s %></td>
+						<% total =total + 1 %>
+					</tr>
+				<% end %>
+					<tr>
+						<td>Total</td>
+						<td><%= total.to_s%></td>
+					</tr>
+			</table>
+		</td>
+		<td>
+			<table>
+				<tr>
+					<td style="font-weight: bold;font-size: 20px;">
+						Total Count - <%= total %><br/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<%= semantic_form_for :date_range, :builder => ActiveAdmin::FormBuilder do |f|
+					   f.inputs do
+					     f.input :from, :as => :datepicker
+					   end
+					   f.actions
+					end %>
+					</td>	
+				</tr>
+			</table>
+			For other details <a href="https://www.kissmetrics.com/report/185501" target="_blank">click here</a>.
+		</td>
+	</tr>
+</table>

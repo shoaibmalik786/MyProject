@@ -1,0 +1,166 @@
+<div id="communication_tab">
+	<div class="communication_inner_div">
+		<div class="communication_div_left">
+			<!-- Trade Comments Start -->
+			<div class="myname_div"><%=current_user.title%><span><img src=""></span></div>
+			
+			<div id = "trade_communication_comments_area" class="communication_div_left_comments_area	">
+				<%=render 'trade_communications/comments_area'%>
+				<div class="clear"></div>
+			</div>
+
+			<div class="textarea_wrapper_trade">
+				<%= form_for :trade_communications, :url => {:controller =>"trade_communications", :action=>"create"}, :html=>{:id => "trade_comments_form"}, :remote=>true do |f| %>
+					<%if @passive_trade.present?%>
+						<%= f.hidden_field :passive_trade_id, :value => @passive_trade.id %>
+						<%if @passive_trade.item.user.id == current_user.id%>
+							<%= f.hidden_field :recipient_id, :value => @passive_trade.user.id %>
+						<%else%>
+							<%= f.hidden_field :recipient_id, :value => @passive_trade.item.user.id %>
+						<%end%>
+					<%elsif @trade.present?%>
+						<%= f.hidden_field :trade_id, :value => @trade.id %>
+					<%end%>
+					<%= f.hidden_field :communication_type, :value => "COMMENT" %>
+					<%= f.text_area :communication_text, :class=>"chat_input", :placeholder=>"Enter your Message..."%>
+				<%end%>
+				<div class="clear"></div>
+				<!-- <textarea class="chat_input" placeholder="Enter your Message..."></textarea> -->
+				<!-- <textarea class="chat_input" id="sendNewTextArea" name="body" placeholder="Write a reply..."></textarea> -->
+				<div class="chat_input_options">
+					<!-- <span class="file_wrapper"> -->
+						<!-- <input type="file" class="chat_files" id="photo"> -->
+						<!-- <input class="multifile chat_files" id="newMessageAttachment" name="attach[]" type="file"> -->
+						<!-- <span class="upload_button">Add Files</span> -->
+					<!-- </span> -->
+					<!-- <span class="crossimage"></span> -->
+					<!-- <input type="submit" value="Send" class="chat_send"> -->
+					<input class="chat_send" id="send_new_comment_button" name="new_message" type="submit" value="Send">
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<!-- Trade Comments End -->
+		</div>
+
+		<div class="communication_div_right">
+			<!-- Agreed Terms Start -->
+			<div class="communication_right_heading"><img src="http://d3md9h2ro575fr.cloudfront.net/images/agreed_terms.png">Agreed Terms</div>
+				<div class="trade_terms_wrapper">
+			<%= form_for :trade_communications, :url => {:controller =>"trade_communications", :action=>"create"}, :html=>{:id => "trade_terms_form"}, :remote=>true do |f| %>
+				<%if @passive_trade.present?%>
+					<%= f.hidden_field :passive_trade_id, :value => @passive_trade.id %>
+					<%if @passive_trade.item.user.id == current_user.id%>
+						<%= f.hidden_field :recipient_id, :value => @passive_trade.user.id %>
+					<%else%>
+						<%= f.hidden_field :recipient_id, :value => @passive_trade.item.user.id %>
+					<%end%>
+				<%elsif @trade.present?%>
+					<%= f.hidden_field :trade_id, :value => @trade.id %>
+				<%end%>
+				<%= f.hidden_field :communication_type, :value => "TnC" %>
+				<%= f.text_area :communication_text, :class=>"terms_textarea", :placeholder=>"Enter trade term here..."%>
+				<img class="enter_icon" src="http://d3md9h2ro575fr.cloudfront.net/images/enter_icon.png">
+			<%end%>
+			
+			
+			</div>
+			<div id="agreed_terms_area" class="agreed_terms_trade">
+				<%= render 'trade_communications/agreed_terms_area' %>
+			</div>
+			<!-- Agreed Terms End -->
+
+
+		<!-- Exchange Method Start -->
+		<div class="exchange_method_div">
+			<div class="exchange_method_heading"><img src="http://d3md9h2ro575fr.cloudfront.net/images/exchange_icon.png">Exchange Method</div>
+			<div class="exchange_trader_wrapper">
+			<div class="exchange_trader1">
+				<div class="exchange_name"><%=@left_user.first_name.titleize%></div>
+				<div class="exchange_detail">
+					<div class="exchange_method_user">
+						<%if @my_exchange_method.present?%>
+							<%case @my_exchange_method%>
+							<%when I_WILL_BRING_IT_TO_YOU%>
+								I'll bring it to you
+							<%when YOU_COME_GET_IT%>
+								You come get it
+							<%when LET_US_MEET_UP%>
+								Let's meet up
+							<%when I_WILL_SHIP_IT%>
+								I'll ship it
+							<%else%>
+							<%end%>
+						<%else%>
+							no method set
+						<%end%>
+					</div>
+					<%if @my_exchange_address.present? and (@my_exchange_method==YOU_COME_GET_IT or @my_exchange_method==LET_US_MEET_UP)%>
+						<div class="exchage_address1"><%=@my_exchange_address.address_line_1%></div>
+						<div class="exchage_address2"><%=@my_exchange_address.city%>, <%=@my_exchange_address.state%> <%=@my_exchange_address.zipcode%></div>	
+					<%end%>
+					<%if @my_exchange_note.present? and @my_exchange_method!=I_WILL_SHIP_IT%>
+						<div class="exchage_notes"><%=@my_exchange_note%></div>
+					<%end%>
+					<%if @my_exchange_method==I_WILL_SHIP_IT and !@trader_exchange_address.present?%>
+					  <div class="exchage_notes">Waiting on other users address input...</div>
+					<%end%>
+				</div>
+			</div>
+			<div class="exchange_trader1">
+				<div class="exchange_name"><%=@right_user.first_name.titleize%></div>
+				<div class="exchange_detail">
+					<div class="exchange_method_user">
+						<%if @trader_exchange_method.present?%>
+							<%case @trader_exchange_method%>
+							<%when I_WILL_BRING_IT_TO_YOU%>
+								I'll bring it to you
+							<%when YOU_COME_GET_IT%>
+								You come get it
+							<%when LET_US_MEET_UP%>
+								Let's meet up
+							<%when I_WILL_SHIP_IT%>
+								I'll ship it
+							<%else%>
+							<%end%>
+						<%else%>
+							no method set
+						<%end%>
+					</div>
+					<%if @trader_exchange_address.present? and (@trader_exchange_method==YOU_COME_GET_IT or @trader_exchange_method==LET_US_MEET_UP)%>
+						<div class="exchage_address1"><%=@trader_exchange_address.address_line_1%></div>
+						<div class="exchage_address2"><%=@trader_exchange_address.city%>, <%=@trader_exchange_address.state%> <%=@trader_exchange_address.zipcode%></div>	
+					<%end%>
+					<%if @trader_exchange_note.present? and @trader_exchange_method!=I_WILL_SHIP_IT%>
+						<div class="exchage_notes"><%=@trader_exchange_note%></div>
+					<%end%>
+				</div>
+			</div>
+			<!-- Exchange Method End -->
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+
+<script>
+	$(function(){
+		$("#send_new_comment_button").click(function(){
+			if ($("#trade_comments_form #trade_communications_communication_text").val() != "")
+				{ 
+					$('#trade_comments_form').submit();
+					$("#trade_comments_form #trade_communications_communication_text").val("");
+				 }
+		})
+
+		$("#trade_terms_form #trade_communications_communication_text").keypress(function(event){
+			var keycode = (event.keyCode ? event.keyCode : event.which);
+			if(keycode == '13'){
+				if ($("#trade_terms_form #trade_communications_communication_text").val() != "")
+		    { 
+		      $('#trade_terms_form').submit();
+		    }
+			}
+		});
+	})
+	
+</script>

@@ -1,0 +1,27 @@
+                <div id="delete_modal" class="modal hide fade">
+                  <a href="#" class="close del_close "  data-dismiss="modal">X</a>
+                  <div class="heading">Delete Photo?</div>
+                  <div class="delete_modal_body">
+                    <div class="btn_left"><a href="#" class="close" data-dismiss="modal"> NO! Take me back</a></div>
+                    <%=form_tag delete_user_photo_path, :id=>"delete_photo_action", :remote => true do %>
+                    <%=hidden_field_tag :user_photo_id %>
+                    <div class="btn_right">
+                      <a href ="#" onclick="$('#delete_photo_action').submit(); $('#delete_modal').modal('hide'); return false;">YES, Delete it<a>
+                      </div>
+                      <%end%>
+                    </div>
+                  </div>
+                  <!-- modal for Main Photo delete Confirmation  Ends-->
+
+                  <!-- change password modal  start-->
+                  <%= render "users/change_password" %>
+                  <!-- change password modal ends-->
+
+                  <!-- Pin Resend modal start -->
+                  <%= render "users/pin_resend" %>
+                  <!-- Pin Resend modal Ends -->
+                  
+                  <!-- remove phone no modal start -->
+                  <%= render "users/remove_phone" %>                  
+                  <!-- remove phone no modal Ends -->
+                </div>

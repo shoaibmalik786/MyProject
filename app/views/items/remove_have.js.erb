@@ -1,0 +1,7 @@
+<%if params[:remove_have]%>
+  <%if params[:from_haves_tab] == 'true' %>
+	  $("#tab-content").html("<%= escape_javascript render('shared/haves_tab') %>");
+	<%elsif params[:from_my_offers_tab] == 'true' %>
+    $("#item-tab-content").html("<%= escape_javascript render('shared/my_offers_tab') %>");
+  <%end%>
+<%end%>

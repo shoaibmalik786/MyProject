@@ -1,0 +1,148 @@
+<script type="text/javascript">
+
+ var currentWidth = 980;
+ $(window).resize(function() {
+   // alert("resized");
+   var winWidth = $(window).width();
+   var conWidth;
+   if(winWidth<768){
+     conWidth=225;
+     col=1;
+     ox=10,
+     oy = 12
+     $('.wants_container').css('margin-left','38px');
+      
+   }
+   else if(winWidth < 980 ){
+     conWidth = 500;
+     col = 2,
+     ox = 12,
+     oy = 10
+     $('.wants_container').css('margin-left','41px');
+     
+     // $("#popular_tradeya_tab").css("margin-left","10px");
+   }
+   else if(winWidth>980) {
+     conWidth = 750;
+     col = 3;
+     ox = 12;
+     oy = 10
+   }
+    
+    
+   if(conWidth != currentWidth) {
+     currentWidth = conWidth;
+     $('.wants_container').width(conWidth);
+     // alert(col);
+     $('.wants_container').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   }
+   $("img").one("load",function(){
+     $('.wants_container').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   });
+ })
+
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+	 var currentWidth = 980;
+   var winWidth = $(window).width();
+   var conWidth;
+   $('.wants_container').css('position','relative');
+  
+   if(winWidth<768){
+     conWidth=225;
+     col=1;
+     ox=10,
+     oy = 12
+     $('.wants_container').css('margin-left','38px');
+      
+   }
+   else if(winWidth < 980 ){
+     conWidth = 500;
+     col = 2,
+     ox = 12,
+     oy = 10
+     $('.wants_container').css('margin-left','41px');
+     
+     // $("#popular_tradeya_tab").css("margin-left","10px");
+   }
+   else if(winWidth>980) {
+     conWidth = 750;
+     col = 3;
+     ox = 12;
+     oy = 10
+   }
+    
+    
+   if(conWidth != currentWidth) {
+     currentWidth = conWidth;
+     $('.wants_container').width(conWidth);
+     // alert(col);
+     $('.wants_container').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   }
+   $("img").one("load",function(){
+     $('.wants_container').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   });
+ 
+
+
+
+});
+</script>
+
+<%if @wants_on_my_haves.present? %>
+	<div class="wants_on_my_haves wants_container">
+		<%@wants_on_my_haves.each do |want_on_my_have|%>
+			<div class="user_wants_card">
+				<div class="user_card_heading">
+					<div class="clip">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png">
+					</div>
+					<div class="item_title_card">
+						<%= link_to want_on_my_have.title, wants_detail_item_path(want_on_my_have), remote: true %>
+					</div>
+					<div class="item_heading_bottom">
+						<div class="my_wants_icon">
+							<div>
+                <%= link_to(raw("#{want_on_my_have.wants.count}<img alt=\"Card_want_selected\" src=\"http://d3md9h2ro575fr.cloudfront.net/images/one_icon.png\">"), wants_detail_item_path(want_on_my_have), remote: true) %>
+
+								<!-- <a href="<%= wants_detail_item_path(want_on_my_have) %>"><%=want_on_my_have.wants.count%><img alt="Card_want_selected" src="http://d3md9h2ro575fr.cloudfront.net/images/one_icon.png"></a> -->
+							</div>
+						</div>
+						<div class="my_wants_edit_icon">
+							<div>
+								<a href="<%=edit_item_path(want_on_my_have)%>"><img src="http://d3md9h2ro575fr.cloudfront.net/images/share_edit.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/share_edit_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/share_edit.png'"></a></a>
+							</div>
+						</div>
+					</div>
+					<div class="item_wants_image">
+						<%= link_to image_tag(want_on_my_have.item_image), wants_detail_item_path(want_on_my_have), remote: true %>
+					</div>
+				</div>
+			</div>
+		<%end%>
+	</div>
+<%end%>

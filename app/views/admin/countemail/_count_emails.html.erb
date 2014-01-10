@@ -1,0 +1,50 @@
+<%= javascript_include_tag "adminscripts/admin" %>
+<div style="width: 600px;">
+	<%= semantic_form_for :date_range, :builder => ActiveAdmin::FormBuilder do |f|
+	   f.inputs do
+	     f.input :from, :as => :datepicker
+	     f.input :to, :as => :datepicker
+	   end
+	   f.actions
+	end %>
+</div>
+
+<table>
+	<tr>
+		<td width="75%">
+			<table class="data_point_table" style="border: solid 1px; width: 90%; margin-left: auto; margin-right: auto;">
+				<tr>
+					<th>Dates/Users(id - email)</th>
+					<% dates.each do |d| %>
+						<th><%= d %></th>
+					<% end %>
+					<th>Total</th>
+				</tr>
+				<% g_total = 0 %>
+				<% total_b_d = {} %>
+				<% users.each do |arr| %>
+					<tr>
+						<% total = 0 %>
+						<th><%= arr[0].to_s + ' - ' + arr[1] %></th>
+						<% dates.each do |d| %>
+							<% c = counts[arr[0].to_s + '-' + d].nil? ? 0 : counts[arr[0].to_s + '-' + d] %>
+							<td><%= c %></td>
+							<% total = total + c %>
+							<% g_total = g_total + c %>
+							<% if total_b_d[d].nil? then total_b_d[d] = 0 end %>
+							<% total_b_d[d] = total_b_d[d] + c %>
+						<% end %>
+						<td><%= total %></td>
+					</tr>
+				<% end %>
+				<tr>
+					<th>Total Emails</th>
+					<% dates.each do |d| %>
+						<td><%= total_b_d[d] %></td>
+					<% end %>
+					<td><%= g_total %></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>

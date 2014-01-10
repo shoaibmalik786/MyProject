@@ -1,0 +1,12 @@
+<div id="offer_submitted" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div id="crossimg"> <a href="#" data-dismiss="modal" aria-hidden="true">X</a></div>
+	<div align="center" id="submit_tr_head" style="margin-top: 15px">
+		<%= message_text %>
+	</div>
+	<% if session[:offer_as_tod] and session[:offer_as_tod].present? %>
+		<div align="center" id="ok_btn" style="margin-top: 17px;"><a href="<%= edit_item_path(session[:offer_as_tod],:cancel => 'dashboard') %>"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/ok.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/ok_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/ok.png';"  /></a></div>
+		<% session[:offer_as_tod] = nil %>
+	<% else %>
+		<div align="center" id="ok_btn" style="margin-top: 17px;"><a href="#" data-dismiss="modal" aria-hidden="true"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/ok.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/ok_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/ok.png';"  /></a></div>
+	<% end %>
+</div>

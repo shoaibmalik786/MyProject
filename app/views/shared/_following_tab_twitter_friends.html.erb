@@ -1,0 +1,118 @@
+<!-- Twitter Friends start -->
+<%if @tw_friends_unfollowed.present? %>
+	<%@tw_friends_unfollowed.each do |tw_friend|%>
+	  <%if tw_friend.present? %>
+			<div class="user_following_card">
+				<div class="following_big_image">
+					<a href="<%= user_path(tw_friend)%>" onclick="mixpanel.track('Click User Image on Following Card');_gaq.push(['_trackEvent', 'Following tab', 'clk_UsrImg_FllwngCard', 'Click User Image on Following Card']);addDelay(this,event); return false;"><img src="<%= tw_friend.user_image(:medium)%>" style="width: 225px;"></a>
+
+				</div>
+				<div class="following_heading_wrapper">
+					<!-- Following Hover -->
+					<%if current_user and tw_friend == current_user%>
+					<%elsif current_user and @user == current_user%>
+					  <div class="follow_me follow_user_<%= tw_friend.id%>" id= "follow_div">
+					 		<%= render 'shared/follow', :user => tw_friend %>
+					 		<%#= form_tag follow_user_path(:id => tw_friend.id,:item_id => (@item)? @item.id : nil), :id => "follow_action", :remote=>true do %>
+							  <%#if current_user && !current_user.follows.where(:followed_id => tw_friend.id).blank?%>
+							    <%#= hidden_field_tag 'follow', false%>
+							    <%#= hidden_field_tag 'follow_tab', true%>
+							    <!-- <p><a href="#"  onclick="$(this).parents('#follow_action').submit();mixpanel.track('UnFollow on Following Users Card');_gaq.push(['_trackEvent', 'Following card', 'Clk_Unfllw_FllwngCard', 'UnFollow on Following Users Card']); addDelay(this,event); return false;">Unfollow</a></p> -->
+							  <%#else%>
+							    <%#= hidden_field_tag 'follow', true%>
+							    <%#= hidden_field_tag 'follow_tab', true%>
+							    <!-- <p><a id="follow_<%= tw_friend.id%>"  href = "#" onclick="followUser('<%=tw_friend.id %>',this);mixpanel.track('Follow on Following Users Card');_gaq.push(['_trackEvent', 'Following card', 'Clk_Fllw_FllwngCard', 'Follow on Following Users Card']); addDelay(this,event); return false;">Follow</a><p> -->
+							  <%#end%>
+							<%#end%>
+						</div>
+					<%end%>
+
+					<div class="follow_head_left">
+						<p class="u_name"><a href="<%= user_path(tw_friend)%>"><%= tw_friend.title%></a></p>
+						<p class="u_place"><%= tw_friend.location%></p>
+					</div>
+					<div class="star_section_right">
+						 <%= render 'shared/following_star_rating', :user => tw_friend%>
+					</div>
+				</div>
+
+				<div class="following_thumbs_wrapper">
+					<% tw_friend.items.limit(6).order("created_at DESC").where('status="LIVE"').each do |item|%>
+						<div><%=link_to image_tag(item.item_image(:thumb) ), item_path(item),:onclick=>"_gaq.push(['_trackEvent', 'Following Card', 'clk_ItmImg_FllwngCrd', 'Click Item Images on Following Tab']);mixpanel.track('Click Item Images on Following Tab');addDelay(this,event);return false;" %></div>
+					<%end%>
+				</div>
+
+				<div class="follow_shadow">
+					<img src="http://d3md9h2ro575fr.cloudfront.net/images/follow_card_shadow.png">
+				</div>
+			</div>
+		<%end%>
+	<%end%>
+<%end%>
+
+
+<%if @tw_friends_followed.present? %>
+	<%@tw_friends_followed.each do |tw_friend|%>
+	  <%if tw_friend.present? %>
+			<div class="user_following_card">
+				<div class="following_big_image">
+					<a href="<%= user_path(tw_friend)%>" onclick="mixpanel.track('Click User Image on Following Card');_gaq.push(['_trackEvent', 'Following tab', 'clk_UsrImg_FllwngCard', 'Click User Image on Following Card']);addDelay(this,event); return false;"><img src="<%= tw_friend.user_image(:medium)%>" style="width: 225px;"></a>
+
+				</div>
+				<div class="following_heading_wrapper">
+					<!-- Following Hover -->
+					<%if current_user and tw_friend == current_user%>
+					<%elsif current_user and @user == current_user%>
+					  <div class="follow_me follow_user_<%= tw_friend.id%>" id= "follow_div">
+					 		<%= render 'shared/follow', :user => tw_friend %>
+					 		<%#= form_tag follow_user_path(:id => tw_friend.id,:item_id => (@item)? @item.id : nil), :id => "follow_action", :remote=>true do %>
+							  <%#if current_user && !current_user.follows.where(:followed_id => tw_friend.id).blank?%>
+							    <%#= hidden_field_tag 'follow', false%>
+							    <%#= hidden_field_tag 'follow_tab', true%>
+							    <!-- <p><a href="#"  onclick="$(this).parents('#follow_action').submit();mixpanel.track('UnFollow on Following Users Card');_gaq.push(['_trackEvent', 'Following card', 'Clk_Unfllw_FllwngCard', 'UnFollow on Following Users Card']); addDelay(this,event); return false;">Unfollow</a></p> -->
+							  <%#else%>
+							    <%#= hidden_field_tag 'follow', true%>
+							    <%#= hidden_field_tag 'follow_tab', true%>
+							    <!-- <p><a id="follow_<%= tw_friend.id%>"  href = "#" onclick="followUser('<%=tw_friend.id %>',this); return false;">Follow</a><p> -->
+							  <%#end%>
+							<%#end%>
+						</div>
+					<%end%>
+
+					<div class="follow_head_left">
+						<p class="u_name"><a href="<%= user_path(tw_friend)%>"><%= tw_friend.title%></a></p>
+						<p class="u_place"><%= tw_friend.location%></p>
+					</div>
+					<div class="star_section_right">
+						 <%= render 'shared/following_star_rating', :user => tw_friend%>
+					</div>
+				</div>
+
+				<div class="following_thumbs_wrapper">
+					<% tw_friend.items.limit(6).order("created_at DESC").where('status="LIVE"').each do |item|%>
+						<div><%=link_to image_tag(item.item_image(:thumb) ), item_path(item),:onclick=>"_gaq.push(['_trackEvent', 'Following Card', 'clk_ItmImg_FllwngCrd', 'Click Item Images on Following Tab']);mixpanel.track('Click Item Images on Following Tab');addDelay(this,event); return false;" %></div>
+					<%end%>
+				</div>
+
+				<div class="follow_shadow">
+					<img src="http://d3md9h2ro575fr.cloudfront.net/images/follow_card_shadow.png">
+				</div>
+			</div>
+		<%end%>
+	<%end%>
+<%end%>
+<!-- Twitter Friends end -->
+<script>
+ 	$("#spinner").hide();
+ 	$('.follow_tab_div_overlay').hide();
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".follow_me").hide();
+		});
+  $(".user_following_card").hover(function(){
+			$(this).find(".follow_me").show();
+		},function(){
+			$(".follow_me").hide();
+		});
+</script>

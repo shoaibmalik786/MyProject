@@ -1,0 +1,24 @@
+<div id="pwd_header">
+	<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/conf_asst.png" />
+</div>
+<div id="pwd_subheader" style="padding-top: 10px; color: #000; height:30px;">
+	Resend confirmation instructions
+</div>
+<div id="panel">
+	<div id="password_asst">
+		Enter the e-mail address associated with your TradeYa account, then click continue. We’ll email you a link to a page where you can easily confirm your account.
+		<%= form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post, :id => "resend_password" }) do |f| %>
+			<%= devise_error_messages! %>
+			<div id="send_email">
+				<div id="conf_email_msgs"></div><br />
+				<table>
+					<tr>
+						<td><span style="font-size: 12px;">EMAIL</span></td>
+						<td style="padding-top: 10px;"><%= f.email_field :email, :id => 'confirm_email' %></td>
+					</tr>
+				</table>
+		  	</div>
+			<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/continue.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/continue_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/continue.png'" id="continue_btn" onclick="submitResendConfForm();" />
+		<% end %>
+	</div>
+</div>

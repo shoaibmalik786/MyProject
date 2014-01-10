@@ -1,0 +1,62 @@
+<% counter = 1 %>
+<% @recent_tradeyas.each do |trade| %>
+	<div class="recent container">
+		<table class="recent_tradedetail">
+			<tr>
+				<td width="42%" style="vertical-align: top;">
+					<div class="trader_name"><%= trade.item.user.title_with_s %>:</div>
+					<div class="item_title trade_item"><a href="<%= item_path(trade.item)%>" class="click"><%= truncate(trade.item.item_title, :length => 72)%></a></div>
+				</td>
+				<td width="16%" valign="bottom" style="padding-left: 10px;padding-top: 21px;"><div class="traded_for">...traded for...</div></td>
+				<td width="39%" style="vertical-align: top;">
+					<div class="trader_name" style="margin-left: 10px;"><%= trade.offer.user.title_with_s %>:</div>
+					<div class="item_title trade_item" style="margin-left: 10px;"><a href = "<%= item_path(trade.item,:showMyOffer=>true,:poffset=>'offer_' + trade.id.to_s) %>" class = "click" ><%= truncate(trade.offer.item_title, :length => 72) %></a></div>
+				</td>
+			</tr>
+		</table>
+		<table class="recent_trades">
+			<tr valign="top">
+				<td width="10%">
+					<div class="user_image_border" style="height: 80px; width: 80px;  display: table-cell; vertical-align: top;text-align: center;margin-top: -2px;">
+						<div class="user_image_small"><img src="<%= trade.item.user.user_image(:small_80x80) %>"<%= (trade.item.user.isFacebookUser? ? ' width=80px' : "") %> /></div>
+					</div>
+				</td>
+				<td width="29%" valign="middle" style="text-align: center; width: 272px; height: 205px;">
+					<% if not trade.item.item_videos[0].nil? %>
+						<div class="item_image_common user_image_border" style="margin-left: 10px;">
+							<a href="#" onclick="return false;" style="display:block;height:199px; vertical-align: middle;" id="itemPlayerRecentTrd_<%= counter %>"></a>
+						</div>
+					<% else %>
+						<div class="item_image_common user_image_border" style="margin-left: 10px;">
+							<img src="<%= trade.item.item_image(:medium) %>"  style="vertical-align: middle;" />
+						</div>
+					<% end %>
+				</td>
+				<td width="20%" style="text-align: center;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/circle_large.png" style="padding-top: 20px;" /></td>
+				<td width="30%" style="text-align: center; width: 272px; height: 205px;" valign="middle">
+					<% if not trade.offer.item_videos[0].nil? %>
+						<div class="item_image_common user_image_border" style="margin-left: 10px;">
+							<a href="#" onclick="return false;" style="display:block;height:199px" id="offerPlayerRecentTrd_<%= counter %>"></a>
+						</div>
+					<% else %>
+						<div class="item_image_common user_image_border" style="margin-left: 10px;">
+							<img src="<%= trade.offer.item_image(:medium) %>" style="vertical-align: middle;" />
+						</div>
+					<% end %>
+				</td>
+				<td width="10%" style="text-align: right;">
+					<div class="user_image_border" style="height: 80px; width: 80px;  display: table-cell; vertical-align: top;text-align: center;float: right;margin-top: -2px;">
+						<div class="user_image_small" style="float: right;"><img src="<%= trade.offer.user.user_image(:small_80x80) %>"<%= (trade.offer.user.isFacebookUser? ? ' width=80px' : "") %> /></div>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<% if not trade.item.item_videos[0].nil? %>
+			<script>$(function(){playVideo('itemPlayerRecentTrd_<%= counter %>', '<%= trade.item.item_videos[0].video %>', false, 'recentTradeya');});</script>
+		<% end %>
+		<% if not trade.offer.item_videos[0].nil? %>
+			<script>$(function(){playVideo('offerPlayerRecentTrd_<%= counter %>', '<%= trade.offer.item_videos[0].video %>', false, 'recentTradeya');});</script>
+		<% end %>
+	</div>
+	<% counter += 1 %>
+<% end %>

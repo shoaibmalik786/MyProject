@@ -1,0 +1,10 @@
+<%if @trade_comments.present?%>
+	<% @trade_comments.each do |tc|%>
+		<div class="message_list">
+			<div class="message_time"><%= time_ago_in_words(tc.created_at) %> ago</div>
+			<div class="user_image_left"><img src="<%=tc.owner.user_image(:thumb)%>"></div>
+			<div class="msg_user_name"><%=tc.owner.title%></div>
+			<div class="msg_user_detail"><%=tc.communication_text%></div>
+		</div>
+	<%end%>
+<%end%>

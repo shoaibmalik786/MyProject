@@ -1,0 +1,27 @@
+<div class="sign_in_page_wrapper" style="width:444px;">
+  <h2>Sign in to View this Page</h2>
+  <div class="social_login">
+    <a id="fb_login_icon" href="/auth/facebook" class="auth_provider position-click auth_provider_more" onclick="/*_kmq.push(['record', 'Modal Login Connect Facebook Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'register', 'login', 'Successful Login Facebook']);*/mixpanel.track('Successful Login Facebook');"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png'" id="fb_login_img" <="" a="">
+    </a><a id="tw_login_icon" href="auth/twitter" onclick="/*_kmq.push(['record', 'Modal Login Connect Twitter Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'register', 'login', 'Login Twitter from Login Modal']);*/mixpanel.track('Login Twitter from Login Modal');"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png'" id="tw_login_img"></a>
+  </div>
+
+  <%= simple_form_for(resource, :as => resource_name,
+                      :url => session_path(resource_name),
+                      :html => { :class=>"form-horizontal signup_form" }) do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :email %>
+
+  <%= f.input :password %>
+
+  <% if devise_mapping.rememberable? -%>
+
+    <%# f.input :remember_me, as: :boolean %>
+  <% end %>
+
+
+  <%= f.submit "Sign in", :class=>"submit_btn"%>
+  <% end %>
+  <hr class="signup_hr">
+
+  <%= render "links" %>
+</div>

@@ -1,0 +1,73 @@
+<% if current_user.user_all_image.size == 0 or (current_user.about.nil? or current_user.about.length == 0) or current_user.confirmed_at.nil? %>
+
+	<div class="alerts_dash_div">
+		<div class="alert_dash_heading">Alerts</div>
+
+		<% if current_user.user_all_image.size == 0 %>
+			<div class="alert_rows">
+				<div class="alert_date">Dec 15 2013</div>
+				<div class="alert_content">
+					<div class="alert_images">
+						<div class="alert_icon_image"><img src="http://d3md9h2ro575fr.cloudfront.net/images/flag_dash.png"></div>
+						<div class="alert_user_image">
+							<a href=""><img src="http://d3md9h2ro575fr.cloudfront.net/images/no_img.png"></a>
+						</div>
+					</div>
+					<div class="alert_text_wrapper">
+						<div class="alert_text_heading">No profile picture</div>
+						<div class="alert_text">This is what users see when they want to trade with you, not the best is it?<br> <span><a href="<%=edit_user_path(current_user)%>">Edit your profile</a></span> to build a good reputaion. </div>
+					</div>
+				</div>
+			</div>
+		<% elsif current_user.about.nil? or current_user.about.length == 0 %>
+			<div class="alert_rows">
+				<div class="alert_date">Dec 15 2013</div>
+				<div class="alert_content">
+					<div class="alert_images">
+						<div class="alert_icon_image"><img src="http://d3md9h2ro575fr.cloudfront.net/images/flag_dash.png"></div>
+						<div class="alert_user_image">
+							<a href=""><img src="http://d3md9h2ro575fr.cloudfront.net/images/no_img.png"></a>
+						</div>
+					</div>
+					<div class="alert_text_wrapper">
+						<div class="alert_text_heading">Tell us about yourself</div>
+						<div class="alert_text">Just a simple line about you you are and what you are into can help users suggest items that may be very useful to you. <span><a href="<%=edit_user_path(current_user, anchor: "about_me_tab")%>">Add Description</a></span></div>
+					</div>
+				</div>
+			</div>
+		<% end %>
+
+		<% if activities.present? %>
+			<% activities.each do |activity| %>	
+				<% activity.wants.each do | want | %>			
+					<div class="alert_rows" id= <%= "alert_#{want.id}" %> >
+						<div class="alert_date"><%=activity.created_at.strftime("%b %d %Y")%></div>
+						<div class="alert_content">
+							<div class="alert_images">
+								<div class="alert_user_image friends_feed">
+									<%=link_to image_tag(want.user.user_image(:thumb) ), user_path(want.user) %>
+								</div>
+							</div>
+							<div class="alert_text_wrapper">
+								<div class="alert_text friends_feed"><span class="name"><%= want.user.title %></span> has WANTED your item <strong><%=activity.title%></strong>.<br />
+								Check out <%=want.user.first_name.titleize%>’s haves and see if theres anything you want to trade. </div>
+							</div>
+						</div>
+						<div class="alert_cross">
+							<a href="#" onclick="<%= "delete_dashboard_item(\"/users/#{current_user.id}/delete_alert?alert_id=#{want.id}\", \"alert_#{want.id}\");" %>" ><img src="http://d3md9h2ro575fr.cloudfront.net/images/dash_cross.png"></a>
+						</div>
+						<%= form_for :passive_trade, :url => {:controller => :passive_trades, :action => :create}, :html => {:id => "passive_trade_form_"+want.id.to_s} do |f| %>
+							<%= f.hidden_field :item_id, :value => want.item_id %>
+							<%= f.hidden_field :user_id, :value => want.user.id %>
+							<div class="action_button">
+								<a href=# onclick="<%= "delete_dashboard_item(\"/users/#{current_user.id}/delete_alert?alert_id=#{want.id}\", \"alert_#{want.id}\");" %> $('#passive_trade_form_<%=want.id.to_s%>').submit();">View Haves</a>
+							</div>
+						<%end%>
+					</div>
+				<% end %>
+			<% end %>
+		<% end %>
+
+	</div>
+
+<% end %>

@@ -1,0 +1,69 @@
+<div class="tab-pane active" id="basic_info_tab">
+  <% if !current_user.facebook_authenticated? %>
+  <div class="fb_connect_div">
+    <div>Fill your profile faster with Facebook</div>
+    <div><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/fb_user_connect.png"></a></div>
+    <div class="cross_right"></div>
+  </div>
+  <% end %>
+  <%= form_for((@user), :html =>{:multipart => true, :id => 'user_settings_form', :class=>"form-horizontal",:remote=>true}) do |f| %>
+    <div class="edit_profile_controls">
+      <div class="control-group">
+        <label class="control-label" for="inputfname">First Name<sup class="star_red">*</sup></label>
+        <div class="controls">
+          <%= f.text_field :first_name, :class => "e_input"%>
+          <span class="text_under_input">TradeYa is a tight nit community, we call everybody by their first names here.</span>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputlname">Last Name</label>
+        <div class="controls">
+          <%= f.text_field :last_name, :class => "e_input"%>
+          <span class="text_under_input">This will only be shared once you have confirmed a TradeYa.</span>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputemail">Email<sup class="star_red">*</sup></label>
+        <div class="controls">
+          <label style="font-weight: bold;font-size: 16px;padding-top: 4px;"><%= current_user.email %></label>
+          <span class="text_under_input">This will only be shared once you have confirmed a TradeYa so they can contact you.</span>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputgender">Gender</label>
+        <div class="controls">
+          <label class="radio gender_list">
+            <%= f.radio_button :gender,"male",:onclick=>'needToConfirm=false' %><%= label :gender, 'Male' %>
+          </label>
+          <label class="radio gender_list">
+            <%= f.radio_button :gender, "female",:onclick=>'needToConfirm=false' %><%= label :gender, 'Female' %>
+          </label>
+          <label class="radio gender_list">
+            <%= f.radio_button :gender, "none", :onclick=>'needToConfirm=false' %><%= label :gender, 'Unspecified' %>
+          </label>
+          <span class="text_under_input">People like to know what to expect, this helps.</span>
+        </div>
+      </div>
+      <% if !current_user.facebook_authenticated? && !current_user.twitter_authenticated? %>
+      <div class="edit_login_text">Login</div>
+      <hr class="password_control_group" />
+      <div class="control-group">
+        <label class="control-label" for="inputpwd">Password<sup class="star_red">*</sup></label>
+        <div class="controls">
+          <p class="c_input text_password"><a href="#c_pwd_modal" data-toggle="modal" class="cp_link">Change Your Password</a></p>
+          <div class="clear"></div>
+        </div>
+      </div>
+      <hr class="password_control_group" />
+      <div class="control-group">
+        <label class="control-label required_label"><sup class="star_red">*</sup>Required</label>
+      </div>
+      <% end %>
+      <div class="control-group">
+        <div class="controls save_cancel_btn">
+          <%= f.submit "Save", class: "edit_save", onclick: "needToConfirm = true;" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

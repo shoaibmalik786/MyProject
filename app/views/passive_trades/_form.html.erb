@@ -1,0 +1,17 @@
+<%= form_for(@passive_trade) do |f| %>
+  <% if @passive_trade.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@passive_trade.errors.count, "error") %> prohibited this passive_trade from being saved:</h2>
+
+      <ul>
+      <% @passive_trade.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

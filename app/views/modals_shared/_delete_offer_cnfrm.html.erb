@@ -1,0 +1,17 @@
+<div id="delete_offer"  class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div id="crossimg"> <a href="#" data-dismiss="modal" aria-hidden="true">X</a></div>
+	<div align="center" id="trd_end_head">
+		Whoa! Are you sure you want to <br /> delete your offer? 
+	</div>
+	<div align="center" id="yes_no_btn">
+		<a href="#" data-dismiss="modal" aria-hidden="true"onclick="return removeOffer($('#del_ofr_id').val(), $('#request_manage_offer').val());">
+			<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/delete_offer.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/delete_offer_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/delete_offer.png';"  />
+		</a>
+	</div>
+	<div align="center" class="note_offer">
+		(Note: This will remove your offer from a TradeYa page.<br />
+		It will not remove comments associated with it.)
+	</div>
+<input type="hidden" id="request_manage_offer"/>
+<input type="hidden" id="del_ofr_id"/>
+</div>

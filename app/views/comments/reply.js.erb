@@ -1,0 +1,4 @@
+$("#reply_section_div_<%=@comment.id%>").html("<%= escape_javascript render('shared/reply_section', :comment => @comment) %>");
+$('#reply_text_<%=@comment.id%>').val('');
+$('#reply_text_<%=@comment.id%>').hide();
+$('#reply_text_<%=@comment.id%>').show();

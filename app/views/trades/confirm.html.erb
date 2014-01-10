@@ -1,0 +1,173 @@
+<script src="https://checkout.stripe.com/v2/checkout.js"></script>
+
+<div class="container">
+  <div class="span10 item_middle_section">
+    <div class="center_content">
+      <div class="transaction_wrapper">
+
+        <%= render 'transactions/partials/trade_header' %>
+
+        <!-- Your Detail Section Start -->
+        <%= render 'transactions/partials/user_details' %>
+        <!-- Your Detail Section End -->
+
+        <!-- Shipping Detail Section Start -->
+        <%= render 'transactions/partials/shipping_details' %>
+        <!-- Shipping Detail Section End -->
+
+        <!-- Payment Section Start -->
+        <%= render 'transactions/partials/payment_details' %>
+        <!-- Payment Section End -->
+
+        <!-- Trade Review Section Start -->
+        <%= render 'transactions/partials/trade_review' %>
+        <!-- Trade Review Section End -->
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.payment_heading .tr_edit_btn').show();
+  $('.form_step1').hide();
+  $('.form_step2').show();
+  $('.form1_complete').show();
+  $('.your_detail_heading').css('background-color','#EEEBE0');
+   $('.your_detail_heading').css('color','#3d362d');
+  $('.your_detail_heading .heading_tick').show();
+  $('.your_detail_heading .tr_edit_btn').show();
+
+});
+ $('.form_step2').hide();
+ $('.form_step3').hide();
+ $('.form_step4').hide();
+ $('.heading_tick').hide();
+ $('.tr_edit_btn').hide();
+ $('.transaction_heading').css('padding-left','20px');
+ // $('.shipping_detail_heading').css('background-color','#EEEBE0');
+ // $('.shipping_detail_heading').css('color','#3d362d');
+ $('.payment_heading').css('background-color','#EEEBE0');
+ $('.payment_heading').css('color','#3d362d');
+ $('.trade_review_heading').css('background-color','#EEEBE0');
+ $('.trade_review_heading').css('color','#3d362d');
+ $('.form1_complete').hide();
+ $('.form2_complete').hide();
+ $('.form3_complete').hide();
+
+ $('.next_step1').click(function(){
+   $('.form_step1').slideUp('slow');
+   $('.form_step2').slideDown('slow');
+   $('.your_detail_heading').css('background-color','#EEEBE0');
+   $('.your_detail_heading').css('color','#3d362d');
+   $('.shipping_detail_heading').css('background-color','#3d362d');
+   $('.shipping_detail_heading').css('color','#fff');
+   $('.transaction_heading.your_detail_heading').css('padding-left','10px');
+   $('.your_detail_heading .heading_tick').show();
+   $('.your_detail_heading .tr_edit_btn').show();
+   $('.form1_complete').show();
+ });
+ $('.next_step2').click(function(){
+   $('.form_step2').slideUp('slow');
+   $('.form_step3').slideDown('slow');
+   $('.shipping_detail_heading').css('background-color','#EEEBE0');
+   $('.shipping_detail_heading').css('color','#3d362d');
+   $('.payment_heading').css('background-color','#3d362d');
+   $('.payment_heading').css('color','#fff');
+   $('.transaction_heading.shipping_detail_heading').css('padding-left','10px');
+   $('.shipping_detail_heading .heading_tick').show();
+   $('.shipping_detail_heading .tr_edit_btn').show();
+   $('.form2_complete').show();
+   $('.form_step3').css('background-color','#EEEBE0');
+ });
+ $('.next_step3').click(function(){
+   // $('.form_step3').slideUp('slow');
+   $('.form_step4').slideDown('slow');
+   $('.payment_heading').css('background-color','#EEEBE0');
+   $('.payment_heading').css('color','#3d362d');
+   $('.trade_review_heading').css('background-color','#3d362d');
+   $('.trade_review_heading').css('color','#fff');
+   $('.transaction_heading.payment_heading').css('padding-left','10px');
+   $('.payment_heading .heading_tick').show();
+   $('.payment_heading .tr_edit_btn').show();
+   $('.form_step3').css('background-color','#fff');
+   // $('.form3_complete').show();
+   $('.save_cancel_btn.next_step3').hide();
+ });
+ $('.next_step4').click(function(){
+   $('.form_step4').slideUp('slow');
+   $('.trade_review_heading').css('background-color','#EEEBE0');
+   $('.trade_review_heading').css('color','#3d362d');
+   $('.transaction_heading.trade_review_heading').css('padding-left','10px');
+   $('.trade_review_heading .heading_tick').show();
+   $('.trade_review_heading .tr_edit_btn').show();
+ });
+
+ $('.your_detail_heading .tr_edit_btn').click(function(){
+   $('.form1_complete').hide();
+   $('.form_step1').slideDown('slow');
+   $('.your_detail_heading').css('background-color','#3d362d');
+   $('.your_detail_heading').css('color','#fff');
+   $('.transaction_heading.your_detail_heading').css('padding-left','20px');
+   $('.your_detail_heading .heading_tick').hide();
+   $('.your_detail_heading .tr_edit_btn').hide();
+ });
+
+ $('.shipping_detail_heading .tr_edit_btn').click(function(){
+   $('.form2_complete').hide();
+   $('.form_step2').slideDown('slow');
+   $('.shipping_detail_heading').css('background-color','#3d362d');
+   $('.shipping_detail_heading').css('color','#fff');
+   $('.transaction_heading.shipping_detail_heading').css('padding-left','20px');
+   $('.shipping_detail_heading .heading_tick').hide();
+   $('.shipping_detail_heading .tr_edit_btn').hide();
+ });
+
+ /* TODO: enter amount and char desc */
+$('.payment_heading .tr_edit_btn').click(function(){
+   /* var amount = $('#amount').val(); */
+
+   var token = function(res){
+     var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+     $('form').append($input).submit();
+   };
+
+   StripeCheckout.open({
+     key:         '<%= ENV['STRIPE_PUBLIC_KEY'] %>',
+     address:     true,
+     amount:      3500,
+     currency:    'usd',
+     name:        'Chocolates',
+     description: 'A bag of Chocolates',
+     panelLabel:  'Checkout',
+     token:       token
+      });
+
+   return false;
+ });
+
+ /*
+ $('.payment_heading .tr_edit_btn').click(function(){
+ $('.form3_complete').hide();
+ $('.form_step3').slideDown('slow');
+ $('.payment_heading').css('background-color','#3d362d');
+ $('.payment_heading').css('color','#fff');
+ $('.transaction_heading.payment_heading').css('padding-left','20px');
+ $('.payment_heading .heading_tick').hide();
+ $('.payment_heading .tr_edit_btn').hide();
+ });
+
+*/
+
+ $('.trade_review_heading .tr_edit_btn').click(function(){
+   $('.form3_complete').hide();
+   $('.form_step3').slideDown('slow');
+   $('.trade_review_heading').css('background-color','#3d362d');
+   $('.trade_review_heading').css('color','#fff');
+   $('.transaction_heading.trade_review_heading').css('padding-left','20px');
+   $('.trade_review_heading .heading_tick').hide();
+   $('.trade_review_heading .tr_edit_btn').hide();
+ });
+</script>

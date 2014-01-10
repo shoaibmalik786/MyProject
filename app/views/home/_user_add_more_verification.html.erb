@@ -1,0 +1,16 @@
+<div align="center" style="margin-top: 20px">
+	<% if !current_user.facebook_authenticated? %>
+	<a href="/auth/facebook?add_verification=true" class= 'auth_provider position-click' onclick="/*_kmq.push(['record', 'dashboard editverifications button connect facebook  ',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_addfacebook', 'Connect Facebook button in Your Verifications']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/fb_verif.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/fb_verif_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/fb_verif.png'" /></a>
+	<% end %>
+	<% if !current_user.twitter_authenticated? %>
+	<a href="/auth/twitter?add_verification=true" class= 'auth_provider position-click' onclick="/*_kmq.push(['record', 'dashboard editverifications button connect twitter',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_addtwitter', 'Connect Twitter in Your Verifications']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/tw_verif.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/tw_verif_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/tw_verif.png'" /></a>
+	<% end %>
+	<% if !current_user.linkedin_authenticated? %>
+	<a href="#" class="position-click" onclick="/*_kmq.push(['record', 'dashboard editverifications button connect linkedin',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_addlinkedin', 'Connect LinkedIn in Your Verifications']);*/ window.open('<%= linkedin_login_url %>?add_verification=true', '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, left=' + ((screen.width/2)-(550/2)) + ', top=' + ((screen.height/2)-(420/2)) + ', width=550, height=420'); return false; "><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/in_verif.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/in_verif_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/in_verif.png'" />
+	<% end %>
+</div>
+<script>
+	$(document).ready(function() {
+		bindAjaxSpinner();
+	});
+</script>

@@ -1,0 +1,9 @@
+<div class="edit_links_wrapper">
+    <div id='injection_site'></div>
+    	<%photos.by_main_photo.each do |p|%>
+          <img id="<%=p.id%>" src="<%=p.photo(:large)%>" style="display:none"/>
+            <span >
+        	  <a id="edit_link_<%=p.id%>" href="#" class="image_hover" onclick='return launchEditor("<%=p.id%>","<%=p.photo.url(:large)%>");' onmouseover="onlink_over(this);" onmouseout="onlink_out(this);">Edit</a> 
+        	</span>	 
+        <%end%>
+</div>

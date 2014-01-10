@@ -1,0 +1,11 @@
+<script>
+	<% if @geocode_success %>
+		$("#user_details_dahsboard").html("<%= escape_javascript(render("home/usr_detail_dashboard")) %>")
+		$('#usr_profile_info').modal('hide');
+		refreshNotificationCountOnGreet(true);
+	<% else %>
+		$("#profzipchkmsg").text("Invalid zip.");
+		$('#zip_code_edit').focus();
+	<% end %>
+	$('#prof_update_spinner').hide();
+</script>

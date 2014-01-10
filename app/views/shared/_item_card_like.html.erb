@@ -1,0 +1,10 @@
+<%= form_tag like_item_path(:id => @item.id),:id => "like_action",:remote => true do %>
+  <%if current_user && current_user.has_liked?(@item.id)%>
+    <%= hidden_field_tag 'item_card_like', false%>
+    <a href = "#" id="like_<%=@item.id%>" onclick="$(this).parents('#like_action').submit();_gaq.push(['_trackEvent', 'Item card', 'Clk_Itmlkd', 'Click liked on Item Card']);mixpanel.track('Click liked on Item Card'); return false;"><%= image_tag('http://d3md9h2ro575fr.cloudfront.net/images/like_icon_selected.png')%></a>
+  <%else%>
+    <%= hidden_field_tag 'item_card_like', true%>
+    <a href = "#" id="like_<%=@item.id%>" onclick="likeItem('<%=@item.id %>',this); return false;"><%= image_tag('http://d3md9h2ro575fr.cloudfront.net/images/card_like.png', :mouseover=>"http://d3md9h2ro575fr.cloudfront.net/images/like_icon_hover.png", :mouseout=>'http://d3md9h2ro575fr.cloudfront.net/images/card_like.png')%></a>
+  <%end%>
+<%end%>
+  

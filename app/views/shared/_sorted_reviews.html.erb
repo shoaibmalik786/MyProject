@@ -1,0 +1,83 @@
+<%if reviews.present?%>	
+	<%reviews.each do |review|%>
+		<div class="review_block" id='r_<%=review.id %>'>				
+			<div class="reviews_left_section">
+					<div class="rev_img_outer">
+						<div class="user_image_comment">
+								<%=link_to image_tag(review.reviewer.user_image), user_path(review.reviewer)%>
+						</div>
+						<span><%=review.created_at.strftime("%b %d %Y")%> </span>
+					</div>
+				<div class="review_username"><%=link_to review.reviewer.title, user_path(review.reviewer)%></div>
+				<div class="review_rating_wrapper">
+					
+					<div class="review_rating">
+						<!-- <div class="overall_rating"><div>Overall Rating</div><span id="overall_rating_<%#=review.id %>"></span></div> -->
+						<div class="item_described"><div>Item As Described</div><span id="item_rating_<%=review.id %>"></span></div>
+						<div class="item_communication"><div>Communication</div><span id="communication_<%=review.id %>"></span></div>
+					</div>
+				</div>
+				 
+			</div>
+			<div class="review_section_right">
+				 <div class="review_right_heading">
+				 	<%=review.title%>
+				 </div>
+				 <div class="review_right_text">
+				 	<%=review.review_text%>
+				 </div>
+				 <!-- <p class="user_review_links">
+					 	<div class="user_review_reply"><a href="#">Reply</a></div>
+					 	<div class="user_review_options"><a href="#">View Trade</a></div>
+					 	<div class="user_review_options"><a href="#">Report</a></div>
+				 </p> -->					 	 
+			</div>	 
+			<div class="clear"></div>
+		</div>
+		<script>
+		// $('.star_rating').raty();
+
+		// $('.user_card_stars').raty({
+		// 	size:  '20',
+		// 	starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/starOn-large.png',
+		// 	starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/starOff-large_white.png'
+		// });
+		$('#overall_rating_<%=review.id %>').raty({
+			size:  '25',
+			starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/review_smallstar.png',
+			starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/star_off.png',
+			readOnly: true,
+			score: <%=(review.overall_rating.present?)? review.overall_rating : 0%>
+		});
+		$('#item_rating_<%=review.id %>').raty({
+			size:  '25',
+			starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/review_smallstar.png',
+			starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/star_off.png',
+			readOnly: true,
+			score: <%=(review.describe_rating.present?)? review.describe_rating : 0%>
+		});
+		$('#communication_<%=review.id %>').raty({
+			size:  '25',
+			starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/review_smallstar.png',
+			starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/star_off.png',
+			readOnly: true,
+			score: <%=(review.communication_rating.present?)? review.communication_rating : 0%>
+		});
+
+		// $('.star_rating_large').raty({
+		// 	size:  '25',
+		// 	starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/star_on.png',
+		// 	starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/star_off.png'
+		// });
+		$('.tab_div_overlay').hide();
+	</script>
+	<%end%>
+<%else%>
+	<div id="empty_haves_item">
+		<%if current_user != @user%>
+		  <div class="heading  in_reviews"><%=@user.first_name.capitalize %> has not posted any reviews yet.</div>
+		<%else%>
+		  <div class="heading  in_reviews">You have not posted any reviews yet.</div>
+		<%end%>
+	</div>
+<%end%>

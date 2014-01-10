@@ -1,0 +1,46 @@
+<div id="contact_box" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div id="crossimg"> <a href="#" data-dismiss="modal" aria-hidden="true">X</a></div>
+	<div id="contact_heading">Create Message</div>
+	<table align="center" width="100%" style="margin-top: 15px;">
+		<tr style="height:55px">
+			<td width="19%" style="text-align: right;"><span class="contact_text">FROM</span></td>
+			<td width="3%"><input type="hidden" id="contact_item_id" /><input type="hidden" id="contact_trade_id" /></td>
+			<td>
+				<input type="text" class="from_text contact_from addborder" id="contact_from" value="jaimie.levy@gmail.com" onFocus="clearText(this); $('#contact_from').addClass('addborder'); $('#contact_from').removeClass('removeborder')" onBlur="clearText(this); $('#contact_from').addClass('removeborder'); $('#contact_from').removeClass('addborder');" />
+			</td>
+		</tr>
+		<tr valign="bottom">
+  			<td></td>
+  			<td></td>
+  			<td>
+    			<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/checkbox.png" onclick="checkUncheck(this, '', 'checkcontact')"  onkeypress="checkUncheck(this, 'checkcontact')" TABINDEX="9"/>
+				<input type="checkbox" id="checkcontact" name="chk" style="display:none" value="0" />
+				&nbsp;<div class="agree">Send me a copy of this message</div>
+  			</td>
+		</tr>
+		<tr style="height:55px">
+			<td style="text-align: right;"><span class="contact_text">SUBJECT</span></td>
+			<td></td>
+			<td>
+				<input type="text" class="re_text contact_re removeborder" id="contact_re" onFocus="clearText(this); $('#contact_re').addClass('addborder'); $('#contact_re').removeClass('removeborder')" onBlur="clearText(this); $('#contact_re').addClass('removeborder'); $('#contact_re').removeClass('addborder')" />
+			</td>
+		</tr>
+		<tr style="height:55px">
+			<td style="text-align: right;" valign="top"><span class="contact_text">MESSAGE</span></td>
+			<td></td>
+			<td>
+				<textarea id="contact_desc" class="re_text contact_desc removeborder" onFocus="clearText(this); $('#contact_desc').addClass('addborder'); $('#contact_desc').removeClass('removeborder')" onBlur="clearText(this); $('#contact_desc').addClass('removeborder'); $('#contact_desc').removeClass('addborder')"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td>
+				<img onclick="contact();" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/send_message.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/send_message_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/send_message.png';"/>
+				<div class="cancel_div" style="margin-left: 160px;">
+					<span class="or">or</span> <span class="cancel"><a href="#" data-dismiss="modal" aria-hidden="true">Cancel</a></span>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>

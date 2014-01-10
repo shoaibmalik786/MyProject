@@ -1,0 +1,32 @@
+<div class="dash_back">
+	<div id="azk71567" style="width:728px; height: 90px;margin-left: auto;margin-right: auto;padding-top: 25px;clear: both;">
+	</div>
+	<div class="dash_nav">
+		<ul>
+			<li><a class = "click" href="dashboard" onclick="/*_kmq.push(['record', 'dashboard subnav link dashboard',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'dashboard_LdnPg', 'Dashboard in Sub Nav']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/dashboard.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/dashboard_line.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/dashboard.png';" /></a></li>
+			<li id="" style="margin-top: 1px; margin-left: 23px;"><a class = "click" href="manage_tradeyas" onclick="/*_kmq.push(['record', 'dashboard manageTradeyas subnav link',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'manageTradeyas_LdnPg', 'Manage TradeYas in Sub Nav']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/manageTY.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/manageTY_line.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/manageTY.png';" /></a></li>
+			<li id="" style="margin-top: 1px; margin-left: 25px;"><a href="manage_offers" onclick="/*_kmq.push(['record', 'dashboard manageOffers subnav link',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'manageOffers_LdnPg', 'Manage Offers in Sub Nav']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/manageOF_selected.png" /></a></li>
+			<li id="" style="margin-top: 2px; margin-left: 25px;"><a class = "click" href="edit_settings" onclick="/*_kmq.push(['record', 'dashboard editAccountSettings subnav link',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'editAccount_LdnPg', 'Edit Account Settings in Sub Nav']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/account.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/account_line.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/account.png';" /></a></li>
+			<% if not current_user.is_guest_user %>
+				<li id="" style="margin-top: 0px; margin-left: 17px;"><a class = "click" href="edit_verifications" onclick="/*_kmq.push(['record', 'dashboard editVerifications subnav link',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'editVerifications_LdnPg', 'Edit Verifications in Sub Nav']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/editverification.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/editverification_line.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/editverification.png';" /></a></li>
+			<% end %>
+		</ul>
+	</div>
+	<div class="dash_det" style="padding-left: 0px">
+		<div align="center" class="manage_offer_section">
+			<div class="current_trd_head">Your Current Offers</div>
+			<div id = "current_offers">
+				<%= render "user_current_offers" %>
+			</div>
+			<div class="current_trd_head">Your Successful Offers</div>
+			<div id = "successful_offers">
+				<%= render "user_success_offers" %>
+			</div>
+			<div class="current_trd_head">Your Past Offers</div>
+			<div id = "past_offers">
+				<%= render "user_past_offers" %>
+			</div>
+		</div>
+	</div>
+</div>
+<%= render 'modals_shared/msg_sent' %>

@@ -1,0 +1,171 @@
+<div id="quiz_box_old" class="quiz_content">
+  <div id="crossimg"> <a class = 'cancel-click' href="#" onclick="return moveNextQuiz(1);">X</a></div>
+  <div id="images_div">
+    <div id="quiz_heading">Find something to trade!</div>
+    <table style="margin-left: auto; margin-right: auto;">
+      <tr>
+        <td colspan="4"><div class="image_title" id="image_title">Apple iPhone 4S</div></td>
+      </tr>
+      <tr>
+        <td style=" width: 75px; text-align: left;"></td>
+        <td width="275px" style="vertical-align: top;">
+          <div class="image_detail_div" id="image_div_1">
+            <div align="center" class="image_show">
+              <img id="quiz_itm_img" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/image_1.png" style="max-width: 272px; height: 204px;"/>
+            </div>
+          </div>
+        </td>
+        <td>
+          <span class="skip_quiz"><a href="#" onclick="return moveNextQuiz(4);">Skip</a></span>
+        </td>
+        <td>
+          <img id="signInFormSubmitImg" onclick="return moveNextQuiz(4);" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/arrow_right_quiz.png" style="cursor: pointer;" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <div class="have_want_button">
+            <img id="" onclick="return moveNextQuiz(2);" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/want_one.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/want_one_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/want_one.png';">
+            <img id="" onclick="return moveNextQuiz(3);" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/have_one.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/have_one_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/have_one.png';">
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="signup_images_div" style="display: none">
+    <div id="quiz_heading">See your trade matches. Sign up now!</div>
+    <a href="/auth/facebook" onclick="/*_kmq.push(['record', 'Quiz '+signup_dialog[signup_dialog_no]+' button fb']);  _gaq.push(['_trackEvent', 'Quiz', 'Quiz_'+signup_dialog[signup_dialog_no] +'_fb', 'Click fb connect after pics '+signup_dialog[signup_dialog_no]]);*/" class="auth_provider position-click auth_provider_more" style="margin: 0px;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/connect_fb.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/connect_fb_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/connect_fb.png';" /></a><br />
+    or use your
+    <%= form_for(:user, :url => {:controller =>"registrations", :action=>"create_guest"}, :html => {:multipart => true, :id => "signUpGuestQuizForm", :target => 'if_ip_upload', :onSubmit => ""}) do |f| %>
+      <table align="center" width="65%">
+        <tr>
+          <td>
+            <div class="signin_text">EMAIL</div>
+          </td>
+          <td></td>
+          <td style="text-align: left"><input type="email" id="user_email_quiz" name="user[signup_guest_email]" class="removeborder" /></td>
+          <input id="signup_quiz" name="signup_quiz" type="hidden" value=true>
+        </tr>
+        <tr>
+          <td colspan="3"><div id="signupmessage"><div id="error_explanation_quiz"></div></div></td>
+        <tr>
+          <td></td>
+          <td></td>
+          <td style="text-align: left">
+            <img id="" onclick="return guestSignup4mQuiz();" class="position-click" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/signup.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/signup_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/signup.png';">
+            <div class="cancel_div" style="margin-left: 124px; margin-top: -40px;">
+              <span class="or">or just</span> <span class="cancel"><a class="cancel-click" href="#" onclick="/*_kmq.push(['record', 'Quiz '+signup_dialog[signup_dialog_no]+' skip to next quiz']); _gaq.push(['_trackEvent', 'Quiz', 'Quiz_'+signup_dialog[signup_dialog_no] +'_nxtqz', 'Click skip to next ques after pics '+signup_dialog[signup_dialog_no]]);*/ return moveNextQuiz(6);">skip to next question</a></span>
+            </div>
+          </td>
+        </tr>
+      </table>
+    <% end %>
+  </div>
+</div>
+<script type="text/javascript">
+  var img_no = 1;
+  var signup_dialog_no = 0;
+  var signup_dialog = {1:'1-3', 2:'4-6', 3:'7-9'};
+  var quiz_chk = false;
+  var connect_option = false;
+  var itm_imgs = [
+    ['Apple iPhone 4S','https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/image_1.png'],
+    ['Two Coachella Festival Passes','https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/image_2.png'],
+    ['Web Design/Development','https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/image_3.png'],
+    ['Wedding Photography/Family Portraiture','https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/image_4.png'],
+    ['Louis Vuitton Handbag','https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/image_5.png'],
+    ['Web Video Production','https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/image_6.png'],
+    ['T-Mobile Android Phone','https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/image_7.png'],
+    ['Engagement Ring','https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/image_8.png'],
+    ['MacBook Pro','https://s3.amazonaws.com/tradeya_prod/tradeya/images/quiz/image_9.png']
+  ];
+  // clickItm: 1 (cross), 2(want), 3(have), 4(skip)
+  function moveNextQuiz(clickItm){
+    switch(clickItm){
+      case 1:
+        // alert('ga and kissmatrics code for cross');
+        if(connect_option)
+        {
+          //_kmq.push(['record', 'Quiz '+signup_dialog[signup_dialog_no]+' cross']); 
+          //_gaq.push(['_trackEvent', 'Quiz', 'Quiz_'+signup_dialog[signup_dialog_no]+'_cross', 'Click cross after pics '+signup_dialog[signup_dialog_no]]);
+        }
+        else
+        {
+          // _kmq.push(['record', 'Quiz pic'+img_no+' cross']); 
+          // _gaq.push(['_trackEvent', 'Quiz', 'Pic'+img_no+'_Cross', 'Pic '+img_no+' cross']);
+        }
+        isQuiz = false; 
+          hideModal('quiz_box', true);
+          break;
+      case 2:
+          // alert('ga and kissmatrics code for want');
+          // _kmq.push(['record', 'Quiz pic'+img_no+' want one']); 
+          // _gaq.push(['_trackEvent', 'Quiz', 'Pic'+img_no+'_Want', 'Pic '+img_no+' I want one']); 
+          break;
+      case 3:
+          // alert('ga and kissmatrics code for have');
+          // _kmq.push(['record', 'Quiz pic'+img_no+' have one']); 
+          // _gaq.push(['_trackEvent', 'Quiz', 'Pic'+img_no+'_Have', 'Pic '+img_no+' I have one to trade']); 
+          break;
+      case 4:
+          // alert('ga and kissmatrics code for skip');
+          // _kmq.push(['record', 'Quiz pic'+img_no+' skip']); 
+          // _gaq.push(['_trackEvent', 'Quiz', 'Pic'+img_no+'_Skip', 'Pic '+img_no+' skip to next question']); 
+          break;
+        case 5:
+          // called from after_guest_user_signup to send KM/GA data for sign up
+          //_kmq.push(['record', 'Quiz '+signup_dialog[signup_dialog_no]+' button signup']); 
+          // _gaq.push(['_trackEvent', 'Quiz', 'Quiz_'+signup_dialog[signup_dialog_no] +'_signup', 'Click signup after pics '+signup_dialog[signup_dialog_no]]); 
+      default:
+    }
+    if(quiz_chk && !isQuizSignUp && !KM_SignedIn){
+      signup_dialog_no = signup_dialog_no + 1;
+      var log_skip = false;
+      connect_option  =true;
+      // alert(signup_dialog[signup_dialog_no]);
+      jQuery('#images_div').hide();
+      jQuery('#signup_images_div').show();
+      quiz_chk = false;
+    }else{
+      connect_option = false;
+      jQuery('#signup_images_div').hide();
+      jQuery('#images_div').show();
+      if(img_no >= 9) { isQuiz = false; hideModal('quiz_box', true); return false;}
+      $("#quiz_itm_img").one("load", function() {
+            jQuery('#image_title').html(itm_imgs[img_no][0]);
+            img_no = img_no + 1;
+            if(img_no % 3 == 0) quiz_chk = true;
+        }).attr("src", itm_imgs[img_no][1]);
+      // jQuery('#quiz_itm_img').attr('src', itm_imgs[img_no][1]);
+      // jQuery('#image_title').html(itm_imgs[img_no][0]);
+    }
+    return false;
+  }
+  function guestSignup4mQuiz()
+  {
+    $('#error_explanation_quiz').text("");
+    if(jQuery('#user_email_quiz').val() != "")
+    {
+      startSpinner();
+      $('#signUpGuestQuizForm').submit();
+      // jQuery.ajax({
+      //    url: "/create_guest",
+      //    type: "POST",
+      //    data: "authenticity_token=" + encodeURIComponent($("#signInForm input[name=authenticity_token]").val())+"&user[signup_guest_email]="+jQuery('#user_email_quiz').val()+"&signup_quiz=true",
+      //    success: function(data){
+      //       _kmq.push(['record', 'Quiz '+signup_dialog[signup_dialog_no]+' button signup']); 
+      //       _gaq.push(['_trackEvent', 'Quiz', 'Quiz_'+signup_dialog[signup_dialog_no] +'_signup', 'Click signup after pics '+signup_dialog[signup_dialog_no]]); 
+      //       isQuizSignUp = true;
+      //    },
+      //    error: function(data){
+      //    }
+      // });
+    }
+    else
+    {
+      $('#error_explanation_quiz').text("Email can't be blank.");
+    }
+    // alert('write code to signup as guest in _quize.html.erb method guestSignup4mQuiz();');
+    return false;
+  }
+</script>

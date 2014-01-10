@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body style="background-color: #eeeeee; padding: 0px; margin: 0px">
+	<div><font face="null"></font>&nbsp;</div>
+	<table border="0" cellpadding="0" cellspacing="0" width="100%" bordercolor="#666666">
+		<tbody>
+			<tr bgcolor="#ffffff">
+				<td style="margin: 0pt" align="center" bgcolor="#eeeeee">
+					<table style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333333" border="0" cellpadding="20" cellspacing="0" width="560" bordercolor="#333333">
+						<tbody>
+							<tr align="center">
+								<td style="background-color: #ffffff; border-top: 5px solid #333333; border-bottom: 1px solid #999999" ;="" ""="" padding-left:="" 0px;="" padding-bottom:="" 0px="" bgcolor="#ffffff;"><img alt="" src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/logo.png" title="" align="left" /></td></tr>
+								<tr align="center" bgcolor="#ffffff">
+									<td align="left"><span style="font-size: 15px">Congratulations <%= @item.user.first_name %>!<br/><br/>Your TradeYa, '<a href="<%= @item.pl_url %>" style="color: #55aad4;text-decoration: none;"><%= @item.item_title%></a>', has been successfully traded.</span><br /><br />
+										<span style="font-size: 15px">
+											<a href="<%= new_item_url %>" style = "color: #55AAD4;">Submit another TradeYa now!</a>
+										</span><br />
+										<span style="font-size: 15px"><br />
+												Yours,
+										</span><br />
+										<span style="font-size: 15px">The TradeYa Team</span>
+										<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px"><span style="font-size: 15px"><br />
+										</span></blockquote>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee">
+						<span style="font-size: 10px; display: block; margin-top:5px; margin-bottom:5px;">TradeYa.com © 2012, All Rights Reserved <a href="<%= unsubscribe_mail_url %>">Unsubscribe/Change Notification</a></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

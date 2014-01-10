@@ -1,0 +1,17 @@
+<div class="detail_form_left">
+      <div class="detail_name"><%= @my_transaction.address.name %>
+      </div>
+      <div class="detail_address1"> <%= @my_transaction.address.address_line_1 %></div>
+      <% if @my_transaction.address.address_line_2.present? %>
+        <div class="detail_address1"><%= @my_transaction.address.address_line_2 %></div>
+      <% end %>
+        <div class="detail_address2">
+          <%= @my_transaction.address.city+", "+@my_transaction.address.state+" "+@my_transaction.address.zipcode %>
+        </div>
+      <div class="clear"></div>
+    </div>
+    <div class="detail_form_right">
+      <div class="detail_phone"><%= @my_transaction.address.phone %></div>
+      <div class="detail_website"><%= current_user.email %></div>
+    </div>
+    <div class="clear"></div>

@@ -1,0 +1,47 @@
+<div class="exchange_method_dropdown">
+	<a href="#" class="exchange_method_link" onclick="$('#exchange_method_drp').toggleClass('hidedrop'); return false;">Choose Exchange Method</a>
+</div>
+<div class="exchange_method_drp hidedrop" id="exchange_method_drp">
+  <ul>
+    <li><a href="#" onclick="$('#exchange_method_modal4').modal('show');return false;">I’ll bring it to you</a></li>
+    <li><a href="#" onclick="$('#exchange_method_modal2').modal('show');return false;">You come get it</a></li>
+    <li><a href="#" onclick="$('#exchange_method_modal1').modal('show');return false;">Let’s meet up</a></li>
+    <li>
+    	<%if @passive_trade.present?%>
+    		<%= form_for :transactions, :url =>passive_trade_transactions_path(@passive_trade), :html=>{:id => "i_will_ship_it_form"}, :remote=>true do |f| %>
+    			<%= f.hidden_field :passive_trade_id, :value => @passive_trade.id %>
+    			<%= f.hidden_field :exchange_method, :value => I_WILL_SHIP_IT %>
+				<%end%>
+    	<%elsif @trade.present?%>
+    		<%= form_for :transactions, :url =>trade_transactions_path(@trade), :html=>{:id => "i_will_ship_it_form"}, :remote=>true do |f| %>
+    			<%= f.hidden_field :trade_id, :value => @trade.id %>
+    			<%= f.hidden_field :exchange_method, :value => I_WILL_SHIP_IT %>
+				<%end%>
+    	<%end%>
+    	<a href="#" onclick="$('#i_will_ship_it_form').submit();$('#exchange_method_modal5').modal('show');return false;">I’ll ship it</a>
+    </li>
+  </ul>
+</div>
+
+<script>
+$(function(){
+	$("#exchange_method_drp ul li a").click(function(){
+		$("#exchange_method_drp").toggleClass('hidedrop');
+		return false;
+	});
+	// Show Exchange Method for user's item
+	<%if @my_exchange_method.present?%>
+		<%case @my_exchange_method%>
+		<%when I_WILL_BRING_IT_TO_YOU%>
+			$('.exchange_method_dropdown a').text("I'll bring it to you");
+		<%when YOU_COME_GET_IT%>
+			$('.exchange_method_dropdown a').text("You come get it");
+		<%when LET_US_MEET_UP%>
+			$('.exchange_method_dropdown a').text("Let's meet up");
+		<%when I_WILL_SHIP_IT%>
+			$('.exchange_method_dropdown a').text("I'll ship it");
+		<%else%>
+		<%end%>
+	<%end%>
+});
+</script>

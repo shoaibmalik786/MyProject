@@ -1,0 +1,89 @@
+<div id="spinner"></div>
+<div class="tab_div_overlay"></div>
+<div id="rej_offers_tab">
+	<%if @rejected_offers.present?%>
+	<%@rejected_offers.each do |rejected_offer| %>
+		<!-- User Card Start-->
+		<div class="user_wants_card">
+			<div class="user_card_heading">
+				<div class="clip">
+					<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+				</div>
+				<div class="item_title_card"><%=link_to rejected_offer.title, item_path(rejected_offer)%></div>
+				<div class="card_heading_middle_left">
+					<a href="<%=user_path(rejected_offer.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrImg', 'Click User image on Item Card']);mixpanel.track('Click User image on Item card');addDelay(this,event); return false;"><img src="<%=rejected_offer.user.user_image(:thumb)%>"></a>
+				</div>
+				<div class="card_heading_middle_right">
+					<div class="item_card_name">
+						<a href="<%=user_path(rejected_offer.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrTtl', 'Click User Title on Item Card']);mixpanel.track('Click User Title on Item card');addDelay(this,event); return false;"><%=rejected_offer.user.title%></a>
+					</div>
+					<div class="item_city_card"><%=rejected_offer.user.city%></div>
+					<%if rejected_offer.user.location != "-" and rejected_offer.user != current_user%>
+						<div class="item_distance_card"><%=rejected_offer.user.user_distance(session[:user_ll])%> miles</div>
+					<%end%>
+				</div>
+				<div class="item_heading_bottom">
+					<div class="card_details" id="detail" onclick="$('#item_info_<%=rejected_offer.id%>').toggle();">Details</div>
+				</div>
+			</div>
+			<div class="item_wants_image">
+				<a href="<%=item_path(rejected_offer)%>" onclick="_gaq.push(['_trackEvent', 'Item card', 'Clk_ItmImg', 'Click On Item Image']);mixpanel.track('Click On Item Image'); addDelay(this,event); return false;"><img src="<%=rejected_offer.item_image(:medium)%>" /></a>
+				<%if current_user and @owner == current_user and @item.live? and rejected_offer.live? %> 
+					<div class="move_to_offers">
+						<%=form_for(@trade, :html => {:id => "make_an_offer_form"})  do |f| %>
+				  		<%= f.hidden_field :item_id, :value => @item.id %>
+				  		<%= f.hidden_field :offer_id, :value =>  rejected_offer.id %>
+				  		<%= hidden_field_tag('undo_reject', true) %>
+				  		<a href="#" class="move_to_offers_inner" onclick="$(this).parents('form').submit();_gaq.push(['_trackEvent', 'Item card', 'Clk_MvBkToOfr', 'Click On Move Back to offers']);mixpanel.track('Click Move Back to offers'); addDelay(this,event); return false;">Move Back to Offers</a>
+				  	<% end %>
+					</div>
+				<%end%>
+			</div>
+		</div>
+		<%= render "shared/details_card", :item => rejected_offer, :curve_color => "grey", :disp => "true" %>
+
+	<%end%>
+	<% else %>
+		<div id="empty_haves_item">
+			<div class="heading">There aren't any rejected offers.</div>
+		</div>
+	<%end%>
+</div>
+<!-- rejected offers hover start -->
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".move_to_offers").hide();
+		var rej=$("#rej_offers_tab").find(".user_wants_card");
+		rej.hover(function(){
+			$(this).find(".move_to_offers").show();
+		},function(){
+			$(".move_to_offers").hide();
+		})
+
+	})
+</script>
+<!-- rejected offers hover end -->
+<!-- script for trade offers > offers hover for trade start -->
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$(".acc_offer_right").children(".user_wants_card").children(".want_have_like_wrapper").hide();
+			$(".acc_offer_right").children(".user_wants_card").children(".trade_div").hide();
+			$(".acc_offer_right").children(".user_wants_card").children(".user_card_heading").children(".card_details").hide();
+			
+			$(".acc_offer_right").children(".user_wants_card").hover(function(){
+				 
+			$(this).children(".want_have_like_wrapper").show();
+			$(this).children(".trade_div").show();
+			$(this).children(".user_card_heading").children(".card_details").show();
+
+			},function(){
+			$(".acc_offer_right").children(".user_wants_card").children(".want_have_like_wrapper").hide();
+			$(".acc_offer_right").children(".user_wants_card").children(".trade_div").hide();
+			$(".acc_offer_right").children(".user_wants_card").children(".user_card_heading").children(".card_details").hide();
+
+			});			 
+		})		
+		$('.tab_div_overlay').hide();
+		$('#spinner').hide();
+		</script>
+<!-- script for trade offers > hover  for trade Ends -->

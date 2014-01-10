@@ -1,0 +1,22 @@
+<%= render "item_page_top" %>
+<script>
+	$(function() {
+			$("#tab-content").html("<%= escape_javascript render('shared/trade_offers_tab') %>");			
+			$("#tab_my_offers").parent().removeClass('active');
+			$("#tab_accepted_offers").parent().removeClass('active');
+			$("#tab_trade_offers_tab").parent().addClass('active');
+			$("#tab_rejected_offers").parent().removeClass('active');
+	});
+	window.onload = function() {
+  	<%if params[:section] == "comments"%>
+			customScroll('#comments_section_div_show');
+		<%elsif params[:scroll] == "true" or params[:offer_by].present?%>
+			customScroll("#tab_trade_offers_tab");
+		<%elsif params[:reject_of].present? or params[:back_to_offer] == "true"%>
+			customScroll("#tab_trade_offers_tab");
+		<%end%>
+	};
+</script>
+<!-- <div class="item_page_modal">
+	<%#= render "item_page_top" %>
+</div> -->

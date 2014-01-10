@@ -1,0 +1,16 @@
+<table width="100%" align="center" style="margin-top: 16px; margin-left: 30px;">
+	<tr valign="top">
+		<td width="33%">
+			<div class="send_reminders">Sometimes it takes a while <br />to get used to TradeYa, and <br />that’s why we have tool tips.</div>
+		</td>
+		<td width="2%"></td>
+		<td width="65%">
+			<div>
+				<!-- <input type="radio" name="tooltip" /> -->
+				<%=f.radio_button :tooltip, true, :onclick=>"/*_kmq.push(['record', 'tooltips preferences turn on',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'radioButton_tips_on', 'Select Give me the tips radio button in Tool Tips Preferences']);*/" %><span class="info_check_text">Give me the tips!</span></div>
+			<div>
+				<!-- <input type="radio" name="tooltip" /> -->
+				<%=f.radio_button :tooltip, false, :onclick=>'/*_kmq.push(["record", "tooltips preferences turn off",{ "SignedIn" : get_KMSignedIn()}]);_gaq.push(["_trackEvent", "dashboard", "radioButton_tips_off", "Select I\'m a pro and don\'t need them. Turn them off. radio button in Tool Tips Preferences"]);*/' %><span class="info_check_text">I'm a pro and don't need them. Turn them off.</span></div>
+		</td>
+	</tr>
+</table>

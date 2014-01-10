@@ -1,0 +1,82 @@
+<%if user.present?%>
+	<div class="user_card_right">
+		<div class="user_card_inner">
+			<div class="card_image">
+				<%=link_to image_tag("#{user.user_image(:medium)}"), user_path(user),:onclick=>"_gaq.push(['_trackEvent', 'User card', 'Clk_UsrImg', 'Click User image on User Card']);mixpanel.track('Click User image on User Card');addDelay(this,event);return false;" %>
+			</div>
+			<div class="trader_info_wrapper">
+				<div class="trader_info">
+					<span class="trader_name"><a href="<%=user_path(user)%>"><%=truncate((user.title).html_safe,:length => 17,:omission => "...")%></a></span>
+					<hr>
+					<p class="trader_location"><%= user.location%></p>
+					<%if user.location != "-" and user != current_user%>
+					  <p class="trader_distance"><%=user.user_distance(session[:user_ll])%> Miles from you</p>
+					<%end%>
+				</div>
+			</div>
+			<div class="card_rating">
+				<div class="user_card_stars r_<%=user.id%>"></div>
+				<div class="user_card_points"><%=(user.overall_rating.present?)? user.overall_rating.round(1) : 0.0%></div>
+			</div>
+			<div class="user_verified">
+				<% if current_user and current_user.id == user.id and not (current_user.facebook_authenticated? and current_user.twitter_authenticated? )%>
+				<a href="<%=edit_user_path(current_user) +"?verify=true"%>" class="get_verified"><img src="http://d3md9h2ro575fr.cloudfront.net/images/get_verified_icon.png"></a>
+				<%end%>
+				<p>Verified by:</p>
+				<div class="icons">
+					<% if user.facebook_authenticated? %>
+						<a><img src="http://d3md9h2ro575fr.cloudfront.net/images/icon_fb.png"></a>
+					<%end%>
+					<!--a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/icon_pin.png"></a-->
+					<% if user.twitter_authenticated? %>
+						<a><img src="http://d3md9h2ro575fr.cloudfront.net/images/icon_twitter.png"></a>
+					<%end%>
+				</div>
+			</div>
+			<div class="card_have_wants">
+				<a href="<%=haves_user_path(user)%>" onclick="_gaq.push(['_trackEvent', 'User card', 'Clk_Haves', 'Click Haves on User Card']);mixpanel.track('Click Haves on User card');addDelay(this,event);return false;">
+					<div class="hw_option">
+						<p class="hw_heading">Haves</p>
+						<p class="hw_count" id="user_haves_count"><%=user.have_items.count%></p>
+					</div>
+				</a>
+				<a href="<%=wants_user_path(user)%>" onclick="_gaq.push(['_trackEvent', 'User Card', 'Clk_Wants', 'Click Wants on User Card']);mixpanel.track('Click Wants on User card');addDelay(this,event);return false;">
+					<div class="hw_option">
+						<p class="hw_heading">Wants</p>
+						<p class="hw_count" id="user_wants_count"><%=user.wanted_items.count%></p>
+					</div>
+				</a>
+				<a href="<%=reviews_user_path(user)%>" onclick="_gaq.push(['_trackEvent', 'User Card', 'Clk_Rvws', 'Click Reviews on User Card']);mixpanel.track('Click Reviews on User card');addDelay(this,event);return false;">
+					<div class="hw_option last">
+						<p class="hw_heading">Reviews</p>
+						<p class="hw_count"><%=user.reviews.count%></p>
+					</div>
+				</a>
+			</div>
+			<% if current_user and current_user.id == user.id%>
+				<div class="card_edit_profile">
+					<a href="<%=edit_user_path(current_user)%>" onclick="_gaq.push(['_trackEvent', 'User Card', 'clk_EditPrfl', 'Click Edit Profile on User Card']);mixpanel.track('Click Edit Profile on User Card');addDelay(this,event);return false;">Edit Profile</a>
+				</div>
+			<%end%>
+			<% if !current_user || current_user.id != user.id%>
+				<div class="follow follow_user_<%= user.id%>" id= "follow_div">
+					 <%= render 'shared/follow', :user => user %>
+				</div>
+			<%end%>
+		</div>
+		<div class="right_shadow">
+			<img src="http://d3md9h2ro575fr.cloudfront.net/images/user_card_shadow.png">
+		</div>
+	</div>
+<%end%>
+<script type="text/javascript">
+	$('.r_<%=user.id %>').raty({
+		size:  '20',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/star_100.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/starOff-large_white.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/green_star.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(user.overall_rating.present?)? user.overall_rating : 0%>
+	});
+</script>

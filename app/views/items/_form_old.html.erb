@@ -1,0 +1,469 @@
+<script>
+	offerForm = "old";
+	var item_wants = [];
+	var item_wants_count = 0;
+	var item_photos = [];
+	var item_video_photo_count = 0;
+	var item_videos = [];
+</script>
+<% if isOffer %>
+	<div id="youroffer_heading"><a name="uroffer_form" id="uroffer_form">Your offer</a></div>
+<% end %>
+<%= form_for(((isOffer) ? @offer : @item), :html => {:multipart => true, :id => "item_form", :autocomplete => ((current_user.present?) ? "off" : ""), :onSubmit => ((isOffer) ? "if(($(this).attr('action').indexOf('image_preview') < 0 && $(this).attr('action').indexOf('video_preview') < 0) && !$('#spambot').is(':checked')){alert('Please check spambot check box');return false;}" : "")}) do |f| %>
+	<% if @item and @item.errors.any? %>
+		<div id="error_explanation">
+			<h2><%= pluralize(@item.errors.count, "error") %> prohibited this item from being saved:</h2>
+			<ul>
+				<% @item.errors.full_messages.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+	<div id="pst_ofr_and_trd_div">
+		<% if current_user %>
+			<script type="text/javascript">
+				$(function(){refreshModal('pst_ofr_and_trd', false);});
+			</script>
+		<% end %>
+	</div>
+
+	<input id="item_tod" name="item[tod]" style="display:none" type="checkbox" value="1" <%= ((isOffer) ? '' : 'checked=checked') %> />
+	<input type="hidden" name="user_id" id="user_id"/>
+	<% if isOffer %>
+	<table align="center" class="user_has" width="100%" style="margin-left:0px;">
+	<% else %>
+	<!--[if IE ]><table align="center" class="user_hasie" width="87%"><![endif]-->
+	<!--[if !IE]>--><table align="center" class="user_has" width="100%"><!--<![endif]-->
+	<% end %>
+		<tr>
+			<%= f.hidden_field :category_id, :value => @cat.present? ? @cat.id.to_s : '' %>
+			<div id="categorymessage"></div>
+		</tr>
+		<tr>
+			<td class="label_tradeya" width="20%" style="vertical-align: top; padding-top: 7px;">
+				<span>Title</span>
+			</td>
+			<td width="1%"></td>
+			<td width="50%">
+				<%=  f.text_field :title, :class => "title_text addborder", :value=>"Write a title for your good or service here...", :TABINDEX=>"1",:maxlength => "72", :onFocus => "clearText(this); $('#item_title').addClass('addborder'); $('#item_title').removeClass('removeborder')", :onBlur => "clearText(this); $('#item_title').addClass('removeborder'); $('#item_title').removeClass('addborder');" %><br />
+				<!-- <%#=  f.text_field :title, :class => "title_text addborder", :value=>"Write a title for your good or service here...", :TABINDEX=>"1",:maxlength => "72", :onkeyup => ((current_user.present?) ? "myOfferTitles(event);" : ""), :onkeydown => ((current_user.present?) ? "movesearchedown(event);" : ""), :onFocus => "clearText(this); $('#item_title').addClass('addborder'); $('#item_title').removeClass('removeborder')", :onBlur => "clearText(this); $('#item_title').addClass('removeborder'); $('#item_title').removeClass('addborder');" %><br /> -->
+				<div id="offer_title_dropdownbox" style="display:none;z-index:1;">
+					<div id="offer_title_dropdown-body" >
+						<div id="winespinner"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/spinner.gif" style="height: 20px;"> Searching results....</div>
+						<div id="offer_title_resultdiv" class="to"  style="margin-top: -15px;">
+							<ul id="ul_offer_title_list"></ul>
+						</div>
+					</div>
+				</div>
+				<div id="titlemessage"></div>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td class="label_tradeya">
+				<div style="padding-top: 10px;">Description</div>
+			</td>
+			<td></td>
+			<td>
+				<textarea id="item_desc" name="item[desc]" class="desc_text removeborder" TABINDEX="3" onFocus="clearText(this); $('#item_desc').addClass('addborder'); $('#item_desc').removeClass('removeborder')" onBlur="clearText(this); $('#item_desc').addClass('removeborder'); $('#item_desc').removeClass('addborder')">Add more details about your good or service here...</textarea>
+				<div id="descmessage"></div>
+			</td>
+		</tr>
+		<input type="hidden" id="item_photos" name="item_photos"/>
+		<input type="hidden" id="item_videos" name="item_videos"/>
+		<% if isOffer %>
+			<tr id="photo_video_dropdown" valign="top">
+				<td>
+				</td>
+				<td>
+				</td>
+				<td>
+					<div onclick="$('#photo_video_dropdown').toggle(); $('#photo_video_section').toggle();">
+						<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/arrow_close.png" id="newarrow" />
+						<a style="cursor:pointer;">
+							<span class="photo_text">Add Photo or Video! (*Will greatly increase chances of your offer being picked.)</span>
+						</a>
+					</div>
+				</td>
+			</tr>
+			<tr id = "photo_video_section" valign="top" class='hidedrop'>
+		<% else %>
+			<tr valign="top">
+		<% end %>
+			<td class="label_tradeya">
+				<span>Photo/ Video</span>
+				<div class="photo_small_text">You can upload up to 4 images or videos.</div>
+			</td>
+			<td></td>
+			<td class="photo_text">
+				<div id="multiple_image_prev" class="multiple_image_prev">
+					<div id="user_uploaded_images"></div>
+					<div id="upload_more" class="upload_image_video">
+						<a id="more_more" href="#step1_upload" onclick=" return false;" data-toggle="modal" aria-labelledby="myModalLabel" class="upload_link">upload photo/video</a>
+						<!-- <img src="/assets/17.png" /> -->
+					</div>
+					<div id="photomessagempty" style="margin-top: 4px"></div>
+					<!-- <div class="upload_image_video">
+						<a href="#" class="upload_cross">X</a>
+						<img src="/assets/17.png" />
+					</div> -->
+				</div>
+				<div id="step1_upload" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+					<div id="step1_modal">
+					  <div class="modal-header">
+					    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="resetPhotoVideoModal(); /*_kmq.push(['record', 'login modal close X icon',{ 'SignedIn' : get_KMSignedIn(), 'ErrorMessage' : $('#signinmessage').text()}]); _gaq.push(['_trackEvent', 'register', 'Clk_LoginModalCancelIcn', 'clicks on x icon on Login form']);*/">&times;</button>
+					    <h3><div id="signin_heading">Step 1: Where is your file?</div></h3>
+					  </div>
+						<div class="modal-body">
+							<a href="#" onclick="resetWebButton(); return false;" ><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/on_web.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/on_web_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/on_web.png';" /></a>
+							<a href="#" onclick="resetComputerButton(); return false;" ><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/on_computer.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/on_computer_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/on_computer.png';" /></a>
+						</div>
+					</div>
+					<div id="step2_web" class="hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+					  <div class="modal-header">
+					    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="resetPhotoVideoModal(); /*_kmq.push(['record', 'login modal close X icon',{ 'SignedIn' : get_KMSignedIn(), 'ErrorMessage' : $('#signinmessage').text()}]); _gaq.push(['_trackEvent', 'register', 'Clk_LoginModalCancelIcn', 'clicks on x icon on Login form']);*/">&times;</button>
+					    <h3><div id="signin_heading" class="step2_preview_heading">Step 2: Add a Photo or Video URL</div></h3>
+						<h3><div id="signin_heading" class="step3_preview_heading" style="display: none">Step 3: Preview</div></h3>
+					  </div>
+						<div class="modal-body">
+							<div id="on_web_div">
+								<input id="item_photo_url" type="text" class="input-xlarge" value="http://" />
+								<div class="web_inst">
+									How to add a URL<br />
+									Right click on any photo on the Internet and copy the Image URL. Paste that into the field above. For videos, like on Youtube or Vimeo, the URL is already ready for you! Just share it.
+								</div>
+								<div id="upload_img_div" class="upload_img_div">
+									<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/upload_img.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/upload_img_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/upload_img.png';" onclick = "uplaodPhotoVideo();"/>
+									<div class="cancel_photo" style="margin-left: 160px;">
+										<span class="or">or</span> <span class="cancel"><a href="#" data-dismiss="modal" aria-hidden="true" onclick="resetPhotoVideoModal();">Cancel</a></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="step2_computer" class="hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+					  <div class="modal-header">
+					    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="resetPhotoVideoModal(); /*_kmq.push(['record', 'login modal close X icon',{ 'SignedIn' : get_KMSignedIn(), 'ErrorMessage' : $('#signinmessage').text()}]); _gaq.push(['_trackEvent', 'register', 'Clk_LoginModalCancelIcn', 'clicks on x icon on Login form']);*/">&times;</button>
+					    <h3><div id="signin_heading" class="step2_preview_heading">Step 2: Upload a Photo or Video</div></h3>
+						<h3><div id="signin_heading" class="step3_preview_heading" style="display: none">Step 3: Preview</div></h3>
+					  </div>
+						<div class="modal-body">
+							<div id="browse_img_video">
+								<div>
+									<input type="radio" name="file_type" id="file_type_photo" value="photo" checked="checked" onclick="jQuery('#video_upload_div').hide(); jQuery('#photo_upload_div').show(); jQuery('#preview_video').hide(); jQuery('#preview_img').show();"><span class="select_text">Photo</span></input>
+									<input type="radio" name="file_type" id="file_type_video" value="video" onclick="jQuery('#photo_upload_div').hide(); jQuery('#video_upload_div').show(); jQuery('#preview_img').hide(); jQuery('#preview_video').show();"><span class="select_text">Video</span>
+								</div>
+								<div id="photomessage" style="margin-top: 4px"></div>
+								<div class="file_div">
+									<div id="photo_upload_div">
+										<span class="select_file" id="selected_photo_file" style="position: absolute; z-index: 0">No file selected</span>
+										<span class="fileupload_img">
+											<%= f.fields_for @item_photo do |ip| %>
+												<div style="width: 105px; height: 26px; overflow: hidden; position: absolute; margin-left: -104px; z-index: 0">
+													<img id="icp_img" style="float: left" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse.png" />
+													<%= ip.file_field :photo, {:style => "opacity: 0; filter: alpha(opacity = 0); -moz-opacity:0; position: absolute;top: 0; left: 0; width: 102px;height:26px", :accept => "image/*", :onmouseover => "$('#icp_img').attr('src', 'https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse_roll.png')", :onmouseout => "$('#icp_img').attr('src', 'https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse.png')", :onChange => "canSubmitCanNext = true;jQuery('#selected_photo_file').text(jQuery(this).val().substring(jQuery(this).val().lastIndexOf('\\\\') + 1));imagePreview('item_item_photo_photo', 'item_form', 'tradeya_img_prev', true, 'item_item_photo_id');",:TABINDEX=>"4"} %>
+													<% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+														<%= ip.hidden_field attribute, :id => attribute %>
+													<% end %>
+													<input id="item_item_photo_id" name="item[item_photo][id]" type="hidden">
+												</div>
+											<% end %>
+										</span>
+									</div>
+									<div id="video_upload_div" class="hidedrop">
+										<span class="select_file" id="selected_video_file" style="position: absolute; z-index: 0">No file selected</span>
+										<span class="fileupload_img">
+											<%= f.fields_for @item_video do |ip| %>
+												<div style="width: 105px; height: 26px; overflow: hidden; position: absolute; margin-left: -104px; z-index: 0">
+													<img id="icp_vdo" style="float: left" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse.png" />
+													<%= ip.file_field :video, {:style => "opacity: 0; filter: alpha(opacity = 0); -moz-opacity:0; position: absolute;top: 0; left: 0; width: 102px;height:26px", :accept => "video/*", :onmouseover => "$('#icp_vdo').attr('src', 'https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse_roll.png')", :onmouseout => "$('#icp_vdo').attr('src', 'https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse.png')", :onChange => "canSubmitCanNext = true;jQuery('#selected_video_file').text(jQuery(this).val().substring(jQuery(this).val().lastIndexOf('\\\\') + 1));videoPreview('item_item_video_video', 'item_form', 'tradeya_video_prev', 'item_item_video_id');"} %>
+													<input id="item_item_video_id" name="item[item_video][id]" type="hidden">
+													<input id="item_item_video_path" name="item[item_video][path]" type="hidden">
+												</div>
+											<% end %>
+										</span>
+									</div>
+								</div>
+								<div id="image_spinner" style="display: none;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/spinner.gif" style="height: 20px;"></div>
+								<div id="video_spinner" style="display: none;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/spinner.gif" style="height: 20px;"></div>
+								<div id="photomessage"></div>
+								<div id="requirements">
+									<div id="photo_req">Photo requirements:</div>
+									<div id="photo_det">Minimum size: 340 x 256 pixels. A photo that does not meet the requirements may work, but no one likes blurry or pixelated photos of things.</div>
+									<div id="video_req">Video requirements:</div>
+									<div id="video_det">File size must be no larger than 1gb and in 3gp, .avi, .asf, .mov, .wmv, .mpg, or .mp4 in formats.</div>
+								</div>
+								<div class="upload_img_div">
+									<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/upload_img.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/upload_img_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/upload_img.png';" onclick= "jQuery('#browse_img_video').hide(); jQuery('#preview_img_video').show();" />
+									<div class="cancel_photo" style="margin-left: 160px;">
+										<span class="or">or</span> <span class="cancel"><a href="#" data-dismiss="modal" aria-hidden="true" onclick="resetPhotoVideoModal();">Cancel</a></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- <div id="browse_img_video">
+						<div>
+							<input type="radio" name="file_type" id="file_type_photo" value="photo" checked="checked" onclick="jQuery('#video_upload_div').hide(); jQuery('#photo_upload_div').show(); jQuery('#preview_video').hide(); jQuery('#preview_img').show();"><span>Photo</span></input>
+							<input type="radio" name="file_type" id="file_type_video" value="video" onclick="jQuery('#photo_upload_div').hide(); jQuery('#video_upload_div').show(); jQuery('#preview_img').hide(); jQuery('#preview_video').show();">&nbsp;&nbsp;Video
+						</div>
+						<p id="browse_text">Browse for an image or video file</p>
+						<div class="file_div">
+							<div id="photo_upload_div">
+								<span class="select_file" id="selected_photo_file" style="position: absolute; z-index: 0">No file selected</span>
+								<span class="fileupload_img">
+									<%#= f.fields_for @item_photo do |ip| %>
+										<div style="width: 105px; height: 26px; overflow: hidden; position: absolute; margin-left: -104px; z-index: 0">
+											<img id="icp_img" style="float: left" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse.png" />
+											<%#= ip.file_field :photo, {:style => "opacity: 0; filter: alpha(opacity = 0); -moz-opacity:0; position: absolute;top: 0; left: 0; width: 102px;height:26px", :accept => "image/*", :onmouseover => "$('#icp_img').attr('src', 'https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse_roll.png')", :onmouseout => "$('#icp_img').attr('src', 'https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse.png')", :onChange => "canSubmitCanNext = true;jQuery('#selected_photo_file').text(jQuery(this).val().substring(jQuery(this).val().lastIndexOf('\\\\') + 1));imagePreview('item_item_photo_photo', 'item_form', 'tradeya_img_prev', true, 'item_item_photo_id');",:TABINDEX=>"4"} %>
+											<%# for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+												<%#= ip.hidden_field attribute, :id => attribute %>
+											<%# end %>
+											<input id="item_item_photo_id" name="item[item_photo][id]" type="hidden">
+										</div>
+									<%# end %>
+								</span>
+							</div>
+							<div id="video_upload_div" class="hidedrop">
+								<span class="select_file" id="selected_video_file" style="position: absolute; z-index: 0">No file selected</span>
+								<span class="fileupload_img">
+									<%#= f.fields_for @item_video do |ip| %>
+										<div style="width: 105px; height: 26px; overflow: hidden; position: absolute; margin-left: -104px; z-index: 0">
+											<img id="icp_vdo" style="float: left" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse.png" />
+											<%#= ip.file_field :video, {:style => "opacity: 0; filter: alpha(opacity = 0); -moz-opacity:0; position: absolute;top: 0; left: 0; width: 102px;height:26px", :accept => "video/*", :onmouseover => "$('#icp_vdo').attr('src', 'https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse_roll.png')", :onmouseout => "$('#icp_vdo').attr('src', 'https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse.png')", :onChange => "canSubmitCanNext = true;jQuery('#selected_video_file').text(jQuery(this).val().substring(jQuery(this).val().lastIndexOf('\\\\') + 1));videoPreview('item_item_video_video', 'item_form', 'tradeya_video_prev', 'item_item_video_id');"} %>
+											<input id="item_item_video_id" name="item[item_video][id]" type="hidden">
+										</div>
+									<%# end %>
+								</span>
+							</div>
+						</div>
+						<div id="image_spinner" style="display: none;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/spinner.gif" style="height: 20px;"></div>
+						<div id="video_spinner" style="display: none;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/spinner.gif" style="height: 20px;"></div>
+						<div id="photomessage"></div>
+						<div id="requirements">
+							<div id="photo_req">Photo requirements:</div>
+							<div id="photo_det">Minimum size: 340 x 256 pixels. A photo that does not meet the requirements may work, but no one likes blurry or pixelated photos of things.</div>
+							<div id="video_req">Video requirements:</div>
+							<div id="video_det">File size must be no larger than 1gb and in 3gp, .avi, .asf, .mov, .wmv, .mpg, or .mp4 in formats.</div>
+						</div>
+						<div id="upload_img_div">
+							<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/upload_file.png" onclick="jQuery('#browse_img_video').hide(); jQuery('#preview_img_video').show();" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/upload_file_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/upload_file.png';" />
+							<div class="cancel_photo">
+								<span class="or">or</span> <span class="cancel"><a href="<%= root_url %>">Cancel</a></span>
+							</div>
+						</div>
+					</div> -->
+					<div id="preview_img_video" class="hidedrop">
+						<div id="preview_img">
+							<div>
+								<div style="width:360px; height:260px; overflow: hidden; float: left">
+									<img id="tradeya_img_prev" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/img_prev_default.png"/><br />
+								</div>
+								<div id="crop_preview" class="hidedrop">
+									<h4 style="font-size: 16px; font-weight: bold; margin-bottom:10px;">Preview</h4>
+									<div style="width: 136px; height: 102px; overflow: hidden;">
+											<img id="tradeya_img_prev_small" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/img_prev_default.png"/>
+										</div>
+									<img style = "margin-top:15px;"src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/crop.png" onclick="cropImage('item_item_photo_id', 'tradeya_img_prev', true);" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/crop_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/crop.png';" />
+								</div>
+							</div>
+							<div class="delete_photo_text" style="clear: both;">
+								To switch this with new file or video, you must <a href="#" onclick="return deleteThisPhoto();">Delete this photo</a>
+								<div align="center" style="float: left" class="img_indicator" id="ind_tradeya_img_prev"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/newajax-loader.gif"/></div>
+							</div>
+						</div>
+						<div id="preview_video" style="display: none;">
+							<a href="#" onclick="return false;" style="display:block; width:340px; height:254px; float: left;" id="player"></a>
+							<table id="rotate_preview" style="float: right; width: 175px; min-height: 255px; text-align: left; border-spacing: 0px; -webkit-border-horizontal-spacing: 0px; -webkit-border-vertical-spacing: 0px;" cellspacing="10">
+								<tr>
+									<td>
+										<h4 style="font-size: 16px; font-weight: bold; margin-top: -3px;">Edit Video</h4>
+										<hr style="margin-top: 1px;" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p style="font-weight: bold;">Rotate</p>
+										<p>Each click turns the image 90 degrees. When you're satisfied with adjustments, click the "done" button.</p>
+									</td>
+								</tr>
+								<tr>
+									<td><table width="95px" style="margin-top: 5px;"><tr>
+										<td align="center"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/rotate_icon_left.png" width="42px" onclick="rotateVideo(2);" /></td>
+										<td align="center"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/rotate_icon_right.png" width="42px" onclick="rotateVideo(1);" /></td>
+										<td align="center" valign="middle"><div id="video_rotate_spinner" style="display: none;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/spinner.gif" style="height: 20px;"></div></td>
+									</tr></table></td>
+								</tr>
+								<tr>
+									<td><table width="95px" style="margin-top: -10px;"><tr>
+										<td align="center" width="50%">Left</td>
+										<td align="center">Right</td>
+									</tr></table></td>
+								</tr>
+								<tr>
+									<td><table width="95px" style="margin-top: 10px;"><tr>
+										<td align="center">
+											<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/done.png" onclick="$('#rotate_preview').hide(); AddItemVideo(); return false;" />
+										</td>
+									</tr></table></td>
+								</tr>
+							</table>
+							<div class="delete_video_text" style="clear: both;">
+								To switch this with new file or video, you must <a href="#" onclick="return deleteThisVideo();">Delete this video</a>
+								<div align="center" style="float: left" class="img_indicator" id="ind_tradeya_video_prev"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/newajax-loader.gif"/></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</td>
+		</tr>
+		<input type="hidden" id="item_selected_item_id" name="item[selected_item_id]"/>
+		<% if isOffer %>
+		<%= f.hidden_field :tod_id, :value => @item.id %>
+		<%= f.hidden_field :edit_offer, :value => (isOffer and !@offer.id.nil?) ? true:false %>
+		<tr style="height: 45px;">
+			<td></td>
+			<td></td>
+			<td>
+				<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/checkbox.png" id="spambot_chkbox_image" onclick="checkUncheck(this, '', 'spambot')" TABINDEX="6" style="margin-top: 15px;" />
+				<div id="spambot_div"></div>
+				<div class="label_chkbx" style="margin-bottom:15px;"><b>Check this box if you are <span style="color: red;">NOT</span> a spambot.</b></div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3" class="submit_btn">
+				<img TABINDEX="7" class='position-click' onclick="submitOfferChkSignIn();" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/submit_offer.png" id="submit_btn_offer" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/submit_offer_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/submit_offer.png';" />
+				<div class="canceldiv" style="margin-left: 262px; margin-top: -33px;">
+					<span class="or">or</span> <span class="cancel"><a class='cancel-click' href="#" id="submit_offer_cancel" onclick="/*_kmq.push(['record', 'TradeYa Page Sumbit Offer Cancel Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_CancelSbmOfr', 'Click Submit Offer Cancel Link']);*/ return submitOfferCancel();">Cancel</a></span>
+				</div>
+			</td>
+		</tr>
+		<% end %>
+		<!-- <tr style="height: 62px;">
+			<td class="next_btn">
+				<a href="#">
+					<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/next.png" id="nextbutton" onclick="return nextButton();" onkeypress="return nextButton();" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/next_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/next.png';" TABINDEX="6"/>
+				</a>
+			</td>
+		</tr> -->
+		<% if not isOffer %>
+		<tr valign="top">
+			<td class="label_tradeya">
+				<div style="padding-top: 10px;">Quantity</div>
+			</td>
+			<td></td>
+			<td>
+				<div class="quantity_info_tip" style="display: none;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/quantity_tooltip.png" /></div>
+				<div class="quantity_div"><%= f.text_field :quantity, :class => "input_quantity" %> Is the number of times you can trade your good/service OR <!--input type="checkbox" class="check_quantity_unlimit" /--><%= f.check_box :qty_unlimited, :class=> "check_quantity_unlimit"%>￼ Unlimited.</div>
+				<div class="info_tip_icon_quant"><a href="#"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/info_tip_icon.png" onmouseover="$('.quantity_info_tip').show();" onmouseout="$('.quantity_info_tip').hide();"></a></div>
+				<div id="qntymessage"></div>
+			</td>
+		</tr>
+		<tr style="height: 55px;">
+			<td></td>
+			<td></td>
+			<td class="submit_btn">
+				<img TABINDEX="12", class='position-click' onclick="submitTradeyaFormChk();" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/submit_ty.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/submit_ty_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/submit_ty.png';" />
+				<div class="cancel_div">
+					<span class="or">or</span> <span class="cancel"><a class='cancel-click' href="<%= (((not request.referer.nil?) and request.referer.index('facebook_sign_in_success').nil? and request.referer.index('hello').nil?) ? request.referer : root_url) %>" onclick="/*_kmq.push(['record', 'TradeYa Page Sumbit Tradeya Cancel Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_CancelSbmTrd', 'Click Submit Tradeya Cancel Link']);*/">Cancel</a></span>
+				</div>
+			</td>
+		</tr>
+		<% end %>
+	</table>
+<% end %>
+<% if isOffer %>
+<div style="height: 60px;"></div>
+<% end %>
+<script>
+bindAjaxSpinner();
+<% if (!isOffer and not @item.id.blank?) or (isOffer and not @offer.id.blank?) %>
+	<% itm = isOffer ? @offer : @item %>
+	$(function(){
+		$('#item_title').val("<%= escape_javascript(itm.title).html_safe %>");
+		$('#item_desc').val("<%= escape_javascript(itm.desc).html_safe %>");
+
+		<% if itm.item_photos and  itm.item_photos.size > 0%>
+			<% itm.item_photos.each do |ph| %>
+				AddItemPhoto('<%= escape_javascript(ph.photo(:medium)) %>', <%= ph.id%>);
+			<% end %>
+		<% elsif itm.item_videos and itm.item_videos.size > 0 %>
+			<% itm.item_videos.each do |vi| %>
+				AddItemVideo('<%= escape_javascript(vi.video.url) %>',<%= vi.id %>);
+			<% end %>
+		<% end %>
+		<% if itm.qty_unlimited and itm.qty_unlimited == true  %>
+			// $('#multi_trade_img').attr('src','https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/checkbox_filled.png');
+		 	$('#item_qty_unlimited').attr('checked','checked');
+		<% else %>
+		 	$("#item_quantity").val("<%=itm.quantity %>");
+		<% end  %>
+		// <%## if (itm.item_wants and itm.item_wants.count > 0) %>
+		// 	<%## itm.item_wants.each do |itmw| %>
+		// 		$('#item_item_want_title').val("<%##= escape_javascript(itmw.title).html_safe %>");
+		// 		$('#choose_cat_want').val("<%##= escape_javascript(itmw.category.name).html_safe %>");
+		// 		$('#item_item_want_desc').val("<%##= escape_javascript(itmw.desc).html_safe %>");
+		// 		$('#item_item_want_category_id').val("<%##= itmw.category_id %>");
+		// 		$('#item_item_want_category_id').attr('cat_name', "<%##= escape_javascript(itmw.category.name).html_safe %>");
+		// 		$('#item_item_want_category_id').attr('cat_p_name', "<%##= escape_javascript(itmw.category.parent.name.html_safe) %>");
+		// 		addAnotherItemWant();
+		// 	<%## end  %>
+		// <%## end %>
+		// <%# if itm.is_open_to_all_offers %>
+		// 	$('#checkAllOffers').attr('src','https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/checkbox_filled.png');
+		// 	$('#item_is_open_to_all_offers').attr('checked',true);
+		// <%# elsif itm.open4categories and itm.open4categories.present? %>
+		// 	$('#checkspoffers').attr('src','https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/checkbox_filled.png');
+		// 	$('#item_is_open_to_specific_categories').attr('checked', true);
+		// 	$('#div_open_cats').show();
+		// 	<%# itm.open4categories.split(",").each do |c| %>
+		// 		li = $('#goods_subcategory_offer > #item_<%#=c%>, #services_subcategory_offer> #item_<%#=c%>');
+		// 		li.click();
+		// 	<%# end %>
+		// <%# end  %>
+	});
+<% end %>
+function categoryHover(){
+	if ($("#goods_subcategory").hasClass('hidedrop')){
+		$("#category_drop .left").css('background-color','#fff');
+		$("#category_drop .right").css('background-color','#e6f2f9')
+	}
+	if ($("#services_subcategory").hasClass('hidedrop')){
+		$("#category_drop .right").css('background-color','#fff');
+		$("#category_drop .left").css('background-color','#e6f2f9');
+	}
+}
+function categoryHoverWant(){
+	if ($("#goods_subcategory_want").hasClass('hidedrop')){
+		$("#category_drop_want .left").css('background-color','#fff');
+		$("#category_drop_want .right").css('background-color','#e6f2f9');
+	}
+	if ($("#services_subcategory_want").hasClass('hidedrop')){
+		$("#category_drop_want .right").css('background-color','#fff');
+		$("#category_drop_want .left").css('background-color','#e6f2f9');
+	}
+}
+function categoryHoverOffer(){
+	if ($("#goods_subcategory_offer").hasClass('hidedrop')){
+		$("#category_drop_offer .left").css('background-color','#fff');
+		$("#category_drop_offer .right").css('background-color','#e6f2f9');
+	}
+	if ($("#services_subcategory_offer").hasClass('hidedrop')){
+		$("#category_drop_offer .right").css('background-color','#fff');
+		$("#category_drop_offer .left").css('background-color','#e6f2f9');
+	}
+}
+function uplaodPhotoVideo(){
+	var file = $("#item_photo_url").val();
+	var extn = "";
+	if(file.length > 6)
+		extn = file.split(".").pop();
+	if(extn == "jpg"|| extn == "jpeg" || extn == "png" || extn == "gif")
+	{
+		canSubmitCanNext = true;
+		imagePreview('item_photo_url', 'item_form', 'tradeya_img_prev', true, 'item_item_photo_id', file);
+	}
+
+}
+</script>

@@ -1,0 +1,14 @@
+<script>
+	<% if current_user %>
+		<% if @trade %>
+			$('#private_comments_section_<%= @trade.id %>').html("<%= escape_javascript(render("shared/private_comments_section", :offer => @trade)) %>");
+		<% else %>
+			$("#comments_section_div").html("<%= escape_javascript(render("shared/comments_section")) %>");
+		<% end %>
+	<% else %>
+		// _kmq.push(['record', 'Login', {'Show Login Modal': 'submit comment','SignedIn' : get_KMSignedIn()}]);
+		isAddShowComment = 1;
+		// showModal('login_box');
+		$("#signin_modal").modal("show");
+	<% end %>
+</script>

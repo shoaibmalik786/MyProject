@@ -1,0 +1,19 @@
+development:
+    access_key_id: AKIAJMVV6LK7ULNDRUOA
+    secret_access_key: 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
+    bucket: tradeya_dev
+
+staging:
+    access_key_id: AKIAJMVV6LK7ULNDRUOA
+    secret_access_key: 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
+    bucket: tradeya_stg
+
+staging_20:
+    access_key_id: AKIAJMVV6LK7ULNDRUOA
+    secret_access_key: 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
+    bucket: tradeya_stg_2
+
+production:
+    access_key_id: AKIAJMVV6LK7ULNDRUOA
+    secret_access_key: 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
+    bucket: tradeya_prod

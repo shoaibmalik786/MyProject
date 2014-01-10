@@ -1,0 +1,776 @@
+<% if @user.present? %>
+	<% if @user == current_user %>
+		<%= render "users/user_page_common_top_own" %>
+	<% else %>
+		<%= render "users/user_page_common_top_new" %>
+	<% end %>
+<script>
+	 	$("#spinner").hide();
+</script>
+<% end %>
+<!-- main section for pvt messaging Start -->
+<div id="pvt_msg_div">
+	<!-- Left navigation for pvt messaging Start -->
+	<div class="left_nav_wrapper">
+		<div class="left_msg_header">
+			<a href="#" class="inbox_link">Inbox</a>
+			<ul class="pvt_msg_left_top_buttons">
+				<li><a href="#" class="new_msg_btn">New Message</a></li>
+				<li><a href="#" class="archive_btn">Archived</a></li>
+			</ul>
+		</div>
+		<div class="pvt_msg_search_wrapper">
+			<input type="text" class="pvt_msg_search_input" placeholder="Search">
+		</div>
+		<div class="left_msg_list_wrapper">
+			<ul class="left_msg_list">
+				<li class="active">
+					<div class="pvt_msg_list_inner">
+						<div class="pvt_msg_left_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png"></div>
+						<div class="pvt_msg_right_text">
+							<div class="pvt_msg_username active">Jared K.</div>
+							<div class="pvt_msg_left_timestamp active">week ago</div>
+							<div class="pvt_msg_chat_text_left active">
+								Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod 
+							</div>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="pvt_msg_list_inner">
+						<div class="pvt_msg_left_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png"></div>
+						<div class="pvt_msg_right_text">
+							<div class="pvt_msg_username">Jared K.</div>
+							<div class="pvt_msg_left_timestamp">week ago</div>
+							<div class="pvt_msg_chat_text_left">
+								<span class="no_reply"></span>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod 
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="unread">
+					<div class="pvt_msg_list_inner">
+						<div class="pvt_msg_left_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png"></div>
+						<div class="pvt_msg_right_text">
+							<div class="pvt_msg_username">Jared K.</div>
+							<div class="pvt_msg_left_timestamp">week ago</div>
+							<div class="pvt_msg_chat_text_left">
+								<span class="no_reply"></span>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod 
+							</div>
+						</div>
+					</div>
+				</li>
+				 
+				<li>
+					<div class="pvt_msg_list_inner">
+						<div class="pvt_msg_left_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png"></div>
+						<div class="pvt_msg_right_text">
+							<div class="pvt_msg_username">Jared K.</div>
+							<div class="pvt_msg_left_timestamp">week ago</div>
+							<div class="pvt_msg_chat_text_left">
+								<span class="no_reply"></span>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod 
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="unread">
+					<div class="pvt_msg_list_inner">
+						<div class="pvt_msg_left_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png"></div>
+						<div class="pvt_msg_right_text">
+							<div class="pvt_msg_username">Jared K.</div>
+							<div class="pvt_msg_left_timestamp">week ago</div>
+							<div class="pvt_msg_chat_text_left">
+								<span class="no_reply"></span>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod 
+							</div>
+						</div>
+					</div>
+				</li>
+
+			</ul>
+		</div>
+	</div>
+		<!-- Left navigation for pvt messaging Ends -->
+		<!-- Inbox Section Right Start -->
+	<div class="pvt_msg_right_area_wrapper" style="display:none">
+		<div class="pvt_msg_right_top_header">
+			<div class="pvt_msg_right_username">Pratiik Atrii<span class="online_dot"></span></div>
+			<div class="pvt_msg_right_subject">
+				I wanted some information on your iPhone
+			</div>
+			<div class="delete_msg_icon"><!-- <a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/bin.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/bin_selected.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/bin.png'"></a> --></div>
+		</div>
+		<div class="pvt_msg_right_chatarea_wrapper">
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def2.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Pratiik Atrii</div>
+							<div class="chat_timestamp">6 months ago</div>
+						</div>
+						<div class="chat_text">
+							Please give me the detail information about your iPhone, 
+							Whats the internal memory and all that.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+						<div class="checkboxes">  
+						 <label class="checkbox">
+              <input type="checkbox" name="chk1">
+              <label> </label>
+            </label>
+          	</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Jared K.</div>
+							<div class="chat_timestamp">2 months ago</div>
+						</div>
+						<div class="chat_text">
+							Yeah its 32 Gb black color iPhone, its just 3 months old.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+						<div class="checkboxes">  
+						<label class="checkbox">
+              <input type="checkbox" name="chk1">
+              <label> </label>
+            </label>
+          	</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def2.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Pratiik Atrii</div>
+							<div class="chat_timestamp">6 months ago</div>
+						</div>
+						<div class="chat_text">
+							Please give me the detail information about your iPhone, 
+							Whats the internal memory and all that.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+						<div class="checkboxes">  
+						<label class="checkbox">
+              <input type="checkbox" name="chk1">
+              <label> </label>
+            </label>
+          	</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Jared K.</div>
+							<div class="chat_timestamp">2 months ago</div>
+						</div>
+						<div class="chat_text">
+							Yeah its 32 Gb black color iPhone, its just 3 months old.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+						<div class="checkboxes">  
+						<label class="checkbox">
+              <input type="checkbox" name="chk1">
+              <label> </label>
+            </label>
+          	</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def2.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Pratiik Atrii</div>
+							<div class="chat_timestamp">6 months ago</div>
+						</div>
+						<div class="chat_text">
+							Please give me the detail information about your iPhone, 
+							Whats the internal memory and all that.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+						<div class="checkboxes">  
+						<label class="checkbox">
+              <input type="checkbox" name="chk1">
+              <label> </label>
+            </label>
+          	</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Jared K.</div>
+							<div class="chat_timestamp">2 months ago</div>
+						</div>
+						<div class="chat_text">
+							Yeah its 32 Gb black color iPhone, its just 3 months old.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def2.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Pratiik Atrii</div>
+							<div class="chat_timestamp">6 months ago</div>
+						</div>
+						<div class="chat_text">
+							Please give me the detail information about your iPhone, 
+							Whats the internal memory and all that.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Jared K.</div>
+							<div class="chat_timestamp">2 months ago</div>
+						</div>
+						<div class="chat_text">
+							Yeah its 32 Gb black color iPhone, its just 3 months old.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def2.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Pratiik Atrii</div>
+							<div class="chat_timestamp">6 months ago</div>
+						</div>
+						<div class="chat_text">
+							Please give me the detail information about your iPhone, 
+							Whats the internal memory and all that.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Jared K.</div>
+							<div class="chat_timestamp">2 months ago</div>
+						</div>
+						<div class="chat_text">
+							Yeah its 32 Gb black color iPhone, its just 3 months old.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+		</div>
+		<div class="textarea_wrapper">
+			<textarea class="chat_input" placeholder="Write a reply..."></textarea>
+			<div class="chat_input_options">
+				<span class="file_wrapper">
+					<input type="file" class="chat_files" id="photo">
+					<span class="upload_button">Add Files</span>
+				</span>
+				<input type="submit" value="Send" class="chat_send">
+			</div>
+		</div>
+		<div class="delete_buttons">
+			<input type="submit" class="delete_cancel" value="Cancel">
+			<input type="submit" class="delete_confirm" value="Delete" onclick="$('#remove_ph_no').modal('show');">
+		</div>
+	</div>
+	<!-- Inbox Section Right Ends -->
+	<!-- New Message Section Right Start -->
+	<div class="new_message_block_right_wrapper">
+		<div class="pvt_msg_right_top_header">
+			<div class="new_msg_heading">New Message</div>
+		</div>
+		<div class="new_msg_inner">
+				<p><span class="control_label">To:</span><span class="control_input"><input type="text" class="new_msg_input"></span></p>
+				<p><span class="control_label">Subject:</span><span class="control_input"><input type="text" class="new_msg_input"></span></p>
+		</div>
+		<div class="textarea_wrapper">
+			<textarea class="chat_input" placeholder="Enter your Message..."></textarea>
+			<div class="chat_input_options">
+				<span class="file_wrapper">
+					<input type="file" class="chat_files" id="photo">
+					<span class="upload_button">Add Files</span>
+				</span>
+				<input type="submit" value="Send" class="chat_send">
+			</div>
+		</div>
+	</div>
+	<!-- New Message Section Right Ends -->
+	<!-- Archieved Section Right Start -->
+	<div class="archived_block_right_wrapper">
+		<div class="pvt_msg_right_top_header">
+			<div class="pvt_msg_right_username">Pratiik Atrii<span class="online_dot"></span></div>
+			<div class="pvt_msg_right_subject">
+				I wanted some information on your iPhone
+			</div>
+		</div>
+		<div class="pvt_msg_right_chatarea_wrapper">
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def2.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Pratiik Atrii</div>
+							<div class="chat_timestamp">6 months ago</div>
+						</div>
+						<div class="chat_text">
+							Please give me the detail information about your iPhone, 
+							Whats the internal memory and all that.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Jared K.</div>
+							<div class="chat_timestamp">2 months ago</div>
+						</div>
+						<div class="chat_text">
+							Yeah its 32 Gb black color iPhone, its just 3 months old.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def2.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Pratiik Atrii</div>
+							<div class="chat_timestamp">6 months ago</div>
+						</div>
+						<div class="chat_text">
+							Please give me the detail information about your iPhone, 
+							Whats the internal memory and all that.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Jared K.</div>
+							<div class="chat_timestamp">2 months ago</div>
+						</div>
+						<div class="chat_text">
+							Yeah its 32 Gb black color iPhone, its just 3 months old.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def2.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Pratiik Atrii</div>
+							<div class="chat_timestamp">6 months ago</div>
+						</div>
+						<div class="chat_text">
+							Please give me the detail information about your iPhone, 
+							Whats the internal memory and all that.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Jared K.</div>
+							<div class="chat_timestamp">2 months ago</div>
+						</div>
+						<div class="chat_text">
+							Yeah its 32 Gb black color iPhone, its just 3 months old.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def2.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Pratiik Atrii</div>
+							<div class="chat_timestamp">6 months ago</div>
+						</div>
+						<div class="chat_text">
+							Please give me the detail information about your iPhone, 
+							Whats the internal memory and all that.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Jared K.</div>
+							<div class="chat_timestamp">2 months ago</div>
+						</div>
+						<div class="chat_text">
+							Yeah its 32 Gb black color iPhone, its just 3 months old.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def2.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Pratiik Atrii</div>
+							<div class="chat_timestamp">6 months ago</div>
+						</div>
+						<div class="chat_text">
+							Please give me the detail information about your iPhone, 
+							Whats the internal memory and all that.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat_block">
+					<div class="chat_user_image">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def1.png">
+					</div>
+					<div class="chat_section_right">
+						<div class="username_timestamp_wrapper">
+							<div class="chat_username">Jared K.</div>
+							<div class="chat_timestamp">2 months ago</div>
+						</div>
+						<div class="chat_text">
+							Yeah its 32 Gb black color iPhone, its just 3 months old.
+						</div>
+						<div class="chat_edit"><a href="#">Edit</a> </div>
+						<div class="editable_section">
+							<input type="text" class="edit_input">
+							<div class="chat_update_btns">
+							<a href="#" class="chat_edit_save">Save</a>
+							<a href="#" class="chat_edit_cancel">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+		</div>
+		<div class="textarea_wrapper">
+			<textarea class="chat_input" placeholder="Write a reply..."></textarea>
+			<div class="chat_input_options">
+				<span class="file_wrapper">
+					<input type="file" class="chat_files" id="photo">
+					<span class="upload_button">Add Files</span>
+				</span>
+				<input type="submit" value="Send" class="chat_send">
+			</div>
+		</div>
+	</div>
+	<!-- Archieved Section Right Ends -->
+	<!-- 	empty inbox start -->
+	<div class="empty_inbox_block_wrapper">
+		<div class="empty_inbox_header"></div>
+		<div class="empty_inbox_content">
+			<h1>No Conversations Selected</h1>
+			<p>Click on <a href="#" class="new_msg_link">New Message</a> to start a conversation with your friends</p>
+		</div>
+	</div>
+	<!-- empty inbox end -->
+</div>
+<!-- delete confirmation modal start-->
+<div id="remove_ph_no" class="modal fade hide"   aria-hidden="false">
+    <a href="#" class="close" data-dismiss="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png"></a>
+    <div class="user_sub_heading in_center re_pin_heading">Delete Messages?</div>
+    <div class="resend_modal_text re_pin_text ">
+     Are you sure you want to Delete<br> these messages? 
+    </div>
+    <div class="resend_footer">
+      <span><a href="#" class="resend_submit ma_r">Delete</a> or  <a href="#">Cancel</a></span>
+    </div>
+  </div>
+
+<!-- delete confirmation modal end-->
+
+
+<!-- main section for pvt messaging Ends -->
+ <script type="text/javascript">
+
+ $(document).ready(function(){
+ 	// edit message section start
+ 	$(".chat_edit").hide();
+ 	$(".chat_block").hover(function(){
+ 		$(this).find(".chat_edit").show();
+ 	},function(){
+ 		$(".chat_edit").hide();
+ 	})
+ 	$(".chat_edit").click(function(e){
+
+ 		$(this).parent(".chat_section_right").children(".chat_text").hide();
+ 		$(this).parent(".chat_section_right").children(".editable_section").fadeIn();
+ 		e.preventDefault();
+ 	});
+ 	$(".chat_edit_save").click(function(e){
+ 		$(this).parent(".chat_update_btns").parent(".editable_section").parent(".chat_section_right").children(".chat_text").fadeIn();
+ 		$(this).parent(".chat_update_btns").parent(".editable_section").hide();
+ 		e.preventDefault();
+ 	});
+ 	$(".chat_edit_cancel").click(function(e){
+ 		$(this).parent(".chat_update_btns").parent(".editable_section").parent(".chat_section_right").children(".chat_text").fadeIn();
+ 		$(this).parent(".chat_update_btns").parent(".editable_section").hide();
+ 		e.preventDefault();
+ 	});
+ 		// edit message section ends
+ 		 // Left navigation functions start
+ 	$(".new_message_block_right_wrapper").hide();
+ 	$(".archived_block_right_wrapper").hide();
+ 	$(".new_msg_btn").click(function(e){
+ 		$(".empty_inbox_block_wrapper").hide();
+ 		$(".pvt_msg_right_area_wrapper").hide();
+ 		$(".archived_block_right_wrapper").hide();
+ 		$(this).addClass("active");
+ 		$(".archive_btn").removeClass("active");
+ 		$(".new_message_block_right_wrapper").fadeIn();
+ 		e.preventDefault();
+ 	});
+ 	$(".new_msg_link").click(function(e){
+ 		$(".empty_inbox_block_wrapper").hide();
+ 		$(".pvt_msg_right_area_wrapper").hide();
+ 		$(".archived_block_right_wrapper").hide();
+ 		$(this).addClass("active");
+ 		$(".archive_btn").removeClass("active");
+ 		$(".new_message_block_right_wrapper").fadeIn();
+ 		e.preventDefault();
+ 	});
+ 	$(".inbox_link").click(function(e){
+ 			$(".new_message_block_right_wrapper").hide();
+ 			$(".archived_block_right_wrapper").hide();
+ 			$(".empty_inbox_block_wrapper").hide();
+ 		$(".pvt_msg_right_area_wrapper").fadeIn();
+ 		$(".new_msg_btn").removeClass("active");
+ 		$(".archive_btn").removeClass("active");
+ 		e.preventDefault();
+
+ 	});
+
+ 	$(".archive_btn").click(function(e){
+ 			$(".new_message_block_right_wrapper").hide();
+ 			$(".pvt_msg_right_area_wrapper").hide();
+ 			$(".empty_inbox_block_wrapper").hide();
+ 		$(".archived_block_right_wrapper").fadeIn();
+ 		$(".new_msg_btn").removeClass("active");
+ 		$(".archive_btn").addClass("active");
+ 		e.preventDefault();
+
+ 	});
+ 	// Left navigation functions End
+ 	// Delete section start
+ 		$(".checkboxes").hide();
+ 		$(".delete_buttons").hide();
+ 		$(".delete_msg_icon").click(function(){
+ 			$(this).toggleClass("active");
+ 			$(".checkboxes").toggleClass("active");
+ 			$(".delete_buttons").toggleClass("active");
+ 			$(".textarea_wrapper").toggleClass("hidden");
+ 		})
+ }) 
+ 
+ </script>
+ <script type="text/javascript">
+
+var SITE = SITE || {};
+ 
+SITE.fileInputs = function() {
+  var $this = $(this),
+      $val = $this.val(),
+      valArray = $val.split('\\'),
+      newVal = valArray[valArray.length-1],
+      $button = $this.siblings('.upload_button'),
+      $fakeFile = $this.siblings('.file_holder');
+  if(newVal !== '') {
+    $button.text('Photo Chosen');
+    if($fakeFile.length === 0) {
+      $button.after('<span class="file_holder">' + newVal + '</span>');
+    } else {
+      $fakeFile.text(newVal);
+    }
+  }
+};
+$(document).ready(function() {
+  $('.file_wrapper input[type=file]').bind('change focus click', SITE.fileInputs);
+});
+
+
+ </script>

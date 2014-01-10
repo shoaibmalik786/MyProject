@@ -1,0 +1,17 @@
+<div id="thumb_up" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div id="crossimg"> <a href="#" data-dismiss="modal" aria-hidden="true">X</a></div>
+	<div class="thumb_up_heading">Thanks for the Feedback!</div>
+	<div class="thumb_up_content">
+		We’re happy to find you awesome people to make awesome trades. <br />Tell all your friends how awesome we are.
+	</div>
+	<div class="thumb_up_content">
+		<div class="share_head">Share it on Facebook:</div>
+		<fb:like href="http://<%= Tradeya::Application.config.action_mailer.default_url_options[:host]%>/" send="false" layout="button_count" width="100" show_faces="false" font=""></fb:like>
+		<div class="fb-send" data-href="http://<%= Tradeya::Application.config.action_mailer.default_url_options[:host]%>/"></div>
+	</div>
+	<div class="thumb_up_content">
+		<div class="share_head">Tweet it on Twitter:</div>
+		<a href="https://twitter.com/intent/tweet?screen_name=TradeYa&text=just%20found%20me%20a%20match.%20Awesome!%20%23TradeYa%20http%3A%2F%2Fwww.tradeya.com" class="twitter-mention-button" data-related="TradeYa">Tweet to @TradeYa</a>
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	</div>
+</div>

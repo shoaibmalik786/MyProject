@@ -1,0 +1,59 @@
+<div id="want_message_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+  <div class="want_message_div no_padding"  id="want_modal_msg_1">
+    <!-- <a href="#" class="close"  data-dismiss="modal" aria-hidden="true"><img src="http://d3md9h2ro575fr.cloudfront.net/images/white_cross.png"></a> -->
+    <div class="want_message_div_inner">
+      <div class="want_message_div_heading">Success! You've added this to your Wants Board.</div>
+      <div class="message_content">
+        <p class="two_things">Whoa! Two things just happened...</p>
+        <!-- <p>1. We’ve let <span class="wants_message_modal_user">user</span> know that you want their item and have invited them to check out your stuff and see if you have anything they want. </p> -->
+        <p class="point_one">1. We let <span class="wants_message_modal_user">user</span> know you want <span class="p_quotes">&ldquo;</span><span class="wants_message_modal_item">item title</span><span class="p_quotes">&rdquo;</span> and invited him to check out your stuff to see what you have to trade.</p>
+        <!-- <p>2. We’ve added <span class="wants_message_modal_user_s">user's</span> item to your wants board so other TradeYa users know what kind of stuff you want. </p> -->
+        <p class="point_two">2. We added <span class="p_quotes">&ldquo;</span><span class="wants_message_modal_item">item title</span><span class="p_quotes">&rdquo;</span> to your Wants Board so other TradeYa users can see what kind of stuff you want. <a href="<%=wants_user_path(current_user)%>">Click here</a> to review your Wants Board.</p>
+        <p class="org">
+          <a href="#" onclick="$('#want_modal_msg_1 #update_wants_message_reminder_form').submit(); closeWantsMessages();return false;">Got it! Don't show me this again</a>
+          <%= form_tag update_wants_message_reminder_user_path(:id => current_user.id), :id => "update_wants_message_reminder_form", :remote => true do %>
+          <%= hidden_field_tag :want_message_reminder, :value => true %>
+          <% end %>
+        </p>
+        <p class="blue"><a href="#" onclick="closeWantsMessages(); return false;">Remind me next time</a> </p>
+      </div>
+    </div>
+  </div>
+  <div class="want_message_div no_padding" id="want_modal_msg_2">
+    <a href="#" class="close"  data-dismiss="modal" aria-hidden="true"><img src="http://d3md9h2ro575fr.cloudfront.net/images/white_cross.png"></a>
+    <div class="want_message_div_inner">
+      <div class="want_message_div_heading">Success! You’ve added your first wants!</div>
+      <div class="message_content">
+        <!-- <p>We’ve let <span class="wants_message_modal_user">user</span> know that you want their item and have invited them to check out your stuff and see if you have anything they want. </p> -->
+        <p>We let <span class="wants_message_modal_user">user</span> know you want "<span class="wants_message_modal_item">item title</span>" and invited <span class="wants_message_modal_user">user</span> to check out your stuff to see what you have to trade.</p>
+        <p> But wait! You don’t have much to trade! <span class="wants_message_modal_user">user</span> is going to be awfully disappointed. </p>
+        <!-- <p>2. We added "<%#=@item.title%>" to your Wants Board so other TradeYa users can see what kind of stuff you want. <a href="<%#=wants_user_path(current_user)%>">Click here</a> to review your Wants Board.</p> -->
+        <p class="org"><a class="only_link" href="/items/new">Click here </a>to add a couple things you have. It only takes a few seconds. </p>
+        <p class="org">
+          <a href="#" onclick="$('#want_modal_msg_2 #update_wants_message_reminder_form').submit(); closeWantsMessages();return false;">Got it! Dont show me this again</a>
+          <%= form_tag update_wants_message_reminder_user_path(:id => current_user.id), :id => "update_wants_message_reminder_form", :remote => true do %>
+          <%= hidden_field_tag :want_message_reminder, :value => true %>
+          <% end %>
+        </p>
+        <p class="blue"><a href="#" onclick="closeWantsMessages();return false;">Remind me next time</a> </p>
+      </div>
+    </div>
+  </div>
+  <div class="want_message_div no_padding" id="want_modal_msg_3">
+    <a href="#" class="close"  data-dismiss="modal" aria-hidden="true"><img src="http://d3md9h2ro575fr.cloudfront.net/images/white_cross.png"></a>
+    <div class="want_message_div_inner">
+      <div class="want_message_div_heading">You don’t have much in your haves board.</div>
+      <div class="message_content">
+        <p>Looks like you don’t have much left in your haves board. <span class="wants_message_modal_user">user</span> is going to be awfully disappointed.</p>
+        <p ><span><a href="/items/new">Click here</a></span> to add a couple things you have. It only takes a few seconds.</a></p>
+        <p class="org">
+          <a href="#" onclick="$('#want_modal_msg_3 #update_wants_message_reminder_form').submit(); closeWantsMessages();return false;">Got it! Dont show me this again</a>
+          <%= form_tag update_wants_message_reminder_user_path(:id => current_user.id), :id => "update_wants_message_reminder_form", :remote => true do %>
+          <%= hidden_field_tag :want_message_reminder, :value => true %>
+          <% end %>
+        </p>
+        <p class="blue"><a href="#" onclick="closeWantsMessages();return false;">Remind me next time</a> </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div id="usr_profile_info" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+  <div id="crossimg" style="margin-top: 0px; margin-bottom: 10px; margin-right: 3px;"> <a href="#" onclick = "/*_kmq.push(['record', 'modal edit profile information close x icon',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'modal', 'Clk_EditProfileModalCancelIcn', 'clicks on x close icon in Edit Profile Information Modal']);*/ cancelEdit(); return false;">X</a></div>
+  <div class="usr_profile_head">Edit Profile Information</div>
+  <table width="100%" class="edit_prof_table">
+    <tr style="height: 37px;">
+      <td width="25%"><div class="info_label" style="margin-top: -10px;">DISPLAY NAME</div></td>
+      <td width="2%"></td>
+      <td width="80%">
+        <input type="text" id="disp_name_edit" value="<%= current_user.nil? ? "" : current_user.title %>" class="name_edit addborder" onblur="$('#info_name_edit').addClass('removeborder'); $('#info_name_edit').removeClass('addborder');" onfocus="$('#info_name_edit').addClass('addborder'); $('#info_name_edit').removeClass('removeborder')" /></br>
+        <div class="form_field_error_msg" id="profdispnamechkmsg"></div>
+      </td>
+    </tr>
+    <tr style="height: 29px;">
+      <td><div class="info_label" style="margin-top: -10px;">YOUR ZIP CODE</div></td>
+      <td></td>
+      <td>
+        <input type="text" id="zip_code_edit" value="<%= current_user.nil? ? "" : current_user.zip %>" maxlength="10" class="name_edit removeborder" onblur="$('#zip_code_edit').addClass('removeborder'); $('#zip_code_edit').removeClass('addborder');" onfocus="$('#zip_code_edit').addClass('addborder'); $('#zip_code_edit').removeClass('removeborder')" /></br>
+        <div class="form_field_error_msg" id="profzipchkmsg"></div>
+      </td>
+    </tr>
+    <!-- <tr valign="top">
+         <td><div class="info_label" style="padding-top: 10px;">ABOUT YOU</div></td>
+         <td></td>
+         <td>
+           <textarea id="about_info_edit" class="info_text removeborder" onkeyup="aboutWordCount(this);" onblur="$('#about_info_edit').addClass('removeborder'); $('#about_info_edit').removeClass('addborder');" onfocus="$('#about_info_edit').addClass('addborder'); $('#about_info_edit').removeClass('removeborder')"><%= current_user.nil? ? "" : current_user.about %></textarea>
+           <div class="word_count" id="about_word_count"><<%#= current_user.nil? ? "0" : current_user.about.length %>/500></div>
+         </td>
+    </tr> -->
+    <tr valign="top">
+      <td></td>
+      <td><div id="prof_update_spinner" style="display: none;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/spinner.gif" style="height: 20px; margin-top: 12px;"></div></td>
+      <td>
+        <img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_button.png" onclick="updateProfile(); /*_kmq.push(['record', 'modal edit profile information save button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'modal', 'Clk_EditProfileModalSaveBtn', 'clicks on save button in Edit Profile Information Modal']);*/" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_button_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_button.png'" style="margin-top: 2px;" />
+        <div class="cancel_div" style="margin-left: 124px; margin-top: -33px;">
+          <span class="or">or</span> <span class="cancel"><a class="cancel-click" href="#" onclick="/*_kmq.push(['record', 'modal edit profile information cancel text link']); _gaq.push(['_trackEvent', 'modal', 'Clk_EditProfileModalCancelBtn', 'clicks on cancel text link in Edit Profile Information Modal']);*/ cancelEdit(); return false;">Cancel</a></span>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<script>
+  function cancelEdit(){
+  $('#disp_name_edit').val('<%= current_user.nil? ? "" : current_user.title %>');
+  $('#zip_code_edit').val('<%= current_user.nil? ? "" : current_user.zip %>');
+  $('#about_info_edit').val('<%= current_user.nil? ? "" : escape_javascript(current_user.about) %>');
+  $('#about_word_count').text('<<%= current_user.nil? ? "0" : current_user.about.length %>/500>');
+    $('#profzipchkmsg').text('');
+    $('#profdispnamechkmsg').text('');
+    $('#prof_update_spinner').hide();
+    $('#usr_profile_info').modal('hide');
+    }
+</script>

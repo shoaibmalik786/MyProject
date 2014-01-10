@@ -1,0 +1,100 @@
+<div align="center" class="steps">
+	<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/step3.png" />
+</div>
+<div class="profile_bck_white">
+	<table width="100%">
+		<% count = 0 %>
+		<% while count < @interests_cat.size %>
+		<tr>
+			<% column = 1 %>
+			<% for column in 1..5 %>
+				<% if count == @interests_cat.size %>
+					<% break %>
+				<% end %>
+				<td>
+					<div class="cat_interest_div" id="cat_interest_<%= count+1%>">
+						<div id="step3_cat_<%= count+1%>" class="category_border step3_cat" onclick="mouse_over_selected = false; categoryDrpDwnToggle('drpdwn_step3', 'step3_cat_<%=count+1 %>_drpdwn', true); $('.search_category_text').focus(); /*_kmq.push(['record', 'onboarding drop down <%= escape_javascript(@interests_cat[count]["name"].gsub('+', 'and').downcase()) %>'],{ 'SignedIn' : get_KMSignedIn()});_gaq.push(['_trackEvent', 'onboarding', 'Clk_addsubcategory', 'Click Item in <%= escape_javascript(@interests_cat[count]["name"]) %> Drop Down']);*/" style = "background: url('<%= @interests_cat[count]["imageURL"]%>');">
+							<div class="black_ban_div" style="height: 21px;">
+								<span style="width: 150px;"> <%=@interests_cat[count]["name"] %></span>
+								<div class="arrow_down_div_step3"></div>
+							</div>
+							<div id="step3_cat_<%=count+1 %>_drpdwn" class="drpdwn_step3 hidedrop">
+								<input id = "input_<%=count +1 %>" type="text" class="search_category_text" onkeyup="search(this, '<%= @interests_cat[count]["name"].gsub(/[^A-Za-z]/, '') %>'); hide_select_all('input_<%=count +1 %>', 'select_all_step3_<%=count+1 %>');" onclick="$('#step3_cat_<%=count+1 %>_drpdwn').addClass('hidedrop');" />
+								<ul id ="step3_cat_<%=count+1 %>_drpdwn_ul">
+									<li id = "select_all_step3_<%=count+1 %>" onclick= "select_all_drpdwns('step3_cat_<%= count + 1%>_drpdwn'); potential_match(3);" class = "interests_dp_li"><a href="#" onclick="return false;">Select All</a></li>
+									<% @interests_cat[count]["sub"].each do |sub_cat|%>
+										<li class="<%= @interests_cat[count]["name"].gsub(/[^A-Za-z]/, '') %>" onclick="mouse_over_selected = true; $('.drpdwn_step3').addClass('hidedrop'); selectMultipleCategory(this, 'item_<%= sub_cat.id %>', <%= sub_cat.id %>, 'step_3_selected', 'step3_category_selected',true,'check_next_button(3);potential_match(3);show_select_all(\'#item_<%= sub_cat.id %>\',true); /*_kmq.push([\'record\', \'onboarding x button removes your interests\',{ \'SignedIn\' : get_KMSignedIn()}]); _gaq.push([\'_trackEvent\', \'onboarding\', \'Clk_removesubcat\', \'Clicks to Remove On Any Items In Your Interests\']);*/'); check_next_button(3);potential_match(3); show_select_all(this); reset_search_text('input_<%=count+1%>', '<%= @interests_cat[count]["name"].gsub(/[^A-Za-z]/, '') %>');" tag="<%= sub_cat.name.downcase %>" v="<%= sub_cat.name %>" id="item_<%= sub_cat.id %>" class="interests_dp_li"><a href="#" onclick="return false;"><%= sub_cat.name %></a></li>
+									<% end %>
+									<!-- IF no results found -->
+									<li class="<%= @interests_cat[count]["name"].gsub(/[^A-Za-z]/, '') %> hidedrop" onmouseover="$(this).css('color', '#666666');" tag="noresultmatch">No results match</li>
+									<li onclick= "suggest_new_sub_category('interests',<%=@interests_cat[count]["id"] %>,'<%= escape_javascript(@interests_cat[count]["name"]) %>');return false;" class="interests_dp_li"><a href="#" onclick="return false;">Suggest a New Sub-Category!</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</td>
+				<% count = count + 1 %>
+				<% column = column + 1 %>
+			<% end %>
+		</tr>
+		<% end %>
+	</table>
+	<table>
+		<tr>
+			<td>
+				<% if isMozilla? %>
+					<div class="things_like_head" style="margin-top: -3px">Your Interests:</div>
+				<% else %>
+					<div class="things_like_head">Your Interests:</div>
+				<% end %>
+				<div class="dropdown_values">
+					<div id="step3_category_selected" class="step_category_selected">
+					</div>
+				</div>
+				<input type = "hidden" id = "step_3_selected"/>
+				<div class="things_like_head" style="margin-top: 15px;">If you could have one wish, what would it be?</div>
+				<textarea id="step3_user_wish" class="wish_textarea removeborder" onfocus="$(this).addClass('addborder');$(this).removeClass('removeborder');" onkeyup="aboutWordCount(this,225);" onblur="$(this).addClass('removeborder');$(this).removeClass('addborder');" onclick = "/*_kmq.push(['record', 'onboarding text field one wish text',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'onboarding', 'Form_Wish', 'Click Inside If You Could Have One Wish Text Field']);*/" onpaste="return false;" style="resize: none;"></textarea>
+				<% if isMozilla? %>
+					<div class="next_button_step" style="margin-top: 6px;">
+				<% elsif isMSIE? %>
+					<div class="next_button_step" style="margin-top: 10px;">
+				<% else %>
+					<div class="next_button_step" style="margin-top: 3px;">
+				<% end %>
+					<div class="word_count" id="about_word_count" style="margin-left: 29px; font-weight: bold; float: left;"><<%= current_user.wish.nil? ? "0" : current_user.wish.length %>/225></div>
+					<ul>
+						<li style="margin-left: 11px;">
+						<!-- If three items are not selected --><!-- <img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/finish_disabled.png" /> -->
+						<img id = "next_disabled_step_3" style="cursor:text" src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/finish_disabled.png" />
+						<img  id = "next_enabled_step_3" style = "display:none" src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/finish.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/finish_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/finish.png'" onclick = "<% if params[:edit] then %> profile_next_submit(3,true); <% else %> profile_next_submit(3); <%end%> return false; /*_kmq.push(['record', 'onboarding step 3 finish button',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'onboarding', 'Clk_FinishBtn', 'Clicks Finish Button In Step 3 Of Onboarding']);*/"/>
+						<img id="finish_spinner" style="display:none; cursor:text" src = "https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/spinner.gif">
+					</li>
+						<% if params[:edit] %>
+						<li style="margin-top: 2px;">
+							<img id = "save_disabled_step_3" style="cursor:text" src = "https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_steps.png"/>
+							<img id = "save_enabled_step_3" style = "display:none;" src = "https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_steps.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_steps_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_steps.png'" onclick="profile_save_submit(3);"/>
+						</li>
+						<li style="margin-top: 2px;">
+							<a href = "<%= dashboard_path%>"><img id = "cancel_step_3" src = "https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/cancel_steps.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/cancel_steps_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/cancel_steps.png'"/></a>
+						</li>
+						<% else %>
+						<li><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/step2_back.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/step2_back_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/step2_back.png'" onclick="$('.step1').hide(); $('.step2').show(); $('.step3').hide(); /*_kmq.push(['record', 'onboarding step 3 back button',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'onboarding', 'Clk_BackBtn', 'Clicks On Back Button In Step 3 Of Onboarding']);*/" /></li>
+						<% end %>
+					</ul>
+				</div>
+				<div id = "error_message_step_3" class="error_msg_step">
+					Please add at least three of your interests.<br />
+				</div>
+				<div id = "error_message_interests_wish" class="error_msg_step">
+					Please fill out your one wish.
+				</div>
+			</td>
+			<td valign="top">
+				<div class="things_like_head" style="letter-spacing: -1px;">Potential Matches:</div>
+				<div id= "step3_no_potential_match" class="potential_match_noimg" style="margin-left: 24px;">Select a category to see your potential matches!</div>
+				<div id = "step3_potential_match_img" class="potential_match_img" style="margin-left: 24px; display:none;"><img src="" style="width: 150px; max-height: 150px;" /></div>
+				<div class="potential_match_vdo" style="display:none;" id="itemPlayer_step3"></div>
+			</td>
+		</tr>
+	</table>
+</div>

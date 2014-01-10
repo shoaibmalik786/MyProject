@@ -1,0 +1,17 @@
+<% if current_user and @past_offer_tradeyas.count > 0 %>
+	<% if params[:st_pg] %>
+	<div class="category_type" style="width:300px; background-position:290px; margin-top: -43px; margin-right: 32px; float: right;" onclick="$('#pst_ofr_and_trd').toggleClass('hidedrop'); $('.left').css('background-color','#fff'); $('.right').css('background-color','#fff');" TABINDEX="2"><span id="choose_offer"> Choose from a previous Trades, instead.</span></div>
+	<div id="pst_ofr_and_trd" class="hidedrop offer_title_dropdown-box" style="z-index:1; max-height:500px; width: 310px; overflow-y: scroll;margin-left: 526px; margin-top: -11px;">
+	<% else  %>
+	<div class="category_type" style="width:300px; background-position:290px; margin-top: -43px; margin-right: 73px; float: right;" onclick="$('#pst_ofr_and_trd').toggleClass('hidedrop'); $('.left').css('background-color','#fff'); $('.right').css('background-color','#fff');" TABINDEX="2"><span id="choose_offer"> Choose from a previous offers, instead.</span></div>
+	<div id="pst_ofr_and_trd" class="hidedrop offer_title_dropdown-box" style="z-index:1; max-height:500px; width: 310px; overflow-y: scroll;margin-left: 310px; margin-top: -11px;">
+	<% end %>
+		<ul id = "pst_ofr_and_trd_result-div">
+			<% @past_offer_tradeyas.each do |ofr| %>
+				<li style="cursor: pointer; background-color: rgb(255, 255, 255); " onclick="fillOfferForm('<%=ofr.id%>');$('#pst_ofr_and_trd').addClass('hidedrop');" onfocus="$('.li_past_offer_title').css('background-color','#fff');$(this).css('background-color','#ccc')" onmouseover="$(this).focus();" class="li_past_offer_title"><span style="text-decoration:none; color: #777;font-size: 13px;"> <%= ofr.title %></span></li>
+				</li>
+			<% end %>
+		</ul>
+	</div>
+	<div style="height:8px;"></div>
+<% end %>

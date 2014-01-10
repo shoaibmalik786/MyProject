@@ -1,0 +1,29 @@
+<div class="ship_detail_left">
+      <div class="size0_detail"><img src="http://d3md9h2ro575fr.cloudfront.net/images/size1.png"></div>
+      <div class="shipping_detail_name"><strong>Your item</strong></div>
+      <div class="detail_item_text"><%= @transaction.weight%>lb.</div>
+      <div class="detail_item_text"><%= @transaction.length %><sup>in</sup> x <%= @transaction.width %><sup>in</sup> x <%= @transaction.height %><sup>in</sup></div>
+      <div class="detail_item_text"><%= @transaction.ship_notes %></div>
+      <hr class="other_item_hr" style="padding-top: 15px;">
+      <div class="other_item_total"><%= number_to_currency(@transaction.ship_charge) %></div>
+      <div class="clear"></div>
+    </div>
+    <div class="ship_detail_right">
+      <div class="size0_detail"><img src="http://d3md9h2ro575fr.cloudfront.net/images/size1.png"></div>
+      <div class="shipping_detail_name"><strong>Other Item</strong></div>
+      <div class="detail_item_text"><%= @oth_transaction.weight%>lb.</div>
+      <div class="detail_item_text"><%= @oth_transaction.length %><sup>in</sup> x <%= @oth_transaction.width %><sup>in</sup> x <%= @oth_transaction.height %><sup>in</sup></div>
+      <div class="detail_item_text"><%= @oth_transaction.ship_notes %></div>
+      <hr class="other_item_hr">
+      <div class="other_item_total"><%= number_to_currency(@oth_transaction.ship_charge) %></div>
+    </div>
+    <div class="ship_detail_rightmost">
+      <div class="shipping_detail_name"><strong>Shipping Total</strong></div>
+      <div class="detail_item_text"><%= number_to_currency(@transaction.ship_charge) %></div>
+      <div class="detail_item_text"><%= number_to_currency(@oth_transaction.ship_charge) %></div>
+      <hr class="shipping_hr1">
+      <div class="detail_item_average"><%= number_to_currency(@transaction.ship_charge + @oth_transaction.ship_charge) %> / 2</div>
+      <hr class="shipping_hr">
+      <div class="detail_item_ship_total"><%= number_to_currency((@transaction.ship_charge + @oth_transaction.ship_charge) / 2) %></div>
+    </div>
+    <div class="clear"></div>

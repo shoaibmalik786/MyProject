@@ -1,0 +1,80 @@
+<table width="100%" align="center" valign="center" style="margin-left: 30px;">
+	<tr>
+		<td>
+			<div id = "error_account_settings" style = "text-align:left;line-height:14px;color: red;font-size: 10pt; height:15px;"></div>
+		</td>
+	<tr>
+		<td width="33%"><div class="user_info_text">EMAIL</div></td>
+		<td width="2%"></td>
+		<td width="65%">
+			<!-- <input type="text" class="user_info_email addborder"> -->
+			<%=f.text_field :email, :readonly => true, :class => "user_info_email removeborder", :onfocus => "$(this).addClass('addborder'); $(this).removeClass('removeborder');", :onblur => "$(this).addClass('removeborder'); $(this).removeClass('addborder');", :onclick=>"/*_kmq.push(['record', 'dashboard editaccount textfield email',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Form_Email', 'Email text field in Your Information']);*/" %>
+		</td>
+	</tr>
+	<tr>
+		<td><div class="user_info_text">PASSWORD</div></td>
+		<td></td>
+		<td>
+			<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/change_pwd.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/change_pwd_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/change_pwd.png'" onclick="showChangePassword(<%= current_user.facebook_user? %>); /*_kmq.push(['record', 'dashboard editaccount button change password',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_changepw', 'Change Password button in Your Information']);*/" style="cursor: pointer;" />
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td>
+			<div id = "password_message" style = "color:red;font-size:10px; display:none;">The functionality is not available to facebook users.</div>
+		</td>
+	</tr>
+	<tr>
+		<td><div class="user_info_text">FIRST NAME</div></td>
+		<td></td>
+		<td>
+			<!-- <input type="text" class="user_info_email removeborder"> -->
+			<%=f.text_field :first_name, :class => "user_info_email removeborder", :onfocus => "$(this).addClass('addborder'); $(this).removeClass('removeborder');", :onblur => "$(this).addClass('removeborder'); $(this).removeClass('addborder');", :onclick=>"/*_kmq.push(['record', 'dashboard editaccount textfield first name',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Form_FirstName', 'First Name text field in Your Information']);*/" %>
+		</td>
+	</tr>
+	<tr>
+		<td><div class="user_info_text">LAST NAME</div></td>
+		<td></td>
+		<td>
+			<!-- <input type="text" class="user_info_email removeborder"> -->
+			<%=f.text_field :last_name, :class => "user_info_email removeborder", :onfocus => "$(this).addClass('addborder'); $(this).removeClass('removeborder');", :onblur => "$(this).addClass('removeborder'); $(this).removeClass('addborder');", :onclick=>"/*_kmq.push(['record', 'dashboard editaccount textfield last name',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Form_LastName', 'Last Name text field in Your Information']);*/" %>
+		</td>
+	</tr>
+	<tr>
+		<td><div class="user_info_text">ZIP/POSTAL CODE</div></td>
+		<td></td>
+		<td>
+			<!-- <input type="text" class="user_info_email removeborder"> -->
+			<%=f.text_field :zip, :class => "user_info_email removeborder", :onfocus => "$(this).addClass('addborder'); $(this).removeClass('removeborder');", :onblur => "$(this).addClass('removeborder'); $(this).removeClass('addborder');", :onclick=>"/*_kmq.push(['record', 'dashboard editaccount textfield last name',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Form_LastName', 'Last Name text field in Your Information']);*/" %>
+		</td>
+	</tr>
+	<tr style="height: 35px;">
+		<td><div class="user_info_text">GENDER</div></td>
+		<td></td>
+		<td>
+			<span>
+				<%=f.radio_button :gender, "male", :class => "info_email", :onclick=>"/*_kmq.push(['record', 'dashboard editaccount male radio button',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'radioButton_male', 'Male radio button in Your Information']);*/" %>
+				<span class="user_gender_text">MALE</span>
+			</span>
+			<span style="margin-left: 10px;">
+				<%=f.radio_button :gender, "female", :class => "info_email", :onclick=>"/*_kmq.push(['record', 'dashboard editaccount female radio button',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'radioButton_female', 'Female radio button in Your Information']);*/" %>
+				 <span class="user_gender_text">FEMALE</span>
+			</span>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><div class="deactive_text">To deactivate your account, <a href="#" onclick="/*_kmq.push(['record', 'dashboard editaccount link deactivate account',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_deactivateAccount', 'Text link to deactivate account']);*/ $('#deactivate_cnfrm').modal('show');">click here.</a></div></td>
+	</tr>
+</table>
+<%= render 'modals_shared/deactivate_confirm' %>
+<script>
+	function showChangePassword(fb_user){
+		// if(fb_user)
+			// $('#password_message').show();
+		// else
+			$('#usr_pwd_chng').modal('show');
+	}
+</script>

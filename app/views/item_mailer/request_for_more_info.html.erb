@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+	</head>
+	<body style="background-color: #eeeeee; padding: 0px; margin: 0px">
+		<div><font face="null"></font>&nbsp;</div>
+		<table border="0" cellpadding="0" cellspacing="0" width="100%" bordercolor="#666666">
+			<tbody>
+				<tr bgcolor="#ffffff">
+					<td style="margin: 0pt" align="center" bgcolor="#eeeeee">
+						<table style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333333" border="0" cellpadding="20" cellspacing="0" width="560" bordercolor="#333333">
+							<tbody>
+								<tr align="center">
+									<td style="background-color: #463f36"><img alt="" src="http://d3md9h2ro575fr.cloudfront.net/images/tradeya_logo.png" title="" align="left" /></td>
+								</tr>
+								<tr align="center" bgcolor="#ffffff">
+
+									<td align="left">
+
+										<span style="font-size: 15px">Hey <%=@item.user.first_name.titleize%>,</span>
+
+										<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px"></blockquote><br />
+
+										<span style="font-size: 15px"><%=@requester.title%> has a question about your <%=link_to @item.title, item_url(@item)%>:</span>
+
+										<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px"></blockquote><br />
+
+										<%if @request_info.more_photos%>
+											<span style="font-size: 15px">&emsp;&emsp;Please add more photos!</span>
+											<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px"></blockquote><br />
+										<%end%>
+
+										<%if @request_info.additional_description%>
+											<span style="font-size: 15px">&emsp;&emsp;Please add additional description about your item!</span>
+											<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px"></blockquote><br />
+										<%end%>
+
+										<%if @request_info.verify_condition%>
+											<span style="font-size: 15px">&emsp;&emsp;Could you tell me more about the condition of your item?</span>
+											<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px"></blockquote><br />
+										<%end%>
+
+										<%if @request_info.ask_question%>
+											<span style="font-size: 15px">&emsp;&emsp;<%=@request_info.ask_question%></span>
+											<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px"></blockquote><br />
+										<%end%>
+										
+										<br />
+										<span style="font-size: 15px">To respond directly to <%=@requester.title%> just reply to this email. </span>
+
+										<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px"></blockquote><br />
+
+										<span style="font-size: 15px"><br />
+											Happy trading!
+										</span><br />
+										<span style="font-size: 15px">The TradeYa Team</span>
+										
+										<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px">
+										<span style="font-size: 15px"><br /></span>
+										</blockquote>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee">
+						<span style="font-size: 10px; display: block; margin-top:5px; margin-bottom:5px;">TradeYa.com © 2013, All Rights Reserved <a href="<%= unsubscribe_mail_url %>">Unsubscribe/Change Notification</a></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

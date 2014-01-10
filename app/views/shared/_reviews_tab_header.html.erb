@@ -1,0 +1,19 @@
+<div class="review_breaking">
+	<div class="review_described">
+		<div class="review_described_heading">Item as Described</div>	
+		<%= render "shared/rating_details", :prefix => "description", :review_sections => description_sections, :largest => description_largest %>
+	</div>
+	<div class="review_overall">
+		<div class="review_overall_heading">Overall Rating</div>
+		<div class="rating_overall_wrapper">					
+			<div class="rating_number_text"><%= overall_rating || 0 %></div>
+			<div class="rating_star"><span class="d_star_rating_large" id="rating_star_dash" title="Not rated yet!" style="width: 145px;"></div>
+			<div class="rating_footer_text"><%= user.reviews.size %> total</div>
+		</div>
+	</div>
+	<div class="review_communication">
+		<div class="review_communication_heading">Communication Ease</div>
+		<%= render "shared/rating_details", :prefix => "communication", :review_sections => communication_sections, :largest => communication_largest %>
+	</div>
+	<div class="clear"></div>
+</div>

@@ -1,0 +1,24 @@
+<% if @user.present? %>
+	<% if @user == current_user %>
+		<%= render "users/user_page_common_top_own" %>
+	<% else %>
+		<%= render "users/user_page_common_top_new" %>
+	<% end %>
+	<script>
+		$(function() {
+			<% if params[:tab].blank? or params[:tab] == "haves" %>
+				$("#profile_tab #tab_haves").click();
+			<% elsif params[:tab] == "wants" %>
+				$("#profile_tab #tab_wants").click();
+			<% elsif params[:tab] == "reviews" %>
+				$("#profile_tab #tab_reviews").click();
+			<% elsif params[:tab] == "myoffers" %>
+				$("#profile_tab #tab_myoffers").click();
+			<% elsif params[:tab] == "inbox" %>
+				$("#profile_tab #tab_inbox").click();
+			<% elsif params[:tab] == "like" %>
+				$("#profile_tab #tab_likes").click();
+			<% end %>
+		});
+	</script>
+<% end %>

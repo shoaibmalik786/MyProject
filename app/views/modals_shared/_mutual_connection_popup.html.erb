@@ -1,0 +1,32 @@
+<% if !@pub and @offerer_mc.size > 8 %>
+	<div id="mutual_connect_box" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+		<div id="crossimg"> <a href="#" data-dismiss="modal" aria-hidden="true">X</a></div>
+		<div class="mut_con_heading">
+			Your Mutual Connections: <span><%= @offerer_mc.size %></span>
+		</div>
+		<div align="center" class="mut_connect_inner_div" id="mut_connect_inner_div">
+			<ul>
+				<% for i in 0..@offerer_mc.size-1 %>
+					<li>
+						<div class='mutual_conn_image_pop user_image_border'>
+							<img src='<%=@offerer_mc[i]["image"]%>' style='width:auto;height:80px;'>
+						</div>
+						<% if isMozilla? %>
+							<div class="facebook_name_pop" style="width: 200px">
+						<% else %>
+							<div class="facebook_name_pop">
+						<% end  %>
+							<div class="facebook_name_span"><%= @offerer_mc[i]["name"] %></div>
+							<div class="facebook_city_span"><%= @offerer_mc[i]["location"] %></div>
+						</div>
+					</li>
+					<% if (i+1)%5 == 0 then %>
+						<br/>
+					<%end%>
+				<% end %>
+			</ul>		
+		</div>
+		<!-- <div align="center" id="ok_btn"><a href="#" onclick="document.getElementById('mutual_connect_box').style.display='none';document.getElementById('fade').style.display='none'; return false;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/ok.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/ok_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/ok.png';"  /></a></div> -->
+	</div>
+
+<% end %>

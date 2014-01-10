@@ -1,0 +1,25 @@
+<% if @user.present? %>
+	<% if @user == current_user %>
+		<%= render "users/user_page_common_top_own" %>
+	<% else %>
+		<%= render "users/user_page_common_top_new" %>
+	<% end %>
+<script>
+	$(function() {
+			<% if @user == current_user %>
+				$("#tab-content").html("<%= escape_javascript render('shared/reviews_tab_header', :communication_sections => @communication_sections, :communication_largest => @communication_largest, :description_sections => @description_sections, :description_largest => @description_largest, :overall_rating => @overall_rating, :user => @user) %>");
+				$("#review-content").html("<%= escape_javascript render('shared/reviews_tab', :my_profile => true) %>");
+			<% else %>
+				$("#tab-content").html("<%= escape_javascript render('shared/reviews_tab') %>");
+			<% end %>
+			$("#tab_following").parent().removeClass('active');
+			$("#tab_haves").parent().removeClass('active');
+			$("#tab_wants").parent().removeClass('active');
+			$("#tab_likes").parent().removeClass('active');
+			$("#tab_myoffers").parent().removeClass('active');
+			$("#tab_past_trades").parent().removeClass('active');
+			$("#tab_reviews").parent().addClass('active');
+			$("#tab_inbox").parent().removeClass('active');
+	});
+</script>
+<% end %>

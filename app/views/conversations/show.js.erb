@@ -1,0 +1,6 @@
+
+$(".tab-content").html("<%= escape_javascript render('shared/private_messaging') %>");
+$('.pvt_msg_right_area_wrapper').show();
+$('.empty_inbox_block_wrapper').hide();
+$('#inboxlink').addClass("active");
+// $("#tab-content").html("<%= escape_javascript(render(:partial => 'shared/private_messaging', :locals => { :location => '.pvt_msg_right_area_wrapper' })) %>");

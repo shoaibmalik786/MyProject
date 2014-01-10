@@ -1,0 +1,120 @@
+<% if session[:ipad_mini_contest].blank? or session[:ipad_mini_contest] == 1 %>
+	<div id="Step1">
+		<div align="center" id="wetrade">We'll TradeYa!</div>
+		<div id="help">Help spread the word about this revolution in exchange for...</div>
+		<div id="chance">...a chance to WIN this<br /> iPad mini!</div>
+		<div id="select1">STEP 1. Sign In or Sign Up</div>
+		<div class="sigup_section">
+			<% if current_user %>
+				<span style="font-size:25px;">Already Signed In</span><br/><br/>
+				<div><a href="/contest" ><img src="/assets/ipad_mini/next_step.png" onmouseover="this.src='/assets/ipad_mini/next_step_roll.png';" onmouseout="this.src='/assets/ipad_mini/next_step.png';" /></a></div>
+			<% else %>
+				<a href="/auth/facebook" class="auth_provider position-click auth_provider_more" style="margin: 0px;">
+				<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/connect_fb.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/connect_fb_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/connect_fb.png';">
+				</a>
+				<div><a href="#" onclick="return showSignUpForm();"><img src="/assets/ipad_mini/sign_up_btn.png" onmouseover="this.src='/assets/ipad_mini/sign_up_btn_roll.png';" onmouseout="this.src='/assets/ipad_mini/sign_up_btn.png';" /></a></div>
+				<div><a href="#" onclick="return showModal('signin_modal');"><img src="/assets/ipad_mini/sign_in_btn.png" onmouseover="this.src='/assets/ipad_mini/sign_in_btn_roll.png';" onmouseout="this.src='/assets/ipad_mini/sign_in_btn.png';" /></a></div>
+			<% end %>
+		</div>
+	</div>
+<% elsif session[:ipad_mini_contest] == 2 %>
+	<div id="Step1">
+		<div align="center" id="wetrade">We'll TradeYa!</div>
+		<div id="help">Help spread the word about this revolution in exchange for...</div>
+		<div id="chance2">...a chance to WIN this<br /> iPad mini!</div>
+		<div id="select1" style="margin-top: 18px;">STEP 2. Spread the word</div>
+		<div id="select2">For every friend you sign up <br /> you get an entry in the contest</div>
+		<!-- Any link with a class="cs_import" will start the import process -->
+		<a class="cs_import address_book"><b>To:</b> Add from your address book</a>
+		<div id="deep-link" style="display:block">
+			<span id="" style="">
+				<a id="source-yahoo" href="#" onclick="return cloudsponge.launch('yahoo');"><img alt="Yahoo" height="20" src="/assets/ipad_mini/yahoo.png" width="20" /></a>
+				<a id="source-gmail" href="#" onclick="return cloudsponge.launch('gmail');"><img alt="Gmail" height="20" src="/assets/ipad_mini/google.png" width="20" /></a>
+				<a id="source-windowslive" href="#" onclick="return cloudsponge.launch('windowslive');"><img alt="Windows Live" height="20" src="/assets/ipad_mini/msn.png" width="20" /></a>
+				<a id="source-aol" href="#" onclick="return cloudsponge.launch('aol');"><img alt="Aol" height="20" src="/assets/ipad_mini/aol.png" width="20" /></a>
+				<a id="source-plaxo" href="#" onclick="return cloudsponge.launch('plaxo');"><img alt="Plaxo" height="20" src="/assets/ipad_mini/plaxo_button.png" width="20" /></a>
+				<a id="source-outlook" href="#" onclick="return cloudsponge.launch('outlook');"><img alt="Microsoft Outlook" height="20" src="/assets/ipad_mini/microsoft.png" width="20" /></a>
+				<a id="source-addressbook" href="#" onclick="return cloudsponge.launch('addressbook');"><img alt="Mac Address Book" height="20" src="/assets/ipad_mini/apple.png" width="20" /></a>
+			</span>
+		</div>
+		<div class="sigup_section" style="margin-top: 5px;">
+		<!-- This textarea will be populated with the contacts returned by CloudSponge -->
+		<%= form_tag('/contest_send_mail', :method => "post", :id=>"step2_send_mail") do  %>
+			<%= text_area_tag(:contact_list, "", :class => "address_text")%>  
+		<!-- 	<textarea id="contact_list" class="address_text" style="height:60px; width:300px;" ></textarea> -->
+		<!-- <div class="address_book">To: Add from your address book</div> -->
+		<% end %>
+			<!-- <textarea class="address_text"></textarea> -->
+			<div><a hrf="#" onclick="$('#step2_send_mail').submit(); return false;"><img src="/assets/ipad_mini/send.png" onmouseover="this.src='/assets/ipad_mini/send_roll.png';" onmouseout="this.src='/assets/ipad_mini/send.png';" /></a></div>
+		
+		</div>
+		<!-- Include these scripts to import address books with CloudSponge -->
+		<script type="text/javascript" src="https://api.cloudsponge.com/address_books.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			var csPageOptions = {
+				domain_key: "<%= CLOUD_SPONGE_DOMAIN_KEY %>",
+				textarea_id:"contact_list",
+				mobile_render:true
+			};
+		</script>
+		<!-- for running on local host change domain_key to U3JEZNKUFQ4DGJFEBCBB -->
+	</div>
+<% elsif session[:ipad_mini_contest] == 3 %>
+	<div id="Step3">
+		<div align="center" id="wetrade">We'll TradeYa!</div>
+		<div class="get_entry">Get 2 entries in contest for every friend that signs up <br /> with Facebook!</div>
+		<div id="select1" style="margin-top: 18px;">STEP 3. Share It</div>
+		<div id="shareimage">
+			<div id="facebook_like_button_holder_1">	
+				<a href="#" onclick="contestFBShare(); window.open('http://www.facebook.com/sharer.php?s=100&p[title]='+ encodeURIComponent('TradeYa iPad Mini Contest') + '&p[url]=' + encodeURIComponent('http://www.tradeya.com') + '&p[images][0]=' + encodeURIComponent('https://s3.amazonaws.com/tradeya_prod/tradeya/images/tradeya_fb_image.jpg') + '&p[summary]=' + encodeURIComponent('Win an iPod Mini in 4 EASY Steps. Enroll now. Contest ends on 24th February 2013.'), '_blank','height=400px, width=650px, left=' + ((screen.width/2)-(550/2)) + ', top=' + ((screen.height/2)-(420/2)), 'facebook'); return false;">
+					<img src="/assets/ipad_mini/share.jpg" />
+				</a>
+			</div>
+
+			<img src="/assets/ipad_mini/2another.jpg" style="margin-top:-8px" />
+		</div>
+		<div class="sigup_section" style="margin-top: -8px;">
+			<div><a href="/contest"><img src="/assets/ipad_mini/last_step.png" onmouseover="this.src='/assets/ipad_mini/last_step_roll.png';" onmouseout="this.src='/assets/ipad_mini/last_step.png';" /></a></div>
+		</div>
+		<div id="contestend">CONTEST ENDS: February 24th 11:59AM CST</div>
+	</div>
+<% elsif session[:ipad_mini_contest] == 4 %>
+	<div id="Step4">
+		<div align="center" id="wetrade">We'll TradeYa!</div>
+		<div class="get_entry" style="margin-top: 25px;">You're almost done...</div>
+		<div id="select4">STEP 4. <br />Start Submitting TradeYas</div>
+		<div id="select2_trd">For every TradeYa you submit <br /> you get 10 entries<br /> in the contest</div>
+		<div class="sigup_section" style="margin-top: 46px;">
+			<div><a href="/items/new"><img src="/assets/ipad_mini/submit_tradeya_now.png" onmouseover="this.src='/assets/ipad_mini/submit_tradeya_now_roll.png';" onmouseout="this.src='/assets/ipad_mini/submit_tradeya_now.png';" /></a></div>
+		</div>
+		<div id="contestend">*All TradeYas must be valid for submission</div>
+	</div>
+<% elsif session[:ipad_mini_contest] == 5 %>
+	<div id="Step5">
+		<div id="congrats">Congratulations, <br /> <span style="font-size: 26px;">you've been entered!</span></div>
+		<div id="winner">Winner will be announced:<br /> <span style="font-size: 24px;">March 15th, 2013</span></div>
+	</div>
+<% end %>
+
+<% if session[:ipad_mini_contest] != 2 %>
+	<script>
+		isContest = true;
+		$(function(){
+			$('a.auth_provider').click(function(e) {
+				var href = $(this).attr('href');
+				var width = 600, height = 400;
+				var left = (screen.width / 2) - (width / 2);
+				var top = (screen.height / 2) - (2 * height / 3);
+				var features = 'menubar=no,toolbar=no,status=no,width=' + width + ',height=' + height + ',toolbar=no,left=' + left + ',top=' + top;
+				var loginWindow = window.open(href, '_blank', features);
+				loginWindow.focus();
+				if (e.preventDefault) { e.preventDefault(); } else { e.returnValue = false; }
+				return false;
+			});
+		});
+		$(document).ready(function() {
+			$('<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/spinner.gif" id="spinner" />').css('position','absolute').hide().appendTo('body');
+			bindAjaxSpinner();
+		});
+	</script>
+<% end %>

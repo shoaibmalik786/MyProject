@@ -1,0 +1,5 @@
+<% if @accepted %>
+	$("#accepted_offers_div").html("<%= escape_javascript(render("shared/accepted_offers")) %>")
+<% else %>
+	$("#current_offers_div").html("<%= escape_javascript(render("shared/current_offers")) %>")
+<% end %>

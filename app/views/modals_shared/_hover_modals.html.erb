@@ -1,0 +1,28 @@
+<div id="hover_image_div" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<img id="hoverImage" src = "<%= @item.item_image_full %>" />
+	<div class="multiple_photo_div" style="margin-top: 0px; margin-left: 15px;">
+		<%if @item.item_all_image.count > 1 %>
+		  <%@item.item_all_image(:medium).each do |x|%>
+			<div class="mult_photo_vid" style="margin-right: 10px">	
+				<img src="<%= x %>" onclick="clickHoverImage('<%= x %>');">						
+			</div>
+	      <%end%>
+	    <%end%>
+		<!--div class="mult_photo_vid"></div>
+		<div class="mult_photo_vid"></div>
+		<div class="mult_photo_vid" style="margin-right: 0px"></div-->
+	</div>
+</div>
+<div id="hover_video_div" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="width:445px;height:340px; overflow: hidden;">
+	<div id="crossimg" style="margin-right: -3px; margin-top: -5px; float: right;">
+		<a href="#" class="close" data-dismiss="modal" aria-hidden="true">X</a>
+	</div>
+	<a href="#" onclick="return false;" style="width:405px;height:300px;position: absolute; margin-top: 19px; margin-left: 20px;" id="hoverVideo"></a>
+	<div class="multiple_photo_div" style="margin-top: 0px; margin-left: 15px;">
+		<div class="mult_photo_vid"></div>
+		<div class="mult_photo_vid"></div>
+		<div class="mult_photo_vid"></div>
+		<div class="mult_photo_vid" style="margin-right: 0px"></div>
+	</div>
+</div>

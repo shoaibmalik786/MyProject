@@ -1,0 +1,27 @@
+<h1>Listing accepted_offers</h1>
+
+<table>
+  <tr>
+    <th>Trade</th>
+    <th>User</th>
+    <th>Recent TradeYa</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @accepted_offers.each do |accepted_offer| %>
+  <tr>
+    <td><%= accepted_offer.trade_id %></td>
+    <td><%= accepted_offer.user_id %></td>
+    <td><%= accepted_offer.recent_tradeya %></td>
+    <td><%= link_to 'Show', accepted_offer %></td>
+    <td><%= link_to 'Edit', edit_accepted_offer_path(accepted_offer) %></td>
+    <td><%= link_to 'Destroy', accepted_offer, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Accepted offer', new_accepted_offer_path %>

@@ -1,0 +1,6 @@
+<% if params[:t] %>
+	$("#comment_section_<%=params[:t]%>").html("<%= escape_javascript(render("shared/comments_section", :trade_id => params[:t])) %>");
+<%else%>
+	$("#comments_section_div_show").html("<%= escape_javascript(render("shared/comments_section", :trade_id => nil)) %>");
+	$('#comment_box').val('');
+<%end%>

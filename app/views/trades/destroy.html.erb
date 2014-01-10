@@ -1,0 +1,13 @@
+<script>
+	<% if params[:manageOffer] %>
+      	<% if params[:manageOffer] == "SUCCESSFUL" %>
+        $("#successful_offers").html("<%= escape_javascript(render("home/user_success_offers")) %>")
+      	<% elsif params[:manageOffer] == "PAST" %>
+        $("#past_offers").html("<%= escape_javascript(render("home/user_past_offers")) %>")
+      	<% elsif params[:manageOffer] == "CURRENT" %>
+        $("#current_offers").html("<%= escape_javascript(render("home/user_current_offers")) %>")
+     	<% end %>
+    <% else %>
+		$("#offer_section_div").html("<%= escape_javascript(render("shared/offer_section")) %>")
+	<% end %>
+</script>

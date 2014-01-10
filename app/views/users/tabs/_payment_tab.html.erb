@@ -1,0 +1,89 @@
+<div class="tab-pane" id="payment_info_tab">
+
+    <div class="edit_profile_controls">
+      <div class="step1_edit_profile">
+        <div class="control-group step1_control_group">
+          <label class="control-label credit_card_label" for="inputfname">Credit Card</label>
+          <div class="controls edit_payment_info" id="cards_list">
+
+            
+           <%= render 'users/partials/users_cards' %>
+            <hr class="password_control_group" />
+            <label class="radio credit_card">
+              <% if @user.charge_cards.present? %>
+                <% @user.charge_cards.each do |card| %>
+
+              <input type="radio" name="cardtype" /><label><img src="http://d3md9h2ro575fr.cloudfront.net/images/visaicon.png" style="margin-top: -7px;"></span><span class="same_shipping_text">Ending in <%= card.last_4 %></span>&nbsp;&nbsp;<%= link_to "X", charge_card_path(card.id), method: :delete, class: "remove_card shipping_cross", data: {confirm: "Are you sure you want to delete the card?", remote: true} %>
+              <!-- <a href="#edit_card_info" class="edit_card" data-id="<%= card.card_id %>" data-toggle="modal">edit</a> -->
+            </label>
+              
+           <!--  <span class="billing_text">Billing address</span><span class="same_shipping_text_right">Same as shipping</span><span class="edit_shipping_text"><a href="#" onclick="return false;">Edit</a></span> -->
+        
+              <% end %>
+            <% end %>
+           </label> 
+            <!-- <hr class="password_control_group" /> -->
+
+          </div>
+        </div>
+        <div class="control-group addnew_div">
+          <div class="controls">
+            <%= form_tag charge_cards_path, :id => "stripe-form-tag", :remote => true do %>
+            <div class="add_new_btn"><a href="#" onclick="return false;">Add New</a></div>
+            <% end %>
+          </div>
+        </div>
+        <hr class="password_control_group" />
+        <div class="control-group">
+          <!-- <div class="controls save_cancel_btn">
+          <input type="submit" class="edit_save" value="Save">
+          <input type="submit" class="edit_cancel" value="Cancel">
+          </div> -->
+        </div>
+      </div>
+      <script>
+      $('.add_new_btn a').on("click",function(){
+       var token = function(res){
+         var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+         $('#stripe-form-tag').append($input).submit();
+       };
+
+       StripeCheckout.open({
+         key:         '<%= ENV['STRIPE_PUBLIC_KEY'] %>',
+         address:     true,
+         currency:    'usd',
+         name:        'Add Your Credit Card',
+         description: 'you are safe with us!',
+         panelLabel:  'Add Card',
+         token:       token
+       });
+
+       return false;
+       //$('input').val("lpankit@gmail.com");
+     });
+      </script>
+</div>
+
+<!-- <div id="edit_card_info" class="modal fade hide">
+                    <a href="#" class="close" data-dismiss="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png"></a>
+                  <div id="card_form"></div>
+                  </div> -->
+
+<script>
+
+  
+
+    // $('.edit_card').on('click', function () {
+        
+
+    //     //do all your operation populate the modal and open the modal now. DOnt need to use show event of modal again
+    //     $('#edit_card_info #card_form').empty();
+    //     $('#edit_card_info #card_form').append(('<b style="font-size:14px">Order Id selected: ' + $(this).data('id') + '</b>'));
+    //     //$('#edit_card_info').modal('show');
+
+
+
+    // });
+
+</script>
+

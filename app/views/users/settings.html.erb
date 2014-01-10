@@ -1,0 +1,173 @@
+<div class="container">
+  <div class="span10 item_middle_section">
+    <div class="center_content">
+      <div class="notification_heading">Settings</div>
+      <div class="user_sub_heading">Notification Settings</div>
+      <div class="user_setting_hr"></div>
+      <div class="notification_settings">
+
+        <%= form_for @user, :url => {:controller => "users", :action => "update_settings",:id => params[:id]}, :html => {:id => 'editSettingsForm', :class => 'form-horizontal send_notofication_from', :method => "post"}   do |f| %>
+
+        <div class="control-group">
+          <label class="control-label send_notification" for="send_notification">Send me notifications when:<br /><span>NO SPAMMING we promise</span></label>
+          <div class="controls">
+            <label class="checkbox">
+              <%=f.check_box :notify_received_offer, :onclick=>'needToConfirm=true' %>
+              <label>When my TradeYa gets an offer</label>
+            </label>
+          </div>
+          <div class="controls">
+            <label class="checkbox">
+              <%=f.check_box :notify_tradeya_liked, :onclick=>'needToConfirm=true' %>
+              <label>When someone Likes my TradeYa</label>
+            </label>
+          </div>
+          <div class="controls">
+            <label class="checkbox">
+              <%=f.check_box :notify_tradeya_wanted, :onclick=>'needToConfirm=true' %>
+              <label>When someone Wants my TradeYa</label>
+            </label>
+          </div>
+          <div class="controls">
+            <label class="checkbox">
+              <%=f.check_box :notify_tradeya_wanted_traded, :onclick=>'needToConfirm=true' %>
+              <label>When a TradeYa I have Wanted gets Traded</label>
+            </label>
+          </div>
+          <div class="controls">
+            <label class="checkbox">
+              <%=f.check_box :notify_tradeya_liked_traded, :onclick=>'needToConfirm=true' %>
+              <label>When a TradeYa I have Liked gets Traded</label>
+            </label>
+          </div>
+          <div class="controls">
+            <label class="checkbox">
+              <%=f.check_box :notify_received_comments, :onclick=>'needToConfirm=true' %>
+              <label>When I get a new comment</label>
+            </label>
+          </div>
+          <div class="controls">
+            <label class="checkbox">
+              <%=f.check_box :notify_offer_accepted, :onclick=>'needToConfirm=true' %>
+              <label>When my offer is accepted</label>
+            </label>
+          </div>
+          <div class="controls">
+            <label class="checkbox">
+              <%=f.check_box :notify_tradeya_news_updates, :onclick=>'needToConfirm=true' %>
+              <label>Occasional TradeYa news and updates</label>
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label send_notification_radio" for="send_notification">Send me notifications:</label>
+          <div class="controls">
+            <label class="radio">
+              <%= f.radio_button(:notification_frequency, "1", :onclick=>'needToConfirm=true') %>
+              <%= f.label "notification_frequency_1", "Immediately", :onclick=>'needToConfirm=true' %>
+              <%= f.radio_button(:notification_frequency, "2", :onclick=>'needToConfirm=true') %>
+              <%= f.label "notification_frequency_2", "Once a day", :onclick=>'needToConfirm=true' %>
+              <%= f.radio_button(:notification_frequency, "3", :onclick=>'needToConfirm=true') %>
+              <%= f.label "notification_frequency_3", "At the end of the week", :onclick=>'needToConfirm=true' %>
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group send_notification_sms">
+          <label class="control-label" for="send_notification">Notifications should be sent via:</label>
+          <div class="controls">
+            <label class="radio">
+              <input type="radio" name="notification_mode" class="notification_mode" id="notify_via_email" onclick="needToConfirm=true">
+              <label>Email</label>
+            </label>
+            <label class="radio">
+              <input type="radio" name="notification_mode" class="notification_mode" id="notify_via_mobile" onclick="needToConfirm=true">
+              <label>SMS</label>
+            </label>
+            <label class="radio">
+              <input type="radio" name="notification_mode" class="notification_mode" id="notify_via_both" onclick="needToConfirm=true">
+              <label>Both email and SMS</label>
+            </label>
+          </div>
+        </div>
+        <%= f.hidden_field :notify_via_email %>
+        <%= f.hidden_field :notify_via_mobile %>
+
+        <div class="user_sub_heading">Tool Tip Preferences</div>
+        <div class="user_setting_hr"></div>
+        <div class="control-group">
+          <label class="control-label" for="send_notification">Help if you need it:</label>
+          <div class="controls">
+            <label class="radio">
+              <%= f.radio_button(:tooltip, true, :onclick=>'needToConfirm=true') %>
+              <%= f.label :tooltip_true, "Show me tool tips to help", :onclick=>'needToConfirm=true' %>
+              <%= f.radio_button(:tooltip, false, :onclick=>'needToConfirm=true') %>
+              <%= f.label :tooltip_false, "I’m a pro and don’t need tool tips. Turn them off.", :class=>"tooltip_true_false", :onclick=>'needToConfirm=true' %>
+            </label>
+          </div>
+        </div>   
+        <div class="save_preference_div"><a href="#" class="save_preferences" onclick="$('#editSettingsForm').submit(); needToConfirm = false; return false;">Save</a>
+        </div>
+        
+        <%end%>
+
+      </div> <!--notification_settings-->
+    </div> <!--center_content-->
+  </div> <!--span13 item_middle section-->
+</div> <!--container-->
+<!-- remove phone no modal start -->
+  <div id="save_settings_modal" class="modal fade hide">
+    <a href="#" class="close" data-dismiss="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png"></a>
+    <div class="user_sub_heading in_center re_pin_heading">Wait! You did not save the changes</div>
+    <div class="resend_modal_text save_text ">
+     Do you want to save them? 
+    </div>
+    <div class="save_footer">
+      <span><a href="#" class="resend_submit ma_r" >Save</a> or  <a href="#">Cancel</a></span>
+    </div>
+  </div>
+<!-- remove phone no modal Ends -->
+<script>
+    // var needToConfirm;
+    window.onbeforeunload = confirmExit;
+    function confirmExit()
+    {
+      if (needToConfirm)
+        // $("#save_settings_modal").modal('show');
+        return 'Have you saved all the changes?';
+    }
+</script>
+
+<script>
+  $(function(){
+  setInitialValues();
+
+  $("input:radio[name='notification_mode']").change(function(){
+  if ($('#user_' + $(this).attr('id')).length > 0)
+  {
+  $('#user_notify_via_email').val(0);
+  $('#user_notify_via_mobile').val(0);
+  $('#user_' + $(this).attr('id')).val(1);
+  }
+  else
+  {
+  $('#user_notify_via_email').val(1);
+  $('#user_notify_via_mobile').val(1);
+  }
+  });
+  });
+
+  function setInitialValues(){
+  // set notification mode checkbox
+  if ($('#user_notify_via_email').val() == 1)
+  {
+  if($('#user_notify_via_mobile').val() == 1)
+  $('#notify_via_both').prop('checked',true);
+  else
+  $('#notify_via_email').prop('checked',true);
+  }
+  else
+  $('#notify_via_mobile').prop('checked',true);
+  }
+</script>

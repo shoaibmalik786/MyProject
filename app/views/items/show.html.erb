@@ -1,0 +1,15 @@
+<%= render "item_page_top" %>
+<script>
+	$(function() {	
+		<%if @item.completed? %>
+			$("#item-tabs #tab_accepted_offers").click();
+		<%elsif current_user and params[:tab] == "myoffers"%>
+			$("#item-tabs #tab_my_offers").click();
+		<% elsif %>
+			$("#item-tabs #tab_trade_offers_tab").click();
+		<% end %>
+  });
+
+</script>
+
+

@@ -1,0 +1,56 @@
+<% counter = (((params[:page].to_i) - 1 )* 10)+1 %>
+$("#itemcard").append("<%= escape_javascript(render 'items_cards') %>");
+		var currentWidth = 980;
+		var winWidth = $(window).width();
+			var conWidth;
+			if(winWidth<480){
+					conWidth=225;
+					col=1;
+					ox=7.5,
+					oy = 9
+				}
+			else if(winWidth<730){
+				conWidth=480;
+				col=2;
+				ox=7.5,
+				oy = 9
+				$("#itemcard").css("margin-left","5px");
+				$("#itemcard").css("margin-top","10px");
+				}
+			else if(winWidth < 980 ){
+				conWidth = 730;
+				col = 3,
+				ox = 9,
+				oy = 10
+				$("#itemcard").css("margin-top","10px");
+				$("#itemcard").css("margin-left","10px");
+			}
+			else if(winWidth <1200) {
+				conWidth = 980;
+				col = 4;
+				ox = 9.8;
+				oy = 9
+			}  
+			else if(winWidth <1500) {
+				conWidth = 1200;
+				col = 5;
+				ox = 9.8;
+				oy = 9
+			}  
+			else if(winWidth >1500) {
+				conWidth = 1500;
+				col = 6;
+				ox = 9.8;
+				oy = 9
+			}  
+			if(conWidth != currentWidth) {
+			currentWidth = conWidth;
+			$('#itemcard').width(conWidth);
+			$('#itemcard').BlocksIt({
+				numOfCol: col,
+				offsetX: ox,
+				offsetY: oy,
+				blockElement: '.user_wants_card'
+			});
+			
+		}

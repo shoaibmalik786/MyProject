@@ -1,0 +1,62 @@
+<div id='edit_photo_modal' class='modal hide fade test'>
+    <div class='edit_photo_top'>
+      <div class='done_btn'><a href='#'>Done</a></div>
+      <div class='heading'>Edit Photo</div>
+      <div class='close' data-dismiss='modal'>X</div>
+    </div>
+   <div class='user_img_tab_content tab-content'>
+      <div id='auto_tab' class='img_effect_tab tab-pane active'>
+        <div class='edit_user_img'>
+          <img src='http://d3md9h2ro575fr.cloudfront.net/images/edit_img_big.jpg'>
+        </div>
+      </div>
+      <div id='rotate_tab' class='img_effect_tab tab-pane'>
+        <div class='edit_user_img'>
+          <img src='http://d3md9h2ro575fr.cloudfront.net/images/edit_img_big.jpg'>
+        </div>
+      </div>
+      <div id='contrast_tab' class='img_effect_tab tab-pane'>
+        <div class='edit_user_img'>
+           <img src='http://d3md9h2ro575fr.cloudfront.net/images/edit_img_big.jpg'>
+        </div>
+      </div>
+      <div id='crop_tab' class='img_effect_tab tab-pane'>
+        <div class='edit_user_img'>
+           <img src='http://d3md9h2ro575fr.cloudfront.net/images/edit_img_big.jpg'>
+        </div>
+      </div>
+    </div>  
+    <div class='edit_user_img_tabs'>
+      <ul class='nav nav-tabs edit_img_tabs'>
+        <li><a href='#crop_tab' data-toggle='tab'><i class='crop_img'></i>Crop</a></li>
+        <li><a href='#rotate_tab' data-toggle='tab'><i class='rotate_img'></i>Rotate</a></li>
+        <li><a href='#auto_tab' data-toggle='tab'><i class='auto_img'> </i>Auto</a></li>
+        <li><a href='#contrast_tab' onclick='active_effects();' data-toggle='tab'><i class='contrast_img'></i>Contrast</a></li>
+      </ul>
+    </div>
+     
+     <div id='contrast_effects' class='img_effect_tab' style='display:none'>
+        <ul>
+          <li><a href='#'><img src='http://d3md9h2ro575fr.cloudfront.net/images/effect_img1.png'></a></li>
+          <li><a href='#'><img src='http://d3md9h2ro575fr.cloudfront.net/images/effect_img2.png'></a></li>
+          <li><a href='#'><img src='http://d3md9h2ro575fr.cloudfront.net/images/effect_img3.png'></a></li>
+          <li><a href='#'><img src='http://d3md9h2ro575fr.cloudfront.net/images/effect_img1.png'></a></li>
+          <li><a href='#'><img src='http://d3md9h2ro575fr.cloudfront.net/images/effect_img2.png'></a></li>
+          <li><a href='#'><img src='http://d3md9h2ro575fr.cloudfront.net/images/effect_img3.png'></a></li>
+          <li><a href='#'><img src='http://d3md9h2ro575fr.cloudfront.net/images/effect_img1.png'></a></li>
+          <li><a href='#'><img src='http://d3md9h2ro575fr.cloudfront.net/images/effect_img2.png'></a></li>
+          <li><a href='#'><img src='http://d3md9h2ro575fr.cloudfront.net/images/effect_img3.png'></a></li>
+          <li><a href='#'><img src='http://d3md9h2ro575fr.cloudfront.net/images/effect_img1.png'></a></li>
+          <li><a href='#'><img src='http://d3md9h2ro575fr.cloudfront.net/images/effect_img2.png'></a></li>
+           <li><a href='#'><img src='assets/version2/effect_img3.png'></a></li>
+        </ul>
+      </div> 
+
+     
+    <div class='clear'></div>
+  </div>
+  <script type="text/javascript">
+    function active_effects(){
+      $('#contrast_effects').fadeIn();
+    }
+  </script>

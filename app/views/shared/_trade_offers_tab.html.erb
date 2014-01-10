@@ -1,0 +1,203 @@
+<div id="spinner"></div>
+<div class="tab_div_overlay"></div>
+<div id="trade_offers_tab">
+  <%if @trade_offers_tab.present?%>
+  <%@trade_offers_tab.each do |tr| %>
+  <div class="accepted_offer">
+    <% if current_user.present? and @item.user == current_user and flash[:error] %>
+      <div class="info_alert error_msg" id ="notice" style="display:none;">
+        <!-- <p><%#= flash[:error] %></p> -->
+        <%if params[:scroll]%>
+          <p>Rollover on the item card to accept/reject the offer or leave a comment for <span class="msg_item_name"><%=@trade_offers_tab.last.offer.user.first_name.titleize%></span></p>
+        <%elsif params[:offer_by]%>
+          <p>Rollover on the item card to accept/reject the offer or leave a comment for <span class="msg_item_name"><%=params[:offer_by]%></span></p>
+        <%end%>
+        <a href="#" class="info_cross" onclick="$('#notice').fadeOut(1000); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/info_cross.png"></a>
+      </div>
+    <%elsif current_user.present? and @item.user == current_user and flash[:notice]%>
+      <div class="info_alert success_msg" id ="notice" style="display:none;">
+        <!-- <p><%#= flash[:notice] %></p> -->
+        <p>You've rejected <span class="msg_item_name"><%=params[:reject_of]%></span> 's offer. It has been moved to "Rejected Offers" .</p>
+        <a href="#" class="info_cross" onclick="$('#notice').fadeOut(1000); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/info_cross.png"></a>
+      </div>
+    <% end %>
+
+    <div class="acc_tab_user_card">
+      <!-- User Card Starts -->
+      <div class="user_card_right" id="item_user_card">
+        <%=render 'shared/user_card',:user=> tr.offer.user%>
+      </div>
+      <!-- User Card Ends -->
+    </div>
+
+    <div class="acc_offer_right">
+      <!-- Offer Item Card Starts -->
+      <div class="user_wants_card margin_right">
+        <div class="user_card_heading">
+          <div class="clip">
+            <img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+          </div>
+          <div class="item_title_card"><%=link_to tr.offer.title, item_path(tr.offer)%></div>
+          <div class="card_heading_middle_left">
+            <a href="<%=user_path(tr.offer.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrImg', 'Click User image on Item Card']);mixpanel.track('Click User image on Item card');addDelay(this,event); return false;"><img src="<%=tr.offer.user.user_image(:thumb)%>"></a>
+          </div>
+          <div class="card_heading_middle_right">
+            <div class="item_card_name"><a href="<%=user_path(tr.offer.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrTtl', 'Click User Title on Item Card']);mixpanel.track('Click User Title on Item card');addDelay(this,event);return false;"><%=tr.offer.user.title%></a></div>
+            <div class="item_city_card"><%=tr.offer.user.city%></div>
+            <%if tr.offer.user.location != "-" and tr.offer.user != current_user%>
+            <div class="item_distance_card"><%=tr.offer.user.user_distance(session[:user_ll])%> miles</div>
+            <%end%>
+          </div>
+
+          <%if current_user.present? and tr.offer.user == current_user %>
+          <div class="item_heading_bottom">
+            <div class="card_details" id="detail" onclick="$('#item_info_<%=tr.offer.id%>').toggle();">Details</div>
+          </div>
+          <%else%>
+          <div class="item_heading_bottom">
+            <div class="card_details" id="detail" onclick="$('#item_info_<%=tr.offer.id%>').toggle();">Details</div>
+            <div class="heading_trade_want_like">
+
+              <div id="item_card_want_icon_<%=tr.offer.id%>">
+                <%= render 'shared/item_card_want', :@item => tr.offer, :@icon => true%>
+              </div>
+              <div><a href="<%=my_offers_item_path(tr.offer)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_Trd', 'Click Trade on Item Card']);mixpanel.track('Click Trade on Item card');addDelay(this,event);return false;"> <img src="http://d3md9h2ro575fr.cloudfront.net/images/card_trade.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_trade_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_trade.png'"></a>
+              </div>
+              <div><a href ="/items/new?have=<%=tr.offer.id%>" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmHv', 'Click Have on Item Card']);mixpanel.track('Click Have on Item card');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/card_have.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_have_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_have.png'"></a> </div>
+              <div id="item_card_like_<%=tr.offer.id%>">
+                <%= render 'shared/item_card_like', :@item => tr.offer%>
+              </div>
+            </div>
+          </div>
+          <%end%>
+
+        </div>
+
+        <div class="item_wants_image">
+          <a href="<%=item_path(tr.offer)%>"><img src="<%=tr.offer.item_image(:medium)%>" /></a>
+          <%if current_user.present? and ((tr.offer.user == current_user) or (tr.item.user == current_user)) %>
+            <div class="add_comment"><a href="<%=item_path(tr.offer)+"?section=comments"%>" onclick="_gaq.push(['_trackEvent', 'Item Card', 'clk_ItmCmmnt_TrdFlow', 'Click Comment on Item Card Trade Flow']); mixpanel.track('Click Comment on Item Card Trade Flow'); addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/add_comments.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/add_comment_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/add_comments.png'"></a></div>
+          <%end%>
+        </div>
+        <!-- <div class="curve_left">
+             <img src="http://d3md9h2ro575fr.cloudfront.net/images/curve_left_white.png">
+        </div>
+        <div class="curve_right">
+          <img src="http://d3md9h2ro575fr.cloudfront.net/images/curve_right_white.png">
+        </div> -->
+        <!-- Haves Wants Likes and Trade Hovers Start -->
+        <%if tr.item.user == current_user %>
+        <%if tr.item.status == "LIVE" %>
+        <div class="accept_div">
+          <%= form_tag accepted_offers_path do %>
+          <%= hidden_field_tag 'trade_id', tr.id %>
+          <a onclick="$(this).parents('form').submit();_gaq.push(['_trackEvent', 'Item Card', 'Clk_OfrAccpt', 'Click On Accept Offer']); mixpanel.track('Click On Accept offer'); return false;">Accept</a>
+          <%end%>
+        </div>
+        <div class="reject_offer">
+          <%= form_tag reject_trade_path(:id => tr.id) do %>
+          <a onclick="$(this).parents('form').submit(); _gaq.push(['_trackEvent', 'Item Card', 'Clk_ofrRjct', 'Click On Reject Offer']); mixpanel.track('Click On Reject Offer'); return false;">Reject Offer</a>
+          <%end%>
+          <%#=link_to 'Reject Offer', reject_offer_path(:id => tr.offer.id),:method => 'post'%>
+        </div>
+        <%end%>
+        <%elsif tr.offer.user == current_user%>
+        <%= form_tag remove_offer_item_path(:id => tr.offer.id),:id => "remove_offer_action" do %>
+        <%= hidden_field_tag 'remove_offer', true%>
+        <div class="remove_div" onclick="$(this).parents('form').submit();_gaq.push(['_trackEvent', 'Item Card', 'Clk_ofrRmv', 'Click On Remove Offer']); mixpanel.track('Click On Remove Offer'); return false;">Remove</div>
+        <%end%>
+        <%else%>
+        <!-- <div class="want_have_like_wrapper">
+             <div id="item_card_want_<%=tr.offer.id%>">
+               # <%#= render 'shared/item_card_want', :@item => tr.offer%>
+             </div>
+             <a href="/items/new?have=<%=tr.offer.id%>"><img src="http://d3md9h2ro575fr.cloudfront.net/images/have_gray.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/have_gray_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/have_gray.png'"></a>
+             <div id="item_card_like_<%=tr.offer.id%>">
+               # <%#= render 'shared/item_card_like', :@item => tr.offer%>
+             </div>
+        </div> -->
+        <div class="trade_div"><%=link_to 'Trade', my_offers_item_path(tr.offer)%></div>
+        <%end%>
+        <!-- Haves Wants Likes and Trade Hovers End -->
+      </div>
+      <!-- Offer Item Card Ends -->
+
+      <!-- Offer Item Details Card -->
+      <%= render "shared/details_card", :item => tr.offer, :curve_color => "white", :disp => "true" %>
+    </div>
+  </div>
+  <%end%>
+  <%else%>
+  <!-- Empty Trade Offers Message Starts -->
+  <div id="empty_haves_item">
+    <%if current_user.present? and @item.user == current_user and flash[:notice]%>
+      <div class="info_alert success_msg" id ="notice" style="display:none;">
+        <p>You've rejected <span class="msg_item_name"><%=params[:reject_of]%></span> 's offer. It has been moved to "Rejected Offers" .</p>
+        <a href="#" class="info_cross" onclick="$('#notice').fadeOut(1000); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/info_cross.png"></a>
+      </div>
+    <%end%>
+    <%if @item.user == current_user%>
+    <div class="heading">It looks like you don't have any offers on this item. TradeYas with complete information and multiple images have the best odds of getting traded. <a href="<%=edit_item_path(@item.id, :item_user => current_user.id) %>">Edit your item here.</a></div>
+    <%else%>
+    <div class="heading"> Currently nobody has offered anything on<%=@owner.first_name.titleize unless @owner.first_name.blank?%> <%=@item.title%>.<br>
+      <a href="#" onclick="$('#item-tabs #tab_my_offers').click(); return false;">Be the first to offer something.</a>
+    </div>
+    <%end%>
+  </div>
+  <!-- Empty Trade Offers Message Ends -->
+  <%end%>
+</div>
+
+
+<!-- Script for Haves Wants Likes and Trade, Accept Reject Remove Hovers Starts -->
+<script type="text/javascript">
+
+  $(document).ready(function(){
+
+    $('#notice').fadeIn(2000);
+  $("#trade_offers_tab").find(".accepted_offer").find(".acc_offer_right").find(".user_wants_card").find(".accept_div").hide();
+  $("#trade_offers_tab").find(".accepted_offer").find(".acc_offer_right").find(".user_wants_card").find(".reject_offer").hide();
+
+  $("#trade_offers_tab").find(".accepted_offer").find(".acc_offer_right").find(".user_wants_card").hover(function(){
+
+  $(this).find(".accept_div").show();
+  $(this).find(".reject_offer").show();
+
+  },function(){
+  $("#trade_offers_tab").find(".accepted_offer").find(".acc_offer_right").find(".user_wants_card").find(".accept_div").hide();
+  $("#trade_offers_tab").find(".accepted_offer").find(".acc_offer_right").find(".user_wants_card").find(".reject_offer").hide();
+  });
+  })
+
+</script>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+  $(".acc_offer_right").find(".user_wants_card").find(".want_have_like_wrapper").hide();
+  $(".acc_offer_right").find(".user_wants_card").find(".trade_div").hide();
+  // $(".acc_offer_right").find(".user_wants_card").find(".user_card_heading").find(".card_details").hide();
+  $(".acc_offer_right").find(".user_wants_card").find("#remove_offer_action").hide();
+  $(".user_wants_card").find(".add_comment").hide();
+
+  $(".acc_offer_right").find(".user_wants_card").hover(function(){
+
+  $(this).find(".want_have_like_wrapper").show();
+  $(this).find(".trade_div").show();
+  // $(this).find(".user_card_heading").children(".card_details").show();
+  $(this).find("#remove_offer_action").show();
+  $(this).find(".add_comment").show();
+
+  },function(){
+  $(".acc_offer_right").find(".user_wants_card").find(".want_have_like_wrapper").hide();
+  $(".acc_offer_right").find(".user_wants_card").find(".trade_div").hide();
+  // $(".acc_offer_right").find(".user_wants_card").find(".user_card_heading").find(".card_details").hide();
+  $(".acc_offer_right").find(".user_wants_card").find("#remove_offer_action").hide();
+  $(".user_wants_card").find(".add_comment").hide();
+
+  });
+  })
+$('.tab_div_overlay').hide();
+$('#spinner').hide();
+</script>
+<!-- Script for Haves Wants Likes and Trade, Accept Reject Remove Hovers Ends -->

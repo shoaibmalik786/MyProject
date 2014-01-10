@@ -1,0 +1,135 @@
+<%if @user.present?%>
+<!--Content Start -->
+<div class="container">
+	<%if session[:have_saved]%>
+		<script>
+			$(function(){
+      			$('#have_message_modal').modal("show");
+   			});
+		</script>
+		<%session[:have_saved] = nil%>
+	<%end%>
+	<div class="span10 item_middle_section">
+		<div class="center_content">
+			
+		</div>
+	</div>
+	<!-- tab content start -->
+	<div id="spinner" style="top: 90%;"></div>
+	<div class="tab-content" id="tab-content"></div>
+	<!-- tab content ends -->
+</div>
+<!-- Content End-->
+<%end%>
+
+<% if current_user and current_user.id == @user.id %>
+	<!-- modal for photo Upload Starts-->
+	<!-- <div id="photo_upload_modal" class="modal hide fade">
+	  <a href="#" class="close del_close" data-dismiss="modal">X</a>
+	  <div class="heading">Upload a photo from your computer</div>
+	  <input type="file" class="file_up">
+	</div> -->
+	<!-- modal for photo Upload Ends-->
+<% end %>
+<script>
+	$('.profile_tabs li a').click(function(){
+		$('.profile_tabs li').removeClass('active');
+		$(this).parent().addClass('active');
+		$("#reviews_tab_div").hide();
+		$("#inbox_tab_div").hide();
+		$("#inbox_options").hide();
+		$(".reviews_by_user").addClass("active");
+
+		$('#tab_haves').text("Haves");
+		$('#tab_wants').text("Wants");
+		$('#tab_likes').text("Likes");
+		$('#tab_myoffers').text("My Offers");
+		$('#tab_past_trades').text("Past Trades");
+		$('#tab_reviews').text("Reviews");
+		$('#tab_following').text("Following");
+	});
+</script>
+<script>
+	// var opts = {
+	// 	size: 75,           // Width and height of the spinner
+	// 	factor: 0.25,       // Factor of thickness, density, etc.
+	// 	color: "#FF5447",      // Color #rgb or #rrggbb
+	// 	speed: 1.0,         // Number of turns per second
+	// 	clockwise: true     // Direction of rotation
+	// };
+	// var ajaxLoader = new AjaxLoader("spinner", opts);
+	$('.profile_tabs li:not("#tab_inbox") a').click(function(){
+		$('#spinner').show();
+		$('.tab_div_overlay').show();
+	});
+</script>
+<script type="text/javascript">
+	$('.d_star_rating_large').raty({
+			size:  '20',
+			starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/d_star_on.png',
+			starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/d_star_off.png',
+			starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png'
+		});
+	$('#d_overall_rating').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/orangestar.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/whitestar.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(@overall_rating.present?)? @overall_rating : 0%>
+	});
+	$('#d_item_described').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/orangestar.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/whitestar.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(@describe_rating.present?)? @describe_rating : 0%>
+	});
+	$('#d_item_communication').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/orangestar.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/whitestar.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(@communication_rating.present?)? @communication_rating : 0%>
+	});
+</script>
+<script>
+	// $('#my-offers-tab').click(function(){
+	// 	$('#spinner').hide();
+	// });
+	$('#inbox-tab').click(function(){
+		$('#spinner').hide();
+		$('.tab_div_overlay').hide();
+	});
+</script>
+ 
+<!-- about text edit script -->
+<script type="text/javascript">
+	$(function(){
+		<%if current_user and (@user == current_user)%>
+      <%if @user.about != "" %>
+  			$('.rating_text').css('box-shadow','none');
+  		<%else%>
+  			$('.rating_text').attr('style',"display: block;");
+  		<%end%>
+		<%else%>
+  		$('.rating_text').css('box-shadow','none');
+		<%end%>
+	});
+</script>
+
+<script type="text/javascript">
+// $(".f_search_outer").click(function(){
+// 	$(".follow_search").show();
+// })
+// $(".f_search_outer").siblings("li").click(function(){
+// 	$(".follow_search").hide();
+// })
+</script>
+
+

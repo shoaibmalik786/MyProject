@@ -1,0 +1,103 @@
+<div align="center" class="steps">
+  <img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/step2.png" />
+
+  <!-- --- Tracking code for facebook campaign 2013-04-01 starts -->
+  <script type="text/javascript">
+    var fb_param = {};
+    fb_param.pixel_id = '6008744823334';
+    fb_param.value = '0.00';
+    (function(){
+        var fpw = document.createElement('script');
+        fpw.async = true;
+        fpw.src = '//connect.facebook.net/en_US/fp.js';
+        var ref = document.getElementsByTagName('script')[0];
+        ref.parentNode.insertBefore(fpw, ref);
+    })();
+  </script>
+  <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/offsite_event.php?id=6008744823334&amp;value=0" /></noscript>
+  <!-- Tracking code ends -->
+</div>
+<div class="profile_bck_white">
+
+  <table width="100%">
+    <% count = 0 %>
+    <% while count < @services_cat.size %>
+    <tr>
+      <% column = 1 %>
+      <% for column in 1..5 %>
+      <% if count == @services_cat.size %>
+      <% break %>
+      <% end %>
+      <td>
+        <div class="cat_good_div">
+          <div id="step2_cat_<%= count+1%>" class="category_border step2_cat" onclick="mouse_over_selected = false; categoryDrpDwnToggle('drpdwn_steps2', 'step2_cat_<%=count+1 %>_drpdwn'); /*_kmq.push(['record', 'onboarding drop down <%= @services_cat[count]["name"].gsub('+', 'and').downcase() %>',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'onboarding', 'Clk_addsubcategory', 'Click Item in <%= @services_cat[count]["name"].gsub('&', '+') %> Drop Down']);*/" style = "background: url('<%= @services_cat[count]["imageURL"]%>');">
+            <div class="black_ban_div">
+              <span> <%= @services_cat[count]["name"] %></span>
+              <div class="arrow_down_div"></div>
+            </div>
+            <div id="step2_cat_<%=count+1 %>_drpdwn" class="drpdwn_steps2 hidedrop">
+              <ul>
+                <li onclick= "select_all_drpdwns('step2_cat_<%= count + 1%>_drpdwn'); potential_match(2);" class = "services_dp_li"><a href="#" onclick="return false;">Select All</a></li>
+                <% @services_cat[count]["sub"].each do |sub_cat|%>
+                <li onclick="mouse_over_selected = true; $('.drpdwn_steps2').addClass('hidedrop'); selectMultipleCategory(this, 'item_<%= sub_cat.id %>', <%= sub_cat.id %>, 'step_2_selected', 'step2_category_selected',true,'check_next_button(2);potential_match(2);show_select_all(\'#item_<%= sub_cat.id %>\',true); /*_kmq.push([\'record\', \'onboarding x button removes things you like\',{ \'SignedIn\' : get_KMSignedIn()}]); _gaq.push([\'_trackEvent\', \'onboarding\', \'Clk_removesubcat\', \'Clicks to Remove On Any Items In Things You Want\']);*/ '); check_next_button(2);potential_match(2); show_select_all(this);" v="<%= sub_cat.name %>" id="item_<%= sub_cat.id %>" class="services_dp_li"><a href="#" onclick="return false;"><%= sub_cat.name %></a></li>
+                <% end %>
+                <li onclick= "suggest_new_sub_category('services',<%=@services_cat[count]["id"] %>,'<%= escape_javascript(@services_cat[count]["name"]) %>');return false;" class = "services_dp_li"><a href = "#" onclick="return false;">Suggest a New<br />Sub-Category!</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </td>
+      <% count = count + 1 %>
+      <% column = column + 1 %>
+      <% end %>
+    </tr>
+    <% end %>
+  </table>
+  <table>
+    <tr>
+      <td>
+        <div class="things_like_head" style="margin-top: -20px;">Things you want:</div>
+        <% if isMSIE? %>
+        <div class="dropdown_values" style="margin-top: 9px;">
+        <% else %>
+        <div class="dropdown_values">
+        <% end %>
+          <div id="step2_category_selected" class = "step_category_selected">
+          </div>
+        </div>
+        <input type = "hidden" id = "step_2_selected"/>
+        <% if isMSIE? %>
+        <div class="next_button_step" style="height: 50px; margin-top: 7px;">
+        <% else %>
+        <div class="next_button_step"style="height: 50px;">
+        <% end %>
+          <ul>
+            <li>
+              <img id = "next_disabled_step_2" style="cursor:text" src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/step2_next_disabled.png" />
+              <img id = "next_enabled_step_2" style = "display:none" src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/orange_next.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/orange_next_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/orange_next.png'" onclick="profile_next_submit(2); return false;  /*_kmq.push(['record', 'onboarding step 2 next button',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'onboarding', 'Clk_NxtBtn', 'Clicks Next Button In Step 2 Of Onboarding']);*/" /></li>
+            <% if params[:edit] %>
+            <li style="margin-top: 2px;">
+              <img id = "save_disabled_step_2" style="cursor:text" src = "https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_steps.png"/>
+              <img id = "save_enabled_step_2" style = "display:none;" src = "https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_steps.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_steps_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_steps.png'" onclick="profile_save_submit(2);"/>
+            </li>
+            <li style="margin-top: 2px;">
+              <a href = "<%= dashboard_path%>"><img id = "cancel_step_2" src = "https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/cancel_steps.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/cancel_steps_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/cancel_steps.png'"/></a>
+            </li>
+            <% else %>
+            <li style="margin-top: 2px;">
+              <img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/step2_back.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/step2_back_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/step2_back.png'" onclick="$('.step1').show(); $('.step2').hide(); $('.step3').hide();  /*_kmq.push(['record', 'onboarding step 2 back button',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'onboarding', 'Clk_BackBtn', 'Clicks On Back Button In Step 2 Of Onboarding']);*/" />
+            </li>
+            <% end %>
+          </ul>
+        </div>
+        <div id = "error_message_step_2" class="error_msg_step">Please add at least three services you like.</div>
+      </td>
+      <td>
+        <div class="things_like_head" style="margin-top: -40px;letter-spacing: -1px;margin-left: 6px;">Potential Matches:</div>
+        <div id= "step2_no_potential_match" class="potential_match_noimg">Select a category to see your potential matches!</div>
+        <div id = "step2_potential_match_img" style="display:none;" class="potential_match_img"><img src="" style="width: 150px; max-height: 150px;" /></div>
+        <div class="potential_match_vdo" style="display:none;" id="itemPlayer_step2"></div>
+      </td>
+    </tr>
+  </table>
+</div>

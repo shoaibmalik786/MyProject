@@ -1,0 +1,21 @@
+<script>
+	if (!parent.isCancelSubmitOffer){
+		<% if @f_f_error %>
+			parent.document.getElementById('<%= params[:fld_id] %>').value = '';
+			parent.document.getElementById('photomessage').innerText = "Video file not valid";
+			if(parent.document.getElementById('selected_video_file')) parent.document.getElementById('selected_video_file').innerText = "";
+			parent.document.getElementById('upload_img_div').style.display = 'none';
+		<% else %>
+			if(parent.document.getElementById('<%= params[:item_video_id] %>'))parent.document.getElementById('<%= params[:item_video_id] %>').value = <%= @iv.id %>;
+			parent.document.getElementById('photomessage').innerText = "";
+			parent.document.getElementById('upload_img_div').style.display = 'block';
+		<% end %>
+		parent.playVideo('player', '<%= escape_javascript(URI.encode(@path.gsub('public/', '/'))) %>', true); 
+		parent.document.getElementById('item_item_video_path').value = "<%= escape_javascript(URI.encode(@path.gsub('public/', '/'))) %>";
+		parent.document.getElementById('ind_<%= params[:img_prev_id] %>').style.display = 'none';
+		if(parent.document.getElementById('rotate_preview')) parent.document.getElementById('rotate_preview').style.display = 'table';
+	}
+
+	if(parent.canSubmitCanNext == false)parent.canSubmitCanNext = true;
+	if(parent.document.getElementById('video_spinner'))parent.document.getElementById('video_spinner').style.display = 'none';
+</script>

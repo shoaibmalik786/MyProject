@@ -1,0 +1,180 @@
+<div class="transaction_detail_div shipping_detail_div">
+  <div class="transaction_heading shipping_detail_heading">
+    <div class="heading_tick"><img src="http://d3md9h2ro575fr.cloudfront.net/images/tick_orange.png"></div>
+    2. Shipping Details
+    <div class="tr_edit_btn"><a href="#" onclick="return false;">Edit</a></div>
+  </div>
+
+  <!-- Step2 Form Start -->
+  <!-- <form class="form-horizontal form_step2"> -->
+  <%= form_for(@my_transaction, url: {action: "update"}, html: {method: "put", class: "form-horizontal form_step2", remote: "true", id: "package-details-form"}) do |f| %>
+    <div class="control-group">
+      <label class="control-label" for="inputfname">Size<sup class="star_red">*</sup></label>
+      <div class="controls">
+        <div class="size1">
+          <img src="http://d3md9h2ro575fr.cloudfront.net/images/size1.png"><br>
+          <input type="radio" class="ship_size"><label></label>
+        </div>
+        <div class="size1">
+          <img src="http://d3md9h2ro575fr.cloudfront.net/images/size2.png"><br>
+          <input type="radio" class="ship_size"><label></label>
+        </div>
+        <div class="size1">
+          <img src="http://d3md9h2ro575fr.cloudfront.net/images/size3.png"><br>
+          <input type="radio" class="ship_size"><label></label>
+        </div>
+        <div class="size1">
+          <img src="http://d3md9h2ro575fr.cloudfront.net/images/size4.png"><br>
+          <input type="radio" class="ship_size"><label></label>
+        </div>
+      </div>
+    </div>
+
+      <!-- <div class="control-group">
+      <label class="control-label" for="inputlname">Weight<sup class="star_red">*</sup></label>
+      <div class="controls">
+      <a href="#" class="weight_input" onclick="$('#weight_input').toggleClass('hidedrop'); return false;">1lb. or less</a>
+      <div class="weight_input_drp hidedrop" id="weight_input">
+      <ul>
+      <li><a href="#">1lb. or less</a></li>
+      <li><a href="#">1lb. or less</a></li>
+      <li><a href="#">1lb. or less</a></li>
+      <li><a href="#">1lb. or less</a></li>
+      </ul>
+      </div>
+      </div>
+      </div> -->
+    <div class="control-group" id="controlgroup1">
+      <label class="control-label" for="inputlname">Weight</label>
+      <div class="controls">
+        <%= f.text_field :weight, class: "et_input length_input", value:"" %>
+        <!-- <input type="text" class="et_input length_input"> -->
+        <span class="inches_text">pounds</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="inputlname">Length</label>
+      <div class="controls">
+        <%= f.text_field :length, class: "et_input length_input", value:"" %>
+        <!-- <input type="text" class="et_input length_input"> -->
+        <span class="inches_text">inches</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="inputlname ">Width</label>
+      <div class="controls">
+        <%= f.text_field :width, class: "et_input length_input", value:"" %>
+        <!-- <input type="text" class="et_input length_input"> -->
+        <span class="inches_text">inches</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="inputlname">Height</label>
+      <div class="controls">
+        <%= f.text_field :height, class: "et_input length_input", value:"" %>
+        <!-- <input type="text" class="et_input length_input"> -->
+        <span class="inches_text">inches</span>
+      </div>
+    </div>
+    <!-- <div class="control-group">
+    <label class="control-label" for="inputlname">Shipping Services</label>
+    <div class="controls">
+    <a href="#" class="ship_service" onclick="$('#ship_service_drp').toggleClass('hidedrop'); return false;">Same Day</a>
+    <div class="ship_service_drp hidedrop" id="ship_service_drp">
+    <ul>
+    <li><a href="#">Same Day</a></li>
+    <li><a href="#">Same Day</a></li>
+    <li><a href="#">Same Day</a></li>
+    <li><a href="#">Same Day</a></li>
+    </ul>
+    </div>
+    </div>
+    </div> -->
+    <div class="control-group">
+      <label class="control-label" for="inputfname">Shipping Notes</label>
+      <div class="controls">
+        <%= f.text_area :ship_notes, class: "et_textarea",
+          placeholder: "Basic info like buzzer number, notes for delivery preferences. Dog on Premisses.",value:"" %>
+
+        <!-- <textarea class="et_textarea">Basic info like buzzer number, notes for delivery preferences. Dog on Premisses.</textarea> -->
+      </div>
+
+      <div class="calculate_shipping_btn" ><a id="getShippingSubmit" class="login_btn position-click" href="#" tradeid="<%= @trade.id %>">Calculate Shipping</a></div>
+       <div id ="items_spinner" align="center" class="browse_det_left" style="display:none;font-size:16px;">
+        <i class="icon icon-refresh icon-spin"></i>  Calculating
+      </div>
+      <div id= "shipping-rates">
+        <div class="controls">
+          <label class="radio" id="shipping_rates">
+         <!--    <input checked="checked" id="shipping_1" name="shipping" type="radio" value="1">
+            <label for="shipping_1" id=" ">Immediately</label>
+            <input id="shipping_2" name="shipping" type="radio" value="2">
+            <label for="shipping_2">Once a day</label>
+            <input id="shipping_3" name="shipping" type="radio" value="3">
+            <label for="shipping_3">At the end of the week</label> -->
+          </label>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="edit_login_text">Other Item Details</div>
+    <hr class="password_control_group" />
+    <div class="control-group">
+      <div class="other_detail_left"><img src="http://d3md9h2ro575fr.cloudfront.net/images/size3.png"></div>
+      <div class="other_detail_right">
+        <div>
+          <span class="detail_type">Weight</span>
+          <span class="detail_value"><%= @oth_transaction.weight %>lb.</span>
+          <span class="detail_type">Dimensions</span>
+          <span class="detail_value"><%= @oth_transaction.length %><sup>in</sup> x <%= @oth_transaction.width %><sup>in</sup> x <%= @oth_transaction.height %><sup>in</sup> </span>
+          <span class="detail_type">Shipping Notes</span>
+          <span class="detail_value"><%= @oth_transaction.ship_notes %></span>
+          <span class="detail_type">Shipping Total</span>
+          <span class="detail_value"><%= @oth_transaction.ship_charge %></span>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="control-group">
+      <div class="controls save_cancel_btn next_step2">
+        <!-- <input type="submit" onclick="return false;" class="edit_save" value="Next Step"> -->
+          <%= f.submit "Save & Next Step", class: "edit_save" %>
+      </div>
+    </div>
+
+    <% end %>
+  <!-- Step2 Form End -->
+
+  <!-- Completed Details -->
+  <div id="updateshippingdetails" class="complete_section form2_complete">
+    
+    <div class="ship_detail_left">
+      <div class="size0_detail"><img src="http://d3md9h2ro575fr.cloudfront.net/images/size0.png"></div>
+      <div class="shipping_detail_name"><strong>Your Item</strong></div>
+      <div class="detail_item_text">Service Item</div>
+      <div class="detail_item_text">No shipping needed</div>
+      <div class="clear"></div>
+    </div>
+    <div class="ship_detail_right">
+      <div class="size0_detail"><img src="http://d3md9h2ro575fr.cloudfront.net/images/size1.png"></div>
+      <div class="shipping_detail_name"><strong>Other Item</strong></div>
+      <div class="detail_item_text">1lb. - 2lb.</div>
+      <div class="detail_item_text">3<sup>in</sup> x 2<sup>in</sup> x 1<sup>in</sup> </div>
+      <div class="detail_item_text">Just leave it in the front</div>
+      <hr class="other_item_hr">
+      <div class="other_item_total">$12</div>
+    </div>
+    <div class="ship_detail_rightmost">
+      <div class="shipping_detail_name"><strong>Shipping Total</strong></div>
+      <div class="detail_item_text">$34.99</div>
+      <div class="detail_item_text">$12</div>
+      <hr class="shipping_hr1">
+      <div class="detail_item_average">$46.99 / 2</div>
+      <hr class="shipping_hr">
+      <div class="detail_item_ship_total">$23.50</div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <!-- Completed Details -->
+</div>

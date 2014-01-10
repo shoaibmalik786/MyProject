@@ -1,0 +1,249 @@
+<%if @user.present?%>
+<!--Content Start -->
+<div class="container">
+	<%if session[:have_saved]%>
+		<script>
+			$(function(){
+      			$('#have_message_modal').modal("show");
+   			});
+		</script>
+		<%session[:have_saved] = nil%>
+	<%end%>
+	<div class="span10 item_middle_section">
+		<div class="center_content">
+			<div class="profile_main_wrapper ">
+				<% if params[:wanted_item] or params[:review_reminder] and flash[:error] or flash[:info]%>
+					<div class="info_alert error_msg" id ="notice">
+						<%wanted_item = Item.find_by_id(params[:wanted_item])%>
+						<%if wanted_item.present? and wanted_item.deleted?%>
+							<p>Whoops! Looks you have deleted "<%=wanted_item.title%>"! But, all is not lost. Check out <%=@user.title%>'s stuff to see if there's anything you want!</p>
+						<%elsif wanted_item.present? and wanted_item.completed?%>
+							<p>Whoops! Looks you already traded "<%=wanted_item.title%>"! But, all is not lost. Check out <%=@user.title%>'s stuff to see if there's anything you want!</p>
+						<%elsif flash[:info]%>
+							<%delete_item = Item.find(params[:delete])%>
+							<p><span class="msg_item_name">"<%=delete_item.title%>"</span> has been removed from your Haves Board</p>
+						<%else%>
+							<p><%= flash[:error] %></p>
+						<%end%>
+						<a href="#" class="info_cross" onclick="$('#notice').fadeOut(1000); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/info_cross.png"></a>
+					</div>
+				<% end %>
+				<div class="profile_rating_wrapper">
+					<!-- <div class="profile_user_card">
+						<div class="user_card_right" id="user_card_right">
+							<%#= render 'shared/user_card', :user => @user%>
+						</div>
+					</div> -->
+				 	<div id="profile_image_section_div">
+			    	<%= render 'profile_image_section'%>
+			    	<div class="user_verified_dash">
+							<p>Verified by:</p>
+							<div class="icons">
+								<% if @user.facebook_authenticated? %>
+									<img src="http://d3md9h2ro575fr.cloudfront.net/images/fb_icon_color.png">
+								<% else %>
+									<img src="http://d3md9h2ro575fr.cloudfront.net/images/fb_icon_grey.png">
+								<%end%>
+									<img src="http://d3md9h2ro575fr.cloudfront.net/images/pintrst_icon_grey.png">
+								<!--a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/icon_pin.png"></a-->
+								<% if @user.twitter_authenticated? %>
+									<img src="http://d3md9h2ro575fr.cloudfront.net/images/tweet_icon_color.png">
+								<%else%>
+									<img src="http://d3md9h2ro575fr.cloudfront.net/images/tweet_icon_grey.png">
+								<%end%>
+								<div class="star_rating_own" id="star_rating_own" style="width:106px;"></div>
+								<div class="star_rating_number">(<%= @user.reviews.size %>)</div>
+							</div>
+						</div>
+			    	<div class="profile_since">Member Since:  <%= @user.created_at.strftime("%B-%d-%Y")%></div>
+					</div>
+					<div class="profile_rating_section">
+						<div class="trader_info_dash">
+							<div class="user_name_dash"><a href="<%=user_path(@user)%>"><%=@user.title%></a></div>
+							<div class="user_location_dash"><%= @user.location%></div>
+							<%if @user.location != "-" and @user != current_user%>
+							  <div class="user_distance_dash"><%=@user.user_distance(session[:user_ll])%> Miles from you</div>
+							<%end%>
+						</div>
+						<div class="dashboard_contact_btn"><a href="#contact_modal_dash" data-toggle="modal" aria-labelledby="myModalLabel">Contact</a></div>
+						<div class="edit_textarea" id="edit_textarea">
+							<% if current_user and @user.id == current_user.id %>
+				    		<a href="#" class="edit_pencil" onclick="$(this).hide();$('.hide_text').hide(); $('.rating_text').hide();$('.show_text').hide(); $('.update_about_wrapper').fadeIn(); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/edit_pencil.png"></a>
+				   		<% end %>
+							<div class="rating_text" id="rating_text">
+								<%#= truncate((@user.about).html_safe,:length => 180,:omission => "...")%>
+								<%=simple_format(@user.about).html_safe%>
+							</div>
+<!-- 							<a href="#" onclick="return false;" class="show_text">Show more..</a>
+							<a href="#" onclick="return false;" class="hide_text">Show less..</a>
+ -->							<%= form_for @user, html: {class: "update_about_wrapper"}, :remote => true do |f| %>
+								<%= f.text_area :about, :class => "about_edit" %>
+								<%= f.submit "", :type => :image, :src => "http://d3md9h2ro575fr.cloudfront.net/images/profile_save.png" %>
+							<%end%>
+						</div>
+					</div>
+					<!-- <div class="rating_figures_wrapper">
+						<div class="rating_circle green">
+							<div class="o_rating"><img src="http://d3md9h2ro575fr.cloudfront.net/images/overall_rating.png"></div>
+							<%#=(@overall_rating.present?)? @overall_rating : 0.0%>
+						</div>	
+					</div> -->
+
+					<div class="nav-collapse1 collapse profile_tabs_collapse">
+						<div class="profile_tab_wrapper">
+							<% if !current_user || current_user.id != @user.id%>
+								<div class="follow_dash follow_user_<%= @user.id%>" id= "follow_div">
+									<%= render 'shared/follow', :user => @user %>
+								</div>
+							<%end%>
+							<ul class="nav nav-tabs profile_tabs" id="profile_tab">
+								<li><%=link_to 'Haves', haves_user_path(@user),:data => {:toggle=>"tab", :push => true, :target => "#tab-content" }, :id => "tab_haves"%></li>
+								<li><%=link_to 'Wants', wants_user_path(@user), :data => {:toggle=>"tab", :push => true, :target => "#tab-content" },:id => "tab_wants"%></li>
+								<li><%=link_to 'Likes', likes_user_path(@user),:data => {:toggle=>"tab", :push => true, :target => "#tab-content"}, :id => "tab_likes"%></li>
+								<% if current_user == @user %>
+								 <!--  <li id=my-offers-tab><a href="#">My Offers</a></li> -->
+									<li><%=link_to 'My Offers', myoffers_user_path(@user),:data => {:toggle=>"tab",:push => true, :target => "#tab-content"}, :id => "tab_myoffers"%></li>
+								<%end%>
+								<li><%=link_to "Past Trades",past_trades_user_path(@user),:data => {:toggle=>"tab",:push => true, :target => "#tab-content"}, :id => "tab_past_trades" %></li>
+								<li class="tab_review">
+									<%=link_to 'Reviews',reviews_user_path(@user),:data => {:toggle=>"tab",:push => true, :target => "#tab-content"}, :id => "tab_reviews" %>
+									
+								</li>
+								<li class="f_search_outer"><%=link_to 'Friends', following_user_path(@user),:data => {:toggle=>"tab",:push => true, :target => "#tab-content"}, :id => "tab_following"%></li> 
+								<%if current_user == @user%>
+									<li class="tab_inbox">
+										<%=link_to 'Activity Feed', activity_feed_user_path(@user),:data => {:toggle=>"tab",:push => true, :target => "#tab-content"}, :id => "tab_inbox"%>
+										
+<!-- 										<ul class="nav nav-tabs reviews_sub_tabs" id="inbox_tab_div" style="display:none">
+											<li><a href="#" class="inbox_messages">Messages</a></li>
+											<li class="review_by_user_li"><a href="#" class="inbox_notifications active">Notifications</a></li>
+										</ul> -->
+									</li>
+								<%end%>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- tab content start -->
+	<div id="spinner" style="top: 90%;"></div>
+	<div class="tab-content" id="tab-content"></div>
+	<!-- tab content ends -->
+</div>
+<!-- Content End-->
+<%end%>
+
+<% if current_user and current_user.id == @user.id %>
+	<!-- modal for photo Upload Starts-->
+	<!-- <div id="photo_upload_modal" class="modal hide fade">
+	  <a href="#" class="close del_close" data-dismiss="modal">X</a>
+	  <div class="heading">Upload a photo from your computer</div>
+	  <input type="file" class="file_up">
+	</div> -->
+	<!-- modal for photo Upload Ends-->
+<% end %>
+<script>
+	$('.profile_tabs li a').click(function(){
+		$('.profile_tabs li').removeClass('active');
+		$(this).parent().addClass('active');
+		$("#reviews_tab_div").hide();
+		$("#inbox_tab_div").hide();
+		$("#inbox_options").hide();
+		$(".reviews_by_user").addClass("active");
+
+		$('#tab_haves').text("Haves");
+		$('#tab_wants').text("Wants");
+		$('#tab_likes').text("Likes");
+		$('#tab_myoffers').text("My Offers");
+		$('#tab_past_trades').text("Past Trades");
+		$('#tab_reviews').text("Reviews");
+		$('#tab_following').text("Friends");
+	});
+</script>
+<script>
+	// var opts = {
+	// 	size: 75,           // Width and height of the spinner
+	// 	factor: 0.25,       // Factor of thickness, density, etc.
+	// 	color: "#FF5447",      // Color #rgb or #rrggbb
+	// 	speed: 1.0,         // Number of turns per second
+	// 	clockwise: true     // Direction of rotation
+	// };
+	// var ajaxLoader = new AjaxLoader("spinner", opts);
+	$('.profile_tabs li:not("#tab_inbox") a').click(function(){
+		$('#spinner').show();
+		$('.tab_div_overlay').show();
+	});
+</script>
+<script type="text/javascript">
+	$('.d_star_rating_large').raty({
+			size:  '20',
+			starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/d_star_on.png',
+			starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/d_star_off.png',
+			starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png'
+		});
+	$('#d_overall_rating').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/orangestar.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/whitestar.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(@overall_rating.present?)? @overall_rating : 0%>
+	});
+	$('#d_item_described').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/orangestar.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/whitestar.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(@describe_rating.present?)? @describe_rating : 0%>
+	});
+	$('#d_item_communication').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/orangestar.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/whitestar.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(@communication_rating.present?)? @communication_rating : 0%>
+	});
+	$('#star_rating_own').raty({
+		size:  '16',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/greensmall_star_own.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/greysmall_star_own.png',
+		// starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		// halfShow: true,
+		readOnly: true,
+		score: <%=(@describe_rating.present?)? @describe_rating : 0%>
+	});
+</script>
+<script>
+	// $('#my-offers-tab').click(function(){
+	// 	$('#spinner').hide();
+	// });
+	$('#inbox-tab').click(function(){
+		$('#spinner').hide();
+		$('.tab_div_overlay').hide();
+	});
+</script>
+ 
+<!-- about text edit script -->
+<script type="text/javascript">
+	$(function(){
+		<%if current_user and (@user == current_user)%>
+      <%if @user.about != "" %>
+  			$('.rating_text').css('box-shadow','none');
+  		<%else%>
+  			$('.rating_text').attr('style',"display: block;");
+  		<%end%>
+		<%else%>
+  		$('.rating_text').css('box-shadow','none');
+		<%end%>
+	});
+</script>
+
+<%= render :partial => 'shared/contact_message', :user => @user %>
+

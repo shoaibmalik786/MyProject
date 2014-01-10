@@ -1,0 +1,38 @@
+<!--Request info modal start-->
+<div id="request_info_modal" class="modal fade hide "  aria-hidden="false">
+    <a href="#" class="close" data-dismiss="modal" onclick="$('#more_photos').removeAttr('checked');$('#additional_description').removeAttr('checked');$('#verify_condition').removeAttr('checked');$('#ask_question').val(''); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png"></a>
+    <div class="user_sub_heading in_center re_pin_heading">Request more information</div>
+    <%=form_tag request_info_item_path, :id=>"request_info_action", :remote => true do %>
+        <%#=hidden_field_tag(:id, @item.id)%>
+        <div class="request_options_chk">
+            <label class="checkbox">
+                <!-- <input   type="hidden" value="0"><input checked="checked" id="missing_photo" name="missing_photo" type="checkbox" value="1">
+                <label>More photos</label> -->
+                <%=check_box_tag :more_photos %>
+                <label>More photos</label>
+            </label>
+            <label class="checkbox">
+                    <!-- <input   type="hidden" value="0"><input checked="checked" id="more_photos" name="more_photos" type="checkbox" value="1"> -->
+                    <%=check_box_tag :additional_description %>
+                    <label>Additional description</label>
+            </label>
+            <label class="checkbox">
+                    <!-- <input  type="hidden" value="0"><input checked="checked" id="more_photos2" name="more_photos2" type="checkbox" value="1"> -->
+                    <%=check_box_tag :verify_condition %>
+                    <label>Verify item condition</label>
+            </label>     
+        </div>
+        <p class="request_message_wrapper">
+            <p class="msg_txt">Ask a question</p>
+             <!-- <textarea class="request_area"></textarea>  -->
+             <%=text_area_tag :ask_question ,nil, :class => "request_area"%>
+        </p>
+        <div class="request_footer">
+          <span><a href="#" onclick="$('#request_info_action').submit();$('#request').show();$('#request');$('#more_photos').removeAttr('checked');$('#additional_description').removeAttr('checked');$('#verify_condition').removeAttr('checked');$('#ask_question').val(''); return false;" class="request_submit ma_r" data-dismiss="modal">Send</a> or  <a href="#" class="cancel_btn" data-dismiss="modal" onclick="$('request_info_modal').hide();$('#more_photos').removeAttr('checked');$('#additional_description').removeAttr('checked');$('#verify_condition').removeAttr('checked');$('#ask_question').val('');">Cancel</a></span>
+        </div>
+        <script type="text/javascript">
+
+        </script>
+    <%end%>
+</div>
+<!-- Request info modal Ends-->

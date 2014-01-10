@@ -1,0 +1,29 @@
+<%= form_for(@accepted_offer) do |f| %>
+  <% if @accepted_offer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@accepted_offer.errors.count, "error") %> prohibited this accepted_offer from being saved:</h2>
+
+      <ul>
+      <% @accepted_offer.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :trade_id %><br />
+    <%= f.number_field :trade_id %>
+  </div>
+  <div class="field">
+    <%= f.label :user_id %><br />
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :recent_tradeya %><br />
+    <%= f.check_box :recent_tradeya %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

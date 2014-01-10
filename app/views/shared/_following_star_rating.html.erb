@@ -1,0 +1,12 @@
+<div class="star_rating r_<%=user.id%>"></div>
+
+<script type="text/javascript">
+		$('.r_<%=user.id %>').raty({
+			size:  '12',
+			starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/review_smallstar.png',
+			starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/star_off.png',
+			halfShow: false,
+			readOnly: true,
+			score: <%=(user.overall_rating.present?)? user.overall_rating : 0%>
+		});
+</script>

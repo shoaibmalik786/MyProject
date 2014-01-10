@@ -1,0 +1,175 @@
+<div class="follow_tab_div_overlay"></div>
+<!-- Following tab content start -->
+<div id="following_tab" class="wants_container">
+	<%if current_user.present? and @user == current_user %>
+
+		<!-- Find Friends, Authentications, Friends to Follow and Invite Friends Start -->
+		<div class="following_left">
+			<div class="follow_search">
+	    	<%= text_field_tag :search_user, params[:search_user], :placeholder=>"Search Friends" , :class=>"follow_search_input", :onkeyup => "search_friends('"+params[:id]+"');" %>
+		 		<a href="#" class="search_cross" onclick="clickcross();return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/black_cross.png"></a>
+		 	</div>
+			<div class="following_social">
+				<div class="heading">Find Friends</div>
+				<ul class="following_social_list">
+					
+					<%if current_user and current_user.facebook_authenticated? %>
+					  <li class="sl_verified" id="sl_verified_fb" onclick="$(this).addClass('social_selected');$(this).siblings('li').removeClass('social_selected');">
+					  	<span class="sl_fb_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_on.png"></span>
+					  	<!-- <span class="sl_fb_text sl_verified_text" id="fb_verified">From Facebook</span> -->
+					  	<span class="sl_fb_text sl_verified_text" id="fb_verified" onclick="mixpanel.track('Click Fb icon to find friends');_gaq.push(['_trackEvent', 'Following tab', 'Clk_Fb_FndFrnds', 'Click Fb icon to find friends']);return false;"><%=link_to 'From Facebook', facebook_friends_user_path(:facebook_registered_friends => (@facebook_registered_friends.present? ? @facebook_registered_friends : nil)), :remote => true%></span>
+					  </li>
+					<%else%>
+						<li>
+							<span class="sl_fb_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png"></span>
+							<span class="sl_fb_text"><a href="/auth/facebook?add_verification=true" onclick="mixpanel.track('Click FB icon to Verify from Following Tab');_gaq.push(['_trackEvent', 'Following tab', 'Clk_FB_verify', 'Click Fb icon to Verify from Following Tab']);addDelay(this,event);return false;"> Connect with<br>Facebook Friends</a></span>
+						</li>
+					<%end%>
+					
+					<%if current_user and current_user.twitter_authenticated? %>
+						<li class="sl_verified" id="sl_verified_twt" onclick="$(this).addClass('social_selected');$(this).siblings('li').removeClass('social_selected');">
+							<span class="sl_fb_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_on.png"></span>
+							<!-- <span class="sl_fb_text sl_verified_text" id="tw_verified">From Twitter</span> -->
+							<span class="sl_fb_text sl_verified_text" id="tw_verified" onclick="mixpanel.track('Click Twitter icon to find friends');_gaq.push(['_trackEvent', 'Following tab', 'Clk_Twtr_FndFrnds', 'Click Twitter icon to find friends']);return false;"><%=link_to 'From Twitter', twitter_friends_user_path(:twitter_registered_friends => (@twitter_registered_friends.present? ? @twitter_registered_friends : nil)), :remote => true%></span>
+						</li>
+					<%else%>
+					  <li><span class="sl_fb_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png"></span>
+						<span class="sl_fb_text"><a href="/auth/twitter?add_verification=true&twitter=true" onclick="mixpanel.track('Click Twitter icon to Verify from Following Tab');_gaq.push(['_trackEvent', 'Following tab', 'Clk_Twtr_verify', 'Click Twitter icon to Verify from Following Tab']); addDelay(this,event); return false;"> Connect with<br>Twitter Friends </a></span></li>
+					<%end%>
+				</ul>
+			</div>
+
+			<%if @all_friends_authentications.present?%>
+				<div class="friends_joined">
+					<%=render 'shared/friends_to_follow'%>
+				</div>
+			<%end%>
+
+			<div class="invite_link">
+				<a href="<%= invite_user_path(current_user) %>" onclick="mixpanel.track('Click Invite Friends on Following Tab');_gaq.push(['_trackEvent', 'Following tab', 'clk_InvtFrnds', 'Click Invite Friends on Following Tab']);addDelay(this,event);return false;">Invite Friends via Email</a>
+			</div>
+
+		</div>
+		<!-- Find Friends, Authentications, Friends to Follow and Invite Friends End -->
+	<%end%>
+
+	<div id="followed_friends" class="following_cards_right">
+		<%if current_user.present? and @user != current_user and @user.common_friends(current_user).count > 0 %>	
+			<div class="friends_common">Friends in Common with <%= @user.first_name %> </div>
+			<div class="common_friends_div">
+			<% @user.common_friends(current_user).each do |user_common|%>
+				<%= render 'shared/user_card_piece', :follow => user_common %>
+			<%end%>
+			</div>
+		<%end%>
+		<div class="follow_friends_tab">
+				<%= link_to "Following (#{@user.followed_users.count})", following_user_path, :class => current_class?(following_user_path, "following_tab_font"), :remote => true %>
+				<%= link_to "Followers (#{@user.followers.count})", followers_user_path, :class => current_class?(followers_user_path, "following_tab_font"), :remote => true %>
+		</div>
+		<div class="following_followers_tab">
+			<%= render partial: 'shared/following_followers_tab', locals: { :users_display => @users_display } %>
+		</div>
+	</div>
+
+	<div id="searched_users" class="following_cards_right" style="display:none;">
+	  <%if params[:search_user].present?%>
+			<%if @user_search_results.count == 0%>
+			<!-- Empty Search Result -->
+			<%else%>
+			<!-- Searched Users start -->
+				<%=render 'shared/following_tab_search', :user_search_results => @user_search_results%>
+			<!-- Searched Users end -->
+			<%end%>
+		<%end%>
+	</div>
+</div>
+<!--Following tab content End -->
+
+<script>
+	$("#spinner").hide();
+ 	$('.follow_tab_div_overlay').hide();
+</script>
+ 
+<script type="text/javascript">
+
+	$(document).ready(function(){
+	
+		// $('#tab_following').text("Friends (<%=@users_display.count%>)");
+		
+		$(".follow_me").hide();
+		$(".ul.friends_joined_list li").css("background-color",'#fff');
+		$("ul.friends_joined_list li").hover(function(){
+			$(this).find(".joined_user_info").hide();
+			$(this).find(".joined_user_follow").show();
+		},function(){
+			$(".joined_user_follow").hide();
+			$(this).find(".joined_user_info").show();
+		});
+		$(".user_following_card").hover(function(){
+			$(this).find(".follow_me").show();
+		},function(){
+			$(".follow_me").hide();
+		})
+			$('input, textarea').placeholder();
+		<%if current_user.present? and @user == current_user %>
+
+			$("#fb_verified a").click(function(){
+				clickcross();
+ 				$("#spinner").show();
+ 				$('.follow_tab_div_overlay').show();
+			});
+
+			$("#tw_verified a").click(function(){
+				clickcross();
+				$("#spinner").show();
+				$('.follow_tab_div_overlay').show();
+			});
+
+			if ( $("#search_user").val() == "")
+			  {
+			  	$('.search_cross').hide();	
+			  	$("#followed_friends").show();
+			  	$("#searched_users").hide();
+				}
+			else
+		  	{
+		  		$('.search_cross').show();
+	 				$("#followed_friends").hide();
+			  	$("#searched_users").show();
+		  	}
+
+		  $("#search_user").keyup(function(){
+				if (document.getElementById("search_user").value == "")
+			  	{
+			  	$('.search_cross').hide();
+			  	$("#searched_users").hide();
+			  	$("#followed_friends").show();
+			  	}
+				else
+			  	{
+			  		$('.search_cross').show();
+				  	$("#followed_friends").hide();
+				  	$("#searched_users").show();
+		      }
+			});
+		<%end%>
+
+		// Show Twitter Friends after twitter authentication
+		<% if params[:twitter]%>
+		  $("#followed_friends").html("<%= escape_javascript render('shared/following_tab_twitter_friends') %>");
+		<% elsif params[:facebook]%>
+		  $("#followed_friends").html("<%= escape_javascript render('shared/following_tab_facebook_friends') %>");
+		<%end%>
+
+		<% if @show_twitter_modal == true %>
+		  $("#tweet_error_modal").modal("show");
+		<% end %>
+	})
+</script>
+<div id="tweet_error_modal" class="modal fade hide" aria-hidden="false">
+  <div class="user_sub_heading in_center">Oh oh, Twitter is not responding...</div>
+  <div class="tweet_error">Looks like Twitter is having some trouble. Please try again in a few minutes.</div>
+  <div class="resend_footer">
+    <span><a href="#" class="resend_submit ma_r" data-dismiss="modal">Gotcha</a></span>
+  </div>
+</div>

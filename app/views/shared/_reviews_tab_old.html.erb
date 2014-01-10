@@ -1,0 +1,49 @@
+<!-- Reviews tab content start -->
+	<div id="reviews_tab">
+		<!-- Reviews Section Start -->
+		<%if @user.reviews.present?%>
+			<div class="comments_section_div">
+				<div class="review_heading">
+					<span>Reviews of <%= @user.title%>'s Trades</span>
+					<span class="pull-right"><span class="rating_sort">Rating</span> Date</span>
+				</div>
+				  <div class="">
+				  	<%@user.reviews.each do |review|%>
+							<div class="reviews_detail_div">
+									<div class="user_image_comment"><img src="<%=review.reviewer.user_image(:small)%>" /></div>
+									<span class="user_name_comment"><%= review.reviewer.title%></span><span class="user_review_date"><%= review.created_at.strftime("%B %d %Y") if review.created_at.present?%></span>
+									<p class="user_review_detail"><%=review.review_text%></p>
+									<p class="user_review_links"><span class="user_review_reply">Reply</span><span class="user_review_options">View Trade</span><span class="user_review_options">Report</span></p>
+							</div>
+							<div class="user_rating_div pull-right">
+								<div class="item_described"><div>Item As Described</div><span class="star_rating_large"></span></div>
+								<div class="item_communication"><div>Communication</div><span class="star_rating_large"></span></div>
+							</div>
+							<div class="clear"></div>
+							<hr/>
+						<%end%>	
+					</div>
+			<div class="">
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<%end%>
+		<!-- Reviews Section End -->
+	</div>
+<!-- Reviews tab content End-->
+	<script>
+		$(function () {
+			$('#profile_tab a[href="#wants_tab"]').tab('show');
+			$('#reviews_tab_div a[href="#reviews_tab"]').tab();
+		})
+		$('.star_rating').raty();
+		$('.star_rating_large').raty({
+			size:  '25',
+			starOn:    '/assets/version2/starOn-large.png',
+			starOff:   '/assets/version2/starOff-large.png'
+		});
+	</script>
+	<script>
+   $("#spinner").hide();
+  </script>

@@ -1,0 +1,33 @@
+<ol>
+
+	<%if @trade_terms.present?%>
+
+		<%c = @trade_terms.count%>
+		<%@trade_terms.each_with_index do |tt,i|%>
+			<%if i == c-1%>
+			<li style="border-bottom: none;">
+			<%else%>
+			<li>
+			<%end%>
+				<span><%=tt.communication_text%></span>
+				<%if tt.owner_id == current_user.id%>
+					<div id= "cancel_delete_comment_<%=tt.id%>" class="cancel_delete_comment" style="display:none;">
+						<%if @passive_trade.present?%>
+							<%= link_to 'Delete', {:passive_trade_id => @passive_trade.id, :id=> tt.id, :action => "destroy", :controller=>"trade_communications"},:class=>"hover_delete", method: :delete, :remote=>true%>
+						<%elsif @trade.present?%>
+							<%= link_to 'Delete', {:trade_id => @trade.id, :id=> tt.id, :action => "destroy", :controller=>"trade_communications"},:class=>"hover_delete", method: :delete, :remote=>true%>
+						<%end%>
+						<input type="submit" value="Cancel" class="hover_cancel" onclick="$('#cancel_delete_comment_<%=tt.id%>').hide();">
+					</div>
+					<img src="http://d3md9h2ro575fr.cloudfront.net/images/dash_cross.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/cross_black.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/dash_cross.png'" onclick="$('#cancel_delete_comment_<%=tt.id%>').show();">
+				<%end%>
+			</li>
+		<%end%>
+	<%end%>
+</ol>	
+
+<script>
+	$(function(){
+		$("#trade_terms_form #trade_communications_communication_text").val("");
+	});
+</script>

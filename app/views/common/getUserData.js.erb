@@ -1,0 +1,21 @@
+<% if @itemUser %>
+	<% if params[:guest_sign_up]%>
+		// Add User's data in signup
+		$('#signUpForm').attr('action','/update_guest');
+		$('#signUpForm').attr('method','POST');
+		$('#user_first_name').val('<%= @itemUser.first_name %>');
+		$('#signup_email').val('<%= @itemUser.email %>');
+		$('#signup_zip').val('<%=@itemUser.zip %>');
+		<% if not @itemUser.user_photo.nil? %>
+			$('#user_user_photo_id').val('<%= @itemUser.user_photo.id %>');
+			$('#user_img_prew').attr('src', '<%= @itemUser.user_image %>')
+			$('#profile_img_section').removeClass('hidedrop');
+		<% end %>
+		<% if not current_user %>
+		 $('#signUpForm').append("<input name='guest_token' value='<%=params[:guest_token] %>' type='hidden'/>");
+		<%  end %>
+		showSignUpForm();
+	<% else %>
+		<%= raw userHover(@itemUser)%>
+	<% end %>
+<% end %>

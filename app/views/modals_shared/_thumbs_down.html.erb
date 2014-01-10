@@ -1,0 +1,24 @@
+<div id="thumb_down" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div id="crossimg"> <a href="#" data-dismiss="modal" aria-hidden="true">X</a></div>
+	<div class="thumb_down_heading">Thanks for the Feedback!</div>
+	<div class="thumb_down_content">
+		Sorry we didn’t find a good match for you. Let us know how we can <br />improve below:
+	</div>
+	<input id = "thumb_feedback_id" type = "hidden"/>
+	<div class="thumb_down_content_radio">
+		<div class="share_head_down thumbs_down_radio_div" onclick="$('#thumb_down_comment').addClass('hidedrop');"><input  type="radio" name="thumbdown_item" value = <%=DID_NOT_WANT_MATCHED_ITEM %> onchange="$('#thumb_down_comment').addClass('hidedrop');" > <span class="share_head_text">I didn't want the matched item.</span></div>
+		<div class="share_head_down thumbs_down_radio_div" onclick="$('#thumb_down_comment').addClass('hidedrop');"><input  type="radio" name="thumbdown_item" value = <%= DID_NOT_LIKE_MATCHED_PERSON %> onchange="$('#thumb_down_comment').addClass('hidedrop');"> <span class="share_head_text">I didn't like the matched person.</span></div>
+		<div class="share_head_down thumbs_down_radio_div" onclick="$('#thumb_down_comment').addClass('hidedrop');"><input  type="radio" name="thumbdown_item" value = <%= MATCH_DID_NOT_MAKE_SENSE %> onchange="$('#thumb_down_comment').addClass('hidedrop');"> <span class="share_head_text">The match didn't make sense to me.</span></div>
+		<div class="share_head_down thumbs_down_radio_div" onclick="$('#thumb_down_comment').removeClass('hidedrop');"><input  type="radio" name="thumbdown_item" value = <%= ALL_ABOVE_REASONS %> onchange = "$('#thumb_down_comment').removeClass('hidedrop');"> <span class="share_head_text">All of the above (leave comment below).</span></div>
+	</div>
+	<textarea id = "thumb_down_comment" class="thumb_down_textarea removeborder hidedrop" onfocus="$(this).addClass('addborder'); $(this).removeClass('removeborder'); " onblur="$(this).removeClass('addborder'); $(this).addClass('removeborder');"></textarea>
+	<div class="sbmt_img"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/submit_thumbs.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/submit_thumbs_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/submit_thumbs.png'" onclick="submit_thumbs_down_feedback();" /></div>
+</div>
+
+<script>
+$(document).ready(function(){ 
+	$('.thumbs_down_radio_div').click(function() {
+	   $(this).find('input[type="radio"]').attr('checked', true);
+	})
+});
+</script>

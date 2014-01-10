@@ -1,0 +1,14 @@
+<%if params[:like]%>
+	$("#like_div").html("<%= escape_javascript render('shared/like_button') %>");
+	$("#item_like_count").text("<%=@like_count %>");
+<%elsif params[:haves]%>
+	$("#haves_div").html("<%= escape_javascript render('shared/haves') %>");
+	// $("#user_haves_count").text("<%=@haves_count%>");
+<%elsif params[:item_page_want]%>
+	$("#wants_div").html("<%= escape_javascript render('shared/wants') %>");
+	$("#user_wants_count").text("<%=@wants_count%>");
+<%elsif params[:item_card_want]%>
+	$("#item_card_want_<%=@item.id%>").html("<%= escape_javascript render('shared/item_card_want') %>");
+<%elsif params[:item_card_like]%>
+	$("#item_card_like_<%=@item.id%>").html("<%= escape_javascript render('shared/item_card_like') %>");
+<%end%>

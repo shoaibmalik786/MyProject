@@ -1,0 +1,36 @@
+<% if !@pub and @offerer_mc.size > 0%>
+	<div style="margin-bottom: 12px;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-weight: bold; color: #333; font-size: 13px; width: 126px; float: left;">
+		Mutual Connections
+	</div>
+	<% if @offerer_mc.size > 8 %>
+		<div class="see_all_con"><a href="#" onclick="showModal('mutual_connect_box'); custom_scroll('mut_connect_inner_div'); return false;">See all <%=@offerer_mc.size%></a></div>
+	<% end%>
+	<div class="clear"></div>
+	<div>
+		<ul>
+			<% for i in 0..7 %>
+				<% if @offerer_mc.size <= i then break end %>
+				<li>
+					<div class = 'mutual_conn_image'>
+						<div class="user_image_border" style="width: 30px; height: 30px; overflow: hidden;">
+							<img src = '<%= @offerer_mc[i]["image"] %>' style='width:30px; height:auto;' />
+						</div>
+						<div class="facebook_name" style = "display:none">
+							<%= @offerer_mc[i]["name"] %>
+							<div class="black_arw_dwn"></div>
+						</div>
+					</div>
+				</li>
+			<% end%>
+		</ul>
+	</div>
+<%end %>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.mutual_conn_image').hover(function(){  
+        $(this).children('.facebook_name').show();  
+    },function(){  
+        $(this).children('.facebook_name').hide();  
+    });
+});  
+</script>

@@ -1,0 +1,14 @@
+<% if current_user %>
+	<% if @trade %>
+		$('#private_comments_section_<%= @trade.id %>').html("<%= escape_javascript(render("shared/private_comments_section", :offer => @trade)) %>");
+	<% else %>
+		<% if params[:t] %>
+			$("#comment_section_<%=params[:t]%>").html("<%= escape_javascript(render("shared/comments_section", :trade_id => params[:t])) %>");
+		<%else%>
+			$("#comments_section_div_show").html("<%= escape_javascript(render("shared/comments_section", :trade_id => nil)) %>");
+		<%end%>
+	<% end %>
+<% else %>
+	// showModal('login_box');
+	$("#signin_modal").modal("show");
+<% end %>

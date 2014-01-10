@@ -1,0 +1,17 @@
+<% if resource.errors.any? %>
+
+  $('#signUpPartial').replaceWith("<%= escape_javascript(render(partial: 'shared/sign_up_partial', layout: false)) %>")
+
+<% else  %>
+
+  $('#signup_box').modal('hide');
+  $('#signup_confirm').modal('show');
+
+  // <!-- load the analytics here  -->
+  analytics.alias(<%= resource.id %>, {Providers: {'All': 'FALSE', 'Mixpanel': 'TRUE'}});
+  analytics.identify(<%= resource.id %>);
+  analytics.track('Signed up', { 'Login method': 'Facebook, Twitter, TradeYa'});
+  // <!-- Facebook conversion pixel -->
+  facebookConversionPixel(6008733267934,0.00);
+
+<% end %>

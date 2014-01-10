@@ -1,0 +1,115 @@
+<script>
+	// <%# @items.each do |i|  %>
+	// 	// smash_dates[counter++] = new Date(<%#= raw(((i) ? "'" + i.exp_date.strftime("%a, %d %b %Y %H:%M:%S %Z") + "'" : '')) %>);
+	// <%#end%>
+</script>
+<div class="item_detail">
+	<table id="browse_all" width="100%">
+		<% counter = (params["page"]) ? (((params[:page].to_i) - 1 )* 10)+1 : 1 %>
+		<% @items.each do |item| %>
+			<tr valign="top">
+				<td width="15%">
+					<!-- onmouseout="hideModal('usr_rev_box_s'); hideModal('usr_rev_box');"> -->
+					<div class="browse_user_image_smaller user_image_border">
+						<a href="<%=user_path(item.user.id)%>"><img src="<%= item.user.user_image(:small) %>"<%= (item.user.isFacebookUser? ? ' width=50px' : "") %> /></a>
+					</div>
+					<!--div class="browse_user_name profile_hover" onclick="callHoverProfile(<%#= item.user.id %>)"><%= item.user.title %><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/trd_icon.png" style="margin-left: 5px;" /></div-->
+					<div class="browse_user_name" style="margin-left: 5px;" /><a href="<%=user_path(item.user.id)%>"><%=item.user.title%></a></div>
+					<div class="browse_user_city"><%= if item.user.city then item.user.city end %>, <%= if item.user.state then item.user.state end %></div>
+					<div id="dis_<%= item.id %>" class="browse_distance_left">
+						<% if @distance and @distance[item.id] %>
+							<%= @distance[item.id] %> miles
+						<% else %>
+							<script type="text/javascript">itm_ids = itm_ids + ((itm_ids.length > 0) ? ",<%= item.id %>" : "<%= item.id %>")</script>
+						<% end %>
+					</div>
+				</td>
+				<td width="22%">
+					<div class="browse_item_image user_image_border" onclick="/*_kmq.push(['record', 'Browse Main TradeYa Image Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaImgBrowse', 'Click Any tradeya Image on browse page']);*/">
+						<% if !item.item_photos.nil? and item.item_photos.length > 0 %>
+							<% if params[:category] and params[:category] == "myoffers" %>
+								<% if AcceptedOffer.get_anchor_for_offer(item.id,current_user.id) == "current" %>
+									<a class = 'click' href="<%= item_path(item,:showMyOffer=>true,:poffset=>'cos_section_' + current_user.id.to_s) %>"><img src="<%= item.item_image(:thumb) %>" /></a>
+								<% else %>
+									<a class = 'click' href="<%= item_path(item,:showMyAcceptedOffer=>true,:poffset=>'myaoc_section_' + current_user.id.to_s) %>"><img src="<%= item.item_image(:thumb) %>" /></a>
+								<% end %>
+							<% else %>
+								<a class = 'click' href="<%= item.item_url %>"><img src="<%= item.item_image(:thumb) %>" /></a>
+							<% end %>
+							</div>
+						<% elsif !item.item_videos.nil? and item.item_videos.length > 0 %>
+							<div style="display:block;width: 135px; height:auto" id="itemPlayerLiveTab_<%= counter %>"></div>
+							<script>$(function(){videoAsRedirect('itemPlayerLiveTab_<%= counter %>', '<%= item.item_videos[0].video %>', '<%=item.item_url %>');});
+							</script>
+						<% else %>
+							<% if params[:category] and params[:category] == "myoffers" %>
+								<% if AcceptedOffer.get_anchor_for_offer(item.id,current_user.id) == "current" %>
+									<a class = 'click' href="<%= item_path(item,:showMyOffer=>true,:poffset=>'cos_section_' + current_user.id.to_s) %>"><img src="<%= item.item_image(:thumb) %>" /></a>
+								<% else %>
+									<a class = 'click' href="<%= item_path(item,:showMyAcceptedOffer=>true,:poffset=>'myaoc_section_' + current_user.id.to_s) %>"><img src="<%= item.item_image(:thumb) %>" /></a>
+								<% end %>
+							<% else %>
+								<a class = 'click' href="<%= item.item_url %>"><img src="<%= item.item_image(:thumb) %>" /></a>
+							<% end %>
+						<% end %>
+					</div>
+				</td>
+				<td width="45%">
+					<% if params[:category] and params[:category] == "myoffers" %>
+						<% if AcceptedOffer.get_anchor_for_offer(item.id,current_user.id) == "current" %>
+							<div class="browse_item_title"><a class = 'click' href="<%= item_path(item,:showMyOffer=>true,:poffset=>'cos_section_' + current_user.id.to_s) %>" onclick="/*_kmq.push(['record', 'Browse Main TradeYa Title Text Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaLnkBrowse', 'Click Any tradeya link on browse page']);*/"><%= item.item_title %></a>
+						<% else %>
+							<div class="browse_item_title"><a class = 'click' href="<%= item_path(item,:showMyAcceptedOffer=>true,:poffset=>'myaoc_section_' + current_user.id.to_s) %>" onclick="/*_kmq.push(['record', 'Browse Main TradeYa Title Text Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaLnkBrowse', 'Click Any tradeya link on browse page']);*/"><%= item.item_title %></a>
+						<% end %>
+					<% else %>
+						<div class="browse_item_title"><a class = 'click' href="<%= item.item_url %>" onclick="/*_kmq.push(['record', 'Browse Main TradeYa Title Text Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaLnkBrowse', 'Click Any tradeya link on browse page']);*/"><%= item.item_title %></a>
+					<% end %>
+						</div>
+					<div class="browse_item_desc">
+						<%= auto_link(simple_format(truncate(item.desc, :length => 140, :omission => '').strip + '<a class = "click" href="' + item.item_url + '"><img class="item_desc_img" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/ellipses.png" /></a>'), :html => { :target => '_blank' }) %>
+					</div>
+					<div class="quantity_browse">Quantity:
+                        <%if item.qty_unlimited.present?%>
+						    Unlimited
+						<%else%>
+						    <%= item.quantity %>
+						<%end%>
+					</div>
+				</td>
+				<td width="20%" style="padding-right: 17px;">
+					<% offers_count = item.total_trades.count %>
+					<% if offers_count > 0 %>
+						<div class="browse_time_left">
+							<%= offers_count %> Offer<%= (offers_count > 1) ? 's' : '' %>
+						</div>
+					<% end %>
+					<% if @usr_trd %>
+						<div id = "make_offer_btn_<%=item.id%>" class="brw_make_ofr_btn">
+						<% if @usr_trd.length == 0 or @usr_trd.index(item.id).nil? %>
+							<a href="<%=item.item_url%>?make_offer=true" onclick="/*_kmq.push(['record', 'Browse Page Make an Offer Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_MkOfrBtnBrwse', 'Click Make an Offer Link on Browse']);*/" id="makeoffer_btn" class="makeoffer_btn">
+									<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/brw_make_offer.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/brw_make_offer_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/brw_make_offer.png'"/>
+								</a> 
+						<% end %>
+						</div>
+					<% else %>
+						<div id = "make_offer_btn_<%=item.id%>" class="brw_make_ofr_btn hidedrop offer_btns">
+							<a href="<%=item.item_url%>?make_offer=true" onclick="/*_kmq.push(['record', 'Browse Page Make an Offer Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_MkOfrBtnBrwse', 'Click Make an Offer Link on Browse']);*/" id="makeoffer_btn" class="makeoffer_btn">
+								<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/brw_make_offer.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/brw_make_offer_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/brw_make_offer.png'"/>
+							</a> 
+						</div>
+					<% end %>
+				</td>
+			</tr>
+			<% counter += 1%>
+		<%end%>
+	</table>
+</div>
+<script>
+	// $(".browse_user_name").click(function(e) {
+	// 	e.stopPropagation(); 
+	// 	return false;
+	// });
+	$(".browse_item_desc p a").click(function(){
+		// _kmq.push(['record', 'Browse Main TradeYa Description Ellipsis',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaDescBrowse', 'Click Any tradeya ellipsis on browse page']);
+	});
+</script>

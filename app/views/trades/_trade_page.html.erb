@@ -1,0 +1,279 @@
+<div class="counter_offer_overlay"></div>
+<div class="container responsive_width_trade">
+	<%if @trade.present? and @trade.status == "PENDING"%>
+		<div class="pending_trade_banner"><img src="http://d3md9h2ro575fr.cloudfront.net/images/pending_trade_banner.png"></div>
+	<%end%>
+	
+	<div class="upper_container">
+		<div class="row_inner">
+			<div class="upper_left_div span6" id="left_trade_container">
+				<div class="user_upper_left">
+					<div class="user_image_left"><img src="<%=@left_user.user_image(:thumb)%>"></div>
+					<div class="user_name_left"><%=@left_user.first_name.titleize%></div>
+				</div>
+				<div class="upper_left_trade_items">
+					<%if !@left_item.present? %>
+						<div class="want_nothing_text">
+							<div class="want_nothing_head">You want <%=@right_user.first_name.titleize%>'s Item...</div>
+							<div class="want_nothing_body">We’ve sent them a message to check out your stuff to see if there is anything they want to trade.</div>
+							<div>In the meantime you can drag your items here as options for them to choose from.</div>
+						</div>
+						<%=form_for(:trades, :url => {:controller =>"trades", :action=>"create"}, :html => {:id => "create_new_trade_form"})  do |f| %>
+				  		<%= f.hidden_field :item_id, :value => @right_item.id %>
+				  		<%= f.hidden_field :offer_id %>
+				  		<%= f.hidden_field :passive_trade_id, :value => @passive_trade.id %>
+				  	<% end %>
+					<%#elsif @trade.present? and params[:counter_offer].present?%>
+						<!-- <div class="trade_items_list"> -->
+							<%#=render 'trades/trade_page_item_card', :item => @left_item%>
+						<!-- </div> -->
+						<%#=form_for(:trades, :url => {:controller =>"trades", :action=>"update"}, :html => {:id => "update_trade_form"})  do |f| %>
+				  		<%#= f.hidden_field :left_item, :value => @left_item.id %>
+				  		<%#= f.hidden_field :right_item, :value => @right_item.id %>
+				  		<%#= f.hidden_field :new_left_item%>
+				  		<%#= f.hidden_field :trade_id, :value => @trade.id %>
+				  	<%# end %>
+					<%else%>
+						<div class="trade_items_list">
+							<%=render 'trades/trade_page_item_card', :item => @left_item%>
+						</div>
+						<!-- <div class="trade_item_quantity">
+							Quantity<br>
+							<input type="text"> <span>Night</span>
+						</div> -->
+					<%end%>
+				</div>
+
+				<!-- Left Item Exchange Method Start -->
+				<%if @left_item.present?%>
+					<div id='my_exchange_method'>
+						<%=render 'trades/my_exchange_method'%>
+					</div>
+	    	<%end%>
+	    	<!-- Left Item Exchange Method End -->
+			</div>
+
+			<div class="upper_mid_div span2">
+				<div class="trade_image_icon"><img src="http://d3md9h2ro575fr.cloudfront.net/images/trade_icon_blue.png"></div>
+				
+				<!-- <input type="submit" value="Accept" class="accept_button_trade"> -->
+ 
+				<!-- Display Nothing I want button when user goes to passive trade page through wants on my haves page -->
+				<% if @passive_trade.present? and @left_item.present? %>
+					<%= form_for :trade_communications, :url => {:controller =>"trade_communications", :action=>"create"}, :html=>{:id => "nothing_i_want_form"}, :remote=>true do |f| %>
+						<%= f.hidden_field :passive_trade_id, :value => @passive_trade.id %>
+						<%if @passive_trade.item.user.id == current_user.id%>
+							<%= f.hidden_field :recipient_id, :value => @passive_trade.user.id %>
+						<%else%>
+							<%= f.hidden_field :recipient_id, :value => @passive_trade.item.user.id %>
+						<%end%>
+						<%= f.hidden_field :communication_type, :value => "COMMENT" %>
+						<%= f.hidden_field :communication_text, :value => "Hi, Thanks for wanting my item!  I haven’t found anything of yours that I want. Please upload more items for me to choose from and message me again. Thanks!" %>
+					<%end%>
+					<div class="nothing_button"><a href="#" onclick="$('#nothing_i_want_form').submit();$('#communication_tab').click();">Nothing I Want</a></div>
+				<%end%>
+
+				<% if @trade.present? %>
+					<div class="next_trade_button" id="trade_page_trade_button"><a href="#">Trade</a></div>
+				<%end%>
+
+				<%if @trade.present? and ( (@trade.item.user_id == current_user.id and @trade.terms_accepted_by_item_user == false) or (@trade.offer.user_id == current_user.id and @trade.terms_accepted_by_offer_user == false) ) and !params[:counter_offer].present? and !(@trade.terms_accepted_by_item_user == false and @trade.terms_accepted_by_offer_user == false)%>
+					<%=link_to "Counter Offer", trade_path(@trade)+"?counter_offer=true", :class=>"counter_button_trade"%>
+				<%end%>
+			</div>
+
+			<div class="upper_right_div span6 pull-left" id="right_trade_container">
+				<div class="user_upper_right">
+					<div class="user_image_left"><img src="<%=@right_user.user_image(:thumb)%>"></div>
+					<div class="user_name_left"><%=@right_user.first_name.titleize%></div>
+				</div>
+				<div class="upper_left_trade_items">
+	 				<%if !@right_item.present? %>
+	 					<div class="want_nothing_text">
+							<div class="want_nothing_head"><%=@right_user.first_name.titleize%> wants your item!</div>
+							<div class="want_nothing_body">Look below in <%=@right_user.first_name.titleize%>’s haves and see if theres anything you want of theirs. If you find something then drag and drop it in this box.</div>
+							<div>Don’t see anything? Click on the Nothing I Want button and ask for more items.</div>
+						</div>
+						<%=form_for(:trades, :url => {:controller =>"trades", :action=>"create"}, :html => {:id => "create_new_trade_form"})  do |f| %>
+				  		<%= f.hidden_field :item_id, :value => @left_item.id %>
+				  		<%= f.hidden_field :offer_id %>
+				  		<%= f.hidden_field :passive_trade_id, :value => @passive_trade.id %>
+				  	<% end %>
+				  <%elsif @trade.present? and params[:counter_offer].present?%>
+						<div class="trade_items_list_right">
+							<div class="trade_item_card">
+								<%=render 'trades/trade_page_item_card', :item => @right_item%>
+							</div>
+							<div class="trade_detail_div">Trade
+								<div>When you’re ready click on the Trade button on the left.</div>
+								<div class="ask_question"><a href="#" onclick='$("#communication_tab_link").click();return false;'>Ask a Question</a></div>
+							</div>
+						</div>
+						<%=form_for(:trades, :url => {:controller =>"trades", :action=>"update"}, :html => {:id => "update_trade_form"})  do |f| %>
+				  		<%= f.hidden_field :left_item, :value => @left_item.id %>
+				  		<%= f.hidden_field :right_item, :value => @right_item.id %>
+				  		<%= f.hidden_field :new_right_item%>
+				  		<%= f.hidden_field :trade_id, :value => @trade.id %>
+				  	<% end %>
+					<%else%>
+						<div class="trade_items_list_right">
+							<div class="trade_item_card">
+								<%=render 'trades/trade_page_item_card', :item => @right_item%>
+							</div>
+							<div class="trade_detail_div">Trade
+								<div>When you’re ready click on the Trade button on the left.</div>
+								<div class="ask_question"><a href="#" onclick='$("#communication_tab_link").click();return false;'>Ask a Question</a></div>
+							</div>
+						</div>
+					<%end%>
+				</div>
+	
+				<!-- Right Item Exchange Method Start -->
+				<%if @right_item.present?%>
+					<%if @trader_exchange_method.present?%>	
+						<div id='trader_exchange_method'>
+							<%=render 'trades/trader_exchange_method'%>
+						</div>
+					<%end%>
+	    	<%end%>
+	    	<!-- Right Item Exchange Method End -->
+	    	
+		</div>
+		<div class="clear"></div>
+
+	</div>
+</div>
+
+	<div class="lower_container">
+		<div class="lower_section_tabs">
+			 <div class="trade_tab_links">
+				<%if @passive_trade.present?%>
+					<%= link_to 'My Haves', my_haves_tab_passive_trade_path(@passive_trade.id), :id => "my_haves_tab_link", :remote => true %> 
+					<%= link_to 'Communicate', communication_tab_passive_trade_path(@passive_trade.id), :id => "communication_tab_link", :remote => true %> 
+					<%= link_to @right_user.first_name.titleize + "'s Haves", trader_haves_tab_passive_trade_path(@passive_trade.id), :id => "trader_haves_tab_link", :remote => true %> 
+				<%elsif @trade.present? and params[:counter_offer].present?%>
+					<%= link_to 'My Haves', my_haves_tab_trade_path(@trade.id)+"?counter_offer=true", :id => "my_haves_tab_link", :remote => true %> 
+					<%= link_to 'Communicate', communication_tab_trade_path(@trade.id), :id => "communication_tab_link", :remote => true %> 
+					<%= link_to @right_user.first_name.titleize + "'s Haves", trader_haves_tab_trade_path(@trade.id)+"?counter_offer=true", :id => "trader_haves_tab_link", :remote => true %> 
+				<%else%>
+					<%= link_to 'My Haves', my_haves_tab_trade_path(@trade.id), :id => "my_haves_tab_link", :remote => true %> 
+					<%= link_to 'Communicate', communication_tab_trade_path(@trade.id), :id => "communication_tab_link", :remote => true %> 
+					<%= link_to @right_user.first_name.titleize + "'s Haves", trader_haves_tab_trade_path(@trade.id), :id => "trader_haves_tab_link", :remote => true %> 
+				<%end%>
+		 	</div>
+
+			<div class="tab-content" id="trade_tab_content">
+
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+<!-- Modals -->
+<%=render 'trades/trade_page_modals'%>
+
+
+<!-- scripts -->
+<script>
+	// Trade Page Tabs
+	$(document).ready(function(){
+		<%if params[:tab] == "my_haves"%>
+			$("#my_haves_tab_link").css("font-weight","Bold"); 
+			$("#my_haves_tab_link").click();
+		<%elsif params[:tab] == "trader_haves"%>
+			$("#trader_haves_tab_link").css("font-weight","Bold");
+			$("#trader_haves_tab_link").click();
+		<%else%>
+			$("#communication_tab_link").css("font-weight","Bold"); 
+			$("#communication_tab_link").click();
+		<%end%>
+	});
+
+	$(function(){ 
+		$("#communication_tab_link").click(function(){ 
+			$(".lower_section_tabs a").removeAttr("style");
+			$("#communication_tab_link").css("font-weight","Bold"); 
+		}); 
+		$("#my_haves_tab_link").click(function(){ 
+			$(".lower_section_tabs a").removeAttr("style");
+			$("#my_haves_tab_link").css("font-weight","Bold"); 
+		}); 
+		$("#trader_haves_tab_link").click(function(){ 
+			$(".lower_section_tabs a").removeAttr("style");
+			$("#trader_haves_tab_link").css("font-weight","Bold"); 
+		});
+	});
+
+	$(window).load(function(){
+		page_width = $(".responsive_width_trade").height();
+		$(".counter_offer_overlay").css('height',page_width+'px');
+	});
+
+</script>
+
+<!-- Droppable Script -->
+<script>
+	$(document).ready(function(){
+		<%if @passive_trade.present? and !@left_item.present?%>
+			$( "#left_trade_container" ).droppable({
+		 		drop: function(event,ui){
+		 			var offer_id = ui.draggable.attr("v");
+		 			if((offer_id>0) && (offer_id != 'undefined')){
+		 				$("#create_new_trade_form > #trades_offer_id").val(offer_id);
+		 			}
+		 			$("#create_new_trade_form").submit();
+		 		}
+			});
+		<%elsif @passive_trade.present? and !@right_item.present?%>
+			$( "#right_trade_container" ).droppable({
+		 		drop: function(event,ui){
+		 			var offer_id = ui.draggable.attr("v");
+		 			if((offer_id>0) && (offer_id != 'undefined')){
+		 				$("#create_new_trade_form > #trades_offer_id").val(offer_id);
+		 			}
+		 			$("#create_new_trade_form").submit();
+		 		}
+			});
+		<%end%>
+	});
+</script>
+
+<!-- Counter Offer Script -->
+<script>
+	$(document).ready(function(){
+		<%if @trade.present? and params[:counter_offer].present?%>
+			// $( "#left_trade_container" ).droppable({
+		 // 		drop: function(event,ui){
+		 // 			var new_left_item = ui.draggable.attr("v");
+		 // 			if((new_left_item>0) && (new_left_item != 'undefined')){
+		 // 				$("#update_trade_form > #trades_new_left_item").val(new_left_item);
+		 // 			}
+		 // 			$("#update_trade_form").submit();
+		 // 		}
+			// });
+			$( "#right_trade_container" ).droppable({
+		 		drop: function(event,ui){
+		 			var new_right_item = ui.draggable.attr("v");
+		 			if((new_right_item>0) && (new_right_item != 'undefined')){
+		 				$("#update_trade_form > #trades_new_right_item").val(new_right_item);
+		 			}
+		 			$("#update_trade_form").submit();
+		 		}
+			});
+		<%end%>
+	});
+</script>
+
+<!-- Trade Button Script -->
+<script>
+	$("#trade_page_trade_button").click(function(){
+		<%if !@my_exchange_method.present?%>
+			$("#exchange_method_modal6").modal('show');
+		<%elsif @trade.present?%>
+			$("#exchange_method_modal7").modal('show');
+		<%end%>
+	});
+</script>

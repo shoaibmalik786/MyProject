@@ -1,0 +1,74 @@
+<% if @successfulOffers.size <=0 %>
+<!-- If no Successful Offers Present -->
+<div class="user_no_tradeyas">No one choosing your offers? Try to <a class = "click" href='<%= new_item_path %>'>submit it as TradeYa,</a> instead. </div>
+<% else %>
+<% @successfulOffers.each do |successfulOffer| %>
+<div class="user_success_offers">
+	<table width="100%" class="success_offer_head">
+		<tr valign="top">
+			<td width="70%">
+				<div class="current_offer_title_div">
+					<a href="<%= successfulOffer.item.item_url %>" class="current_offer_title click" onclick="/*_kmq.push(['record', 'dashboard successfuloffers body link publisher tradeya title',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_TryaLnkLdnPg', 'TradeYa Title from Publisher in Your Successful Offers']);*/"><%= successfulOffer.item.item_title %></a> by <%= successfulOffer.item.user.title%>
+				</div>
+			</td>
+			<td width="7%">
+				<div class="user_offer_comment">Comments</div>
+				<div class="comment_count"><%=successfulOffer.item.comments.size %></div>
+			</td>
+			<td width="20%" style="padding-right: 5px;">
+				<div class="user_offer_expire">Status</div>
+				<div class="browse_time_left">Accepted!</div>
+			</td>
+		</tr>
+	</table>
+	<table width="100%" class="current_image_section">
+		<tr valign="middle">
+			<td width="15%" valign="center" class="user_image_border" style="width:  136px; height: 102px;">
+				<% if not successfulOffer.item.item_photos[0].nil? %>
+					<div style="max-height: 102px; width: 136px; text-align: center; margin-left: auto; margin-right: auto;"><img src="<%= successfulOffer.item.item_image(:thumb) %>" /></div>
+				<% elsif not successfulOffer.item.item_videos[0].nil? %>
+					<a href=""><div style="position:absolute;height:100px;width:135px;filter:alpha(opacity=60);-moz-opacity: 0.6;opacity: 0.6;"></div></a>
+					<div style="display:block;width:135px;height:100px" id="itemVideo_<%= successfulOffer.id %>"></div>
+					<script>$(function(){videoAsRedirect('itemVideo_<%= successfulOffer.id %>', '<%= successfulOffer.item.item_videos[0].video %>','<%= successfulOffer.item.item_url %>');});</script>
+				<% else %>
+					<div style="max-height: 102px; width: 136px; text-align: center; margin-left: auto; margin-right: auto;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/default_img.png" /></div>
+				<% end %>
+			</td>
+			<td width="5%">
+				<div><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrow_left_grey.png" /></div>
+			</td>
+			<td width="10%">
+				<% if not successfulOffer.offer.item_photos[0].nil? %>
+					<div class="alert_img user_image_border" style="margin-top: 20px; text-align: center"><img src="<%= successfulOffer.offer.item_image(:small) %>" /></div>
+				<% elsif not successfulOffer.offer.item_videos[0].nil? %>
+					<a href=""><div style="margin-top: 20px;position:absolute;height:52px;width:72px;filter:alpha(opacity=60);-moz-opacity: 0.6;opacity: 0.6;"></div></a>
+					<div class="alert_img user_image_border" style="margin-top: 20px; text-align: center" id="offerVideo_<%= successfulOffer.id %>"></div>
+					<script>$(function(){videoAsRedirect('offerVideo_<%= successfulOffer.id %>', '<%= successfulOffer.offer.item_videos[0].video %>',"<%= item_path(successfulOffer.item,:showMyOffer=>true,:poffset=>'offer_' + successfulOffer.id.to_s) %>");});</script>
+				<% else %>
+					<div class="alert_img user_image_border" style="text-align: center; margin-left: auto; margin-right: auto;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/default_img.png" /></div>
+				<% end %>
+			</td>
+			<td width="75%">
+				<div class="current_offer_title_div">
+					<% if successfulOffer.item.deleted? %>
+						Your <span class="current_offer_title"><%= successfulOffer.offer.item_title %></span>
+					<% else %>
+						Your <a href="<%= item_path(successfulOffer.item,:showMyOffer=>true,:poffset=>'offer_' + successfulOffer.id.to_s) %>" class="current_offer_title click" onclick="/*_kmq.push(['record', 'dashboard successfuloffers body link publisher tradeya title',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_TryaLnkLdnPg', 'TradeYa Title from Offerer in Your Successful Offers']);*/"><%=successfulOffer.offer.item_title %></a>
+					<%end %>
+				</div>
+				<div class="current_trd_btns">
+					<div><a class="position-click" href="#" onclick="/*_kmq.push(['record', 'dashboard successfuloffers body button delete successful offers',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_DeleteOffer', 'Delete button in Your Successful Offers']);*/ return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/delete_button.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/delete_button_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/delete_button.png'" onclick="prepareDelete(<%= successfulOffer.id%>,'SUCCESSFUL');"/></a></div>
+					<div class="promote_mng" style="margin-top: -30px"><a class="position-click" href="#" onclick="/*_kmq.push(['record', 'dashboard successfuloffers body button contact publisher',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_MessageModal', 'Contact Publisher button in Your Successful Offers']);*/ return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/contact_pub.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/contact_pub_roll.png';"  onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/contact_pub.png';" onclick = "return contactpopup(<%= successfulOffer.id %>, <%= successfulOffer.item.id %>, '<%= ((current_user) ? current_user.email : "") %>', 'RE: <%= escape_javascript(successfulOffer.item.item_title) %>');"></a>
+					<!-- 	<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/contact_btn.png"/></div> -->
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<% end %>
+<% end %>
+<script>
+	$(document).ready(function() {
+		bindAjaxSpinner();
+	});
+</script>

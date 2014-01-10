@@ -1,0 +1,63 @@
+<script>
+	<% if params[:sign_in_modal] %>
+		$("#sign_in_modal_div").html("<%= escape_javascript(render("modals_shared/login_form")) %>")
+		user_email = '<%= (current_user.nil? ? '' : current_user.email) %>';
+	<% elsif params[:sign_up_modal] %>
+		$("#sign_up_modal_div").html("<%= escape_javascript(render("modals_shared/signup_form")) %>")
+	<% elsif params[:your_offer_form] %>
+		$("#your_offer_form_div").html("<%= escape_javascript(render("items/form", :isOffer => true)) %>")
+	<% elsif params[:comments_section] %>
+		$("#comments_section_div").html("<%= escape_javascript(render("shared/comments_section")) %>")
+		$(function(){
+			if(input_comment_val.length > 0 && input_comment_val != 'Write your comment here') $('#input_comment').focus();
+			$('#input_comment').val(input_comment_val);
+		});
+	<% elsif params[:sign_in_block] %>
+		$("#sign_in_block_div").html("<%= escape_javascript(render("shared/sign_in_block")) %>")
+	<% elsif params[:refresh_promote] %>
+		$("#refresh_promote_div").html("<%= escape_javascript(render("shared/promote_refresh")) %>")
+	<% elsif params[:mutual_con] %>
+		$("#mutual_con_div").html("<%= escape_javascript(render("shared/mutual_connection_offerer")) %>");
+		$("#mutual_connection_popup_div").html("<%= escape_javascript(render("modals_shared/mutual_connection_popup")) %>")
+	<% elsif params[:offer_section] %>
+		$("#offer_section_div").html("<%= escape_javascript(render("shared/offer_section")) %>")
+		<% if @status != ACTIVE %>
+			completedItemForm();
+			acceptedOffers();
+		<%end%>
+	<% elsif params[:zip_div] %>
+		$('#zip-div').html("<%= escape_javascript(render("shared/zip_popup")) %>")
+	<% elsif params[:tradeya_carousel_n_r_panel] %>
+		$('#tradeya_carousel_n_r_panel_div').html("<%= escape_javascript(render("home/tradeya_carousel_n_r_panel")) %>");
+		// var counter = 0;
+		// <%# @tradeyas.each do |item| %>
+		// 	smash_dates[counter++] = new Date(<%#= raw(((item) && (item.exp_date) ? "'" + item.exp_date.strftime("%a, %d %b %Y %H:%M:%S %Z") + "'" : '')) %>);
+		// <%# end %>
+		$(function(){
+			$navigation = $('ul.pagination > li.featured');
+			$navigation_img = $navigation.children("img");
+			switch(<%=params[:cat_id]%>){
+				case 1: $navigation.html("FEATURED  ").append($navigation_img); break;
+				case 2: $navigation.html("NEWEST  ").append($navigation_img);break;
+				case 3: $navigation.html("GOODS  ").append($navigation_img);break;
+				case 4: $navigation.html("SERVICES  ").append($navigation_img);break;
+			};
+			slidesTradeyablock();
+		});
+	<% elsif params[:cat_right_list]  %>
+		$('#cat_right_list_div').html("<%= escape_javascript(render("shared/categories_right_list")) %>")
+	<% elsif params[:promotenow_modal]  %>
+		$('#promotenow_modal_div').html("<%= escape_javascript(render("modals_shared/promote_now")) %>")
+	<% elsif params[:sign_up_conf_modal]  %>
+		$('#sign_up_conf_modal_div').html("<%= escape_javascript(render("modals_shared/signup_confirmation")) %>")
+	<% elsif params[:pst_ofr_and_trd]  %>
+		$('#pst_ofr_and_trd_div').replaceWith("<%= escape_javascript(render("items/pst_ofr_and_trd")) %>")
+	<% elsif params[:profile_image_section]  %>
+		$('#profile_image_section_div').html("<%= escape_javascript(render("users/profile_image_section")) %>");
+		<%if @user_images.count == 1%>	
+			$('.topnav_user_img img').attr('src','<%=@user_images.first%>');
+			$('.user_img_<%=@user.id%> img').attr('src','<%=@user_images.first%>');
+			$('#user_card_right .card_image img').attr('src','<%=@user_images.first%>');
+		<%end%>
+	<% end %>
+</script>

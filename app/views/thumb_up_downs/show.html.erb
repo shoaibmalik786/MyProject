@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @thumb_up_down.user_id %>
+</p>
+
+<p>
+  <b>Item:</b>
+  <%= @thumb_up_down.item_id %>
+</p>
+
+<p>
+  <b>Person:</b>
+  <%= @thumb_up_down.person_id %>
+</p>
+
+<p>
+  <b>Up down:</b>
+  <%= @thumb_up_down.up_down %>
+</p>
+
+<p>
+  <b>Token:</b>
+  <%= @thumb_up_down.token %>
+</p>
+
+
+<%= link_to 'Edit', edit_thumb_up_down_path(@thumb_up_down) %> |
+<%= link_to 'Back', thumb_up_downs_path %>

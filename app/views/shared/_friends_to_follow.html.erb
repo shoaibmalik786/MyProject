@@ -1,0 +1,29 @@
+
+<div class="heading">Friends</div>
+<ul class="friends_joined_list">
+	<%@all_friends_authentications.each do |auth|%>
+	  <!-- Friends to Follow Start -->
+	  <li><span class="joined_img"><img height = "50px" width = "50px" src="<%= auth.user.user_image(:thumb)%>"></span>
+	  	<%if auth.provider == "facebook"%>
+				<img src="http://d3md9h2ro575fr.cloudfront.net/images/fb_small.png" class="site_img">
+			<%elsif auth.provider == "twitter"%>
+			  <img src="http://d3md9h2ro575fr.cloudfront.net/images/tw_small.png" class="site_img">
+			<%end%>
+			<div class="joined_user_info" >
+				<p class="joined_user_name"><%=auth.user.title%></p> 
+				<p class="joined_user_place"><%=auth.user.location%></p>
+			</div>
+			<div class="joined_user_follow">
+				<p class="joined_user_name_follow"><%=auth.user.title%></p> 
+				<p><a class="joined_follow" href = "<%= haves_user_path(auth.user)%>">View Haves</a></p>
+				<%#= form_tag follow_user_path(:id => auth.user.id,:item_id => (@item)? @item.id : nil), :id => "follow_action", :remote=>true do %>
+			    <%#= hidden_field_tag 'follow', true%>
+			    <%#= hidden_field_tag 'follow_tab', true%>
+			    <!-- <p><a id="follow_<%= auth.user.id%>" class="joined_follow" href = "#" onclick="followUser('<%=auth.user.id %>',this);mixpanel.track('Click follow on freinds to Follow section');_gaq.push(['_trackEvent', 'Following tab', 'clk_Fllw_Frnds2Fllw', 'Click follow on freinds to Follow section']); addDelay(this,event); return false;">Follow</a><p> -->
+				<%#end%>
+
+			</div>
+		</li>
+		<!-- Friends to Follow End -->
+	<%end%>
+</ul>

@@ -1,0 +1,50 @@
+<ul class="pagination">
+	<% if isMozilla? %>
+		<li class="featured" onclick="$('#featured_drpdwn').toggleClass('hidedrop');" style="padding-top: 16px; padding-bottom: 14px; cursor: pointer;">FEATURED&nbsp;&nbsp;<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/blue_arrow.png" /></li>
+	<% else %>
+		<li class="featured" onclick="$('#featured_drpdwn').toggleClass('hidedrop');" style="padding-top: 18px; padding-bottom: 15px; cursor: pointer;">FEATURED&nbsp;&nbsp;<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/blue_arrow.png" /></li>
+	<% end %>
+	<% c = 1 %>
+	<% @tradeyas.each do |item| %>
+			<li class="tradeya_link<%= (((not @item.nil? and @item.id == item.id) or (@item.nil? and c == 1)) ? ' tl_current' : '') %>" id="tl<%= c %>">
+				<% if @item %>
+				<div style="display: table-cell;vertical-align: middle;height: 53px;">
+					<a class='click' href="<%= item.item_url %>" onclick="/*_kmq.push(['record', 'Landing Page TradeYa Title Text Right Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaLnkRtNav', 'Click Any link on right nav']);*/"><%= truncate(item.item_title, :length => 72) %></a>
+				</div>
+				<% else %>
+				<div style="display: table-cell;vertical-align: middle;height: 60px;">
+					<a href="#" onclick="jQuery('#tradeya_pag_<%= c %>').click(); /*_kmq.push(['record', 'Landing Page TradeYa Title Text Right Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_TryaLnkRtNav', 'Click Any link on right nav']);*/ return false;"><%= truncate(item.item_title, :length => 72) %></a>
+				</div>
+				<% end %>
+			</li>
+		<% c += 1 %>
+	<% end %>
+</ul>
+<div id="featured_drpdwn" class="hidedrop">
+	<ul>
+		<li><a href="#" onclick="return currentTradeyaCaraouselNavigation(1)">FEATURED</a></li>
+		<li><a href="#" onclick="return currentTradeyaCaraouselNavigation(2)">NEWEST</a></li>
+		<li><a href="#" onclick="return currentTradeyaCaraouselNavigation(3)">GOODS</a></li>
+		<li><a href="#" onclick="return currentTradeyaCaraouselNavigation(4)">SERVICES</a></li>
+	</ul>
+</div>
+
+<script>
+	$(document).ready(function() {
+		$('.click').click(function() {
+			var position = $(this).offset();
+			//position image
+			$('#spinner').css({ top: position.top , left: position.left + $(this).width() + 30 }).fadeIn();
+		});
+		$('.cancel-click').click(function(){
+			$('#spinner').hide();
+		});
+		$("#spinner").bind("ajaxSend", function() {
+	    		$(this).fadeIn();
+	  		}).bind("ajaxStop", function() {
+	   			$(this).hide();
+	   		}).bind("ajaxError", function() {
+		   		$(this).hide();
+	   		});
+		});
+</script>

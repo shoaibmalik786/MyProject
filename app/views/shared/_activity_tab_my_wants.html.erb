@@ -1,0 +1,167 @@
+
+
+<script type="text/javascript">
+
+ var currentWidth = 980;
+ $(window).resize(function() {
+   // alert("resized");
+   var winWidth = $(window).width();
+   var conWidth;
+   if(winWidth<768){
+     conWidth=225;
+     col=1;
+     ox=10,
+     oy = 12
+     $('.mywants_container').css('margin-left','38px');
+      
+   }
+   else if(winWidth < 980 ){
+     conWidth = 500;
+     col = 2,
+     ox = 12,
+     oy = 10
+     $('.mywants_container').css('margin-left','41px');
+     
+     // $("#popular_tradeya_tab").css("margin-left","10px");
+   }
+   else if(winWidth>980) {
+     conWidth = 750;
+     col = 3;
+     ox = 12;
+     oy = 10
+   }
+    
+    
+   if(conWidth != currentWidth) {
+     currentWidth = conWidth;
+     $('.mywants_container').width(conWidth);
+     // alert(col);
+     $('.mywants_container').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   }
+   $("img").one("load",function(){
+     $('.mywants_container').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   });
+ })
+
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+	 var currentWidth = 980;
+   var winWidth = $(window).width();
+   var conWidth;
+   $('.mywants_container').css('position','relative');
+  
+   if(winWidth<768){
+     conWidth=225;
+     col=1;
+     ox=10,
+     oy = 12
+     $('.mywants_container').css('margin-left','38px');
+     // $("#popular_tradeya_tab").css("margin-left","5px");
+      
+   }
+   else if(winWidth < 980 ){
+     conWidth = 500;
+     col = 2,
+     ox = 12,
+     oy = 10
+     $('.mywants_container').css('margin-left','41px');
+     
+     // $("#popular_tradeya_tab").css("margin-left","10px");
+   }
+   else if(winWidth>980) {
+     conWidth = 750;
+     col = 3;
+     ox = 12;
+     oy = 10
+   }
+    
+    
+   if(conWidth != currentWidth) {
+     currentWidth = conWidth;
+     $('.mywants_container').width(conWidth);
+     // alert(col);
+     $('.mywants_container').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   }
+   $("img").one("load",function(){
+     $('.mywants_container').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   });
+ 
+
+
+
+});
+</script>
+
+<%if @my_wants.present? %>
+	<div class="my_wants_active mywants_container">
+		<% @my_wants.each do |my_want| %>
+			<div class="user_wants_card">
+				<div class="user_card_heading">
+					<div class="clip">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png">
+					</div>
+					<div class="item_title_card">
+						<a href="<%=item_path(my_want)%>"><%=my_want.title%></a>
+					</div>
+					<div class="card_heading_middle_left">
+						<a href="<%=user_path(my_want.user)%>"><img src="<%=my_want.user.user_image(:thumb)%>"></a>
+					</div>
+					<div class="card_heading_middle_right">
+						<div class="item_card_name"><a href="<%=user_path(my_want.user)%>"><%=my_want.user.title%></a></div>
+						<div class="item_city_card"><%=my_want.user.city%></div>
+						<div class="item_distance_card"><%=my_want.user.user_distance(session[:user_ll])%> miles</div>
+					</div>
+					<div class="item_wants_image">
+						<div class="mywant_item_rollover">
+							<div class="mywant_view"><a href="<%=item_path(my_want)%>"><img src="http://d3md9h2ro575fr.cloudfront.net/images/myview_bttn.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/myview_rollover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/myview_bttn.png'"></a></div>
+							<div class="mywant_share"><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/myshare_bttn.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/myshare_rollover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/myshare_bttn.png'"></a></div>
+							<div class="mywant_cross">
+								<a href="<%=my_wants_user_path(@user)%>?remove_want=<%=my_want.id.to_s%>" data-remote=true><img src="http://d3md9h2ro575fr.cloudfront.net/images/mycross_icon.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/mycross_rollover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/mycross_icon.png'"></a></div>
+						</div>
+
+						<%= form_for :passive_trade, :url => {:controller => :passive_trades, :action => :create}, :html => {:id => "passive_trade_form_"+my_want.id.to_s} do |f| %>
+							<%= f.hidden_field :item_id, :value => my_want.id %>
+							<%= f.hidden_field :user_id, :value => current_user.id %>
+							<a href=#><img src="<%=my_want.item_image%>" onclick="$('#passive_trade_form_<%=my_want.id.to_s%>').submit();return false;"></a>
+						<%end%>
+						
+					</div>
+				</div>
+			</div>
+		<%end%>
+	</div>	
+<%end%>
+
+<script>
+	$('.item_wants_image').hover(function(){
+		$(this).children('.mywant_item_rollover').show();
+		// $(this).css('opacity','0.5');
+	}, function(){
+		$(this).children('.mywant_item_rollover').hide();
+		// $(this).css('opacity','1');
+	});
+</script>

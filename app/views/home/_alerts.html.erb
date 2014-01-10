@@ -1,0 +1,10 @@
+<% is_first = true %>
+<% @alerts.each do |alert| %>
+	<%= render "alerts/#{alert.get_partial_name_by_alert_no}", :alert => alert, :is_first => is_first %>
+	<% is_first = false %>
+<% end %>
+<% if @new == false && @alerts.current_page.to_i < @alerts.total_pages %>
+	<tr id="tr_alert_see_more" style="border-bottom: 0px;"><td colspan="3"><div class="see_more_alerts"><a href="#" onclick="/*_kmq.push(['record', 'dashboard body link seemore',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'dashboard', 'Clk_seemore', 'Click on See More text link in Dashboard']);*/ return seeMoreAlerts('<%= request.parameters.merge({:page => (@alerts.current_page.to_i + 1)}).to_query %>');">See More</a></div></td><tr>
+<% end %>
+<% if current_user then current_user.mark_all_alert_read end %>
+<script>$(document).ready(function() {bindAjaxSpinner();});</script>

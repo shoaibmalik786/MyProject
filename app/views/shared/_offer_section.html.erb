@@ -1,0 +1,10 @@
+<% if @accepted_offers.count > 0 %>
+	<div id="accepted_offers_div">
+		<%= render "shared/accepted_offers" %>
+	</div>
+<% end %>
+<% if ((@accepted_offers.count == 0 and @trades.count > 0) or (@accepted_offers.count == 0 and @trades.count == 0)) or (@accepted_offers.count > 0 and @trades.count > 0) %>
+	<div id="current_offers_div">
+		<%= render "shared/current_offers" %>
+	</div>
+<% end %>

@@ -1,0 +1,154 @@
+<div class="tab_div_overlay"></div>
+<!-- My Offers tab content start -->
+<div id="my_offers_tab" class="">
+	<% if @trades_grouped_by_items.present? %>
+	<% @trades_grouped_by_items.each_value do |trades_by_item| %>
+	<% if trades_by_item.length > 0 %>
+		<% item = trades_by_item[0].item %>
+		<div class="my_offer_block">
+			<div class="your_offers">
+				<div class="heading">Your Offers</div>
+				<div class="your_offer_inner">
+					<div class="offer_img"><a href="<%=my_offers_item_path(item)%>"><img src="http://d3md9h2ro575fr.cloudfront.net/images/your_offers.png"></a></div>
+					<div class="offer_cards">
+						<div class="offer_cards_inner">
+								<% trades_by_item.each_with_index do |trade,index| %>
+									<% offer = trade.offer %>
+									<% if index > 0 %>
+										<div class="or_div">Or</div>
+									<% end %>
+									<!-- User Card Start-->
+									<div class="user_wants_card">
+										<div class="user_card_heading">
+											<div class="clip">
+												<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+											</div>
+											<div class="item_title_card"><%=link_to offer.title, item_path(offer)%></div>
+											<div class="card_heading_middle_left">
+												<a href="<%=user_path(offer.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrImg', 'Click User image on Item Card']);mixpanel.track('Click User image on Item card');addDelay(this,event);returm false;"><img src="<%=offer.user.user_image(:thumb)%>"></a>
+											</div>
+											<div class="card_heading_middle_right">
+													<div class="item_card_name"><a href="<%=user_path(offer.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrTtl', 'Click User Title on Item Card']);mixpanel.track('Click User Title on Item card');addDelay(this,event);returm false;"><%=truncate((offer.user.title).html_safe,:length => 17,:omission => "...")%></a></div>
+													<div class="item_city_card"><%=offer.user.city%></div>
+											</div>
+
+										</div>
+										<div class="item_wants_image">
+												<a href="<%=item_path(offer)%>"><img src="<%= offer.item_image(:medium)%>" /></a>
+										</div>
+										<!-- <div class="curve_left">
+											<img src="http://d3md9h2ro575fr.cloudfront.net/images/left_curve.png">
+										</div>
+										<div class="curve_right">
+											<img src="http://d3md9h2ro575fr.cloudfront.net/images/right_curve.png">
+										</div> -->
+										<% if offer.user_id == current_user.id %>
+											<!-- <%#= form_tag remove_offer_item_path(:id => item.id),:id => "remove_offer_action" do %>
+										    <%#= hidden_field_tag 'remove_offer', true%>
+							   				<div class="remove_div" onclick="$(this).parents('form').submit(); return false;">Remove</div>
+											<%#end%> -->
+										<% else %>
+											<!-- forms for wants/likes/trade etc -->
+										<% end %>
+									</div>
+								<% end %>
+								<!-- User Card End -->
+							</div>		
+					</div>
+				</div>
+			</div>
+			<div class="tradeya_item_right">
+				<div class="my_offer_arrow">
+					<img src="http://d3md9h2ro575fr.cloudfront.net/images/my_offer_arrow.png">
+				</div>
+				<div class="tradeya_item">
+					<div class="heading">TradeYa Item</div>
+					<!-- User Card Start-->
+					<div class="user_wants_card">
+						<div class="user_card_heading">
+							<div class="clip">
+								<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+							</div>
+							<div class="item_title_card"><%=link_to item.title, item_path(item),:onclick=>"_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmTitle', 'Click On Item Title']);mixpanel.track('Click On Item Title');addDelay(this,event);return false;"%></div>
+							<div class="card_heading_middle_left">
+								<a href="<%=user_path(item.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrImg', 'Click User image on Item Card']);mixpanel.track('Click User image on Item card');addDelay(this,event);return false;"><img src="<%=item.user.user_image(:thumb)%>"></a>
+							</div>
+							<div class="card_heading_middle_right">
+									<div class="item_card_name"><a href="<%=user_path(item.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrTtl', 'Click User Title on Item Card']);mixpanel.track('Click User Title on Item card');addDelay(this,event);return false;"><%=truncate((item.user.title).html_safe,:length => 17,:omission => "...")%></a></div>
+									<div class="item_city_card"><%=item.user.city%></div>
+									<%if item.user.location != "-" and item.user != current_user%>
+										<div class="item_distance_card"><%=item.user.user_distance(session[:user_ll])%> miles</div>
+									<%end%>
+							</div>
+
+							<%if current_user.present? and item.user == current_user %>
+							<%else%>
+								<div class="item_heading_bottom">
+									<!-- <div class="card_details" >Details</div> -->
+									<div class="heading_trade_want_like">
+										
+											<div id="item_card_want_icon_<%=item.id%>">
+												<%= render 'shared/item_card_want', :@item => item, :@icon => true%>
+											</div>
+											<div><a href="<%=my_offers_item_path(item)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_Trd', 'Click Trade on Item Card']);mixpanel.track('Click Trade on Item card'); addDelay(this,event);return false;"> <img src="http://d3md9h2ro575fr.cloudfront.net/images/card_trade.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_trade_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_trade.png'"></a>
+											</div> 
+											<div><a href ="/items/new?have=<%=item.id%>" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmHv', 'Click Have on Item Card']);mixpanel.track('Click Have on Item card');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/card_have.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_have_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_have.png'"></a> </div>
+											<div id="item_card_like_<%=item.id%>">
+											  <%= render 'shared/item_card_like', :@item => item%>
+											</div>
+									</div>
+								</div>
+							<%end%>
+						</div>
+
+						<div class="item_wants_image">
+							<a href="<%=item_path(item)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmImg', 'Click On Item Image']);mixpanel.track('Click On Item Image');addDelay(this,event);return false;"><img src="<%= item.item_image(:medium)%>" /></a>
+						</div>
+	
+						<% if item.user_id == current_user.id %>
+						<!-- forms for hover when user is the owner -->
+						<% else %>
+							<!-- forms for wants/likes/trade etc -->
+						<% end %>
+					</div>
+					<!-- User Card End-->
+				</div>
+			</div>
+		</div>
+	<% end %>
+	<% end %>
+	<% else %>
+		<div id="empty_likes">
+			<div class="heading">No offer exists.. Oops!!</div>
+		</div>
+	<% end %>
+</div>
+<!-- My Offers tab content start -->
+
+ <!-- script for dynamically assigning width to .offer_cards_inner div -->
+<script type="text/javascript">
+	$(function(){
+		$(".your_offers").each(function(){
+				var width = 0;
+				var width2 = 0;
+			$(this).find(".your_offer_inner .offer_cards .offer_cards_inner .user_wants_card").each(function(){
+				
+				width += $(this).outerWidth( true );
+
+			});
+			$(this).find(".your_offer_inner .offer_cards .offer_cards_inner .or_div").each(function(){
+				
+				width2 += $(this).outerWidth( true );
+
+			});
+			$(this).find(".your_offer_inner .offer_cards .offer_cards_inner").css('width', width+width2 +2+ "px");
+
+		});
+	})
+</script>
+<!-- script for dynamically assigning width to .offer_cards_inner div -->
+<script>
+ $("#spinner").hide();
+ $('.tab_div_overlay').hide();
+ $('#tab_myoffers').text("My Offers (<%=@trades_count%>)");
+</script>

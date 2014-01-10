@@ -1,0 +1,21 @@
+<h1>Listing passive_trades</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @passive_trades.each do |passive_trade| %>
+  <tr>
+    <td><%= link_to 'Show', passive_trade %></td>
+    <td><%= link_to 'Edit', edit_passive_trade_path(passive_trade) %></td>
+    <td><%= link_to 'Destroy', passive_trade, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Passive trade', new_passive_trade_path %>

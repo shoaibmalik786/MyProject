@@ -1,0 +1,46 @@
+<div id = "user_reviews" class="usr_rev_back" style="width: 675px; margin-top: 0px;">
+	<div class="rev_abt_usr">
+		Reviews About You
+	</div>
+	<table width="100%" class="usr_review_table">
+		<% @reviews.each do |review| %>
+		<tr valign="top">
+			<td width="16%">
+				<div class="ofr_rev_image_smaller user_image_border">
+					<img src= "<%= review.reviewer.user_image(:small) %>"<%= (review.reviewer.isFacebookUser? ? ' width=50px' : "") %> />
+				</div>
+					<div class="ofr_rev_name" onclick="callHoverProfile(<%= review.reviewer_id %>);"><%= review.reviewer.title %><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/trd_icon.png" style="margin-left: 5px;" /></div>
+					<div class="ofr_rev_city"><%= review.reviewer.location %></div>
+			</td>
+			<td>
+				<div class="right_arw_rev"></div>
+				<div class="usr_rev_desc">
+					<div id="remove_review_<%=review.id %>" class="remove_rev_dash" >
+						<a id="flag" href="#" onclick="return false;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/flag.png" onmouseover="$('#trd_alert_<%=review.id%>').css('display','block');" onmouseout="$('#trd_alert_<%=review.id%>').css('display','none');" onclick="requestRemove(<%=review.id%>); return false;" /></a>
+						<a id="unflag" href="#" onclick="return false;" style="display:none"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/flag_red.png" onclick="requestRemove(<%=review.id%>); return false;" /></a>
+						<% if review.request_remove_flag %>
+						<!-- If review is already flagged -->
+							<script>
+								$('#remove_review_<%=review.id %> #flag').toggle();
+								$('#remove_review_<%=review.id %> #unflag').toggle();
+							</script>
+						<% end%>
+					</div>
+					<div id="trd_alert_<%=review.id%>" class="flagremove_dash" style="margin-left: 460px;">
+						<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/flag_admin.png" />
+					</div>
+					<div class="dash_review_desc">
+						<%= review.review_text %>
+					</div>
+				</div>
+			</td>
+		</tr>
+		<%end %>
+	</table>
+</div>
+<script>
+	$(".ofr_rev_name").click(function(e) {
+		e.stopPropagation(); 
+		return false;
+	});
+</script>

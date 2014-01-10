@@ -1,0 +1,10 @@
+<%= render "item_page_top" %>
+<script>
+	$(function() {
+			$("#tab-content").html("<%= escape_javascript render('shared/rejected_offers_tab') %>");
+			$("#tab_my_offers").parent().removeClass('active');
+			$("#tab_accepted_offers").parent().removeClass('active');
+			$("#tab_trade_offers_tab").parent().removeClass('active');
+			$("#tab_rejected_offers").parent().addClass('active');
+	});
+</script>

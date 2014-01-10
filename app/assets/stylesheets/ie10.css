@@ -1,0 +1,40 @@
+*{
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif !important;
+}
+.radio input[type='radio']{
+	margin-left: 0px !important;
+}
+input[type="radio"]{
+	filter: alpha(opacity=100);
+	margin-top: 3px !important;
+	margin-left: 0px !important;
+	opacity:1 !important;
+}
+ input[type='radio']:checked{
+	filter: alpha(opacity=100);
+	margin-top: 3px !important;
+	margin-left: 0px !important;
+	opacity:1 !important;
+}
+input[type="radio"]+label{
+	background: none;
+}
+input[type='radio']:checked+label{
+	background: none;
+}
+#request_modal input[type="radio"]{
+	filter: alpha(opacity=100);
+	margin-top: 3px !important;
+	opacity:1 !important;
+}
+#request_modal input[type="radio"]:checked{
+	filter: alpha(opacity=100);
+	margin-top: 3px !important;
+	opacity:1 !important;
+}
+#request_modal input[type="radio"]+label{
+	background: none;
+}
+#request_modal input[type='radio']:checked+label{
+	background: none;
+}

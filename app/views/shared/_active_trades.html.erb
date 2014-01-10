@@ -1,0 +1,225 @@
+<div id="left_section_activity">
+	<div class="recent_text"><img src="http://d3md9h2ro575fr.cloudfront.net/images/recent_clock.png"><a href="#">Recent</a></div>
+	<% unless @recent_items.size == 0 %>	
+		<ul class="recent_items_list">
+				<% @recent_items.each do | item | %>
+					<li><a href="<%= item[:url] %>"><%= item[:title] %></a></li>
+				<% end %>
+		</ul>
+	<% end %>
+	<div class="active_trade_text active"><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/active_trade_icon.png">active trades</a></div>
+	<ul class="active_trades_list">
+		<!-- <li><a href="#">Beautiful Emerald N..<div class="active_trade_notify">5</div></a></li> -->
+	</ul>
+	<div class="wants_active_text"><%= link_to(raw('<img src="http://d3md9h2ro575fr.cloudfront.net/images/one_icon.png">wants'), my_wants_user_path, remote: true, :id => 'wants_header') %> </div>
+	<ul class="my_wants_list">
+		<li><%= link_to 'My Wants', my_wants_user_path, remote: true %></li>
+		<li><%= link_to 'Wants on my haves', wants_on_my_haves_user_path, remote: true %></li>
+	</ul>
+	<div class="pending_active_text"><img src="http://d3md9h2ro575fr.cloudfront.net/images/pending_icon.png"><a href="#">pending</a></div>
+</div>
+
+<div id="right_section_activity">
+	<div class="empty_active_trades">
+		<div class="empty_activetrade_heading">You don’t have any activity to display yet...</div>
+		<div class="empty_activetrade_btn1"><a href="#">Browse Popular Items</a></div>
+		<div class="empty_activetrade_btn2"><a href="#">Connect With Friends</a></div>
+		<div class="empty_activetrade_btn3"><a href="#">Post An Item</a></div>
+	</div>
+
+</div>	
+
+<script>
+// $(document).ready(function(){
+// 	$('.wants_container').css('width','750px');
+// 	$('.wants_container').css('position','relative');
+// 	$('.wants_container').BlocksIt({
+// 		numOfCol: 3,
+// 		offsetX: 12,
+// 		offsetY: 10,
+// 		blockElement: '.user_wants_card'
+// 	});
+// 	$("img").one("load",function(){
+// 		 $('.wants_container').BlocksIt({
+// 				numOfCol: 3,
+// 				offsetX: 12,
+// 				offsetY: 10,
+// 				blockElement: '.user_wants_card'
+// 			});
+// 	});
+// 	$('.mywants_container').css('width','750px');
+// 	$('.mywants_container').css('position','relative');
+// 	$('.mywants_container').BlocksIt({
+// 		numOfCol: 3,
+// 		offsetX: 12,
+// 		offsetY: 10,
+// 		blockElement: '.user_wants_card'
+// 	});
+// 	$("img").one("load",function(){
+// 		 $('.mywants_container').BlocksIt({
+// 				numOfCol: 3,
+// 				offsetX: 12,
+// 				offsetY: 10,
+// 				blockElement: '.user_wants_card'
+// 			});
+// 	});
+// });
+</script>
+
+<%if @user.present?%>
+<!--Content Start -->
+<div class="container">
+	<%if session[:have_saved]%>
+		<script>
+			$(function(){
+      			$('#have_message_modal').modal("show");
+   			});
+		</script>
+		<%session[:have_saved] = nil%>
+	<%end%>
+	<div class="span10 item_middle_section">
+		<div class="center_content">
+			<div class="dashboard_main_wrapper ">
+				<% if params[:wanted_item] or params[:review_reminder] and flash[:error] or flash[:info]%>
+					<div class="info_alert error_msg" id ="notice">
+						<%wanted_item = Item.find_by_id(params[:wanted_item])%>
+						<%if wanted_item.present? and wanted_item.deleted?%>
+							<p>Whoops! Looks you have deleted "<%=wanted_item.title%>"! But, all is not lost. Check out <%=@user.title%>'s stuff to see if there's anything you want!</p>
+						<%elsif wanted_item.present? and wanted_item.completed?%>
+							<p>Whoops! Looks you already traded "<%=wanted_item.title%>"! But, all is not lost. Check out <%=@user.title%>'s stuff to see if there's anything you want!</p>
+						<%elsif flash[:info] and params[:delete]%>
+							<%delete_item = Item.find(params[:delete])%>
+							<p><span class="msg_item_name">"<%=delete_item.title%>"</span> has been removed from your Haves Board</p>
+						<%else%>
+							<p><%= flash[:error] %></p>
+						<%end%>
+						<a href="#" class="info_cross" onclick="$('#notice').fadeOut(1000); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/info_cross.png"></a>
+					</div>
+				<% end %>
+				
+			</div>
+			<!-- tab content start -->
+			<div id="spinner" style="top: 90%; display: none"></div>
+			<div class="tab-content" id="tab-content"></div>
+			<!-- tab content ends -->
+		</div>
+	</div>
+</div>
+<!-- Content End-->
+<%end%>
+
+<script type="text/javascript">
+	$('#wants-header').click(function () {
+		$(".my_wants_list li:first").addClass('active');
+	});
+
+	$(document).ready(function(){
+		$('#spinner').hide();
+	});
+	$('.profile_tabs li a').click(function(){
+		$('.profile_tabs li').removeClass('active');
+		$(this).parent().addClass('active');
+		$("#reviews_tab_div").hide();
+		$("#inbox_tab_div").hide();
+		$("#inbox_options").hide();
+		$(".reviews_by_user").addClass("active");
+
+		$('#tab_haves').text("Haves");
+		$('#tab_wants').text("Wants");
+		$('#tab_likes').text("Likes");
+		$('#tab_myoffers').text("My Offers");
+		$('#tab_past_trades').text("Past Trades");
+		$('#tab_reviews').text("Inbox");
+		$('#tab_following').text("Friends");
+	});
+	// var opts = {
+	// 	size: 75,           // Width and height of the spinner
+	// 	factor: 0.25,       // Factor of thickness, density, etc.
+	// 	color: "#FF5447",      // Color #rgb or #rrggbb
+	// 	speed: 1.0,         // Number of turns per second
+	// 	clockwise: true     // Direction of rotation
+	// };
+	// var ajaxLoader = new AjaxLoader("spinner", opts);
+	$('#spinner').hide();
+	$('.profile_tabs li:not("#tab_inbox") a').click(function(){
+		$('#spinner').show();
+		$('.tab_div_overlay').show();
+	});
+
+	$('.d_star_rating_large').raty({
+			size:  '20',
+			starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/d_star_on.png',
+			starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/d_star_off.png',
+			starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png'
+		});
+	$('#d_overall_rating').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/orangestar.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/whitestar.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(@overall_rating.present?)? @overall_rating : 0%>
+	});
+	$('#d_item_described').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/orangestar.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/whitestar.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(@describe_rating.present?)? @describe_rating : 0%>
+	});
+	$('#d_item_communication').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/orangestar.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/whitestar.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(@communication_rating.present?)? @communication_rating : 0%>
+	});
+
+	// $('#my-offers-tab').click(function(){
+	// 	$('#spinner').hide();
+	// });
+	$('#inbox-tab').click(function(){
+		$('#spinner').hide();
+		$('.tab_div_overlay').hide();
+	});
+
+	$(function(){
+		<%if current_user and (@user == current_user)%>
+      <%if @user.about != "" %>
+  			$('.rating_text').css('box-shadow','none');
+  		<%else%>
+  			$('.rating_text').attr('style',"display: block;");
+  		<%end%>
+		<%else%>
+  		$('.rating_text').css('box-shadow','none');
+		<%end%>
+	});
+
+$('.active_trade_text').click(function(){
+	$('.wants_on_my_haves').show();
+	$('#active_trade_item').hide();
+	$('.active_trade_text').addClass('active');
+	$('.active_trades_list li').removeClass('active');
+	$('.my_wants_list li').removeClass('active');
+});
+$('.my_wants_list li a').click(function(){
+// 	$('.wants_on_my_haves').show();
+// 	$('#active_trade_item').hide();
+	$('.active_trade_text').removeClass('active');
+	$('.active_trades_list li').removeClass('active');
+	$('.my_wants_list li').removeClass('active');
+	$(this).parent().addClass('active');
+});
+$('.active_trades_list li a').click(function(){
+	$('.wants_on_my_haves').hide();
+	$('#active_trade_item').show();
+	$('.active_trades_list li').addClass('active');
+	$('.active_trade_text').removeClass('active');
+	$('.my_wants_list li').removeClass('active');
+});
+</script>

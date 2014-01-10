@@ -1,0 +1,31 @@
+<div id="usr_profile_info" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div id="error_zip" style="color:red;"></div>
+	<div id="crossimg" style="margin-top: 0px; margin-bottom: 10px; margin-right: 3px;"> <a href="#" onclick = "/*_kmq.push(['record', 'modal edit profile information close x icon',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'modal', 'Clk_EditProfileModalCancelIcn', 'clicks on x close icon in Edit Profile Information Modal']);*/ cancelEdit(); return false;">X</a></div>
+	<div class="usr_profile_head" style="margin-top:-10px;text-align:center">Change Your Location By Zip Code</div>
+	<table width="100%" class="edit_prof_table">
+		<tr style="height: 29px;"></tr>
+		<tr></tr>
+		<tr>
+			<%= form_tag change_location_path,:id=> "change_location" do %>
+			 <td><div class="info_label" style="margin-left:20px"><%= label_tag(:zip, "YOUR ZIP CODE")%></div></td>
+			 <td><div style="margin-left:15px" onkeydown="return ZipEnter(event); return false;"><%= text_field_tag (:zip) %></div>
+			 <td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_button.png" onclick="validate_zip(); return false;" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_button_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/save_button.png'" style="margin-top: -9px;" /></td>
+			 <td><div class="cancel_div" style="margin-left: 0px; margin-top: -10px;">
+				<span class="or">or</span> <span class="cancel"><a class="cancel-click" href="#" onclick="/*_kmq.push(['record', 'modal edit profile information cancel text link']); _gaq.push(['_trackEvent', 'modal', 'Clk_EditProfileModalCancelBtn', 'clicks on cancel text link in Edit Profile Information Modal']);*/ cancelEdit(); return false;">Cancel</a></span>
+			</div></td>
+			<%end%>
+		</tr>
+	</table>
+</div>
+<script>
+	function cancelEdit(){
+		$('#disp_name_edit').val('<%= current_user.nil? ? "" : current_user.title %>');
+		$('#zip_code_edit').val('<%= current_user.nil? ? "" : current_user.zip %>');
+		$('#about_info_edit').val('<%= current_user.nil? ? "" : escape_javascript(current_user.about) %>');
+		$('#about_word_count').text('<<%= current_user.nil? ? "0" : current_user.about.length %>/500>');
+		$('#profzipchkmsg').text('');
+		$('#profdispnamechkmsg').text('');
+		$('#prof_update_spinner').hide();
+		$('#usr_profile_info').modal('hide');
+	}
+</script>

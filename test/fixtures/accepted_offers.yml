@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  trade_id: 1
+  user_id: 1
+  recent_tradeya: false
+
+two:
+  trade_id: 1
+  user_id: 1
+  recent_tradeya: false

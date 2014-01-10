@@ -1,0 +1,49 @@
+<%if params[:item_page_want]%>
+	$("#wants_div").html("<%= escape_javascript render('shared/wants') %>");
+	$("#user_wants_count").text("<%=@wants_count%>");
+	<%if params[:item_page_want] == "true" and current_user.want_message_reminder %>
+		<% if current_user.wants.count == 1 %>
+			<%if current_user.have_items.count < 2%>
+			  $('#want_msg_2').show();
+			<%else%>
+				$('#want_msg_1').show();
+			<%end%>
+		<% else %>
+			<%if current_user.have_items.count < 2%>
+			  $('#want_msg_3').show();
+			<%else%>
+				$('#want_msg_1 .want_message_div_heading').text(" Success! You've added this item to your Wants Board!");
+				$('#want_msg_1').show();
+			<%end%>
+		<% end %>
+	<%end%>
+<%elsif params[:item_card_want]%>
+	$("#item_card_want_<%=@item.id%>").html("<%= escape_javascript render('shared/item_card_want') %>");
+	$("#item_card_want_icon_<%=@item.id%>").html("<%= escape_javascript render('shared/item_card_want',:@icon=>true) %>");
+	<%if params[:item_card_want] == "true" and current_user.want_message_reminder %>
+		$(".wants_message_modal_user").text("<%=escape_javascript(@item.user.first_name_in_caps).html_safe %>");
+		$(".wants_message_modal_user_s").text("<%= escape_javascript(@item.user.first_name_with_s).html_safe %>");
+		$(".wants_message_modal_item").text("<%=escape_javascript(@item.title).html_safe %>");
+		<% if current_user.wants.count == 1 %>
+			<%if current_user.have_items.count < 2%>
+			  $('#want_modal_msg_2').show();
+			  $("#want_message_modal").modal("show");
+			<%else%>
+				$('#want_modal_msg_1').show();
+				$("#want_message_modal").modal("show");
+			<%end%>
+		<% else %>
+			<%if current_user.have_items.count < 2%>
+				$('#want_modal_msg_2').hide();
+			  $('#want_modal_msg_3').show();
+			  $("#want_message_modal").modal("show");
+			<%else%>
+				$('#want_modal_msg_1 .want_message_div_heading').text(" Success! You've added this item to your Wants Board!");
+				$('#want_modal_msg_1').show();
+				$("#want_message_modal").modal("show");
+			<%end%>
+		<% end %>
+	<%end%>
+<%elsif params[:remove_want]%>
+	$("#tab-content").html("<%= escape_javascript render('shared/wants_tab') %>");
+<%end%>

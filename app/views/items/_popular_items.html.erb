@@ -1,0 +1,53 @@
+<% if @popular_items.present? %>
+	<% @popular_items.each do |item|%>
+        <%= render "shared/item_card", :item => item %>
+	<script type="text/javascript">
+		$("img").one("load",function(){
+			$('#itemcard').BlocksIt({
+				numOfCol: 4,
+				offsetX: 10,
+				offsetY: 9,
+				blockElement: '.user_wants_card'
+			});
+		});
+			// var currentWidth = 980;
+			// $(window).resize(function() {
+			// 	var winWidth = $(window).width();
+			// 	var conWidth;
+			// 	if(winWidth < 660) {
+			// 		conWidth = 440;
+			// 		alert('440');
+			// 		col = 2
+			// 	} else if(winWidth < 880) {
+			// 		conWidth = 660;
+			// 		alert('660');
+			// 		col = 3
+			// 	} else if(winWidth < 1100) {
+			// 		conWidth = 880;
+			// 		alert('880');
+			// 		col = 4;
+			// 	}
+			// 	else if(winWidth < 1300) {
+			// 		conWidth = 1080;
+			// 		alert('1080');
+			// 		col = 5;
+			// 		ox = 9;
+			// 		oy = 10
+			// 	} else {
+			// 		conWidth = 1100;
+			// 		col = 5;
+			// 	}
+			
+			// 	if(conWidth != currentWidth) {
+			// 		currentWidth = conWidth;
+			// 		$('#itemcard').width(conWidth);
+			// 		$('#itemcard').BlocksIt({
+			// 			numOfCol: col,
+			// 			offsetX: ox,
+			// 			offsetY: oy
+			// 		});
+			// 	}
+			// });
+</script>
+<% end %>
+<% end %>

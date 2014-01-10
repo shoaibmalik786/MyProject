@@ -1,0 +1,7 @@
+$('#card_added').show();
+ setTimeout(function() {
+        $("#card_added").hide('blind', {}, 500)
+    }, 1000);
+$("#cards_list").html("<%= raw escape_javascript(render 'users/partials/users_cards') %>");
+
+$("#cardsinformation").html("<%= raw escape_javascript(render 'transactions/partials/update_card') %>");

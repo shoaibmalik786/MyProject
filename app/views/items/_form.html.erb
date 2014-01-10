@@ -1,0 +1,505 @@
+<script>
+  offerForm = "old";
+  var item_wants = [];
+  var item_wants_count = 0;
+  var item_photos = [];
+  var item_video_photo_count = 0;
+  var item_videos = [];
+</script>
+
+<% if isOffer %>
+<div id="youroffer_heading"><a name="uroffer_form" id="uroffer_form">Your offer</a></div>
+<% end %>
+
+<%= form_for(((isOffer) ? @offer : @item), :html => {:multipart => true, :class=>"form-horizontal", :id => "item_form"}) do |f| %>
+  <% if @item and @item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@item.errors.count, "error") %> prohibited this item from being saved:</h2>
+      <ul>
+        <% @item.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div id="editor_wrapper"></div>
+  <input id="item_tod" name="item[tod]" style="display:none" type="checkbox" value="1" />
+  <input type="hidden" name="user_id" id="user_id"/>
+  <% if @haveItem %>
+    <input type="hidden" name="item[have]" id="item_have" value = "<%=@haveItem.id%>">
+  <% end %>
+  <div class="control-group">
+    <label class="control-label" for="inputPassword">Category</label>
+    <div class="controls">
+      <div class="category_type" onclick="$('#category_drop').toggleClass('hidedrop');$('.subcategories').addClass('hidedrop');" TABINDEX="2"><span id="choose_cat" class="category_type" style="border:none"><%= @cat.present? ? @cat.name : 'Choose a category' %></span></div>
+      <div id="category_error"></div>
+      <div id="category_drop" class="hidedrop" >
+        <ul>
+          <% c = 1 %>
+          <% Category.root.categories.each do |s| %>
+          <% if "interests" != s.name.downcase %>
+          <li <%#= (c % 2) == 0 ? 'class=right' : "class=left" %> onmouseover="$('.subcategories').addClass('hidedrop'); $('#<%= s.name %>_subcategory').removeClass('hidedrop'); categoryHover(); "><a href="#"><%= s.name%></a></li>
+          <% c += 1 %>
+          <% end %>
+          <% end %>
+        </ul>
+      </div>
+      <% Category.root.categories.each do |s| %>
+        <% if "interests" != s.name.downcase %>
+          <ul id="<%= s.name %>_subcategory" class="hidedrop subcategories" onmouseover="categoryHover();">
+            <div class="dropdown_heading"><%= s.name%></div>
+            <div class="droprdown_hr"></div>
+            <% c = 1 %>
+            <% gm = s.general_misc_cat %>
+            <% if not gm.nil? %>
+              <li id="subcat_item_misc" onclick="selectCategory(this,'choose_cat','category_drop', 'item', <%= gm.id %>);show_for_goods_services('<%= gm.parent.name %>');" v='"I am not sure"' cat_name='"I am not sure"' cat_p_name="<%= gm.parent.name %>"><a href="#" onclick="return false;">"I am not sure"</a></li>
+            <% end %>
+            <% s.categories.order("name ASC").each do |g| %>
+              <li id="subcat_item_<%= g.id.to_s %>" onclick="selectCategory(this,'choose_cat','category_drop', 'item', <%= g.id %>);show_for_goods_services('<%= g.parent.name %>');" v="<%= g.name.capitalize %>" cat_name="<%= g.name %>" cat_p_name="<%= g.parent.name %>"><a href="#" onclick="return false;"><%= g.name %></a></li>
+             <% c += 1 %>
+            <% end %>
+            <br style="clear: both;" />
+          </ul>
+        <% end %>
+      <% end %>
+      <%= f.hidden_field :category_id, :value => @cat.present? ? @cat.id.to_s : '' %>
+      <div id="categorymessage"></div>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="inputEmail">Title</label>
+    <div class="controls">
+      <%=  f.text_field :title, :class => "title_text", :placeholder=>"Give it a good name...", :TABINDEX=>"1",:maxlength => "72" %><br />
+    </div>
+    <div id="titlemessage" style="display:none"></div>
+  </div>
+  <div class="control-group" style="margin-top: 6px;">
+    <input type="hidden" id="item_photos" name="item_photos"/>
+    <label class="control-label" for="inputPhoto">Photo</label>
+    <div class="controls">
+      <div id="multiple_image_prev" class="multiple_image_prev">
+        <div id="user_uploaded_images"></div>
+        <table>
+          <tr id ="images_row">
+            <td>
+              <div id="upload_more" class="upload_image_video active_image_upload">
+                <a id="more_more_2" href="#photo_upload_modal" onclick=" return false;" data-toggle="modal" aria-labelledby="myModalLabel" class="add_photo_link"><img src="http://d3md9h2ro575fr.cloudfront.net/images/add_image.png"></a>
+              </div>
+            </td>
+            <td>
+              <div id="upload_more" class="empty_image_upload upload_image_video">
+                <img src="http://d3md9h2ro575fr.cloudfront.net/images/blank_image.jpg">
+              </div>
+            </td>
+            <td>
+              <div id="upload_more" class="empty_image_upload upload_image_video">
+                <img src="http://d3md9h2ro575fr.cloudfront.net/images/blank_image.jpg">
+              </div>
+            </td>
+            <td>
+              <div id="upload_more" class="empty_image_upload upload_image_video">
+                <img src="http://d3md9h2ro575fr.cloudfront.net/images/blank_image.jpg">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: center;">
+              <div class="main_photo_text_item">
+                <span id="more_more" href="#" class="upload_link">Main photo</span>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      
+      <div id="photo_upload_modal" class="modal hide fade">
+        <a href="#" class="close del_close" data-dismiss="modal" onclick="document.getElementById('photomessage').textContent = '';">X</a>
+        <div class="heading">Upload a photo from your computer...</div>
+        <%= f.fields_for @item_photo do |ip| %>
+        <div class="file_div">
+          <div id="photo_upload_div">
+            <span class="fileupload_img">
+              <div style="overflow: hidden; position: absolute; z-index: 0">
+                <div id="icp_img" style="float: left">Select File</div>
+                <%= ip.file_field :photo, {:multiple => true,:class => "file_up", :accept => "image/*", :onChange => "canSubmitCanNext = false;jQuery('#selected_photo_file').text(jQuery(this).val().substring(jQuery(this).val().lastIndexOf('\\\\') + 1));",:TABINDEX=>"4", :style=>"opacity: 0; filter: alpha(opacity = 0); -moz-opacity:0; position: absolute;top: 0; left: 0; width: 119px;height:32px;  cursor: pointer;"} %>
+                <input id="item_item_photo_id" name="item[item_photo][id]" type="hidden">
+              </div>
+            </span>
+              <span class="select_file" id="selected_photo_file" style="position: absolute; z-index: 0">No file selected</span>
+          </div>
+        </div>
+        <div class="clear"></div>
+        <div class="image_uploading" style="display:none;">
+          <div style="overflow: hidden; position: absolute; z-index: 0">
+            <div id="" class="icon_uploading" style="float: left"><img src="http://d3md9h2ro575fr.cloudfront.net/images/Ajax_loader.gif" style="height: 16px; width: 16px;" /></div>
+            <div id="progress" style="float: left;width: 253px; ">
+              <div class="bar" style="width: 0%; "></div>
+            </div>
+          </div>
+        </div>
+        <% end %>
+        <div id="photomessage" style="margin-top: 36px; margin-left: 65px;"></div>
+        <div id="progressmessage" style="margin-top: 36px; margin-left: 30px;"></div>
+      </div>
+    </div>
+    <%if @item.id.present?%>
+      <%itm = @haveItem ? @haveItem : @item %>
+      <div id="edit_image_div">
+        <%=render 'shared/edit_image_section', :photos => itm.item_photos%>
+      </div>
+    <%end%>
+    <div id="titlemessage"></div>
+    <input type="hidden" id="item_selected_item_id" name="item[selected_item_id]"/>
+  </div>
+  <%if params[:have].present? %>
+    <div class="photo_msg">UPLOAD A PHOTO! Original photos increase TradeYa offers... It only takes
+    a few seconds.</div>
+  <%end%>
+  <div class="control-group" id="condition-quantity">
+    <label class="control-label" for="inputPassword">Condition</label>
+    <div class="controls">
+      <label class="radio">
+        <%= f.radio_button :condition, NEW_CONDITION, :style => "width: 25px; height: 15px; margin-left: 0;" %>
+        <%= f.label :condition, "New" %><br />
+      </label>
+      <label class="radio radio_right">
+        <%= f.radio_button :condition, USED_CONDITION, :style => "width: 25px; height: 15px; margin-left: 0;" %>
+        <%= f.label :condition, "Used" %><br />
+      </label>
+      <label class="control-label haves_count" for="inputPassword">How many do you have?</label>
+      <div class="controls">
+        <%= f.text_field :quantity, :class => "have_count" %>
+      </div>
+      <div id="qntymessage" style="display:none"></div>
+      <div class="clear"></div>
+      <div id="condmessage" style="display:none"></div>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label description_label" for="inputPassword">Description</label>
+    <div class="controls" id="description-goods">
+      <%=  f.text_area :desc, :class => "desc_text", :placeholder=>"Tell us more about your goods...", :TABINDEX=>"3" %>
+      <div id="descmessage" style="display:none"></div>
+    </div>
+    <!-- <div class="controls" id="description-services" style="display: none;">
+         <%#=  f.text_area :desc, :class => "desc_text removeborder", :placeholder=>"Tell us more about your services...", :TABINDEX=>"3", :onfocus => "clearText(this); $('#item_desc').addClass('addborder'); $('#item_desc').removeClass('removeborder');", :onblur => "clearText(this); $('#item_desc').addClass('removeborder'); $('#item_desc').removeClass('addborder');" %>
+         <div id="descmessage"></div>
+    </div> -->
+  </div>
+
+  <!--TODO Commented shipping information because of REQUIREMENT CHANGE (https://www.pivotaltracker.com/story/show/62299176)
+
+  <div class="control-group">
+    <label class="control-label ship_label" for="inputPassword">Shipping</label>
+
+      <div class="controls" id="delivery-options-for-goods">
+        <label class="checkbox">-->
+          <!--input type="radio" name="DeliveryRadios" id="DeliveryRadios1" value="option1"> <label>Pick-up only</label-->
+          <%#= f.check_box(:delivery), DELIVERY_ONLY  %>
+          <%#= f.label :delivery, "I’ll bring it to you" %>
+          <%#= f.check_box(:bring_it_to_you) %>
+          <!--<label>I’ll bring it to you</label>
+        </label>
+        <label class="checkbox">-->
+          <!--input type="radio" name="DeliveryRadios" id="DeliveryRadios2" value="option2" checked> <label>Delivery only</label-->
+          <%#= f.check_box(:come_and_get_it) %>
+          <!--<label>You come get it</label>
+        </label>
+        <label class="checkbox lets_meet">-->
+          <!--input type="radio" name="DeliveryRadios" id="DeliveryRadios2" value="option2"> <label>Pick-up or Delivery</label-->
+          <%#= f.check_box(:lets_meet_up) %>
+          <!--<label>Let’s meet up</label>
+        </label>
+        <label class="checkbox last_box">-->
+          <%#= f.check_box(:ship_it) %>
+          <!--<label>I'll ship it</label>
+        </label>
+        <div class="clear"></div>
+      </div>
+      <div class="controls" id="delivery-options-for-services" style="display: none;">
+        <label class="checkbox">-->
+          <!--input type="radio" name="DeliveryRadios" id="DeliveryRadios1" value="option1"> <label>Pick-up only</label-->
+          <%#= f.check_box(:come_to_you) %>
+          <!--<label>I’ll come to you</label>
+        </label>
+        <label class="checkbox">-->
+          <!--input type="radio" name="DeliveryRadios" id="DeliveryRadios2" value="option2" checked> <label>Delivery only</label-->
+          <%#= f.check_box(:come_to_me) %>
+          <!--<label>You come to me</label>
+        </label>
+    		<label class="checkbox done_remotely">-->
+          <!--input type="radio" name="DeliveryRadios" id="DeliveryRadios2" value="option2" checked> <label>Delivery only</label-->
+          <%#= f.check_box(:done_remotely) %>
+          <!--<label>Done Remotely</label>
+        </label>
+        <label class="checkbox lets_meet last_box">-->
+          <!-- input type="radio" name="DeliveryRadios" id="DeliveryRadios2" value="option2"> <label>Pick-up or Delivery</label -->
+          <%#= f.check_box(:lets_meet_service) %>
+          <!--<label>Let’s meet up</label>
+        </label>
+        <div class="clear"></div>
+      </div>
+
+    <div id="titlemessage"></div>
+  </div>
+  <div class="control-group">
+    <label class="control-label description_label" for="inputPassword">Shipping Details</label>
+    <div class="controls" id="description-goods">-->
+      <!-- <textarea class="delivery_text" placeholder="Give users details about the method of delivery..." TABINDEX="6"></textarea> -->
+      <%#= f.text_area :delivery_desc, :class => 'delivery_text', :placeholder => "Give users details about the method of delivery...", :tabindex => "6" %>
+      <!--<div id="delmessage"></div>
+    </div>
+  </div> -->
+  <%if params[:offer_for]%>
+    <%= f.hidden_field :offer_for, :value => params[:offer_for]%>
+  <%elsif params[:have] and request.referer.present? %>
+    <%= f.hidden_field :referer_page, :value => request.referer%>
+  <%elsif params[:haves_by] and request.referer.present? %>
+    <%= f.hidden_field :have_add_page, :value => request.referer%>
+  <%elsif params[:item_user] and request.referer.present? %>
+    <%= f.hidden_field :referer_edit_page, :value => request.referer%>
+  <%elsif params[:have_user] and request.referer.present?%>
+    <%= f.hidden_field :haves_tab, :value => request.referer%>
+  <%elsif params[:from] and request.referer%>
+    <%= f.hidden_field :referer_browse_page, :value => request.referer%>
+  <% end %>
+  <div class="control-group submit_btn_div">
+    <div class="controls">
+      <a href="#" class="item_submit_btn position-click" onclick="submitTradeyaFormChk(); return false;">Submit</a>
+      <% unless @item.new_record? %>
+        <a href="#delete_item_modal" data-toggle="modal" class="item_delete_btn position-click">Delete Item</a>
+      <%end%>
+  		<a href="<%if request.referer == request.url%>
+        <%=haves_user_path(current_user) if current_user.present?%>
+      <%else%>
+        <%= (((not request.referer.nil?) and request.referer.index('facebook_sign_in_success').nil? and request.referer.index('hello').nil?) ? request.referer : root_url) %>
+      <%end%>"
+         class="item_cancel_btn cancel-click" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_CancelSbmTrd', 'Click Submit Tradeya Cancel Link']);mixpanel.track('Click Submit Tradeya Cancel Link');addDelay(this,event);return false;">Cancel</a>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+  <!-- Delete Modal -->
+  <%if params[:id].present?%>
+    <div id="delete_item_modal" class="modal fade hide  delete_confirm_modal"   aria-hidden="false">
+      <a href="#" class="close" data-dismiss="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png"></a>
+      <div class="user_sub_heading in_center re_pin_heading">Delete Item?</div>
+      <div class="resend_modal_text re_pin_text ">
+        Are you sure you want to Delete this Item? 
+      </div>
+      <div class="resend_footer">  
+        <div class="delete_modal_footer">
+          <%=link_to 'YES, Delete it',browse_path, method: :delete,:class=>"resend_submit ma_r",:onclick=>"_gaq.push(['_trackEvent', 'Activity', 'Clk_DltSbmTrd', 'Click Submit Tradeya Delete Button']);mixpanel.track('Click Submit Tradeya Delete Button');"%>
+          <a href="#" class="delete_cancel_btn" onclick="$('#delete_item_modal').modal('hide');_gaq.push(['_trackEvent', 'Item Card', 'Clk_trshCncl', 'Click Cancel after trash on Item Card']);mixpanel.track('Click Cancel after trash on Item card');return false;" ><img src="http://d3md9h2ro575fr.cloudfront.net/images/cancel_button.png" ></a>
+        </div>
+      </div>
+    </div>
+  <%end%>
+
+<% end %>
+
+<script>
+  bindAjaxSpinner();
+  <% itm = @haveItem ? @haveItem : @item %>
+  <% if itm.id.present? %>
+    $(function(){
+      $('#item_title').val("<%= escape_javascript(itm.title).html_safe %>");
+      $('#item_desc').val("<%= escape_javascript(itm.desc).html_safe %>");
+      // $("#item_quantity").val("<%=itm.quantity %>");
+      <%if params[:have] and itm.category.parent.name.downcase == 'goods'%>
+        $("#item_quantity").val('0');
+        $('#item_desc').val("");
+        $('#description-goods').val("");
+      <%elsif params[:have] and itm.category.parent.name.downcase == 'services'%>
+        $('#item_desc').val("");
+        $('#description-goods').val("");
+      <%end%>
+      <%if itm.category_id.present? %>
+        $("#item_category_id").val("<%=itm.category_id %>");
+        $("#choose_cat").text("<%= escape_javascript(itm.category.name).html_safe %>");
+        <% if itm.category.parent.name.downcase == 'services' %>
+          $("#item_quantity").hide();
+          $("#condition-quantity").hide();
+          $("#delivery-options-for-goods").hide();
+          $("#delivery-options-for-services").show();
+        <%end%>
+      <%end %>
+      <%if itm.condition.present? %>
+        $("#item_condition_<%=itm.condition%>").prop("checked",true);
+      <% end %>
+      <% if itm.delivery.present? %>
+        $("#item_delivery_<%=itm.delivery%>").prop("checked",true);
+      <% end %>
+      <% if itm.item_photos and  itm.item_photos.size > 0%>
+        <% itm.item_photos.by_main_photo.each do |ph| %>
+          AddItemPhoto('<%= escape_javascript(ph.photo(:large)) %>', <%= ph.id%>);
+        <% end %>
+      <% elsif itm.item_videos and itm.item_videos.size > 0 %>
+        <% itm.item_videos.each do |vi| %>
+          AddItemVideo('<%= escape_javascript(vi.video.url) %>',<%= vi.id %>);
+        <% end %>
+      <% end %>
+    });
+  <%else%>
+    $(function(){
+      $("#item_condition_1").removeAttr("checked")
+    });
+  <% end %>
+  $('#Housing_subcategory li').css('width','100%');
+  $('#Housing_subcategory').css('width','280px');
+function categoryHover(){
+if ($("#Goods_subcategory").hasClass('hidedrop')){
+$('.left a').css('font-weight', '');
+$('.left a').css('color', '');
+}else{
+$('.left a').css('font-weight', 'bold');
+$('.left a').css('color', '#55aad4');
+}
+if ($("#Services_subcategory").hasClass('hidedrop')){
+$('.right a').css('font-weight', '');
+$('.right a').css('color', '');
+}else{
+$('.right a').css('font-weight', 'bold');
+$('.right a').css('color', '#55aad4');
+}
+}
+function categoryHoverWant(){
+if ($("#goods_subcategory_want").hasClass('hidedrop')){
+}
+if ($("#services_subcategory_want").hasClass('hidedrop')){
+}
+}
+function categoryHoverOffer(){
+if ($("#goods_subcategory_offer").hasClass('hidedrop')){
+}
+if ($("#services_subcategory_offer").hasClass('hidedrop')){
+}
+}
+function uplaodPhotoVideo(){
+var file = $("#item_photo_url").val();
+var extn = "";
+if(file.length > 6)
+extn = file.split(".").pop();
+if(extn == "jpg"|| extn == "jpeg" || extn == "png" || extn == "gif")
+{
+canSubmitCanNext = true;
+imagePreview('item_photo_url', 'item_form', 'tradeya_img_prev', true, 'item_item_photo_id', file);
+}
+
+}
+
+function show_for_goods_services(catg){
+if(catg.toLowerCase() == "services")
+{
+$("#condition-quantity").hide();
+$("#delivery-options-for-goods").hide();
+$("#delivery-options-for-services").show();
+$("#item_desc").attr("placeholder", "Tell us more about your services...");
+$("#item_delivery_5").prop("checked",true);
+// $("#description-goods").hide();
+// $("#description-services").show();
+}
+else if (catg.toLowerCase() == "housing"){
+$("#condition-quantity").hide();
+$("#item_desc").attr("placeholder", "Tell us more about your housing...");
+}
+else
+{
+$("#condition-quantity").show();
+$("#delivery-options-for-goods").show();
+$("#delivery-options-for-services").hide();
+$("#item_desc").attr("placeholder", "Tell us more about your goods...");
+$("#item_delivery_1").prop("checked",true);
+// $("#description-goods").show();
+// $("#description-services").hide();
+}
+}
+
+</script>
+
+<script>
+  $(function () {
+  $('#item_item_photo_photo').fileupload({
+  <%if @item.id.present?%>
+    url: '/image_preview?img_prev_id=' + 'tradeya_img_prev' + '&itemimg=' + true + "&fld_id=" + 'item_item_photo_photo' + "&item_photo_id=" + 'item_item_photo_id' + "&form_id=" + 'item_form' + '&item_id=' + <%=@item.id%>,
+  <%else%>
+    url: '/image_preview?img_prev_id=' + 'tradeya_img_prev' + '&itemimg=' + true + "&fld_id=" + 'item_item_photo_photo' + "&item_photo_id=" + 'item_item_photo_id' + "&form_id=" + 'item_form',
+  <%end%>
+   
+  add: function (e, data) {
+
+  // $(".file_div").hide();
+  if ($('#selected_photo_file').text() == "No file selected")
+  {
+    $("#progress .bar").text("Image Uploading....");
+  }
+  else{
+
+    $("#progress .bar").text($("#selected_photo_file").text());
+    $("#selected_photo_file").text("");
+
+  }
+  $(".image_uploading").show();
+  data.submit();
+  },
+  done:function (e, data) {
+      
+  $("#selected_photo_file").text('No file selected');
+  $(".image_uploading").hide();
+  $(".file_div").show();
+  $("#progress .bar").text("");
+  $("#progressmessage").text("");
+  $(".modal-backdrop").hide();
+  $("#photo_upload_modal").hide();
+  // $('#test').hide();
+  },
+  drop: function (e, data) {
+    $('#photo_upload_modal').modal('show');
+  },
+  progressall: function (e, data) {
+  var progress = parseInt(data.loaded / data.total * 100, 10);
+  // $("#progressmessage").text(progress);
+  $('#progress .bar').css(
+  'width',
+  progress + '%'
+  );
+  }
+  });
+  $("#images_row").sortable({
+  items: "> td.sortable ",
+  stop: function( event, ui ) {
+  <%if @item.new_record?%>
+    rearrangeItemPhotos();
+  <%else%>
+    EditItemPhotos("<%=@item.id%>");
+  <%end%>
+  }
+  });
+  });
+  $( "#images_row" ).disableSelection();
+</script>
+<script>
+  $(document).click
+  (
+    function(e)
+    {
+      if(e.target.className !== "category_type")
+      {
+        $("#category_drop").addClass('hidedrop');
+        $("#Goods_subcategory").addClass('hidedrop');
+        $("#Services_subcategory").addClass('hidedrop');
+        $("#Housing_subcategory").addClass('hidedrop');
+      }
+    }
+  );
+  // $('input[type=checkbox]').change(function(){
+  //   if($(this).is(':checked')){
+  //       $(this).addClass("checked");
+  //       alert('checked');
+  //   } else {
+  //       $(this).removeClass("checked");
+  //       alert('unchecked');
+  //   }
+  //   });
+</script>

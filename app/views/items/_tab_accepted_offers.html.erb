@@ -1,0 +1,80 @@
+<div id="spinner"></div>
+<div class="tab_div_overlay"></div>
+	<!-- Accepted Offers content Tab Start -->
+<div id="acc_offers_tab">
+	<%if @accepted_trades.present?%>
+		<%@accepted_trades.each do |trade|%>
+			<% if trade.offer_id == @item.id %>
+				<% offer = trade.item; offerer = trade.item.user %>
+			<%elsif trade.item_id == @item.id %>
+				<% offer = trade.offer; offerer = trade.offer.user %>
+			<% end %>
+	  	<div class="accepted_offer">
+	  		<div class="acc_tab_user_card">
+					<div class="user_card_right" id="item_user_card">
+						<%= render 'shared/user_card', :user => offerer %>
+					</div>
+				</div> 	
+	  		<div class="acc_offer_right">
+	  				<!-- User Card Start-->
+					<div class="user_wants_card margin_right">
+						<div class="user_card_heading">
+							<div class="clip">
+								<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+							</div>
+							<div class="item_title_card"><%=link_to offer.title, item_path(offer)%></div>
+							<div class="card_heading_middle_left">
+								<a href="<%=user_path(offer.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrImg', 'Click User image on Item Card']);mixpanel.track('Click User image on Item card');addDelay(this,event);return false;"><img src="<%=offer.user.user_image(:thumb)%>"></a>
+							</div>
+							<div class="card_heading_middle_right">
+									<div class="item_card_name"><a href="<%=user_path(offer.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrTtl', 'Click User Title on Item Card']);mixpanel.track('Click User Title on Item card');addDelay(this,event);return false"><%=offer.user.title%></a></div>
+									<div class="item_city_card"><%=offer.user.city%></div>
+									<%if offer.user.location != "-" and offer.user != current_user%>
+										<div class="item_distance_card"><%=offer.user.user_distance(session[:user_ll])%> miles</div>
+									<%end%>
+							</div>
+							<div class="item_heading_bottom">
+								<div class="card_details" id="detail" onclick="$('#item_info_<%=offer.id%>').toggle();">Details</div>
+							</div>
+						</div>
+						<div class="item_wants_image">
+							<a href="<%=item_path(offer)%>"><img src="<%=offer.item_image%>" /></a>
+						</div>
+					</div>
+					<!-- User Card End-->
+					<%= render "shared/details_card", :item => offer, :curve_color => "grey", :disp => "true" %>
+	 			</div>
+			</div>
+		<%end%>
+		<% else %>
+			<div id="empty_haves_item">
+				<div class="heading">An offer has not been accepted yet.</div>
+			</div>
+		<%end%>
+</div>
+<!-- Accepted Offers content Tab Ends -->
+
+<!-- script for trade offers > offers hover for trade start -->
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".acc_offer_right").children(".user_wants_card").children(".want_have_like_wrapper").hide();
+			$(".acc_offer_right").children(".user_wants_card").children(".trade_div").hide();
+			$(".acc_offer_right").children(".user_wants_card").children(".user_card_heading").children(".card_details").hide();
+			
+			$(".acc_offer_right").children(".user_wants_card").hover(function(){
+				 
+			$(this).children(".want_have_like_wrapper").show();
+			$(this).children(".trade_div").show();
+			$(this).children(".user_card_heading").children(".card_details").show();
+
+			},function(){
+			$(".acc_offer_right").children(".user_wants_card").children(".want_have_like_wrapper").hide();
+			$(".acc_offer_right").children(".user_wants_card").children(".trade_div").hide();
+			$(".acc_offer_right").children(".user_wants_card").children(".user_card_heading").children(".card_details").hide();
+
+			});			 
+		})
+		$('.tab_div_overlay').hide();
+		$('#spinner').hide();
+	</script>
+<!-- script for trade offers > hover  for trade Ends -->

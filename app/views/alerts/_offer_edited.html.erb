@@ -1,0 +1,30 @@
+<tr style="border-bottom: 0px; padding: 0,0,0,0;"<%= (is_first ? ' class=first_alert' : "") %>>
+	<td colspan="3" style="padding: 0px;">
+		<a href="<%= alert_url(alert) %>" class="alert_td_dash">
+			<table width="100%">
+				<tr>
+					<td width="12%">
+						<div class="alert_img user_image_border">
+							<% if alert.is_new %>
+								<div class="alert_icon" id="alert_icon_<%= alert.id %>"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/alert_icon.png" /></div>
+							<% end %>
+							<% if not alert.trade.item.item_videos[0].nil? %>
+								<a href="<%= alert_url(alert) %>"><div style="position:absolute;height:56px;width:72px;filter:alpha(opacity=60);-moz-opacity: 0.6;opacity: 0.6;"></div></a>
+								<div id="item_video<%= alert.id %>"></div>
+								<script>$(function(){videoAsRedirect('item_video<%= alert.id %>', '<%= alert.trade.item.item_videos[0].video %>','<%= alert_url(alert)%>');});</script>
+							<% else %>
+								<div style="text-align: center"><img src="<%= alert.trade.item.item_image(:small) %>" /></div>
+							<% end %>
+						</div>
+					</td>
+					<td width="65%">
+						<div class="alert_title"><%= alert.trade.offer.user.title_with_s %> offer <span style="color: #55aad4;"><%= alert.trade.offer.item_title %></span></div>
+						<div class="alert_title">on your TradeYa: <span style="color: #55aad4;"><%= alert.trade.item.item_title %></span></div>
+						<div class="alert_status">was edited.</div>
+					</td>
+					<td width="23%"></td>
+				</tr>
+			</table>
+		</a>
+	</td>
+</tr>

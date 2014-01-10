@@ -1,0 +1,213 @@
+<% unless defined? my_profile %>
+	<%= render "shared/reviews_tab_header", :communication_sections => @communication_sections, :communication_largest => @communication_largest, :description_sections => @description_sections, :description_largest => @description_largest, :overall_rating => @overall_rating, :user => @user %>
+<% end %>
+<div class="clear"></div>
+<script>
+	 $("#reviews_tab_div").show();
+</script>
+<div class="tab_div_overlay"></div>
+<!-- Reviews tab content start -->
+	<div id="reviews_tab">
+		<%#if @reviews_of_user.present? and @user_reviews.present? %>
+			<div class="dash_review_heading">
+				<%#if @user == current_user%>
+					<!-- <span>My Reviews</span> -->
+				<%#else%>
+				<div class="reviews_list_tab">
+					<a href="#" id="reviews_by_link" class="following_tab_font"  onclick="show_reviews_by()">Reviews of <%= @user == current_user ? "Me" : @user.first_name.capitalize %> (<%= @reviews_of_user.size %>)</a>
+					<a href="#" id="reviews_of_link" class=""  onclick="show_reviews_of()">Reviews by <%= @user == current_user ? "Me" : @user.first_name.titleize %> (<%= @user_reviews.size %>)</a>
+				</div>
+				<%#end%>
+				<span class="pull-right">
+					<span id="rating_sort" class="rating_sort"><%=link_to 'Rating', sort_review_user_path(:id => @user.id,:sort_by => "rating"), :remote => true, :onclick => 'select_sort("rating")' %></span>
+					<span id="date_sort" class="date_sort"><%=link_to 'Date', sort_review_user_path(:id => @user.id,:sort_by => "date"), :remote => true, :onclick => 'select_sort("date")' %></span>
+				</span>
+			</div>
+		<%#end%>
+		<!-- Reviews Section Start -->
+		<div class="reviews_section_div hide_div" id="reviews_for_user">
+			<div id ="sorted_reviews">
+				<%=render 'shared/sorted_reviews', :reviews => @user_reviews%>
+			</div>
+			<div class="clear"></div>
+			<div class="clear"></div>
+		</div>
+		<!-- Reviews Section End -->
+	</div>
+
+	<!-- <div id="reviews_by_user" class="tab-pane "> -->
+		<!-- Reviews Section Start -->
+		<div class="reviews_section_div" id="reviews_of_user">
+			<div id="sorted_reviews">
+				<%=render 'shared/sorted_reviews', :reviews => @reviews_of_user %>
+			</div>
+			<div class="clear"></div>
+			<div class="clear"></div>
+		</div>
+		<!-- Reviews Section End -->
+	<!-- </div> -->
+<!-- Reviews tab content End-->
+<script type="text/javascript">
+
+	function show_reviews_by() { 
+		$('#reviews_for_user').addClass("hide_div");
+		$('#reviews_of_user').removeClass("hide_div");
+		
+		$('#reviews_by_link').addClass("following_tab_font");
+		$('#reviews_of_link').removeClass("following_tab_font");
+		
+	}
+	function show_reviews_of() {
+		$('#reviews_of_user').addClass("hide_div");
+		$('#reviews_for_user').removeClass("hide_div");
+
+		$('#reviews_of_link').addClass("following_tab_font");
+		$('#reviews_by_link').removeClass("following_tab_font");
+	}
+
+	$('#spinner').hide();
+	$('.tab_div_overlay').hide();
+
+	$('#rating_star_dash').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/green_star_dash.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/grey_star_dash.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(@overall_rating.present?)? @overall_rating : 0%>
+	});
+
+	$(function () {
+		$('#profile_tab a[href="#wants_tab"]').tab('show');
+		$('#reviews_tab_div a[href="#reviews_tab"]').tab();
+	})
+	// $('.star_rating').raty();
+
+	// $('.user_card_stars').raty({
+	// 	size:  '20',
+	// 	starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/starOn-large.png',
+	// 	starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/starOff-large_white.png'
+	// });
+	// $('.star_rating_large').raty({
+	// 	size:  '25',
+	// 	starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/star_on.png',
+	// 	starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/star_off.png'
+	// });
+	$('.rating_overall').raty({ size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/review_smallstar.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/star_off.png',
+		scoreName: 'review[overall_rating]',
+		readOnly: true
+
+	});
+	$('.star_rating_large.item_described').raty({ size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/review_star.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/myrev_star_off.png',
+		hints:     ['Very Bad', 'Below Average', 'Average', 'Good', 'Fantastic'],
+		scoreName: 'review[describe_rating]' 
+
+	});
+	$('.star_rating_large.item_communication').raty({ size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/review_star.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/myrev_star_off.png',
+		hints:     ['Very Bad', 'Below Average', 'Average', 'Good', 'Fantastic'],
+		scoreName: 'review[communication_rating]' 
+
+	});
+
+	function select_sort(sort_by) {
+		if (sort_by == "rating") {
+ 		  $('#rating_sort').addClass("active_sort");
+ 		  $('#date_sort').removeClass("active_sort");
+ 		} else {
+ 			$('#date_sort').addClass("active_sort");
+ 			$('#rating_sort').removeClass("active_sort");
+ 		}
+	}
+	$(function(){
+		select_sort(<%= params[:sort_by] %>);
+ 		// $('.star_rating_large img').attr('data-toggle',"tooltip");
+		// $('.star_rating_large img').attr('data-placement',"bottom");
+		// // $(".star_rating_large img").hover(function(){
+		// 	var ss = $(this).attr('title');
+		// 	// alert(ss);
+		// 	if (ss == 'bad') {
+		// 		// alert('abd');
+		// 	};
+		// });		
+    	// $(".star_rating_large img[title]").tooltip();
+	});
+	
+	$(window).resize(function() {
+      var wi = $(window).width();
+      $(".window_width").text('Screen width is currently: ' + wi + 'px.');
+	});
+	$(function(){
+			$('.reviews_by_user').click(function(){
+				$('#reviews_tab').show();
+				$('#reviews_by_user').hide();
+				$('#spinner').hide();
+				$('.tab_review').addClass('active');
+				$("#reviews_tab_div").show();
+				$('.tab_div_overlay').hide();
+				return false;
+			});
+			$('.reviews_by_trades').click(function(){
+				$('#reviews_by_user').show();
+				$('#reviews_tab').hide();
+				$('#spinner').hide();
+				$('.tab_review').addClass('active');
+				$(".reviews_by_user").removeClass("active");
+				$("#reviews_tab_div").show();
+				$('.tab_div_overlay').hide();
+				return false;
+			});
+		});
+	$(document).ready(function() {
+		$('#tab_reviews').text("Reviews (<%=@user_reviews.count + @reviews_of_user.count %>)");
+
+		//Select all anchor tag with rel set to tooltip
+    $('.star_rating_large img').mouseover(function(e) {
+        
+        //Grab the title attribute's value and assign it to a variable
+        var tip = $(this).attr('title');    
+        
+        //Remove the title attribute's to avoid the native tooltip from the browser
+        $(this).attr('title','');
+        
+        //Append the tooltip template and its value
+        $(this).parent(".star_rating_large").append('<div id="tooltip"> ' + tip + ' </div>');        
+        
+        //Set the X and Y axis of the tooltip
+         // $('#tooltip').css('top', e.pageY + 10 );
+        	// $('#tooltip').css('left', e.pageX + 20 );
+        
+        //Show the tooltip with faceIn effect
+        $('#tooltip').fadeIn('500');
+        $('#tooltip').fadeTo('10',0.8);
+        
+    			}).mousemove(function(e) {
+    
+        //Keep changing the X and Y axis for the tooltip, thus, the tooltip move along with the mouse
+        // $('#tooltip').css('top', e.pageY + 10 );
+        // $('#tooltip').css('left', e.pageX + 20 );
+        
+    		}).mouseout(function() {
+    
+        //Put back the title attribute's value
+        $(this).attr('title',$('#tooltip').html());
+    
+        //Remove the appended tooltip template
+        $(this).parent().find('div#tooltip').remove();
+        
+    });
+
+
+
+
+	});
+	$('.reviews_tabs li  a').click(function(){
+  	$('#tab_reviews').text("Reviews (<%=@user_reviews.count + @reviews_of_user.count %>)");
+  });
+</script>

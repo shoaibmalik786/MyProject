@@ -1,0 +1,133 @@
+<%= stylesheet_link_tag "home" %>
+<%= javascript_include_tag "bag_all_parallax" %>
+<!-- Content Start -->
+<div class="content_wrapper">
+	<div class="home_top_content" data-type="background" data-speed="10">
+		<div class="home_painting parallax_painting" id="painting">
+			<img src="http://d3md9h2ro575fr.cloudfront.net/images/home_painting.jpg">
+		</div>
+		<div class="home_bag parallax_bag" id="bag">
+			<img src="http://d3md9h2ro575fr.cloudfront.net/images/home_bag.png">
+		</div>
+	</div>
+	<div class="home_center_content" data-type="background" data-speed="20">
+		<div class="home_user_card">
+			<img src="http://d3md9h2ro575fr.cloudfront.net/images/profile_card.png" />
+		</div>
+		<div class="home_wants_card" >
+			<div class="user_wants_card no_shadow parallax_box" id="bag_box" style="z-index:70">
+				<div class="user_card_heading head_shadow">
+					<div class="clip">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+					</div>
+					<div class="item_title_card">Louis Vuitton Duffle Bag</div>
+					<div class="item_city_card">Santa Monica, CA</div>
+					<div class="item_distance_card">.6 miles from you</div>
+				</div>
+				<div class="item_wants_image" style="background-color: transparent;">
+					<img src="http://d3md9h2ro575fr.cloudfront.net/images/home_wants_card.png"  id="bag_box_image"/>
+				</div>
+			</div>
+		</div>
+		<div class="home_center_text">
+			<img src="http://d3md9h2ro575fr.cloudfront.net/images/home_center_text.png">
+		</div>
+	</div>
+	<div class="home_bottom_content" data-type="background" data-speed="40">
+		<div class="container">
+		<div class="home_bottom_text">
+			... and search for stuff you want to trade it for.
+		</div>
+		<div class="span10 item_middle_section">
+			<div class="center_content"></div>
+				<!-- tab content start -->
+				<div class="tab-content">
+					<!-- Wants tab content start -->
+					<div id="wants_tab" class="wants_container" >
+						<!-- User Card Start-->
+						  <% if @home_tradeyas.present?%>
+							<% @home_tradeyas.each_with_index do |item,i| %>
+								<% if i == 7%>
+								  <div id="empty_want_card" class="user_wants_card no_shadow" style="height:360px"></div>
+								<%else%>
+									<div class="user_wants_card">
+										<div class="user_card_heading">
+											<div class="clip">
+												<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+											</div>
+											<div class="item_title_card"><a href="<%=item_path(item)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmTitle', 'Click On Item Title']);mixpanel.track('Click On Item Title');addDelay(this,event);return false;"><%=item.title if item.present?%></a></div>
+											<div class="item_city_card"><%=item.user.location if !item.user.blank?%></div>
+											<%if item.user.present? and item.user.location != "-" and item.user != current_user %>
+												<div class="item_distance_card"><%=item.user.user_distance(session[:user_ll]) %> miles from you</div>
+											<%end%>
+										</div>
+										<div class="item_wants_image">
+											<a href="<%=item_path(item)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmImg', 'Click On Item Image']);mixpanel.track('Click On Item Image');addDelay(this,event);return false;"><img src="<%=item.item_image(:large)%>" /></a>
+										</div>
+										<!-- <div class="curve_left">
+											<img src="http://d3md9h2ro575fr.cloudfront.net/images/left_curve.png">
+										</div>
+										<div class="curve_right">
+											<img src="http://d3md9h2ro575fr.cloudfront.net/images/right_curve.png">
+										</div> -->
+									</div>
+								<%end%>
+							<%end%>
+						  <%end%>
+						<!-- User Card Start-->
+					</div>
+					<!-- Wants tab content End-->
+	 			</div>
+	 			<!-- tab content ends -->
+			</div>
+		</div>
+	</div>
+
+	<div id="login_modal"  class="modal hide fade">
+		<div class="login_content">
+		<div class="login_heading"><p>Login</p><a href="#" class="close" data-dismiss="modal">X</a></div>
+			<div class="login_left">
+				<p><input type="text" placeholder="Email" class="login_input" name="email"></p>
+				<p><input type="text" placeholder="Password" class="login_input" name="password"></p>
+				<p><button class="login_btn"><a href="item.html">Continue</a></button></p>
+				<p>Forgot?</p>
+				<p class="or">or</p>
+        <p><button class="signup_btn"><a href=#">Sign up</a></button></p>
+			</div>
+			<div class="login_right">
+				<p><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png" id="fb_login_img"><input type="text" class="social_input" name="fb" id="fb_input"></p>
+				<p><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png" id="tw_login_img"><input type="text" class="social_input" name="tw" id="tw_input"></p>
+				<p><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_google_off.png" id="google_login_img"><input type="text" class="social_input" name="google" id="google_input"></p>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="push"></div>
+	<!-- script for background parallax -->
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				$("#login").click(function(){
+	        $(".home_top_content").css("-webkit-filter","blur(5px)");
+	      });
+	      $(".close").click(function(){
+	        $(".home_top_content").css("-webkit-filter","none");
+	      });
+			$objWindow = $(window);
+			$('div[data-type="background"]').each(function(){
+			var $bgObj = $(this);
+			$(window).scroll(function() {
+			var yPos = -($objWindow.scrollTop() / $bgObj.data('speed'));
+			var coords = '100% '+ (yPos + 92) + 'px';
+			// Change the position of background
+			$bgObj.css({ backgroundPosition: coords });		 
+				});		 
+				});
+			});
+		</script>
+		<script type="text/javascript">
+			$(window).resize(function() {
+		      var wi = $(window).width();
+		      $(".window_width").text('Screen width is currently: ' + wi + 'px.');
+			});
+		</script>
+	<!-- script for background parallax -->

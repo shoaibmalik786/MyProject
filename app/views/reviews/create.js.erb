@@ -1,0 +1,4 @@
+$("#tab-content").html("<%= escape_javascript render('shared/reviews_tab') %>");
+<% if @review.present? %>
+customScroll('#r_<%=@review.id %>'); 
+<% end %>

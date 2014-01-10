@@ -1,0 +1,130 @@
+<% if current_user.has_authentications? %>
+<div style="min-height: 210px;">
+	<table width="100%" style="margin-top: 18px;">
+		<% if @v_phone_numbers.count == 0 %>
+			<tr>
+				<td width="35%"><div class="user_info_text" style="margin-top: -5px;">PHONE NUMBER</div></td>
+				<td width="1%"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/ph_org.png" /></td>
+				<td width="2%"></td>
+				<td width="78%"><div class="verification_text">This is only shared once you have accepted an offer from another TradeYa user.</div></td>
+			</tr>
+		<% else %>
+			<% @v_phone_numbers.each do |vpn| %>
+				<tr>
+					<td width="35%"><div class="user_info_text" style="margin-top: -5px;">PHONE NUMBER</div></td>
+					<td width="1%"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/ph_org.png" /></td>
+					<td width="2%"></td>
+					<td width="28%">
+						<div class="phone_verify removeborder">
+							<span style="float: left;"><%= vpn.phone_number %></span>
+							<span style="padding-right: 6px;"><a href="#" class='position-click' onclick="/*_kmq.push(['record', 'dashboard editverifications link x delete phone number',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_removephone', 'Remove Verified Phone Number in Your Verifications']);*/ return remove_number_verification(<%= vpn.id %>);"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verified_cross.png" /></a></span>
+							<span><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verified_text.png" /></span>
+						<div>
+					</td>
+					<td width="40%"><div class="verification_text">This is only shared once you have accepted<br />an offer from another TradeYa user.</div></td>
+				</tr>
+			<% end %>
+		<% end %>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/add_phone.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/add_phone_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/add_phone.png'"  onclick="$('.add_more_verification').css('display','block'); /*_kmq.push(['record', 'dashboard editverifications button add phone number',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_addphone', 'Click on Add phone number button in Your Verifications']);*/" style="cursor: pointer;" /></td>
+		</tr>
+	</table>
+	<div class="add_more_verification" align="center" style="display: none;">
+		<div class="phone_verify_text">Phone Number:</div>
+		<div class="phone_verify_div">
+			<input type="text" id="phone_number" class="add_phone_verify addborder" value="+1" />
+			<div class="verification_text" style="margin-top: 10px; margin-bottom: 4px;">(Note: At this time, we can only verify<br />numbers from the United States.)</div>
+			<div>
+				<div><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verify_sms.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verify_sms_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verify_sms.png'" onclick="verifyViaSMS();" style="cursor: pointer;" /></div>
+				<div style="margin-left: 143px; margin-top: -32px;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verify_mobile.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verify_mobile_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verify_mobile.png'" onclick="verifyViaCall();" style="cursor: pointer;" /></div>
+			</div>
+		</div>
+	</div>
+	<div class="verification_sms_call" align="center" style="display: none;">
+		<div id="verification_sms_div_title">We’ll send a TradeYa Verification Code in the next few minutes to +1 234 5678. Please enter it in the box below.</div>
+		<div style="margin-top: 10px; margin-bottom: 10px;">If it doesn’t arrive, click cancel and try an alternate verification, instead.</div>
+		<b>TradeYa Verification Code:</b><input id="verification_code" type="text" class="add_phone_verify addborder" style="margin-left: 10px;" />
+		<div>
+			<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verify.png" class = "position-click"onclick="verifyPhoneNumber();" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verify_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verify.png'" style="cursor: pointer;" />
+			<div class="cancel_div" style="margin-left: 83px; margin-top: -25px;">
+				<span class="or">or</span> <span class="cancel"><a class="cancel-click" href="#" onclick="return cancelVerification();">Cancel</a></span>
+			</div>
+		</div>
+	</div>
+	<div class="verification_phone_call" align="center" style="display: none;">
+		<div id="verification_phone_div_title">We’ll send a TradeYa Verification Code in the next few minutes to +1 234 5678. Please enter it in the box below.</div>
+		<div style="margin-top: 10px; margin-bottom: 10px;"></div>
+		<b>TradeYa Verification Code:</b><div id="verification_code_phone"></div>
+		<div class="cancel" style="margin-top: 4px;"><a class="cancel-click" href="#" onclick="return cancelVerification();">Cancel</a></div>
+	</div>
+	<table width="100%">
+		<% if current_user.facebook_authenticated? %>
+		<tr>
+			<td width="35%"><div class="user_info_text" style="margin-top: -4px;">FACEBOOK CONNECT</div></td>
+			<td width="1%"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/fb_icon.png" /></td>
+			<td width="2%"></td>
+			<td width="28%">
+				<div class="phone_verify removeborder">
+					<span style="padding-right: 6px;"><a href="#" class='position-click' onclick = "/*_kmq.push(['record', 'dashboard editverifications link x delete facebook',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_removefacebook', 'Remove Facebook in Your Verifications']);*/ return remove_verification('facebook');"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verified_cross.png" /></a></span>
+					<span><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verified_text.png" /></span>
+				</div>
+			</td>
+			<td width="40%"></td>
+		</tr>
+		<% end %>
+		<% if current_user.twitter_authenticated? %>
+		<tr>
+			<td><div class="user_info_text" style="margin-top: -4px;">TWITTER CONNECT</div></td>
+			<td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/tw_icon.png" /></td>
+			<td></td>
+			<td>
+				<div class="phone_verify removeborder">
+					<span style="padding-right: 6px;"><a href="#" class='position-click'  onclick = "return remove_verification('twitter');"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verified_cross.png" /></a></span>
+					<span><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verified_text.png" /></span>
+				</div>
+			</td>
+		</tr>
+		<% end %>
+		<% if current_user.linkedin_authenticated? %>
+		<tr>
+			<td><div class="user_info_text" style="margin-top: -3px;">LINKED IN CONNECT</div></td>
+			<td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/in_icon.png" /></td>
+			<td></td>
+			<td>
+				<div class="phone_verify removeborder">
+					<span style="padding-right: 6px;"><a href="#" class='position-click' onclick = "return remove_verification('linkedin');"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verified_cross.png" /></a></span>
+					<span><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/verified_text.png" /></span>
+				</div>
+			</td>
+		</tr>
+		<% end %>
+	</table>
+</div>
+
+<% else %>
+<!-- If no Verifications Present -->
+<div class="user_no_tradeyas">Why Verify? It helps you validate your identity, build a reputation and be yourself!  </div>
+<table width="100%" style="margin-top: 18px;">
+	<tr>
+		<td width="23%"><div class="user_info_text" style="margin-top: -5px;">PHONE NUMBER</div></td>
+		<td width="1%"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/ph_org.png" /></td>
+		<td width="1%"></td>
+		<td width="40%"><div class="verification_text">This is only shared once you have accepted an offer from another TradeYa user.</div></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/add_phone.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/add_phone_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/add_phone.png'" style="cursor: pointer;" /></td>
+	</tr>
+</table>
+<% end %>
+<div id="phone_invalid_alert_div"><%= render 'modals_shared/phone_invalid_alert' %></div>
+<script>
+	$(document).ready(function() {
+		bindAjaxSpinner();
+	});
+</script>

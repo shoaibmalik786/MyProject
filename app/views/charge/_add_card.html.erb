@@ -1,0 +1,140 @@
+<div class="tab-pane" id="payment_info_tab">
+  <%= form_for((@user), :html =>{:multipart => true, :id => 'user_settings_form', :class=>"form-horizontal"}) do |f| %>
+    <div class="edit_profile_controls">
+      <div class="step1_edit_profile">
+        <div class="control-group step1_control_group">
+          <label class="control-label" for="inputfname">Credit Card</label>
+          <div class="controls edit_payment_info">
+            <label class="radio credit_card">
+              <input type="radio" name="cardtype" /><label><img src="http://d3md9h2ro575fr.cloudfront.net/images/visaicon.png" style="margin-top: -7px;"></span><span class="same_shipping_text">Ending in 9807</span></label>
+            </label>
+            <span class="billing_text">Billing address</span><span class="same_shipping_text_right">Same as shipping</span><span class="edit_shipping_text"><a href="#" onclick="return false;">Edit</a></span><span class="shipping_cross">X</span>
+            <hr class="password_control_group" />
+          </div>
+        </div>
+        <div class="control-group addnew_div">
+          <div class="controls">
+            <div class="add_new_btn"><a href="#" onclick="return false;">Add New</a></div>
+          </div>
+        </div>
+        <hr class="password_control_group" />
+        <div class="control-group">
+          <div class="controls save_cancel_btn">
+            <input type="submit" class="edit_save" value="Save">
+            <input type="submit" class="edit_cancel" value="Cancel">
+          </div>
+        </div>
+      </div>
+
+      <div class="step2_edit_profile">
+        <div class="edit_login_text">Payment Method</div>
+        <hr class="password_control_group" />
+        <div class="control-group">
+          <div class="controls">
+            <label class="radio credit_card">
+              <input type="radio" name="cardtype" /><label>Credit Card</label>
+            </label>
+            <label class="radio credit_card">
+              <input type="radio" name="cardtype" /><label><img src="http://d3md9h2ro575fr.cloudfront.net/images/paypalicon.png" style="margin-top: -12px;"></label>
+            </label>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="inputlname">Card Type</label>
+          <div class="controls">
+            <input type="text" class="e_input">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="inputlname">Card Number</label>
+          <div class="controls">
+            <input type="text" class="e_input">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="inputlname">Expiration Date</label>
+          <div class="controls">
+            <%stateslist = ['AL','AK','AZ','AR','CA','CO','CT','DC','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY']+['AB','BC','LB','MB','NB','NF','NS','NU','NW','ON','PE','QC','SK','YU']%>
+            <a href="#" class="edit_month" onclick="$('#profile_month').toggleClass('hidedrop'); return false;">Month</a>
+            <div class="profile_month hidedrop" id="profile_month">
+              <ul>
+                <%stateslist.each do |state|%>
+                <li><a href="#" onclick="selectState(this); return false;"><%=state%></a></li>
+                <%end%>
+              </ul>
+            </div>
+            <%stateslist = ['AL','AK','AZ','AR','CA','CO','CT','DC','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY']+['AB','BC','LB','MB','NB','NF','NS','NU','NW','ON','PE','QC','SK','YU']%>
+            <a href="#" class="edit_year" onclick="$('#profile_year').toggleClass('hidedrop'); return false;">Year</a>
+            <div class="profile_year hidedrop" id="profile_year">
+              <ul>
+                <%stateslist.each do |state|%>
+                <li><a href="#" onclick="selectState(this); return false;"><%=state%></a></li>
+                <%end%>
+              </ul>
+            </div>
+            <label class="control-label" for="inputfname">Security Code</label>
+            <input type="text" class="e_input security_code">
+            <!-- <input type="text" class="e_input"> -->
+          </div>
+        </div>
+        <div class="sub_wrapper">
+          <%= f.submit "Save", :class => "e_sub", :onclick=>"needToConfirm = false;"%>
+          <!-- <a href="#" class="e_sub">Save</a> -->
+        </div>
+
+        <!-- modal for photo Upload Starts-->
+        <div id="photo_upload_modal" class="modal hide fade">
+          <a href="#" class="close del_close" data-dismiss="modal" onclick="document.getElementById('photomessage').textContent = '';">X</a>
+          <div class="heading">Upload a photo from your computer...</div>
+          <%= f.fields_for :user_photo do |up| %>
+            <div class="file_div">
+              <div id="photo_upload_div">
+                <span class="fileupload_img">
+                  <div style="overflow: hidden; position: absolute; z-index: 0">
+                    <div id="icp_img" style="float: left">Select File</div>
+                    <%= up.file_field :photo, {:class => "file_up", :accept => "image/*", :onChange => "canSubmitCanNext = false;jQuery('#selected_photo_file').text(jQuery(this).val().substring(jQuery(this).val().lastIndexOf('\\\\') + 1));",:TABINDEX=>"4", :style=>"opacity: 0; filter: alpha(opacity = 0); -moz-opacity:0; position: absolute;top: 0; left: 0; width: 130px;height:32px;  cursor: pointer;"} %>
+                    <input id="user_edit_user_photo_id" name="user[user_photo][id]" type="hidden">
+                    <div class="edit_login_text billing_detail_text">Billing Details</div>
+                    <hr class="password_control_group" />
+                    <div class="control-group">
+                      <label class="control-label" for="inputfname">First Name</label>
+                      <div class="controls">
+                        <input type="text" class="e_input">
+                        <span class="text_under_input">TradeYa is a tight nit community, we call everybody by thier first names here.</span>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="inputlname">Last Name</label>
+                      <div class="controls">
+                        <input type="text" class="e_input">
+                        <span class="text_under_input">This will only be shared once you have confirmed a TradeYa.</span>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="inputfname">Address</label>
+                      <div class="controls">
+                        <input type="text" class="e_input">
+                        <input type="text" class="e_input add2">
+                        <%stateslist = ['AL','AK','AZ','AR','CA','CO','CT','DC','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY']+['AB','BC','LB','MB','NB','NF','NS','NU','NW','ON','PE','QC','SK','YU']%>
+                        <a href="#" class="bill_state" onclick="$('#bill_states').toggleClass('hidedrop'); return false;"><%= @user.state.present? ? @user.state : 'State' %></a>
+                        <div class="bill_states hidedrop" id="bill_states">
+                          <ul>
+                            <%stateslist.each do |state|%>
+                            <li><a href="#" onclick="selectState(this); return false;"><%=state%></a></li>
+          <% end %>
+                          </ul>
+                        </div>
+                        <input type="text" class="e_input zip" placeholder="Zipcode">
+                      </div>
+                    </div>
+                    <hr class="password_control_group" />
+                    <div class="control-group">
+                      <div class="controls save_cancel_btn">
+                        <input type="submit" class="edit_save" value="Save">
+                        <input type="submit" class="edit_cancel" value="Cancel">
+                      </div>
+                    </div>
+                  </div>
+              </div>
+  <% end %>
+            </div>

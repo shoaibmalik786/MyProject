@@ -1,0 +1,33 @@
+<%= form_for((@user), :html =>{:multipart => true, :id => 'user_settings_form', :class=>"form-horizontal"}) do |f| %>
+  <!-- modal for photo Upload Starts-->
+  <div id="photo_upload_modal" class="modal hide fade">
+      <a href="#" class="close del_close" data-dismiss="modal">X</a>
+      <div class="heading">Upload a photo from your computer...</div>
+      <%= f.fields_for :user_photo do |up| %>
+      <div class="file_div">
+        <div id="photo_upload_div">
+          <span class="fileupload_img">
+            <div style="overflow: hidden; position: absolute; z-index: 0">
+              <div id="icp_img" style="float: left">Select File</div>
+              <%= up.file_field :photo, {:class => "file_up", :accept => "image/*", :onChange => "canSubmitCanNext = false;jQuery('#selected_photo_file').text(jQuery(this).val().substring(jQuery(this).val().lastIndexOf('\\\\') + 1));",:TABINDEX=>"4", :style=>"opacity: 0; filter: alpha(opacity = 0); -moz-opacity:0; position: absolute;top: 0; left: 0; width: 119px;height:32px;  cursor: pointer;"} %>
+              <input id="user_edit_user_photo_id" name="user[user_photo][id]" type="hidden">
+            </div>
+          </span>
+          <span class="select_file" id="selected_photo_file" style="position: absolute; z-index: 0">No file selected</span>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <div class="image_uploading" style="display:none;">
+        <div style="overflow: hidden; position: absolute; z-index: 0">
+          <div id="" class="icon_uploading" style="float: left"><img src="http://d3md9h2ro575fr.cloudfront.net/images/image_icon_upload.gif" /></div>
+          <div id="progress" style="float: left;width: 192px;">
+            <div class="bar" style="width: 0%; "></div>
+          </div>
+        </div>
+      </div>
+      <% end %>
+      <div id="photomessage" style="margin-top: 36px; margin-left: 30px;"></div>
+      <div id="progressmessage" style="margin-top: 36px; margin-left: 30px;"></div>
+  </div>
+<!-- modal for photo Upload Ends-->
+<% end %>

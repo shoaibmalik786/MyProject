@@ -1,0 +1,22 @@
+<div class="trade_background">
+  <div class="traded_image_left"><%=render 'trades/trade_page_item_card', :item => @left_item%></div>
+  <div class="traded_image_center"><img src="http://d3md9h2ro575fr.cloudfront.net/images/traded_item_icon.png"></div>
+  <div class="traded_image_right"><%=render 'trades/trade_page_item_card', :item => @right_item%></div>
+  <div class="traded_agreed_terms">
+  	<div class="agreed_terms_heading"><img src="http://d3md9h2ro575fr.cloudfront.net/images/agreed_terms.png">Agreed Terms</div>
+		
+			<%= render 'trade_communications/agreed_terms_area' %>
+		
+  </div>
+</div>
+
+<script>
+$(function(){
+	$('.item_wants_image a').removeAttr('href');
+	$('.card_heading_middle_left a').removeAttr('href');
+	$('.item_title_card a').removeAttr('href');
+	$('.item_card_name a').removeAttr('href');
+	$('.traded_agreed_terms ol li img').remove();
+})
+
+</script>

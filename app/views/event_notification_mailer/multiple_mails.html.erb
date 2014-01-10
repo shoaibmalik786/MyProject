@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body style="background-color: #eeeeee; padding: 0px; margin: 0px">
+	<div><font face="null"></font>&nbsp;</div>
+	<table border="0" cellpadding="0" cellspacing="0" width="100%" bordercolor="#666666">
+		<tbody>
+			<tr bgcolor="#ffffff">
+				<td style="margin: 0pt" align="center" bgcolor="#eeeeee">
+					<table style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333333" border="0" cellpadding="20" cellspacing="0" width="560" bordercolor="#333333">
+						<tbody>
+							<tr align="center">
+								<td style="background-color: #ffffff; border-top: 5px solid #333333; border-bottom: 1px solid #999999" ;="" ""="" padding-left:="" 0px;="" padding-bottom:="" 0px="" bgcolor="#ffffff;"><img alt="" src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/logo.png" title="" align="left" /></td></tr>
+								<tr><td>System sending multiple emails for (<%= @n %>/<%= NOTIFICATION_NO_DESC_HASH[@n] %>). Please see details bellow. All mail stop now untile you resolved the issue and resume it from admin panel.</td></tr>
+								<tr align="center" bgcolor="#ffffff">
+									<td align="left">
+										<table style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333333" border="0" cellpadding="20" cellspacing="0" width="560" bordercolor="#333333">
+											<tr><th>ID/Email</th><th>Mail Count</th><th>Data</th></tr>
+											<% @details.each do |n| %>
+												<tr>
+													<td><%= n[0] %>/<%= n[1] %></td>
+													<td><%= n[3] %></td>
+													<td><%= n[2] %></td>
+												</tr>
+											<% end %>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

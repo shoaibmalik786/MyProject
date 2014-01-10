@@ -1,0 +1,37 @@
+<% cache(((current_user.nil?) ? 'footer_without_user' : 'footer_with_user') + ((@show_get_started.present?) ? "_new_user" : "")) do %>
+<!-- Footer Start -->
+<div id="footer">
+		<div class="container">
+			<div class="footer_inner">
+				<ul>
+					<li><a href="mailto:jared@tradeya.com" onclick="_gaq.push(['_trackEvent', 'Footer', 'clk_CntctUs', 'Click Contact Us on Footer']);mixpanel.track('Click Contact Us on Footer');addDelay(this,event); return false;">Contact Us</a></li>
+					
+					<li><a href="/privacy_policy" onclick="_gaq.push(['_trackEvent', 'Footer', 'clk_PrvcyPlcy', 'Click Privacy Policy on Footer']);mixpanel.track('Click Privacy Policy on Footer');addDelay(this,event); return false;">Privacy Policy</a></li>
+
+					<!-- <li><a href="#" onclick="_gaq.push(['_trackEvent', 'Footer', 'clk_HwItWrks', 'Click How it Works on Footer']);mixpanel.track('Click How it Works on Footer');addDelay(this,event); return false;">How it Works</a></li>
+					
+					<li><a href="#" onclick="_gaq.push(['_trackEvent', 'Footer', 'clk_LeglNtce', 'Click Legal Notice on Footer']);mixpanel.track('Click Legal Notice on Footer');addDelay(this,event); return false;">Legal Notice</a></li> -->
+				</ul>
+			</div>
+			<div class="footer_outer">
+				<ul>
+					<li><a href="https://www.facebook.com/TradeYa" target="_blank" onclick="_gaq.push(['_trackEvent', 'Footer', 'clk_fb_footer', 'Click Fb Icon on Footer']);mixpanel.track('Click Fb Icon on Footer');addDelay(this,event); return false;">Be a Fan<br><img src="http://d3md9h2ro575fr.cloudfront.net/images/footer_fb.png"></a></li>
+
+					<li><a href="https://twitter.com/Tradeya1" target="_blank" onclick="_gaq.push(['_trackEvent', 'Footer', 'clk_twitter_footer', 'Click Twitter Icon on Footer']);mixpanel.track('Click Twitter Icon on Footer');addDelay(this,event); return false;">Follow Us<br><img src="http://d3md9h2ro575fr.cloudfront.net/images/footer_tw.png"></a></li>
+					
+					<li><a href="https://plus.google.com/114154703850342509259/posts" target="_blank" onclick="_gaq.push(['_trackEvent', 'Footer', 'clk_google_footer', 'Click Google+ Icon on Footer']);mixpanel.track('Click Google+ Icon on Footer');addDelay(this,event); return false;">Join Us<br><img src="http://d3md9h2ro575fr.cloudfront.net/images/footer_gplus.png"></a></li>
+				</ul>
+			</div>
+		</div>
+		
+	</div>
+<!-- Footer End -->
+<iframe id="if_ip_upload" name="if_ip_upload" height="0" width="0" style="display: none;"></iframe>
+<script>
+  $(document).ready(function() {
+  //create image
+    $('<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/spinner.gif" id="spinner" />').css('position','absolute').hide().appendTo('body');
+    bindAjaxSpinner();
+  });
+</script>
+<% end %>

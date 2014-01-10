@@ -1,0 +1,89 @@
+<div id = "error_notification_settings" style = "text-align:left;line-height:14px;color: red;font-size: 10pt; height:15px;"></div>
+<table width="100%" align="center" style="margin-left: 30px;">
+	<tr valign="top">
+		<td width="33%">
+			<div class="send_reminders">Send me reminders when <br/ >(we promise no spamming!)</div>
+		</td>
+		<td width="2%"></td>
+		<td width="65%">
+			<div><%= f.check_box :notify_tradeya_timer, :onclick=>"/*_kmq.push(['record', 'dashboard notifications toggle 24 hours to go',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_24hours', 'Toggle When my TradeYA is about to run out of time (24 hours). in Your Notification Settings']);*/" %><span class="info_check_text">When my TradeYa is about to run out of time (24 hours).</span>
+			</div>
+			<div><%= f.check_box :notify_tradeya_over, :onclick=>"/*_kmq.push(['record', 'dashboard notifications toggle when trade is over',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_tradeover', 'Toggle When my TradeYA is over. in Your Notification Settings']);*/" %><span class="info_check_text">When my TradeYa is over.</span></div>
+			<div><%= f.check_box :notify_received_offer, :onclick=>"/*_kmq.push(['record', 'dashboard notifications toggle when i get offers',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_newoffer', 'Toggle When I get offers on my TradeYa in Your Notification Settings']);*/" %><span class="info_check_text">When I get offers on my TradeYa</span></div>
+			<div><%= f.check_box :notify_offer_changed, :onclick=>"/*_kmq.push(['record', 'dashboard notifications toggle if an offer on my tradeya changes',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_offerchange', 'Toggle If an offer on my TradeYa has changes or been deleted. in Your Notification Settings']);*/" %><span class="info_check_text">If an offer on my TradeYa has changes or been deleted.</span></div>
+			<div><%= f.check_box :notify_received_comments, :onclick=>"/*_kmq.push(['record', 'dashboard notifications toggle when i get comments',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_newcomment', 'Toggle When I get comments or questions. in Your Notification Settings']);*/" %><span class="info_check_text">When I get comments or questions.</span></div>
+			<div><%= f.check_box :notify_offer_accepted, :onclick=>"/*_kmq.push(['record', 'dashboard notifications toggle when my offer is accepted',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_offeraccepted', 'Toggle When my offer is accepted. in Your Notification Settings']);*/" %><span class="info_check_text">When my offer is accepted.</span></div>
+			<div><%= f.check_box :notify_offer_turned_invalid, :onclick=>"/*_kmq.push(['record', 'dashboard notifications toggle when my offer is no longer valid',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_offernotvalid', 'Toggle When my offer is no longer valid. in Your Notification Settings']);*/" %><span class="info_check_text">When my offer is no longer valid.</span></div>
+			<div><%= f.check_box :notify_tradeya_complete, :onclick=>"/*_kmq.push(['record', 'dashboard notifications toggle whenever tradeya is completed',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_tradeycomplete', 'Toggle Whenever a TradeYa is completed. in Your Notification Settings']);*/" %><span class="info_check_text">Whenever a TradeYa is completed.</span></div>
+			<div><%= f.check_box :notify_tradeya_expired_reactivated, :onclick=>"/*_kmq.push(['record', 'dashboard notifications toggle whenever a tradeya expires or reactivated',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_tradeyaexpired', 'Toggle Whenever a TradeYa expires and if it is reactivated. in Your Notification Settings']);*/" %><span class="info_check_text">Whenever a TradeYa expires and if it is reactivated.</span></div>
+			<div><%= f.check_box :notify_tradeya_postponed_reactivated, :onclick=>"/*_kmq.push(['record', 'dashboard notifications toggle whenever tradeya is postponed',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_tradeyapostponed', 'Toggle Whenever a TradeYa is postponed and if it is reactivated. in Your Notification Settings']);*/" %><span class="info_check_text">Whenever a TradeYa is postponed and if it is reactivated.</span></div>
+			<div><%= f.check_box :notify_tradeya_news_updates, :onclick=>"/*_kmq.push(['record', 'dashboard notifications toggle occasional tradeya news and updates',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_newsandupdates', 'Toggle Occasional TradeYa news and updates. in Your Notification Settings']);*/" %><span class="info_check_text">Occasional TradeYa news and updates.</span></div>
+
+			<div style="height: 20px; border-top: 1px dotted #CCC; margin-top: 20px; width: 339px;"></div>
+
+			<div><input id = "frequency_1" class="notification_frequency" type="checkbox" value = 1 onclick="/*_kmq.push(['record', 'dashboard notifications toggle frequency immediately',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_push', 'Toggle Immediately in Your Notification Settings']);*/" /><span class="info_check_text">Immediately</span></div>
+			<div><input id = "frequency_2" class="notification_frequency" type="checkbox" value = 2 onclick="/*_kmq.push(['record', 'dashboard notifications toggle frequency once a day',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_daily', 'Toggle Once a day in Your Notification Settings']);*/" /><span class="info_check_text">Once a day</span></div>
+			<div><input id = "frequency_3" class="notification_frequency" type="checkbox" value = 3 onclick="/*_kmq.push(['record', 'dashboard notifications toggle frequency at the end of the week',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_weekly', 'Toggle At the end of the week in Your Notification Settings']);*/" /><span class="info_check_text">At the end of the week</span></div>
+			<%= f.hidden_field :notification_frequency %>
+
+			<div style="height: 20px; border-top: 1px dotted #CCC; margin-top: 20px; width: 339px;"></div>
+
+			<div><input id = "notify_via_email" class="notification_mode" type="checkbox" onclick="/*_kmq.push(['record', 'dashboard notifications toggle where email only',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_email', 'Toggle Send my notifications ONLY via email in Your Notification Settings']);*/" /><span class="info_check_text">Send my notifications ONLY via email.</span></div>
+			<div><input id = "notify_via_mobile" class="notification_mode" type="checkbox" onclick="/*_kmq.push(['record', 'dashboard notifications toggle where mobile only',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_mobile', 'Toggle Send me notifications ONLY via mobile. in Your Notification Settings']);*/" /><span class="info_check_text">Send me notifications ONLY via mobile.</span></div>
+			<div><input id = "notify_via_both" class="notification_mode" type="checkbox" onclick="/*_kmq.push(['record', 'dashboard notifications toggle where both email and mobile',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'toggle_both', 'Toggle Send my notifications to BOTH my email and mobile. in Your Notification Settings']);*/" /><span class="info_check_text">Send my notifications to BOTH my email and mobile.</span></div>
+			<%= f.hidden_field :notify_via_email %>
+			<%= f.hidden_field :notify_via_mobile %>
+			<%= f.hidden_field :allow_mobile, :value => current_user.phone_verified? %>
+		</td>
+	</tr>
+</table>
+
+<script>
+$(function(){
+	setInitialValues();
+
+	$(".notification_frequency").click(function(){
+    	var group = $('.notification_frequency');
+    	$(group).attr("checked",false);
+    	$(this).attr("checked",true);
+    	$('#user_notification_frequency').val($(this).val());
+	});
+
+	$(".notification_mode").click(function(){
+    	var group = $('.notification_mode');
+    	$(group).attr("checked",false);
+    	$(this).attr("checked",true);
+    	if ($('#user_' + $(this).attr('id')).length > 0)
+    	{
+    		$('#user_notify_via_email').val(0);
+    		$('#user_notify_via_mobile').val(0);
+    		$('#user_' + $(this).attr('id')).val(1);
+    	}
+    	else
+    	{
+    		$('#user_notify_via_email').val(1);
+    		$('#user_notify_via_mobile').val(1);
+    	}
+
+	});
+
+
+})
+
+function setInitialValues(){
+	// set notify frequency checkbox
+	var frequency = $('#user_notification_frequency').val();
+	$('#frequency_'+frequency).attr('checked','checked');
+	// set notification mode checkbox
+	if ($('#user_notify_via_email').val() == 1)
+	{
+		if($('#user_notify_via_mobile').val() == 1)
+			$('#notify_via_both').attr('checked','checked');
+		else
+			$('#notify_via_email').attr('checked','checked');
+
+	}
+	else
+		$('#notify_via_mobile').attr('checked','checked');
+}
+</script>

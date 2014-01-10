@@ -1,0 +1,66 @@
+<script>
+	var categories_right = {4: ['Browse Side Nav arts collectibles antiques', 'Clk_SideNavArts'], 5: ['Browse Side Nav clothing jewelry  accessories', 'Clk_SideNavClothes'],6: ['Browse Side Nav electronics devices', 'Clk_SideNavElectronics'],7: ['Browse Side Nav general  misc goods', 'Clk_SideNavGenGoods'],8: ['Browse Side Nav household garden', 'Clk_SideNavHousehold'],9: ['Browse Side Nav housing  vacation spots', 'Clk_SideNavHousing'],10: ['Browse Side Nav media entertainment', 'Clk_SideNavMedia'],11: ['Browse Side Nav office photo  music gear', 'Clk_SideNavOfficePhotos'],12: ['Browse Side Nav sporting goods', 'Clk_SideNavSporting'],13: ['Browse Side Nav tickets  coupons', 'Clk_SideNavTickets'],14: ['Browse Side Nav vehicles  parts', 'Clk_SideNavVehicles'],15: ['Browse Side Nav accounting finance  legal', 'Clk_SideNavAccounting'],16: ['Browse Side Nav architecture  engineering', 'Clk_SideNavArchitecture'],17: ['Browse Side Nav art media  web design', 'Clk_SideNavArtMedia'],18: ['Browse Side Nav beauty fitness  health', 'Clk_SideNavBeauty'],19: ['Browse Side Nav business consulting  office', 'Clk_SideNavBusiness'],20: ['Browse Side Nav coaches healers  therapists', 'Clk_SideNavCoaches'],21: ['Browse Side Nav dental legal  medical', 'Clk_SideNavMedical'],22: ['Browse Side Nav education  tutoring', 'Clk_SideNavEducation'],23: ['Browse Side Nav food  nutrition', 'Clk_SideNavFood'],24: ['Browse Side Nav general  misc services', 'Clk_SideNavGenServices'],25: ['Browse Side Nav programmers  developers', 'Clk_SideNavProgrammers'],26: ['Browse Side Nav vehicle repair  maintenance', 'Clk_SideNavVehicleRepair']};
+</script>
+<ul id="cat_right_ul">
+	<% if params[:category] == "all" %>
+		<li id="category_all" class="cat_selected"><a href="#" style="color:#333" onclick="/*_kmq.push(['record', 'Browse Side Nav all',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SideNavAll', 'click on all in side nav']);*/ return false;"><b>All Goods + Services</b></a></li>
+	<% else %>
+		<li id="category_all"><a class = 'click' href="/items?category=all" onclick="/*_kmq.push(['record', 'Browse Side Nav all',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SideAllFeatured', 'click on all in side nav']);*/"><b>All Goods + Services</b></a></li>
+	<% end %>
+	<%# if params[:category] == "featured" %>
+<!-- 		<li id="category_featured" class="cat_selected"><a href="#" style="color:#333" onclick="_kmq.push(['record', 'Browse Side Nav featured',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SideNavFeatured', 'click on featured in side nav']); return false;"><b>Featured</b></a></li> -->
+	<%# else %>
+<!-- 		<li id="category_featured"><a class = 'click' href="/items?category=featured" onclick="_kmq.push(['record', 'Browse Side Nav featured',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SideNavFeatured', 'click on featured in side nav']);"><b>Featured</b></a></li> -->
+	<%# end %>
+	<%# if params[:category] == "newest" %>
+<!-- 		<li id="category_newest" class="cat_selected"><a href="#" style="color: #333" onclick="_kmq.push(['record', 'Browse Side Nav newest',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SideNavNewest', 'click on newest in side nav']); return false;"><b>Newest</b></a></li> -->
+	<%# else %>
+<!-- 		<li id="category_newest"><a class = 'click' href="/items?category=newest" onclick="_kmq.push(['record', 'Browse Side Nav newest',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SideNavNewest', 'click on newest in side nav']);"><b>Newest</b></a></li> -->
+	<%# end %>
+	<% if params[:category] == "completed" %>
+		<li id="category_completed" class="cat_selected"><a href="#" style="color: #333" onclick="/*_kmq.push(['record', 'Browse Side Nav completed',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SideNavCompleted', 'click on completed in side nav']);*/ return false;"><b>Completed</b></a></li>
+	<% else %>
+		<li id="category_completed"><a class = 'click' href="/items?category=completed" onclick="/*_kmq.push(['record', 'Browse Side Nav completed',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SideNavCompleted', 'click on completed in side nav']);*/"><b>Completed</b></a></li>
+	<% end %>
+	<% if current_user and current_user != nil and params[:category] == "mytrades" %>
+		<li id="category_mytrades" class="cat_selected"><a href="#" style="color: #333" onclick="/*_kmq.push(['record', 'Browse Side Nav my tradeyas',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SideNavMyTrdys', 'click on my tradeyas in side nav']);*/ return false;"><b>My TradeYas</b></a></li>
+	<% elsif current_user and current_user != nil %>
+		<li id="category_mytrades"><a class = 'click' href="/items?category=mytrades" onclick="/*_kmq.push(['record', 'Browse Side Nav my tradeyas',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SideNavMyTrdys', 'click on my tradeyas in side nav']);*/"><b>My TradeYas</b></a></li>
+	<% end %>
+	<% if current_user and current_user != nil and params[:category] == "myoffers" %>
+		<li id="category_myoffers" class="cat_selected"><a href="#" style="color: #333" onclick="/*_kmq.push(['record', 'Browse Side Nav my offers',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SideNavMyOffrs', 'click on my offers in side nav']);*/ return false;"><b>My Offers</b></a></li>
+	<% elsif current_user and current_user != nil %>
+		<li id="category_myoffers"><a class = 'click' href="/items?category=myoffers" onclick="/*_kmq.push(['record', 'Browse Side Nav my offers',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SideNavMyOffrs', 'click on my offers in side nav']);*/"><b>My Offers</b></a></li>
+	<% end %>
+	<div class="cat_zip_right_div" style="margin-top:10px;">SEARCH</div>
+		<div>
+			<%= form_tag items_path,:method => "get", :id => "itemsSearchForm" do %>
+				<input type="text" name="search" id="search_text" class="search_field" value="<%= params[:search].present? ? params[:search] : 'Search Keyword'%>" maxlength="30" onBlur="clearText(this)" onFocus="clearText(this)" onkeypress="searchItemsOnEnter(event);"/>
+				<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/search_icon.png" style="padding-top: 5px; margin-bottom: -7px; margin-left: 5px;cursor:pointer;" class='position-click' onclick="submitItemSearchForm(); return false;" />
+				<%= check_box_tag(:location_search,"1", :style => "margin-left:17px;") %>
+				<%= label_tag(:location_search, "With In", :class => "cat_zip_right_div", :style=>"padding-left:0px;") %>
+				<%= select_tag(:distance, options_for_select((10..50).map{ |i| i}, params[:distance])) %>
+				<%= label_tag(:distance, "miles of", :class => "cat_zip_right_div",:style=>"padding-left:0px;") %>
+				<input type="text" name="zipcode" id="zipcode_text" class="search_field" value="<%= params[:zipcode].present? ? params[:zipcode] : (current_user.nil? or current_user.zip.nil?)? 'Zip Code' : current_user.zip %>" maxlength="10" onBlur="clearText(this)" onFocus="clearText(this)" onkeypress="searchByZipOnEnter(event);" style="margin-left:0px; padding-left:0px; width:70px; padding-right: 0px; text-align:center; margin-top: 0px;" />
+				<div id="search_error" class="form_field_error_msg"></div>
+			<% end %>
+		</div>
+	<div class="cat_good_right_div">GOODS</div>
+	<% Category.goods.each do |x|%>
+		<% if x.id == params[:category].to_i %>
+			<li id="category_<%=x.id%>" class="cat_selected"><a href="#" style="font-weight:bold; color:#333" onclick="/*_kmq.push(['record', categories_right[<%=x.id%>][0]],{ 'SignedIn' : get_KMSignedIn()}); _gaq.push(['_trackEvent', 'Activity', categories_right[<%=x.id%>][1], 'Click on <%= x.name%>']);*/ return false;"><%= x.name%></a></li>
+		<%else%>
+			<li id="category_<%=x.id%>"><a class = 'click' href="/items?category=<%= x.id%>" onclick="/*_kmq.push(['record', categories_right[<%=x.id%>][0],{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', categories_right[<%=x.id%>][1], 'Click on <%= x.name%>']);*/"><%= x.name%></a></li>
+		<%end%>
+	<%end%>
+	<div class="cat_service_right_div">SERVICES</div>
+	<% Category.services.each do |x| %>
+		<% if x.id == params[:category].to_i %>
+			<li id="category_<%=x.id%>" class="cat_selected"><a href="#" style="font-weight:bold; color:#333" onclick="/*_kmq.push(['record', categories_right[<%=x.id%>][0],{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', categories_right[<%=x.id%>][1], 'Click on <%= x.name%>']);*/ return false;"><%= x.name%></a></li>
+		<%else%>
+			<li id="category_<%=x.id%>"><a class = 'click' href="/items?category=<%= x.id%>" onclick="/*_kmq.push(['record', categories_right[<%=x.id%>][0],{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', categories_right[<%=x.id%>][1], 'Click on <%= x.name%>']);*/"><%= x.name%></a></li>
+		<%end%>
+	<% end %>
+		<div id="azk96021" style="width: 160px; height: 600px; padding-top: 15px; padding-left: 17px;">
+		</div>
+</ul>

@@ -1,0 +1,86 @@
+<script>
+	$("#inbox_options").show();
+  // $("#inbox_tab_div").show();
+</script>
+<!-- inbox tab start -->
+<div class="tab_div_overlay"></div>
+<div id="inbox_tab" class="">
+	
+		
+		<%if !@activity_feed.present?%>
+
+		<%else%>
+		<div class="comments_section_div">
+			<div class="review_heading">
+				<span>
+					<%if @new_items_count.present? and @new_items_count>1 %>
+						<%=@new_items_count%> New Items
+					<%elsif @new_items_count == 1%>
+					  1 New Item
+					<%else%>
+					  No New Items
+					<%end%>
+				</span>
+				<span class="pull-right">
+					<span id="sort_by_date" class="rating_sort"><%=link_to 'Date', activity_feed_user_path(:sort_by => "date"), :remote => true%></span>
+					<span id="sort_by_type"><%=link_to 'Type', activity_feed_user_path(:sort_by => "type"), :remote => true%></span>
+				</span>
+			</div>
+			<%= render 'shared/inbox_activity_feeds', :activity_feed=>@activity_feed%>
+			<div class="clear"></div>
+		</div>
+		<%end%>
+
+		
+</div>
+<!-- inbox tab end -->
+
+<!-- Messaging Section Start -->
+<div id="inbox_notifications" class="tab-pane ">
+	 <%= render 'shared/private_messaging'%>
+</div>
+<!-- Messaging Section End -->
+
+<script>
+ 	$("#spinner").hide();
+ 	$('.tab_div_overlay').hide();
+ 	// $(function(){
+ 	// 	<%if params[:sort_by].present? and params[:sort_by]=="type"%>
+ 	// 	  $('#sort_by_type').addClass("rating_sort");
+ 	// 	<%else%>
+ 	// 		$('#sort_by_date').addClass("rating_sort");
+ 	// 	<%end%>
+ 	// })
+</script>
+<script type="text/javascript"> // Infinite Scrolling
+	// $(window).scroll(function(){
+	// 	if  ($(window).scrollTop() >= $(document).height() - $(window).height() - $('#footer').height()){
+	// 		// alert("near bottom");
+	// 		// $.getScript($('.pagination .next_page').attr('href'));
+	// 	}
+	// });
+</script>
+<script>
+	$(function () {
+		$('#inbox_tab_div a[href="#inbox_tab"]').tab();
+		// $('.inbox_notifications').click(function(){
+		// 		$('#inbox_tab').show();
+		// 		$('#inbox_notifications').hide();
+		// 		$('#spinner').hide();
+		// 		$('.tab_inbox').addClass('active');
+		// 		$("#inbox_tab_div").show();
+		// 		return false;
+		// 	});
+			// $('.inbox_messages').click(function(){
+			// 	$('#inbox_notifications').show();
+			// 	$('#inbox_tab').hide();
+			// 	$('#spinner').hide();
+			// 	$('.tab_inbox').addClass('active');
+			// 	$(".inbox_notifications").removeClass("active");
+			// 	$("#inbox_tab_div").show();
+			// 	return false;
+			// });
+		// $('#inbox_tab_div a[href="#tab_messaging"]').tab();
+		// $('#inbox_tab_div a[href="#tab_notifications"]').tab();
+	});
+</script>

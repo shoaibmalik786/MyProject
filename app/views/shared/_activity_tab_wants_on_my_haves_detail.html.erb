@@ -1,0 +1,95 @@
+<div id="active_trade_item">
+	<div class="active_item_heading"><%= @item.title %></div>
+	<div class="stats_div active_trade_page">
+		<div class="stats_text">ITEM STATS</div>
+		<div class="haves_text active"><a href="#" onclick="return false;"><span> <%= @item.trades.where(:status => "ACTIVE").size %></span> Active Trades</a></div>
+		<div class="wants_text"><a href="#" onclick="return false;"><span><%= @item.wants.size %></span> Wants</a></div>
+		<div class="likes_text"><a href="#" onclick="return false;"><span><%= @item.likes.size %></span> Likes</a></div>
+	</div>
+	<div class="active_item_image_div">
+		<div class="active_div_scroll">
+			<% @item.item_photos.limit(4).each do |photo| %>
+				<div class="active_item_images">
+						<%= image_tag(photo.photo) %>
+				</div>
+			<% end %>
+		</div>
+	</div>
+	<div class="active_onitem_div">
+		<div class="active_onitem_heading">Active Trades</div>
+		<% @item.trades.where(:status => "ACTIVE") do | trade | %>
+		<!-- Active Trade Rows -->
+		<div class="active_trade_block">
+			<div class="active_trade_date"><%= l(trade.created_at, format: "%b %d, %Y") %></div>
+			<div class="active_trade_user_image"><%= image_tag(trade.user.user_image()) %></div>
+			<div class="active_trade_name"><%= trade.user.title() %></div>
+			<div class="active_trade_city"><%= trade.user.location %></div>
+			<div class="active_trade_distance"><%= @item.user.user_distance(session[:user_ll]) %> Miles from you</div>
+			<div class="view_active_trade_btn"><a href="<%= trades_user_path(trade.user) %>">View Trade</a></div>
+		</div>
+		<!-- Active Trade Rows -->
+		<% end %>
+		<div class="clear"></div>
+	</div>
+
+	<div class="likes_myitem_div" style="display: none">
+		<div class="active_onitem_heading">Likes on my Item</div>
+			<% @item.likes.each do  | like | %>
+			<!-- Active Trade Rows -->
+			<div class="active_trade_block">
+				<div class="active_trade_date"><%= l(like.created_at, format: "%b %d, %Y") %></div>
+				<div class="active_trade_user_image"><%= image_tag(like.user.user_image()) %></div>
+				<div class="active_trade_name"><%= like.user.title() %></div>
+				<div class="active_trade_city"><%= like.user.location %></div>
+				<div class="active_trade_distance"><%= like.user.user_distance(session[:user_ll]) %> Miles from you</div>
+				<div class="view_active_trade_btn"><a href="<%= likes_user_path(like.user) %>">View Likes (<%= like.user.likes.size %>)</a></div>
+			</div>
+			<!-- Active Trade Rows -->
+		<% end %>
+		<div class="clear"></div>
+	</div>
+
+	<div class="users_want_div" style="display: none">
+		<div class="active_onitem_heading">Users who want your item</div>
+		<% @item.wants.each do  | want | %>
+		<!-- Active Trade Rows -->
+		<div class="active_trade_block">
+			<div class="active_trade_date"><%= l(want.created_at, format: "%b %d, %Y") %></div>
+			<div class="active_trade_user_image"><%= image_tag(want.user.user_image()) %></div>
+			<div class="active_trade_name"><%= want.user.title() %></div>
+			<div class="active_trade_city"><%= want.user.location %></div>
+			<div class="active_trade_distance"><%= want.user.user_distance(session[:user_ll]) %> Miles from you</div>
+			<div class="view_active_trade_btn"><a href="<%= haves_user_path(want.user) %>">View Haves (<%= want.user.have_items.size %>)</a></div>
+		</div>
+		<!-- Active Trade Rows -->
+		<% end %>
+		<div class="clear"></div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$('.likes_text a').click(function(){
+	$('.likes_myitem_div').show();
+	$('.users_want_div').hide();
+	$('.active_onitem_div').hide();
+	$('.haves_text').removeClass('active');
+	$('.likes_text').addClass('active');
+	$('.wants_text').removeClass('active');
+});
+$('.haves_text a').click(function(){
+	$('.likes_myitem_div').hide();
+	$('.users_want_div').hide();
+	$('.active_onitem_div').show();
+	$('.haves_text').addClass('active');
+	$('.likes_text').removeClass('active');
+	$('.wants_text').removeClass('active');
+});
+$('.wants_text a').click(function(){
+	$('.likes_myitem_div').hide();
+	$('.users_want_div').show();
+	$('.active_onitem_div').hide();
+	$('.haves_text').removeClass('active');
+	$('.likes_text').removeClass('active');
+	$('.wants_text').addClass('active');
+});
+</script>

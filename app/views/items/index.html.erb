@@ -1,0 +1,548 @@
+<!-- On window resizing start -->
+<%= stylesheet_link_tag "bootstrap-tour" %>
+<%#= stylesheet_link_tag "joyride-2.0.3" %>
+<%#= stylesheet_link_tag "joyride-2.1" %>
+
+<script type="text/javascript">
+
+ var currentWidth = 980;
+ $(window).resize(function() {
+   // alert("resized");
+   var winWidth = $(window).width();
+   var conWidth;
+   if(winWidth<480){
+     conWidth=225;
+     col=1;
+     ox=7.5,
+     oy = 9
+   }
+   else if(winWidth<730){
+     conWidth=480;
+     col=2;
+     ox=7.5,
+     oy = 9
+     $("#itemcard").css("margin-left","5px");
+     $("#itemcard").css("margin-top","10px");
+   }
+   else if(winWidth < 980 ){
+     conWidth = 730;
+     col = 3,
+     ox = 9,
+     oy = 10
+     $("#itemcard").css("margin-top","10px");
+     $("#itemcard").css("margin-left","10px");
+   }
+   else if(winWidth <1200) {
+     conWidth = 980;
+     col = 4;
+     ox = 9.8;
+     oy = 9
+   }
+   else if(winWidth <1500) {
+     conWidth = 1200;
+     col = 5;
+     ox = 9.8;
+     oy = 9
+   }
+   else if(winWidth >1500) {
+     conWidth = 1500;
+     col = 6;
+     ox = 9.8;
+     oy = 9
+   }
+   if(conWidth != currentWidth) {
+     currentWidth = conWidth;
+     $('#itemcard').width(conWidth);
+     $('#itemcard').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+
+   }
+   $("img").one("load",function(){
+     $('#itemcard').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   });
+
+ })
+
+</script>
+<!-- On window resizing end -->
+<script type="text/javascript">
+ $(document).ready(function(){
+   // alert("document loaded");
+   var currentWidth = 980;
+   var winWidth = $(window).width();
+   var conWidth;
+   if(winWidth<480){
+     conWidth=225;
+     col=1;
+     ox=7.5,
+     oy = 9
+   }
+   else if(winWidth<730){
+     conWidth=480;
+     col=2;
+     ox=7.5,
+     oy = 9
+     $("#itemcard").css("margin-left","5px");
+     $("#itemcard").css("margin-top","10px");
+   }
+   else if(winWidth < 980 ){
+     conWidth = 730;
+     col = 3,
+     ox = 9,
+     oy = 10
+     $("#itemcard").css("margin-top","10px");
+     $("#itemcard").css("margin-left","10px");
+   }
+   else if(winWidth <1200) {
+     conWidth = 980;
+     col = 4;
+     ox = 9.8;
+     oy = 9
+   }
+   else if(winWidth <1500) {
+     conWidth = 1200;
+     col = 5;
+     ox = 9.8;
+     oy = 9
+   }
+   else if(winWidth >1500) {
+     conWidth = 1480;
+     col = 6;
+     ox = 9.8;
+     oy = 9
+   }
+   if(conWidth != currentWidth) {
+     currentWidth = conWidth;
+     $('#itemcard').width(conWidth);
+     // alert(col);
+     $('#itemcard').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   }
+   $("img").one("load",function(){
+     $('#itemcard').BlocksIt({
+       numOfCol: col,
+       offsetX: ox,
+       offsetY: oy,
+       blockElement: '.user_wants_card'
+     });
+   });
+
+   //Tracking twitter login
+    <% if session[:previous_url].present? and session[:previous_url].to(21) == "/auth/twitter/callback" %>
+   //_gaq.push(['_trackEvent', 'Twitter Login', 'Tw_login', 'Successful Login Twitter']);
+    analytics.track('Logged in', {'Login method': 'Twitter'});
+ 
+    <%end%>
+    //Tracking email signup
+    <% if params[:email_signup].present? %>
+    //_gaq.push(['_trackEvent', 'Email Signup', 'Email_signup', 'Successful Email Signup']);
+    analytics.track('Confirmed email');
+    analytics.track('Signed up', {'Login method': 'TradeYa'});
+   <%end%>
+ });
+</script>
+
+<script>
+ var page = 1;
+ var n = 1;
+ var total = <%=@i_total%>;
+ var category,search_txt,sort_by;
+ <% if params["category"] %>
+ category = '<%= params["category"] %>';
+ <% end %>
+ <% if params["search"] %>
+ search_txt = '<%= params["search"] %>';
+ <% end %>
+ <% if params["sort_by"] %>
+ sort_by = '<%= params["sort_by"] %>';
+ <% end %>
+ var slideCount = {};
+ $(function(){
+   for(var i=1;i<n;i++){
+     slideCompletedTrade(i,slideCount[i]);
+   }
+ });
+</script>
+
+<script type="text/javascript" src="//connect.facebook.net/en_US/all.js"></script>
+
+<script>
+  function facebook_send_message(fid) {
+    FB.ui({
+      method: 'send',
+      to: fid,
+      // link: root_url
+      link: 'http://www.tradeya.com/'
+    });
+  }
+</script>
+  
+
+
+<!--Content Start -->
+<div class="browse_page_heading">
+  <div class="sort_div">
+    <ul class="sort_tab">
+      <%#if params[:search].present?%>
+      <!-- <li class="fleft"><%#= link_to "Items", { :action => "index", :search => params[:search] }, :method => :get, :class => "act" %></li>
+      <li class="fleft"><%#= link_to "Users", { :action => "index", :controller => "users", :search => params[:search] }, :method => :get%></li> -->
+      <%#end%>
+      <li id="sortby_drop">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <div id ="tradeya_sort_element">
+            <%if params[:sort_by].present?%>
+              <%if params[:sort_by] == "most offered" %>
+                Most Offers
+              <%else%>
+                <%= params[:sort_by].capitalize %>
+              <%end%>
+            <%else%>
+              Most Recent
+            <%end%>
+            <img src="http://d3md9h2ro575fr.cloudfront.net/images/sorting_arrow.png">
+          </div>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <%= link_to "Distance", { :action => "index", :sort_by => "distance", :category => params[:category], :search => params[:search] }, :method => :get %>
+          </li>
+          <li>
+            <%= link_to "Most Offers", { :action => "index", :sort_by => "most offered", :category => params[:category], :search => params[:search] }, :method => :get %>
+          </li>
+          <li>
+            <%= link_to "Most Recent", { :action => "index", :sort_by => "most recent", :category => params[:category], :search => params[:search] }, :method => :get %>
+          </li>
+          <li>
+            <%= link_to "Friends", { :action => "index", :sort_by => "friends", :category => params[:category], :search => params[:search] }, :method => :get %>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div><!--pull-right-->
+
+  <div class="results_div">
+    <span>Results For&nbsp;&nbsp;</span>
+    <span class="result_span">
+      "<%=@results_for%>"
+    </span>
+  </div>
+  <div class="clear"></div>
+</div>
+
+<div class="container responsive_width">
+  <%#= render 'shared/alert_message'%>
+  <%if session[:have_saved]%>
+    <script>
+     $(function(){
+       $('#have_message_modal').modal("show");
+     });
+    </script>
+    <%session[:have_saved] = nil%>
+  <%elsif session[:delete_item]%>
+    <div class="alert alert-success" id="haves_alert">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      Your item has been successfully deleted.
+      <%session[:delete_item] = nil%>
+    </div>
+  <%end%>
+ 
+  <%if @items.blank?%>
+    <div class="item_middle_section">
+      <div class="center_content">
+        <div class="browse_items_wrapper">
+          <div class="no_results_div">
+            <div class="no_results">Oh no! There are no results for your search...</div>
+            <div class="no_results_sub">Do you want to <a href="#">Add An Item</a>?</div>
+          </div>
+          <div class="browse_item_content">
+            <div class="popular_heading">Here are some popular items you may like...</div>
+            <div class="wants_container_browse_page">
+
+
+      <!-- item cards here -->
+      <!-- <div id="itemcard">
+        <div class="user_wants_card add_item_image">
+    <%#if current_user%>
+    <a href="<%=following_user_path(current_user)%>" onclick="_gaq.push(['_trackEvent', 'Browse Page', 'clk_FndFrnds', 'Click Find Friends on Empty Browse Page']);mixpanel.track('Click Find Friends on Empty Browse Page');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/findfriends_button.png" /></a>
+    <br /><br />
+    <%#end%>
+    <a href="/items/new?from=browse" onclick="_gaq.push(['_trackEvent', 'Browse Page', 'clk_AddItm', 'Click Add Item on Empty Browse Page']);mixpanel.track('Click Add Item on Empty Browse Page');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/add_item_image.png" /></a>-->
+	    <!-- item cards here -->
+              <div id="itemcard">
+	              <div class="user_wants_card add_item_image">
+		              <%if current_user%>
+		                <a href="<%=following_user_path(current_user)%>" onclick="_gaq.push(['_trackEvent', 'Browse Page', 'clk_FndFrnds', 'Click Find Friends on Empty Browse Page']);mixpanel.track('Click Find Friends on Empty Browse Page');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/findfriends_button.png" /></a>
+		                <br /><br />
+		              <%end%>
+		              <a id="addanitem" href="/items/new?from=browse" onclick="_gaq.push(['_trackEvent', 'Browse Page', 'clk_AddItm', 'Click Add Item on Empty Browse Page']);mixpanel.track('Click Add Item on Empty Browse Page');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/add_item_image.png" /></a>
+
+
+                    <!-- Friends List -->
+                    <div class="browse_left_friends">
+                     <div class="browse_friends_joined">
+                       <div class="heading">Friends</div>
+                       <ul class="browse_friends_joined_list">
+                         <!-- Friends to Follow Start -->
+                         <% if @friends_not_on_tradeya.present? %>
+                         <% @friends_not_on_tradeya.each do |friend_not_on_tradeya| %>
+                         <li>
+                           <span class="browse_joined_img"><img height = "60px" width = "60px" src="<%=friend_not_on_tradeya[1]%>"></span>
+                           <div class="browse_user_info">
+                           <p class="browse_user_name"><%=truncate(friend_not_on_tradeya[0], :length => 14, :omission => '...')%></p>
+                             <p class="browse_invite_btn"><a href="#" onclick="facebook_send_message(<%=friend_not_on_tradeya[2]%>)">Invite</a></p>
+                           </div>
+                         </li>
+                         <% end %>
+                         <% end %>
+                         
+                         <% if @friends_on_tradeya.present? %>
+                         <% @friends_on_tradeya.each do |friend_on_tradeya| %>
+                         <li>
+                           <span class="browse_joined_img"><img height = "60px" width = "60px" src="<%=friend_on_tradeya.user_image(:small)%>"></span>
+                           <div class="browse_user_info">
+                           <p class="browse_user_name"><%=truncate(friend_on_tradeya.title, :length => 14, :omission => '...')%></p>
+                             <p class="view_invite_btn"><a href="<%=user_path(friend_on_tradeya)%>">View</a></p>
+                           </div>
+                         </li>
+                         <% end %>
+                         <% end %>
+
+                        <li>
+                           <p class="view_all_button"><a href="<%=following_user_path(current_user)%>">View All</a></p>
+                         </li>
+                         <!-- Friends to Follow End -->
+                       </ul>
+                     </div>
+                     <div class="invite_link">
+                       <a href="<%= invite_user_path(current_user) %>" onclick="mixpanel.track('Click Invite Friends on Browse Page');_gaq.push(['_trackEvent', 'Browse Page', 'clk_InvtFrndsBrwsPg', 'Click Invite Friends on Browse Page']);">Invite Friends via Email</a>
+                     </div>
+                    </div>
+                    <!-- Friends List -->
+
+                </div>
+                  
+                <%= render "popular_items" %>
+              </div>
+              
+            </div><!--wants_container-->
+          </div><!--browse_item_content-->
+        </div><!--browse_items_wrapper-->
+      </div><!--center_content-->
+    </div><!--span10-->
+  <%else%>
+    <div class="item_middle_section">
+      <div class="center_content">
+        <div class="browse_items_wrapper">
+          <!-- <div class="no_results_div">
+          <div class="no_results">Oh no! There are no results for your search...</div>
+          <div class="no_results_sub">Do you want to <a href="#">Add An Item</a>?</div>
+          </div> -->
+          <div class="browse_item_content">
+            <!-- <div class="popular_heading">Here are some popular items you may like...</div> -->
+            <div class="wants_container_browse_page">
+
+
+              <!-- item cards here -->
+             <!-- <div id="itemcard"> -->
+                <!-- <div class="user_wants_card add_item_image"> -->
+            <%#if current_user%>
+            <!-- <a href="<%#=following_user_path(current_user)%>" onclick="_gaq.push(['_trackEvent', 'Browse Page', 'clk_FndFrnds', 'Click Find Friends on Browse Page']);mixpanel.track('Click Find Friends on Browse Page');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/findfriends.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/find_friends_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/findfriends.png'" /></a> -->
+            <!-- <br /> <br /> -->
+            <%#end%>
+            <!-- <a href="/items/new?from=browse" onclick="mixpanel.track('Click Add Item on Browse Page');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/add_item_image.png" /></a> -->
+
+        	   <!-- item cards here -->
+              <div id="itemcard">
+                <div class="user_wants_card add_item_image">
+                  <%if current_user%>
+                    <a href="<%=following_user_path(current_user)%>" onclick="_gaq.push(['_trackEvent', 'Browse Page', 'clk_FndFrnds', 'Click Find Friends on Browse Page']);mixpanel.track('Click Find Friends on Browse Page');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/findfriends.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/find_friends_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/findfriends.png'" /></a>
+                    <br /> <br />
+                  <%end%>
+                  <a id="addanitem" href="/items/new?from=browse" onclick="_gaq.push(['_trackEvent', 'Browse Page', 'clk_AddItm', 'Click Add Item on Browse Page']);mixpanel.track('Click Add Item on Browse Page');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/add_item_image.png" /></a>
+    
+                  <!-- Friends List -->
+                  <div class="browse_left_friends">
+                    <div class="browse_friends_joined">
+                      <div class="heading">Friends</div>
+                      <ul class="browse_friends_joined_list">
+                        <!-- Friends to Follow Start -->
+                        <% if @friends_not_on_tradeya.present? %>
+                          <% @friends_not_on_tradeya.each do |friend_not_on_tradeya| %>
+                            <li>
+                              <span class="browse_joined_img"><img height = "60px" width = "60px" src="<%=friend_not_on_tradeya[1]%>"></span>
+                              <div class="browse_user_info">
+                                <p class="browse_user_name"><%=truncate(friend_not_on_tradeya[0], :length => 14, :omission => '...')%></p>
+                                <p class="browse_invite_btn"><a href="#" onclick="facebook_send_message(<%=friend_not_on_tradeya[2]%>)">Invite</a></p>
+                              </div>
+                            </li>
+                          <% end %>
+                        <% end %>
+                       
+                        <% if @friends_on_tradeya.present? %>
+                          <% @friends_on_tradeya.each do |friend_on_tradeya| %>
+                          <li>
+                            <span class="browse_joined_img"><img height = "60px" width = "60px" src="<%=friend_on_tradeya.user_image(:small)%>"></span>
+                            <div class="browse_user_info">
+                              <p class="browse_user_name"><%=truncate(friend_on_tradeya.title, :length => 14, :omission => '...')%></p>
+                              <p class="view_invite_btn"><a href="<%=user_path(friend_on_tradeya)%>">View</a></p>
+                            </div>
+                          </li>
+                          <% end %>
+                        <% end %>
+
+                        <li>
+                          <p class="view_all_button"><a href="<%=following_user_path(current_user)%>">View All</a></p>
+                        </li>
+                        <!-- Friends to Follow End -->
+                      </ul>
+                    </div>
+                    <div class="invite_link">
+                      <a href="<%= invite_user_path(current_user) %>" onclick="mixpanel.track('Click Invite Friends on Browse Page');">Invite Friends via Email</a>
+                    </div>
+                  </div>
+                  <!-- Friends List -->
+ 
+                </div>
+                <%= render "items_cards" %>
+              </div>
+
+            </div><!--wants_container-->
+          </div><!--browse_item_content-->
+        </div><!--browse_items_wrapper-->
+      </div><!--center_content-->
+    </div><!--span10-->
+  <%end%>
+
+
+
+  <div id ="items_spinner" align="center" class="browse_det_left" style = "display:none">
+    <img src = "http://d3md9h2ro575fr.cloudfront.net/images/Ajax_loader.gif">
+  </div>
+  <!--Scroll Top Section Start -->
+  <div id="scroll_top">
+    <a href="#" onclick="$(window).scrollTo(0, { duration: 600 } ); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/scroll_top_icon.png"   /></a>
+  </div>
+  <!--Scroll Top Section End -->
+</div> <!--container-->
+
+<!-- this div is to the pages - to track conversion we change the div class so the conversion pixels are exposed -->
+ <div id="fb_pixel"></div>
+
+<!-- Content End  -->
+<script type="text/javascript"> // Infinite Scrolling
+ $(window).scroll(function(){
+   if  ($(window).scrollTop() >= $(document).height() - $(window).height() - $('#footer').height()){
+     page = get_next_page_items(page,total,category,search_txt,sort_by);
+   }
+ });
+</script>
+
+<script>
+
+
+$(function(){
+  //alert("hey");
+  $('.itemcardslastcheck').first().addClass('itemcardlast');
+});
+var tour_onboard = "<%= current_user.showed_onboarding %>";
+//alert(tour_onboard);
+if(tour_onboard == "false"){
+$(function(){
+var tour = new Tour({
+  name: "tour",
+  container: "body",
+  keyboard: true,
+  storage: false,
+  debug: false,
+  backdrop: true,
+  redirect: true,
+  orphan: false,
+  duration: false,
+  basePath: "",
+  template: "<div class='popover tour'><div class='arrow'></div><h3 class='popover-title'></h3><div class='popover-content'></div><div class='popover-navigation'><button class='btn btn-default' data-role='prev'>« Prev</button><span data-role='separator'>|</span><button class='btn btn-default' data-role='next'>Next »</button></div><button class='btn btn-default' data-role='end'>End tour</button></nav></div>",
+  afterGetState: function(key, value) {},
+  afterSetState: function(key, value) {},
+  afterRemoveState: function(key, value) {},
+  onStart: function(tour) {},
+  onEnd: function(tour) {},
+  onShow: function(tour) {},
+  onShown: function(tour) {},
+  onHide: function(tour) {},
+  onHidden: function(tour) {},
+  onNext: function(tour) {},
+  onPrev: function(tour) {},
+  onPause: function(tour, duration) {},
+  onResume: function(tour, duration) {}
+});
+
+// Add your steps. Not too many, you don't really want to get your users sleepy
+tour.addSteps([
+  {
+    //element: "body", // string (jQuery selector) - html element next to which the step popover should be shown
+    placement: top,
+    orphan:true,
+    title: "Welcome to TradeYa!", // string - title of the popover
+    content: "Let us take you on a little tour. Click Next to get started." ,// string - content of the popover
+    template:"<div class='popover tour'><a href='#' class='cross-button' data-role='end'><img src='http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png'></a> <h3 class='popover-title'></h3><div class='popover-content'></div><div class='popover-navigation'> <button class='big-button' data-role='next'>Next</button>  </div></div>"
+  },
+
+    {
+    element: ".itemcardlast", // string (jQuery selector) - html element next to which the step popover should be shown
+    //orphan:true,
+    title: "Go ahead and try it...", // string - title of the popover
+    content: "Click Want on this item here to add it to your wants. You can always remove it by clicking the check mark icon on the card or from My Wants in your Activity tab. ", // string - content of the popover
+    template:"<div class='popover tour'><div class='arrow'></div><a href='#' class='cross-button' data-role='end'><img src='http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png'></a> <h3 class='popover-title t2'></h3><div class='popover-content c2'></div><div class='popover-navigation n2'><button class='btn btn-prev' data-role='prev'>Back</button> <button class='btn btn-next' data-role='next'>Next</button></div></div>"
+  },
+
+  {
+    element: "#addanitem", // string (jQuery selector) - html element next to which the step popover should be shown
+    title: "Add an item...", // string - title of the popover
+    content: "Now that you have added an item you want, you need to add something that you have so that people can trade with you. Here is where you do it.", // string - content of the popover
+    template:"<div class='popover tour'><div class='arrow'></div><a href='#' class='cross-button' data-role='end'><img src='http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png'></a> <h3 class='popover-title t2'></h3><div class='popover-content c3'></div><div class='popover-navigation n2'><button class='btn btn-prev' data-role='prev'>Back</button> <button class='btn btn-next' data-role='next'>Next</button></div></div>"
+  },
+  {
+    element: "#user_joyride",
+    title: "Your Dashboard",
+    placement: "bottom",
+    content: "To get to your dashboard, Just click on your profile picture. Your dashboard is your main control center on TradeYa!",
+    template:"<div class='popover tour'><div class='arrow'></div><a href='#' class='cross-button' data-role='end'><img src='http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png'></a> <h3 class='popover-title t2'></h3><div class='popover-content c2'></div><div class='popover-navigation n4'><button class='btn btn-prev' data-role='prev'>Back</button> <button class='btn btn-next' data-role='next'>Next</button></div></div>"
+    
+  },
+   {
+    path: "<%=dashboard_user_path(current_user)%>",
+    element: "body",
+    title: "Add Some quick items",
+    placement: "top",
+    content: "Here's an easy way for you to add a bunch of haves without too much work. Go through and add the ones that apply and skip the ones that don't",
+    template:"<div class='popover tour'><div class='arrow'></div><a href='#' class='cross-button' data-role='end'><img src='http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png'></a> <h3 class='popover-title'></h3><div class='popover-content'></div><div class='popover-navigation'> <button class='big-button' data-role='next'>Next</button>  </div></div>"
+    
+  }
+]);
+
+// Initialize the tour
+tour.init();
+
+// Start the tour
+tour.start(true);
+
+<% current_user.showed_onboarding = 'true' %>
+<% current_user.save! %>
+
+});
+}
+
+
+</script>

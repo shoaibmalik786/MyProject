@@ -1,0 +1,63 @@
+<div class="profile_bckgd">
+  <div class="step1">
+    <%= render "step1_profile"%>
+  </div>
+  <div class="step2" style="display: none">
+    <%= render "step2_profile" %>
+  </div>
+  <div class="step3" style="display: none">
+    <%= render "step3_profile" %>
+  </div>
+</div>
+<% if params["edit"].nil? and @show_get_started %>
+  <div id="welcome_tradeya_div"><%= render 'modals_shared/welcome_tradeya' %></div>
+<% end %>
+<div id="thnx_super_cat_div"><%= render 'modals_shared/thnx_super_cat' %></div>
+<div id="cat_selection_div"><%= render 'modals_shared/cat_selection' %></div>
+<!-- facebook tracking pixel to test conversions. Added 2013-03-30. -->
+<script type="text/javascript">
+    var fb_param = {};
+  fb_param.pixel_id = '6008733267934';
+  fb_param.value = '0.00';
+  (function(){
+      var fpw = document.createElement('script');
+      fpw.async = true;
+      fpw.src = '//connect.facebook.net/en_US/fp.js';
+      var ref = document.getElementsByTagName('script')[0];
+      ref.parentNode.insertBefore(fpw, ref);
+  })();
+</script>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/offsite_event.php?id=6008733267934&amp;value=0" /></noscript>
+
+<script>
+$(function(){
+  var user_goods_ids = "<%= current_user.goods_sub_cat_ids %>";
+  var user_services_ids = "<%= current_user.services_sub_cat_ids %>";
+  var user_interests_ids = "<%= current_user.interests_sub_cat_ids %>";
+  var user_wish = "<%= escape_javascript((current_user.wish) ? current_user.wish : '') %>";
+  var step = '1';
+  var g_img = "<%= (@g_prvw_img.blank?)? '' : @g_prvw_img %>";
+  var s_img = "<%= (@s_prvw_img.blank?)? '' : @s_prvw_img %>";
+  var i_img = "<%= (@i_prvw_img.blank?)? '' : @i_prvw_img %>";
+  <% if params["step"] and ['1','2','3'].include?(params["step"]) %>
+    step = '<%= params["step"] %>';
+  <% end %>
+  initialize_profile_page(user_goods_ids,user_services_ids,user_interests_ids,user_wish,step,g_img,s_img,i_img);
+  <% if params["edit"].nil? and @show_get_started %>
+    // _kmq.push(['identify', '<%=current_user.email %>' ]);
+    // _kmq.push(['record', 'Converted New Signup',{ 'SignedIn' : get_KMSignedIn()}]);
+    // _gaq.push(['_trackEvent', 'Activity', 'Cnvrtd_newsignup', 'Click On Create Profile Modal']);
+    showModal('welcome_to_tradeya');
+    isWelcomeToTradeyaShow = true;
+    // hide welcome modal if user clicks anywhere on the page, outside the modal
+    $(document).click(function() {
+        if(isWelcomeToTradeyaShow){$('#welcome_to_tradeya').modal('hide'); isWelcomeToTradeyaShow = false;}
+    });
+    $("#welcome_to_tradeya").click(function(e) {
+        e.stopPropagation();
+        return false;
+    });
+  <% end %>
+});
+
+</script>

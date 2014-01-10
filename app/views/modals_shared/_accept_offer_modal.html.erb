@@ -1,0 +1,201 @@
+<div id="accept_offer_box" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div id="crossimg" style="padding-right: 10px; padding-top: 10px;"> <a href="#" data-dismiss="modal" aria-hidden="true">X</a></div>
+	<table width="100%">
+		<tr>
+			<td width="50%"valign="middle">
+				<% if @selected.count > 1%>
+				<!-- If Multiple Offers -->
+					<div id="contact_heading">You Want to Accept These Offers</div>
+				<!-- If Multiple Offers -->
+				<% else %>
+					<div id="contact_heading">You Want to Accept This Offer</div>
+				<% end %>
+			</td>
+			<td width="50%" valign="top">
+				<% if @selected.count == 1 %>
+				<table>
+					<tr>
+						<td valign="middle">
+							<div style="max-width: 50px; max-height: 50px; overflow: hidden;">
+								<img src="<%= @item.user.user_image%>" class="accept_offer_user_image"/>
+							</div>
+						</td>
+						<td valign="middle">
+							<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrow_indicator.png" />
+						</td>
+						<td valign="middle">
+							<div style="max-width: 50px; max-height: 50px; overflow: hidden;">
+								<img src="<%= @selected[0].user.user_image %>" class="accept_offer_user_image"/>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<% elsif @selected.count > 1 and @selected.count <= 4 %>
+				<table>
+					<tr>
+						<td valign="middle">
+							<div style="max-width: 50px; max-height: 50px; overflow: hidden;">
+								<img src="<%= @item.user.user_image%>" class="accept_offer_user_image"/>
+							</div>
+						</td>
+						<td valign="middle">
+							<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrow_indicator.png" />
+						</td>
+						<% @selected.each do |sel|%>
+							<td valign="middle">
+								<div style="max-width: 50px; max-height: 50px; overflow: hidden;">
+									<img src="<%= sel.user.user_image %>" class="accept_offer_user_image"/>
+								</div>
+							</td>
+						<% end %>
+					</tr>
+				</table>
+				<% else %>
+				<!-- If Multiple Offers Accepted -->
+				<table>
+					<tr>
+						<td valign="middle">
+							<div style="max-width: 50px; max-height: 50px; overflow: hidden;">
+								<img src="<%= @item.user.user_image%>" class="accept_offer_user_image"/>
+							</div>
+						</td>
+						<td valign="middle">
+							<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrow_indicator.png" />
+						</td>
+						<td valign="middle">
+							<a href="#" id="gallery-prev" style="display:none" onclick="return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrow_scroll_left.png" /></a>
+							<div id="gallery-prev-grey"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrowgrey_scroll_left.png" /></div>
+						</td>
+						<td valign="middle">
+							<div id = "gallery-wrap">
+							<ul id="gallery">
+								<% @selected.each do |sel| %>
+        							<li><div style="max-width: 50px; max-height: 50px; overflow: hidden;"><img src="<%= sel.user.user_image %>" class="accept_offer_user_image"/></div></li>
+        						<%end%>
+    						</ul>
+    						</div>
+						</td>
+						<td valign="middle">
+							<a href="#" id="gallery-next" onclick="return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrow_scroll_right.png" /></a>
+							<div id="gallery-next-grey" style="display:none"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrowgrey_scroll_right.png" /></div>
+						</td>
+					</tr>
+				</table>
+				<!-- If Multiple Offers Accepted -->
+				<% end %>
+			</td>
+		</tr>
+	</table>
+	
+	<% if @item.is_single_tradeya%>
+		<div class="congo_single">
+			Congratulations! You’re about to accept <%= @selected[0].user.first_name + "'s"%> offer and end your TradeYa. We’ll send an<br />
+			e-mail to the lucky winners and a copy to you about what to do next. <b>Remember, sending this<br /> message will terminate your TradeYa.</b>
+		</div>
+	<% else %>
+		<!-- If Multiple Offers -->
+		<div class="congo_multiple">
+			Congratulations! You’re about to accept offers. We’ll send an e-mail to the lucky winners and a
+			copy to you about what to do next. After you send your message, you can decide whether to end your trade or not.
+		</div>
+		<!-- If Multiple Offers -->
+	<% end %>
+	<table align="center" width="100%" style="margin-top: 20px;">
+		<tr style="height: 42px">
+			<td width="19%" style="text-align: right;"><span class="contact_text">FROM</span></td>
+			<td width="3%"><input type="hidden" id="accept_offer_item_id" /><input type="hidden" id="accept_offer_trade_id" /></td>
+			<td>
+				<input type="text" class="from_text contact_from addborder" id="accept_offer_from" value="<%= @item.user.email%>" onFocus="clearText(this); $('#accept_offer_from').addClass('addborder'); $('#accept_offer_from').removeClass('removeborder')" onBlur="clearText(this); $('#accept_offer_from').addClass('removeborder'); $('#accept_offer_from').removeClass('addborder');" style="margin-bottom: 2px;" />
+			</td>
+		</tr>
+		<tr valign="bottom">
+  			<td></td>
+  			<td></td>
+  			<td>
+    			<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/checkbox.png" onclick="checkUncheck(this, '', 'checkacceptoffer')"  onkeypress="checkUncheck(this, '', 'checkacceptoffer')" TABINDEX="9"/>
+				<input type="checkbox" id="checkacceptoffer" name="chk" style="display:none" value="1" />
+				&nbsp;<div class="agree">Send me a copy of this message</div>
+  			</td>
+		</tr>
+		<tr style="height: 45px">
+			<td style="text-align: right;"><span class="contact_text">SUBJECT</span></td>
+			<td></td>
+			<td>
+				<input type="text" class="re_text contact_re removeborder" id="accept_offer_re" value="I accept your offer for <%= @item.item_title %>!" onFocus="clearText(this); $('#accept_offer_re').addClass('addborder'); $('#accept_offer_re').removeClass('removeborder')" onBlur="clearText(this); $('#accept_offer_re').addClass('removeborder'); $('#accept_offer_re').removeClass('addborder')" />
+			</td>
+		</tr>
+		<tr style="height:55px">
+			<td style="text-align: right;" valign="top">
+				<span class="contact_text">MESSAGE</span><br />
+				<!-- <div id="explain">You should explain<br /> how you want to<br /> exchange goods<br /> and services</div> -->
+			</td>
+			<td></td>
+			<td>
+				<textarea id="accept_offer_desc" class="re_text contact_desc removeborder" onFocus="clearText(this); $('#accept_offer_desc').addClass('addborder'); $('#accept_offer_desc').removeClass('removeborder')" onBlur="clearText(this); $('#accept_offer_desc').addClass('removeborder'); $('#accept_offer_desc').removeClass('addborder')"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td>
+				<% if @item.is_single_tradeya %>
+					<img onclick="acceptOffer();" src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/accept_offer_btn.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/accept_offer_btn_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/accept_offer_btn.png';"/>
+				<% else %>
+					<img onclick="acceptMultipleOffers();" src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/accept_offer_btn.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/accept_offer_btn_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/accept_offer_btn.png';"/>
+				<% end %>
+				<div class="cancel_div" style="margin-left: 160px;">
+					<span class="or">or</span> <span class="cancel"><a href="#" data-dismiss="modal" aria-hidden="true">Cancel</a></span>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<script>
+$(document).ready(function(){ 
+    
+    // Gallery
+    if(jQuery("#gallery").length){
+        
+        // Declare variables
+        var totalImages = jQuery("#gallery > li").length, 
+            imageWidth = jQuery("#gallery > li:first").outerWidth(true),
+            totalWidth = imageWidth * totalImages,
+            visibleImages = Math.round(jQuery("#gallery-wrap").width() / imageWidth),
+            visibleWidth = visibleImages * imageWidth,
+        	stopPosition = (visibleWidth - totalWidth);
+            
+        jQuery("#gallery").width(totalWidth);
+        
+        jQuery("#gallery-prev").click(function(){
+        	if(jQuery("#gallery").position().left < 0 && !jQuery("#gallery").is(":animated")){
+                jQuery("#gallery").animate({left : "+=" + imageWidth + "px"});
+                showScroll("next");
+            }
+            if(jQuery("#gallery").position().left >= 0)
+               	hideScroll("prev");        
+            return false;
+        });
+        
+        jQuery("#gallery-next").click(function(){
+        	if(jQuery("#gallery").position().left > stopPosition && !jQuery("#gallery").is(":animated")){
+                jQuery("#gallery").animate({left : "-=" + imageWidth + "px"});
+                showScroll("prev");
+            }
+            if (jQuery("#gallery").position().left <= stopPosition)
+            	hideScroll("next");
+            return false;
+        });
+
+    	function showScroll(direction)
+    	{
+    		jQuery("#gallery-"+direction).show();
+    		jQuery("#gallery-"+direction+"-grey").hide();
+    	}
+    	function hideScroll(direction)
+    	{
+    		jQuery("#gallery-"+direction+"-grey").show();
+    		jQuery("#gallery-"+direction).hide();
+    	}
+	}        
+});
+</script>

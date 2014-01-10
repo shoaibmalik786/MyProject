@@ -1,0 +1,290 @@
+<div class="tab_div_overlay"></div>
+<!-- past trade tab start -->
+<%if @past_trades.present?%>	
+	<div id="past_trades_tab">
+		<% @past_trades.each_with_index do |past_trade,index|%>
+		 	<% if past_trade.item_user_id == @user.id %>
+				<% user_item = past_trade.item; traded_item = past_trade.offer %>
+		 	<% else %>
+				<% user_item = past_trade.offer; traded_item = past_trade.item %>
+			<% end %>
+			<div class="past_trades_block">
+				<div class="heading"><%= index+1 %>. <%=user_item.title%> <span> for</span> <%=traded_item.title if traded_item.present?%></div>
+				<div class="past_trades">
+
+					<div class="past_trades_left">
+						<!-- Past Trades User Card Start-->
+						<div class="user_wants_card">
+							<div class="user_card_heading">
+								<div class="clip">
+									<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+								</div>
+								<div class="item_title_card"><%=link_to user_item.title, item_path(user_item),:onclick=>"_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmTitle', 'Click On Item Title']);mixpanel.track('Click On Item Title');addDelay(this,event);return false;"%></div>
+								<div class="card_heading_middle_left">
+									<a href="<%=user_path(user_item.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrImg', 'Click User image on Item Card']);mixpanel.track('Click User image on Item card');addDelay(this,event);return false;"><img src="<%=user_item.user.user_image(:thumb)%>"></a>
+								</div>
+								<div class="card_heading_middle_right">
+										<div class="item_card_name"><a href="<%=user_path(user_item.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrTtl', 'Click User Title on Item Card']);mixpanel.track('Click User Title on Item card');addDelay(this,event);return false;"><%=user_item.user.title%></a></div>
+										<div class="item_city_card"><%=user_item.user.city%></div>
+								</div>
+								<div class="item_heading_bottom">
+									<div class="card_details" id="detail" onclick="$('#item_info_<%=user_item.id%>').toggle();">Details</div>
+								</div>
+
+							</div>
+
+							<div class="item_wants_image">
+								<a href="<%=item_path(user_item)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmImg', 'Click On Item Image']);mixpanel.track('Click On Item Image'); addDelay(this,event);return false;"><img src="<%=user_item.item_image(:medium)%>" /></a>
+							</div>
+						</div>
+						<!-- Past Trades User Card Start -->
+
+						<!-- Past Trades User Item Details Card Start-->
+						<%= render "shared/details_card", :item => user_item, :curve_color => "grey", :disp => "true" %>
+						<!-- Past Trades User Item Details Card Ends -->
+
+					</div>
+					<div class="past_trades_center_logo">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/ty_logo.png">
+					</div>
+					<div class="past_trades_right">
+						<!-- Past Trades User Card Start-->
+						<div class="user_wants_card  ">
+							<div class="user_card_heading">
+								<div class="clip">
+									<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+								</div>
+								<div class="item_title_card"><a href="<%=item_path(traded_item) if traded_item.present?%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmTitle', 'Click On Item Title']);mixpanel.track('Click On Item Title'); addDelay(this,event);return false;"><%=traded_item.title if traded_item.present?%></a></div>
+									<div class="card_heading_middle_left">
+										<a href="<%=user_path(traded_item.user) if traded_item.present? %>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrImg', 'Click User image on Item Card']);mixpanel.track('Click User image on Item card');addDelay(this,event);return false;"><img src="<%=traded_item.user.user_image(:thumb) if traded_item.present?%>"></a>
+									</div>
+									<div class="card_heading_middle_right">
+											<div class="item_card_name"><a href="<%=user_path(traded_item.user) if traded_item.present?%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrTtl', 'Click User Title on Item Card']);mixpanel.track('Click User Title on Item card');addDelay(this,event);return false;"><%=traded_item.user.title if traded_item.present?%></a></div>
+											<div class="item_city_card"><%=traded_item.user.city if traded_item.present?%></div>
+											<%if traded_item.present? and traded_item.user.location != "-" and traded_item.user != current_user%>
+												<div class="item_distance_card"><%=traded_item.user.user_distance(session[:user_ll])%> miles</div>
+											<%end%>
+									</div>
+									<div class="item_heading_bottom">
+									<%if traded_item.present?%>
+										<div class="card_details" id="detail" onclick="$('#item_info_<%=traded_item.id if traded_item.present?%>').toggle();">Details</div>
+									<%end%>
+									</div>
+							</div>
+
+							<div class="item_wants_image">
+								<a href="<%=item_path(traded_item) if traded_item.present?%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmImg', 'Click On Item Image']);mixpanel.track('Click On Item Image'); addDelay(this,event);return false;"><img src="<%=traded_item.item_image(:medium) if traded_item.present?%>" /></a>
+							</div>
+						</div>
+						<!-- Past Trades User Card Start -->
+						
+						<!-- Past Trades Traded Item Details Card Start-->
+						<%if traded_item.present?%>
+							<%= render "shared/details_card", :item => traded_item, :curve_color => "grey", :disp => "true" %>
+						<%end%>
+						<!-- Past Trades Traded Item Details Card Ends -->
+						<div class="small_user_card">
+							<%=render 'shared/user_card', :user => traded_item.user if traded_item.present? %>
+						</div>
+						<p href="#" class="details_link">Open Details</p>
+					</div>
+				</div>
+				<div class="past_trades_detail_section hide_details" id="trade_<%=params[:trade]%>">
+						<!-- Reviews Section Start -->
+						<%if past_trade.accepted_offer.reviews.present?%>
+							<div class="comments_section_div">
+									<div class="review_heading">
+										<span>Reviews of <%=user_item.user.first_name.titleize%>'s Trades</span>
+										<!-- <span class="rating_sort"><%#=link_to 'Rating', sort_review_user_path(:id => @user.id,:accepted_offer_id=>past_trade.accepted_offer.id,:sort_by => "rating"), :remote => true%></span>
+										<span><%#=link_to 'Date', sort_review_user_path(:id => @user.id,:accepted_offer_id=>past_trade.accepted_offer.id,:sort_by => "date"), :remote => true%></span> -->
+									</div>
+								<div id="rev_<%=past_trade.accepted_offer.id%>" >
+									<%=render 'shared/sorted_reviews', :reviews => past_trade.accepted_offer.reviews%>
+								</div>
+								<div class="clear"></div>
+							</div>
+						<%end%>
+						<!-- Reviews Section End -->
+						<!-- comment section start -->
+							<div class="comment_section_div pt_comments" id="comment_section_<%=past_trade.id%>">
+								<%= render 'shared/comments_section', :@comments => user_item.comments.active,:@item => user_item, :trade_id => past_trade.id %>
+						 	</div>
+						<!-- comment section end -->
+		        <%if user_item.other_trades.present?%>
+							<div class="unaccepted_offers_wrapper">
+								<div class="pt_item_info_heading">
+									<span>Unaccepted Offers</span>
+								</div>
+								<div class="unaccepted_offers_section">
+									<div class="uo_left">
+										<div class="user_wants_card ">
+											<div class="user_card_heading">
+												<div class="clip">
+													<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+												</div>
+												<div class="item_title_card"><%=link_to user_item.title, item_path(user_item), :onclick=>"_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmTitle', 'Click On Item Title']);mixpanel.track('Click On Item Title');addDelay(this,event); return false;"%></div>
+													<div class="card_heading_middle_left">
+														<a href="<%=user_path(user_item.user)%>"><img src="<%=user_item.user.user_image(:thumb)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrImg', 'Click User image on Item Card']);mixpanel.track('Click User image on Item card');addDelay(this,event);return false;"></a>
+													</div>
+													<div class="card_heading_middle_right">
+															<div class="item_card_name"><a href="<%=user_path(user_item.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrTtl', 'Click User Title on Item Card']);mixpanel.track('Click User Title on Item card');addDelay(this,event);return false;"><%=user_item.user.title%></a></div>
+															<div class="item_city_card"><%=user_item.user.city%></div>
+															<%if user_item.user.location != "-" and user_item.user != current_user%>
+															<div class="item_distance_card"><%=user_item.user.user_distance(session[:user_ll])%> miles</div>
+															<%end%>
+													</div>
+											</div>
+											<div class="item_wants_image">
+												<a href="<%=item_path(user_item)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmImg', 'Click On Item Image']);mixpanel.track('Click On Item Image'); addDelay(this,event);return false;"><img src="<%=user_item.item_image(:medium)%>" /></a>
+											</div>
+										</div>
+										<div class="past_trades_center_logo">
+											<img src="http://d3md9h2ro575fr.cloudfront.net/images/un_trade_logo.png">
+										</div>
+									</div>
+									<div class="uo_wrapper">
+										<div class="uo_inner">
+											<%user_item.other_trades.each do |t|%>
+									
+											<div class="uo_right">
+												<div class="user_wants_card">
+													<div class="user_card_heading">
+														<div class="clip">
+															<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+														</div>
+														<div class="item_title_card"><%=link_to t.title, item_path(t)%></div>
+															<div class="card_heading_middle_left">
+																<a href="<%=user_path(t.user)%>"><img src="<%=t.user.user_image(:thumb)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrImg', 'Click User image on Item Card']);mixpanel.track('Click User image on Item card');addDelay(this,event);return false;"></a>
+															</div>
+															<div class="card_heading_middle_right">
+																	<div class="item_card_name"><a href="<%=user_path(t.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrTtl', 'Click User Title on Item Card']);mixpanel.track('Click User Title on Item card');addDelay(this,event);return false;"><%=t.user.title%></a></div>
+																	<div class="item_city_card"><%=t.user.city%></div>
+																	<%if t.user.location != "-" and t.user != current_user%>
+																		<div class="item_distance_card"><%=t.user.user_distance(session[:user_ll])%> miles</div>
+																	<%end%>
+															</div>
+													</div>
+													<div class="item_wants_image">
+														<a href="<%=item_path(t)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmImg', 'Click on Item Image']);mixpanel.track('Click on Item Image');addDelay(this,event);return false;"><img src="<%=t.item_image(:medium)%>" /></a>
+													</div>
+												</div>
+											</div>
+									
+											<%end%>
+									</div>
+								</div>
+								</div>
+							</div>
+							<%#if params[:trade]%>
+								
+							<%#end%>
+						<%end%>
+				</div>
+			</div>
+		<%end%>
+	</div>
+<%else%>
+	<div id="empty_past_trade_item">
+		<%if current_user != @user%>
+	  	<div class="heading"><%=@user.first_name.titleize%> has no TradeYa's yet. Check out their haves and see if there's something you want to trade.</div>
+		<%else%>
+	  	<div class="heading">You have no TradeYa's yet. Check out some popular TradeYa's.</div>
+		  <div class="popular_tradeya_wrapper">
+				<div id="popular_tradeya_tab" class="wants_container">
+					<%=render 'shared/popular_tradeyas'%>
+			  </div>
+		  </div>
+		  <div class="clear"></div>
+		  <div class="view_all"><%= link_to "View All", { :action => "index", :controller => "items", :sort_by => "most offered"}, :method => :get %></div>
+		<%end%>
+	</div>
+<%end%>
+	
+<!-- past trade tab end -->
+					
+<script>
+	$("#spinner").hide();
+	$('.tab_div_overlay').hide();
+</script>
+<!-- script for past trades open close details -->
+<script type="text/javascript">
+	<%if params[:trade]%>
+		$(function(){
+			$("#trade_<%=params[:trade]%>").addClass("show_details");
+			$("#trade_<%=params[:trade]%>").parent(".past_trades_block").find(".details_link").addClass("details_link_selected");
+			$("#trade_<%=params[:trade]%>").parent(".past_trades_block").addClass("new_bg");
+			$("#trade_<%=params[:trade]%>").parent(".past_trades_block").find(".details_link").text("Close Details");
+		});		
+	<%end%>
+	$(function(){
+	 	$("p.details_link").click(function(){
+	 		$(this).parent(".past_trades_right").parent(".past_trades").parent(".past_trades_block").children(".past_trades_detail_section").toggleClass("show_details");
+	 		$(this).toggleClass("details_link_selected");
+	 		$(this).parent(".past_trades_right").parent(".past_trades").parent(".past_trades_block").toggleClass("new_bg");
+	 		$(this).text($(this).text() == 'Open Details' ? 'Close Details' : 'Open Details');
+	 	});
+	});
+</script>
+<!-- script for past trades open close details -->
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#tab_past_trades').text("Past Trades (<%=@user.past_trades.count%>)");
+		$(".want_have_like_wrapper").hide();
+		$(".trade_div").hide();
+		$(".past_trades_left").children(".user_wants_card").children(".user_card_heading").children(".card_details").hide();
+		$(".past_trades_right").children(".user_wants_card").children(".user_card_heading").children(".card_details").hide();
+
+		$(".past_trades_left").children(".user_wants_card").hover(function(){ 
+			$(this).children(".user_card_heading").children(".card_details").show();
+			},function(){
+			$(".past_trades_left").children(".user_wants_card").children(".user_card_heading").children(".card_details").hide();
+		});	
+
+		$(".past_trades_right").children(".user_wants_card").hover(function(){ 
+			$(this).children(".user_card_heading").children(".card_details").show();
+			},function(){
+			$(".past_trades_right").children(".user_wants_card").children(".user_card_heading").children(".card_details").hide();
+		});			 
+
+		$(".user_wants_card").hover(function(){
+
+			$(this).children(".want_have_like_wrapper").show();
+			$(this).children(".trade_div").show();
+			},function(){
+			$(this).children(".want_have_like_wrapper").hide();
+			$(this).children(".trade_div").hide();
+			});
+
+	})	
+		
+</script>
+<script type="text/javascript">
+	$(function(){
+		$("#past_trades_tab").each(function(){
+				var width = 0;
+			$(this).find(".unaccepted_offers_section .uo_wrapper .uo_inner .uo_right .user_wants_card").each(function(){
+				
+				width += $(this).outerWidth( true );
+
+			});
+			 
+			$(this).find(".unaccepted_offers_section .uo_wrapper .uo_inner").css('width', width +1+ "px");
+
+		});
+	})
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".want_have_like_wrapper").hide();
+		$(".trade_div").hide();
+		$(".user_wants_card").hover(function(){
+			 
+		$(this).find(".want_have_like_wrapper").show();
+		$(this).find(".trade_div").show();
+		},function(){
+		$(this).find(".want_have_like_wrapper").hide();
+		$(this).find(".trade_div").hide();
+
+		});			 
+	})		
+</script>

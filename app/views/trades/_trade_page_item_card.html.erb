@@ -1,0 +1,27 @@
+<!-- Trade Page Item Card Start-->
+<div class="user_wants_card" id="user_wants_card_<%=item.id%>" v="<%=item.id%>">
+	
+	<div class="user_card_heading">
+		<div class="clip">
+			<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+		</div>
+		<div class="item_title_card">
+			<a href="<%=item_path(item)%>" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmTitle', 'Click On Item Title']);mixpanel.track('Click On Item Title'); addDelay(this,event);return false;"><%=item.title%></a></div>
+		<div class="card_heading_middle_left">
+			<a href="<%=user_path(item.user)%>" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmUsrImg', 'Click User image on Item Card']);mixpanel.track('Click User image on Item card');addDelay(this,event);return false;"><img src="<%=item.user.user_image(:thumb)%>"></a>
+		</div>
+		<div class="card_heading_middle_right">
+				<div class="item_card_name"><a href="<%=user_path(item.user)%>" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmUsrNm', 'Click User Name on Item Card']);mixpanel.track('Click User Name on Item card');addDelay(this,event);return false;"><%=truncate((item.user.title).html_safe,:length => 22,:omission => "...")%></a></div>
+				<div class="item_city_card"><%=item.user.city%></div>
+				<%if item.user.location != "-" and item.user != current_user%>
+					<div class="item_distance_card"><%=item.user.user_distance(session[:user_ll])%> miles</div>
+				<%end%>
+		</div>
+	</div>
+	
+	<div class="item_wants_image" style="height: <%= item.item_image_height %>px;">
+		<a href="<%=item_path(item)%>" onclick="_gaq.push(['_trackEvent', 'Item card', 'Clk_ItmImg', 'Click On Item Image']);mixpanel.track('Click On Item Image');addDelay(this,event);return false;"><img src="<%=item.item_image%>"  style="height: <%= item.item_image_height %>px; width: 100%;" ></a>
+	</div>
+	
+</div>
+<!-- Trade Page Item Card Ends -->

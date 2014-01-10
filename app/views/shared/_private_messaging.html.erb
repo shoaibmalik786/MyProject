@@ -1,0 +1,623 @@
+  <%= stylesheet_link_tag "chosen" , :media => "all" %>
+  <%= javascript_include_tag "jquery.multifilenew"  %>
+  <%= javascript_include_tag "chosen.jquery.min"  %>
+  <%= javascript_include_tag "list.min"  %>
+
+<style>
+.download_link{
+ 
+top: 3px;
+position: relative;
+left: 9px;
+z-index: 11;
+display: none;
+}
+
+
+.downloadimage{
+	width:75px;
+}
+
+.downloadimage:hover{
+	box-shadow:0px 0px 10px #ccc;
+	 
+}
+
+
+.downloadimage:hover .download_link{
+	display: block;
+}
+
+.confirmArchiveModal{
+	width: 420px;
+	-webkit-box-shadow: 0 0 1px 1px rgba(153,153,153,.71);
+	-moz-box-shadow: 0 0 1px 1px rgba(153,153,153,.71);
+	box-shadow: 0 0 1px 1px rgba(153,153,153,.71);
+	background: url(http://d3md9h2ro575fr.cloudfront.net/images/body_bg.jpg);
+	padding-top: 10px;
+	margin-left: -210px;
+	left: 50%;
+}
+
+.confirmArchiveModal a.close{
+	position: relative;
+	right: 13px;
+	top: -3px;
+	opacity: 1;
+}
+.confirmDeleteModal{
+	width: 420px;
+	-webkit-box-shadow: 0 0 1px 1px rgba(153,153,153,.71);
+	-moz-box-shadow: 0 0 1px 1px rgba(153,153,153,.71);
+	box-shadow: 0 0 1px 1px rgba(153,153,153,.71);
+	background: url(http://d3md9h2ro575fr.cloudfront.net/images/body_bg.jpg);
+	padding-top: 10px;
+	margin-left: -210px;
+	left: 50%;
+}
+
+.confirmDeleteModal a.close{
+	position: relative;
+	right: 13px;
+	top: -3px;
+	opacity: 1;
+}
+</style>
+
+
+<div id="pvt_msg_div">
+	<!-- Left navigation for pvt messaging Start -->
+	<div class="left_nav_wrapper" id="left_nav_wrapper">
+		<div class="left_msg_header">
+			<!-- <a href="#" class="inbox_link">Inbox</a> -->
+			
+			<ul class="pvt_msg_left_top_buttons">
+				<li id="inboxlink"><%= link_to 'Inbox', displayinbox_conversation_path,
+					:remote => true, :class => "inbox_link" %></li>
+				<li id="newmsglink"><%= link_to 'New Message', newmsg_conversation_path,
+					:remote => true, :class => "new_msg_btn" %>
+				<!-- <a href="#" class="new_msg_btn">New Message</a> -->
+				</li>
+				<li id="archivelink" class="archive_btn">
+					<!-- <a href="#" class="archive_btn">Archived</a> -->
+					<%= link_to 'Archived', displaytrash_conversation_path,
+					:remote => true, :class => "archive_btn" %>
+
+				</li>
+			</ul>
+		</div>  <!-- left_msg_header -->
+		<div class="pvt_msg_search_wrapper">
+			<input class="search" type="text" class="pvt_msg_search_input" placeholder="Search">
+		</div>
+
+		<div class="left_msg_list_wrapper" id="left_msg_list_wrapper">
+			<ul class="left_msg_list list">
+				<% if @convs != nil %>
+					<% @convs.each do |conv| %>
+					<% if conv.receipts_for(current_user).count > 0 && !is_deleted?(conv,current_user) %>
+					<%#= link_to conversation_path(conv.id), :remote => true do %>
+					
+						
+						<li id="conversationlist<%= conv.id %>" class = "messagelist <% if conv.is_unread?(current_user)%> unread <% end %>">
+							<a href="<%= conversation_path(conv.id) %>" data-remote="true"> 
+							<div class="pvt_msg_list_inner">
+								<div class="pvt_msg_left_img">
+									<% participants = conv.participants %>
+									<% participants = participants - [nil] %>
+									<% if participants.count >= 2 %>
+										<% participants = participants - [current_user] %>
+									<% end %>
+									<% if participants.count == 1 %>
+										<%= image_tag(participants[0].user_image) %>
+									<% elsif participants.count == 2  %>
+										<div class="group_2" >
+											<div class="img1"><%= image_tag(participants[0].user_image) %></div>
+											<div class="img2"><%= image_tag(participants[1].user_image) %></div>	
+										</div>
+									<% elsif participants.count == 3 %>
+										<div class="group_3" >
+											<div class="img1"><%= image_tag(participants[0].user_image) %></div>
+											<div class="img2"><%= image_tag(participants[1].user_image) %></div>
+											<div class="img3"><%= image_tag(participants[2].user_image) %></div>	
+										</div>
+									<% else %>
+										<div class="group_4" >
+											<div class="img1"><%= image_tag(participants[0].user_image) %></div>
+											<div class="img2"><%= image_tag(participants[1].user_image) %></div>
+											<div class="img3"><%= image_tag(participants[2].user_image) %></div>
+											<div class="img4"><%= image_tag(participants[3].user_image) %></div>
+										</div>
+									<% end %>
+									
+									
+									<!-- <img src="<%#= participants.first.user_image %>" />  -->
+									<%#= image_tag(participants[0].user_image) if participants.count != 0 %>
+								</div> <!-- pvt_msg_left_img -->
+								<div class="pvt_msg_right_text">
+									<% allParticipants = participants.map(&:title).join(", ") %>
+									<div class="pvt_msg_username" id="pvt_msg_username<%= conv.id %>" >
+										<%#= participants[0].title %>
+										<%# allParticipants = participants.all %>
+										<%# if time_ago_in_words(conv.updated_at) == "less than a minute" %> 
+										<%#= h truncate(allParticipants, :length => 17) %>
+										<%# else %>
+										<%= h truncate(allParticipants, :length => 17) %>
+										<%# end %>
+										
+									</div>
+									
+									<div class="pvt_msg_left_timestamp" id="pvt_msg_left_timestamp<%= conv.id %>">
+										<!-- <%#= time_ago_in_words(conv.receipts.where('mailbox_type != ? and receiver_id = ?','trash', current_user.id).last.created_at) %> ago								 -->
+										<%= time_ago_in_words (conv.updated_at) %> ago
+									</div>
+									<div class="pvt_msg_chat_text_left" id="pvt_msg_chat_text_left<%= conv.id %>">
+										<% if conv.last_sender == current_user && conv.count_messages > 1 %>	
+											<span class="no_reply"></span>
+										<% end %>
+										<%= h truncate(conv.subject, :length => 30) %>
+									</div>
+								</div> <!-- pvt_msg_right_text -->
+								
+								<div class="read_unread_butttons">
+								<% if !conv.is_trashed?(current_user) %>
+									<!-- <a href="#" class="mark_unread"><span>Mark as unread</span></a> -->
+									<% if conv.is_read?(current_user) %>
+										<%#= link_to markasunread_conversation_path(:conv_id => conv.id) , :class => "mark_unread", :remote => true do %> 
+										<a href="<%= markasunread_conversation_path(:conv_id => conv.id) %>" class="mark_unread" data-remote="true">  
+										<span> Mark as unread </span>
+										</a>
+										<%# end %>
+									<% else %>
+										<%= link_to markasread_conversation_path(:conv_id => conv.id) , :class => "mark_read", :remote => true do %>  
+										 <span> Mark as read </span>
+										 <% end %>
+										<!-- <a href="#" class="mark_read"><span>Mark as read</span></a> -->
+									<% end %>
+									<%#= link_to trash_conversation_path(:conv_id => conv.id), :remote => true, :class => "mark_archive"  do %>
+									<!-- <a href="#" class="mark_archive"><span>Archive</span></a> -->
+									<!-- <a href="#" onclick = "$('#archive_conv_confirm'+ <%= conv.id %>).modal('show');" class="mark_archive">  -->
+									<a href="<%= trash_conversation_path(:conv_id => conv.id) %>" data-remote="true" class="mark_archive">
+									<span> Archive </span></a>
+									<%# end %>
+								
+								<% else %>
+									<%#= link_to untrash_conversation_path(:conv_id => conv.id) , :class => "mark_unread", :remote => true do %>  
+									<a href="<%= untrash_conversation_path(:conv_id => conv.id)%>" class="mark_unread" data-remote="true">
+										 <span> Move to inbox </span>
+										</a>
+										<%# end %>
+									<a href="#" onclick = "$('#delete_conv_confirm'+ <%= conv.id %>).modal('show');" class="mark_archive"> 
+									<span> Delete </span></a>
+								<% end %>
+								</div>
+							</div>
+							</a>
+						</li>
+ 					 
+					<%# end %>
+
+					<% if !conv.is_completely_trashed?(current_user) %>
+					<%#= link_to "archive", trash_conversation_path(:conv_id => conv.id), :remote => true %>
+					
+					<!-- delete confirmation modal start-->
+					<div id="archive_conv_confirm<%= conv.id %>" class="confirmArchiveModal modal fade hide"  aria-hidden="false">
+					    <a href="#" class="close" data-dismiss="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png"></a>
+					    <div class="user_sub_heading in_center re_pin_heading">Archive Conversation?</div>
+					    <div class="resend_modal_text del_text">
+					     Are you sure you want to Archive the conversation? 
+					    </div>
+					    <div class="resend_footer">
+					      <span>
+					       	<%= link_to "Archive", trash_conversation_path(:conv_id => conv.id), :remote => true,:class => "resend_submit ma_r", :onclick => "$('.modal-backdrop').hide();"  %>
+					      	 or 
+					      	<a href="#" onclick="$('#archive_conv_confirm').hide();return false;" data-dismiss="modal">Cancel</a>
+					      </span>
+					    </div>
+			  		</div>
+			  		<% else %>
+			  		<div id="delete_conv_confirm<%= conv.id %>" class="confirmDeleteModal modal fade hide"  aria-hidden="false">
+					    <a href="#" class="close" data-dismiss="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png"></a>
+					    <div class="user_sub_heading in_center re_pin_heading">Permanently delete Conversation?</div>
+					    <div class="resend_modal_text del_text">
+					     Are you sure you want to Delete the conversation? 
+					    </div>
+					    <div class="resend_footer">
+					      <span>
+					       	<%= link_to "Delete", delete_conversation_path(:conv_id => conv.id), :remote => true, :class => "resend_submit ma_r", :onclick => "$('.modal-backdrop').hide();" %>
+					      	 or 
+					      	<a href="#" onclick="$('#delete_conv_confirm').hide();return false;" data-dismiss="modal">Cancel</a>
+					      </span>
+					    </div>
+			  		</div>
+
+					<!-- delete confirmation modal end-->
+					<% end %>
+					<% end %>
+					<% end %>
+ 				<% end %>
+			</ul> <!-- left_msg_list -->
+		</div> <!-- left_msg_list_wrapper -->
+	</div> <!-- left_nav_wrapper  -->
+	<!-- Left navigation for pvt messaging Ends -->
+
+
+	<%= render :partial => 'shared/private_message', :params_to => params[:send_to], :receiver => @receiver %>
+
+	<!-- New Message Section Right Ends -->
+
+	<!-- Inbox Section Right Start -->
+	<% if @conv != nil %>
+	<%= form_tag reply_conversation_path, :method => "post", :id => "reply_message", :multipart => true, :remote => true do %>
+	<div class="pvt_msg_right_area_wrapper" style="display:none">
+		<div class="pvt_msg_right_top_header">
+			<div class="pvt_msg_right_username">
+				<%= link_to @participants[0].title, user_path(@participants[0]) %>
+				<!-- this span is for groupchat -->
+				<% if @participants.count > 1 %>
+				<span class="group_chat_count">and<a href="#"><%= @participants.count - 1 %> others </a>
+				</span>
+				<% end %>
+				<div class="group_list">
+					<ul class="gl">
+						<% i = 1 %>
+						<% while i < @participants.count %>
+							<li> <%= link_to @participants[i].title, user_path(@participants[i]) %> </li>
+							<% i += 1 %>
+						<% end %>
+					</ul>
+				</div>
+			</div>
+			<div class="pvt_msg_right_subject" id="<%= @conv.id %>">
+				<%= @conv.subject %>
+			</div>
+		</div>
+		
+		<%# if (n.notification != @conv.last_message) && (n.notification != @conv.original_message) %>
+		<div class="pvt_msg_right_chatarea_wrapper">
+			<!-- all(:order => 'created_at ASC', :include => :notification). -->
+			<% @conv.receipts.each do |n| %>
+				<%# if !n.is_trashed? && n.receiver_id == current_user.id && (n.mailbox_type == 'inbox' || n.mailbox_type == 'sentbox') %>
+				<% if n.receiver_id == current_user.id && n.mailbox_type != 'trash' && !n.deleted %>
+					<% notif = n.notification %>
+					<% attachmentsAll = AttachmentMessaging.where(:notif_id => notif.id) %>
+					<div class="chat_block">
+						<div class="chat_user_image">
+							<% sender = User.find(notif.sender_id) %>
+							<!-- <img src="http://d3md9h2ro575fr.cloudfront.net/images/img_def2.png"> -->
+							<%= link_to image_tag(sender.user_image(:thumb)), user_path(sender) %>
+							<!-- <img src="<%#	= User.find(n.notification.sender_id).user_image(:thumb)%>" /> -->
+						</div>
+						<div class="chat_section_right">
+							<div class="username_timestamp_wrapper">
+								<div class="chat_username">
+									<%= link_to sender.title, user_path(sender) %>
+
+								</div>
+								<div class="chat_timestamp">
+									<%= time_ago_in_words(n.created_at) %> ago
+								</div>
+							</div>
+							<div class="chat_text">
+								<%= notif.body if notif.body != "dummybody_text" %>
+							</div>
+							<div class="chat_text">
+
+								<% if !attachmentsAll.nil? %>
+									<% attachmentsAll.each do |att| %>
+										<% if File.extname(att.attachment_file_name) == '.jpg' || File.extname(att.attachment_file_name) == '.jpeg' || File.extname(att.attachment_file_name) == '.png' || File.extname(att.attachment_file_name) == '.gif' || File.extname(att.attachment_file_name) == '.tiff' || File.extname(att.attachment_file_name) == '.tif' %>
+										<div class="downloadimage">
+										<img id="download_img" class="download_img" src = "<%= att.attachment %>" width = "75px" />
+										<%= link_to "Download", download_conversation_path(:att_id => att.id), :class => "download_link" %>
+										</div>
+										<% else %>
+										<div class="downloadimage">
+										<img id="download_img" class="download_img" src = "/assets/document-icon.png" width = "75px" />
+										<%= link_to "Download", download_conversation_path(:att_id => att.id), :class => "download_link" %>
+										</div>
+										<% end %>
+										<br/>
+									<% end %>
+								<% end %>
+								
+							</div>
+						</div>
+					</div>		
+				<% end %>
+			<% end %>		
+		</div>
+		<%# end %>	
+		
+		<!-- Reply to a conversation -->
+		<div class="textarea_wrapper">
+			<% if @flash %>
+				<div class="alert"><%= flash[:alert] %></div>
+			<% end %>
+			<div class = "reply_photo_size_error_msg alert" id = "reply_photo_size_error_msg">
+			</div>
+				<%= text_area_tag "body", nil, :class => "chat_input", :placeholder => "Write a reply...", :id => "replyTextArea" %>
+				<div class="chat_input_options">
+					<span class="file_wrapper">
+						<%= file_field_tag "photo", :name => 'attach[]', :class => 'multifile chat_files', :id => "replyMessageAttachment" %>
+						<span class="upload_button">Add Files</span>
+					</span>
+					<%= submit_tag 'Send',:name => 'reply_message', :class => "chat_send", :id => "reply_button" %>
+				</div>
+		</div>
+		
+		<div class="delete_buttons">
+			<input type="button" class="delete_cancel" value="Cancel" >
+			<input type="button" class="delete_confirm" onclick = "confirmdelete();" value="Delete">
+		</div>
+		<!-- delete confirmation modal start-->
+		<div id="remove_ph_no" class="modal fade hide"   aria-hidden="false">
+		    <a href="#" class="close" data-dismiss="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png"></a>
+		    <div class="user_sub_heading in_center re_pin_heading">Delete Messages?</div>
+		    <div class="resend_modal_text del_text">
+		     Are you sure you want to Delete these messages? 
+		    </div>
+		    <div class="resend_footer">
+		      <span>
+		      	<%= submit_tag 'Delete', :name => 'delete_selected', :class => "resend_submit ma_r", :onclick => "$('.modal-backdrop').hide();" %>
+		      	 or 
+		      	<a href="#" onclick="$('#remove_ph_no').hide();return false;" data-dismiss="modal">Cancel</a>
+		      </span>
+		    </div>
+  		</div>
+	</div>
+	<% end %>
+	<% end %>
+	<!-- Inbox Section Right Ends -->
+	<!-- 	empty inbox start -->
+	<div class="empty_inbox_block_wrapper">
+		<div class="empty_inbox_header"></div>
+		<div class="empty_inbox_content">
+			<h1>No Conversations Selected</h1>
+			<p>Click on <a href="#" class="new_msg_link">New Message</a> to start a conversation with your friends</p>
+		</div>
+	</div>
+	<!-- empty inbox end -->
+</div> <!-- pvt_msg_div -->
+
+<!-- main section for pvt messaging Ends -->
+ <script type="text/javascript">
+
+ $(document).ready(function(){
+
+
+	$(".pvt_msg_right_chatarea_wrapper").niceScroll({cursorcolor:"#e9e9e8",cursorwidth:"8px"});
+	$(".left_msg_list_wrapper").niceScroll({cursorcolor:"#e9e9e8",cursorwidth:"8px"});
+		 
+ 	// edit message section start
+ 	$(".chat_edit").hide();
+ 	$(".chat_block").hover(function(){
+ 		$(this).find(".chat_edit").show();
+ 	},function(){
+ 		$(".chat_edit").hide();
+ 	})
+ 	$(".chat_edit").click(function(e){
+
+ 		$(this).parent(".chat_section_right").children(".chat_text").hide();
+ 		$(this).parent(".chat_section_right").children(".editable_section").fadeIn();
+ 		e.preventDefault();
+ 	});
+ 	$(".chat_edit_save").click(function(e){
+ 		$(this).parent(".chat_update_btns").parent(".editable_section").parent(".chat_section_right").children(".chat_text").fadeIn();
+ 		$(this).parent(".chat_update_btns").parent(".editable_section").hide();
+ 		e.preventDefault();
+ 	});
+ 	$(".chat_edit_cancel").click(function(e){
+ 		$(this).parent(".chat_update_btns").parent(".editable_section").parent(".chat_section_right").children(".chat_text").fadeIn();
+ 		$(this).parent(".chat_update_btns").parent(".editable_section").hide();
+ 		e.preventDefault();
+ 	});
+ 		// edit message section ends
+ 		 // Left navigation functions start
+ 	$(".new_message_block_right_wrapper").hide();
+ 	$(".archived_block_right_wrapper").hide();
+ 	$(".new_msg_btn").click(function(e){
+ 		$(".empty_inbox_block_wrapper").hide();
+ 		$(".pvt_msg_right_area_wrapper").hide();
+ 		$(".archived_block_right_wrapper").hide();
+ 		$(this).parent("li").addClass("active");
+ 		$(".archive_btn").parent("li").removeClass("active");
+ 		$(".messagelist").parent("li").removeClass("active");
+ 		$(".pvt_msg_username").removeClass("active");
+ 		$(".pvt_msg_left_timestamp").removeClass("active");
+ 		$(".pvt_msg_chat_text_left").removeClass("active");
+ 		$(".new_message_block_right_wrapper").hide();
+ 		$('#inboxlink').removeClass("active");
+ 		e.preventDefault();
+ 	});
+ 	$(".new_msg_link").click(function(e){
+ 		$(".empty_inbox_block_wrapper").hide();
+ 		$(".pvt_msg_right_area_wrapper").hide();
+ 		$(".archived_block_right_wrapper").hide();
+ 		$(this).parent("li").addClass("active");
+ 		$(".archive_btn").parent("li").removeClass("active");
+ 		$(".inbox_link").parent("li").removeClass("active");
+ 		$(".new_message_block_right_wrapper").fadeIn();
+ 		
+
+ 		e.preventDefault();
+ 	});
+ 	$(".inbox_link").click(function(e){
+ 			$(".new_message_block_right_wrapper").hide();
+ 			$(".archived_block_right_wrapper").hide();
+ 			// $(".empty_inbox_block_wrapper").show();
+ 		$(".pvt_msg_right_area_wrapper").hide();
+ 		$('#inboxlink').addClass("active");
+ 		$(this).parent("li").addClass("active");
+ 		$(".new_msg_btn").parent("li").removeClass("active");
+ 		$(".archive_btn").parent("li").removeClass("active");
+ 		$(".messagelist").removeClass("active");
+ 		$(".pvt_msg_username").removeClass("active");
+ 		$(".pvt_msg_left_timestamp").removeClass("active");
+ 		$(".pvt_msg_chat_text_left").removeClass("active");
+ 		e.preventDefault();
+
+ 	});
+
+ 	$(".archive_btn").click(function(e){
+ 			$(".new_message_block_right_wrapper").hide();
+ 			$(".pvt_msg_right_area_wrapper").hide();
+ 			$(".empty_inbox_block_wrapper").hide();
+ 		// $(".archived_block_right_wrapper").fadeIn();
+ 		$("#newmsglink").removeClass("active");
+ 		$(".archive_btn").addClass("active");
+ 		$("#inboxlink").removeClass("active");
+ 		e.preventDefault();
+
+ 	});
+ 	// Left navigation functions End
+ 	// Delete section start
+ 		$(".checkboxes").hide();
+ 		$(".delete_buttons").hide();
+ 		$(".delete_cancel").click(function(){
+ 			$(".checkboxes").toggleClass("active");
+ 			$(".delete_buttons").toggleClass("active");
+ 			$(".textarea_wrapper").toggleClass("hidden");
+ 			$(".delete_msg_icon").toggleClass("active");
+ 		});
+ 		$(".delete_msg_icon").click(function(){
+ 			$(this).toggleClass("active");
+ 			$(".checkboxes").toggleClass("active");
+ 			$(".delete_buttons").toggleClass("active");
+ 			$(".textarea_wrapper").toggleClass("hidden");
+ 		})
+
+ 		$(".read_unread_butttons").hide();
+ 		$("ul.left_msg_list li").hover(function(){
+ 			$(this).find(".read_unread_butttons").show();
+
+ 		},function(){
+ 			$(".read_unread_butttons").hide();
+ 		});
+
+ 		$(".group_list").hide();
+ 		$(".group_chat_count a").hover(function(){
+ 			$(".group_list").show();
+
+ 		},function(){
+ 			$(".group_list").hide();
+ 		});
+ 		$(".group_list").hover(function(){
+ 			$(this).show();
+ 		},function(){
+ 			$(".group_list").hide();
+ 		})
+ }) 
+ 
+ </script>
+ <script type="text/javascript">
+ 	$(document).ready(function  () {
+ 		$('input, textarea').placeholder();
+ 	})
+ </script>
+ <script>
+ 	
+ 	$('#replyMessageAttachment').change(function() {
+ 	//function checkAttachmentSize(){
+ 		//alert(this.files[0]);
+  	if(this.files[0].size > 5242880){
+	    //$('.chat_files').val(''); 
+	    //$(this).next('.chat_files').val('');
+	    $('#reply_photo_size_error_msg').show();
+	    $('#reply_photo_size_error_msg').text('File size cannot be greater than 5MB.');
+	    $(this).val('');
+	    return false;
+	}
+ });
+ 	$('#newMessageAttachment').change(function() {
+ 	//function checkAttachmentSize(){
+ 		//alert(this.files[0]);
+  	if(this.files[0].size > 5242880){
+	    //$('.chat_files').val(''); 
+	    //$(this).next('.chat_files').val('');
+	    $('#new_photo_size_error_msg').show();
+	    $('#new_photo_size_error_msg').text('File size cannot be greater than 5MB.');
+	    $(this).val('');
+	    return false;
+	}
+ });
+ </script>
+ <script>
+ 
+
+
+  	$(".chosen-select").chosen({no_results_text: "Oops, nothing found!"}); 
+
+
+ </script>
+ 
+
+ <script>
+var options = {
+    valueNames: [ 'pvt_msg_username','pvt_msg_chat_text_left' ]
+};
+
+var featureList = new List('left_nav_wrapper', options);
+ </script>
+
+ <script>
+	var convid = $('.pvt_msg_right_subject').attr('id');
+	$('#conversationlist'+convid).addClass('active');
+	$('#pvt_msg_username'+convid).addClass('active');
+	$('#pvt_msg_left_timestamp'+convid).addClass('active');
+	$('#pvt_msg_chat_text_left'+convid).addClass('active');
+
+	$('#replyTextArea').keyup(function (event) {
+	   if (event.keyCode == 13 && event.shiftKey) {
+	       $("#reply_button").click();
+	  }
+	 });
+	$('#sendNewTextArea').keyup(function (event) {
+	   if (event.keyCode == 13 && event.shiftKey) {
+	       $("#send_new_msg_button").click();
+	  }
+	 });
+	
+ </script>
+<script>
+function confirmdelete(){
+var bReturn = false;	
+ $('#remove_ph_no').modal('show');
+}
+
+</script>
+
+<script>
+
+$('.crossimage').click(function(e){
+	$('.file_holder').remove();
+	$('.crossimage').empty();
+	$('.upload_button').text("Add Files");
+	$('.file_wrapper input[type=file]').val("");
+	e.preventDefault();
+});
+
+</script>
+
+<script>
+// $('.multifile').multifile();
+</script> 
+
+<script>
+$('.multifile').multifile({
+
+	container: ".chat_input_options",
+	template: function(file){
+
+		var fileName = file.name;
+        var fileExtension = file.name.split('.').pop();
+		var result =
+            '<p class="uploaded_image">' +
+            '<span class="filename">$fileName ($fileExtension)</span>' +
+            '<a href="#" class="multifile_remove_input">X</a>' +
+            
+            '</p>';
+            result = result.replace('$fileExtension', fileExtension).replace('$fileName', fileName)
+            return $(result);
+	// }
+}
+});
+</script> 

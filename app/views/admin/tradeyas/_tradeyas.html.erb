@@ -1,0 +1,55 @@
+<%= javascript_include_tag "adminscripts/admin" %>
+<table>
+	<tr>
+		<td width="25%">
+			<table class="data_point_table" style="border: solid 1px; width: 100%; margin-left: auto; margin-right: auto;">
+				<tr><th>Date</th><th>No of TradeYas</th></tr>
+				<% total = 0; %>
+				<% trds_count.each do |r| %>
+					<tr>
+						<td><%= r[0] %></td>
+						<td><%= r[1] %></td>
+						<% total = total + r[1]; %>
+					</tr>
+				<% end %>
+				<tr><td>Total TradeYas</td><td><%= total %></td></tr>
+			</table>
+		</td>
+		<td width="50%">
+			<table class="data_point_table" style="border: solid 1px; width: 100%; margin-left: auto; margin-right: auto;">
+				<tr>
+					<th>% of TradeYas which receive 1 or more offers in a given period of time</th>
+					<th>average number of offers received by a TradeYa that receives at least 1 offer in a given period of time</th>
+				</tr>
+				<tr>
+					<td><%= number_with_precision(trds_count_percent, :precision => 2) + '%' %></td>
+					<td><%= number_with_precision(trds_ofrs_count_avg, :precision => 2) %></td>
+				</tr>
+			</table>
+			<table class="data_point_table" style="border: solid 1px; width: 100%; margin-left: auto; margin-right: auto;">
+				<tr><th>Category</th><th>No of TradeYas</th><th>No of Offers</th></tr>
+				<% total_trd = 0; %>
+				<% total_ofr = 0; %>
+				<% cat_tradeyas_offers.each do |r| %>
+					<tr>
+						<th><%= r[0].title %></th>
+						<td><%= r[1] %></td>
+						<td><%= r[2] %></td>
+						<% total_trd += r[1] %>
+						<% total_ofr += r[2] %>
+					</tr>
+				<% end %>
+				<tr><th>Total</th><td><%= total_trd %></td><td><%= total_ofr %></td></tr>
+			</table>
+		</td>
+		<td>
+			<%= semantic_form_for :date_range, :builder => ActiveAdmin::FormBuilder do |f|
+			   f.inputs do
+			     f.input :from, :as => :datepicker
+			     f.input :to, :as => :datepicker
+			   end
+			   f.actions
+			end %>
+		</td>
+	</tr>
+</table>

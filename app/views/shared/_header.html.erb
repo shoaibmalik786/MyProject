@@ -1,0 +1,180 @@
+<% if current_user and current_user.authentications != [] and current_user.zip.blank? and current_user.city.blank? %>
+<script>
+  openZipPopup(false);
+</script>
+<% end %>
+<!-- Nav Start -->
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <% if user_signed_in? %>
+       <a href="/items?category=all" class="logo" onclick="_gaq.push(['_trackEvent', 'TopNav', 'Clk_TrdIcon', 'Click Tradeya Logo On Top nav']);mixpanel.track('Click Tradeya Logo On Top nav');addDelay(this,event); return false;"><!-- <img src="http://d3md9h2ro575fr.cloudfront.net/images/tradeya_logo2.png" class="logo"> -->
+                    <img src="http://d3md9h2ro575fr.cloudfront.net/images/tradeya_logo2.png" class="logo2"></a>
+      <% else %>
+      <a class="logo" href="/" onclick="_gaq.push(['_trackEvent', 'TopNav', 'Clk_TrdIcon', 'Click Tradeya Logo On Top nav']);mixpanel.track('Click Tradeya Logo On Top nav'); addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/tradeya_logo2.png"></a>
+      <% end %>
+
+      <div>
+        <div class="search_section_top">
+          <%= form_tag items_path,:method => "get", :id => "itemsSearchForm" do %>
+          <input type="text" name="search" id="search_text" class="search_box" placeholder="What do you want?" value="<%= params[:search].present? ? params[:search] : ''%>" maxlength="30" onkeypress="searchItemsOnEnter(event,'<%=params[:search]%>');"/>
+          <%end%>
+          <span id="category_dropdown_section" class="category_drpdwn">
+            <a href="#" id="category_drpdwn_txt" onclick="$('#category_dropdown').toggle();$(this).toggleClass('category_drpdown_selected'); $(this).toggleClass('top_cat_selected'); return false;" class="category_text category_drpdown" ><img src="http://d3md9h2ro575fr.cloudfront.net/images/header_dropdown_icon.png"></a>
+            <div id="category_dropdown" style="display: none;">
+              <img src="http://d3md9h2ro575fr.cloudfront.net/images/arrow_up_cat.png">
+              <div>
+                <ul class="goods_ul">
+                  <!-- <div class="cat_head goods_head_div">Goods</div> -->
+                  <div class="category_innerdiv goods_innerdiv">
+                    <div class="dropdown_heading">Goods</div>
+                    <!-- <div class="droprdown_hr"></div> -->
+                    <% Category.goods.order("name ASC").each do |x|%>
+                      <li><a class='click' href="/items?category=<%=x.id%>" onclick="mixpanel.track('Click on Category/Goods/<%=x.name%>'); /*_kmq.push(['record', cat_drpdown_analytics[<%=x.id%>][0],{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'catgry_drpdown', cat_drpdown_analytics[<%=x.id%>][1], 'Click on Category/Goods/<%= x.name%>']);*/addDelay(this,event);return false;"><%= x.name %></a></li>
+                    <%end%>
+                  </div>
+                  <div class="vertical-line" />
+                </ul>
+                <ul class="services_ul">
+                  <!-- <div class="cat_head services_head_div">Services</div> -->
+                  <div class="category_innerdiv services_innerdiv">
+                    <div class="dropdown_heading">Services</div>
+                    <!-- <div class="droprdown_hr"></div> -->
+                    <% Category.services.each do |x|%>
+                      <li><a class='click' href="/items?category=<%=x.id%>" onclick="mixpanel.track('Click on Category/Services/<%=x.name%>'); /*_kmq.push(['record', cat_drpdown_analytics[<%=x.id%>][0],{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', cat_drpdown_analytics[<%=x.id%>][1], 'Click on Category/Services/<%= x.name%>']);*/addDelay(this,event);return false;"><%= x.name %></a></li>
+                    <%end%>
+                  </div>
+                  <div class="vertical-line" />
+                </ul>
+                <ul class="housing_ul">
+                  <!-- <div class="cat_head housing_head_div">Housing</div> -->
+                   <div class="category_innerdiv housing_innerdiv">
+                    <div class="dropdown_heading">Housing</div>
+                    <!-- <div class="droprdown_hr"></div> -->
+                    <% Category.housing.each do |x|%>
+                      <li><a class='click' href="/items?category=<%=x.id%>" onclick="mixpanel.track('Click on Category/Services/<%=x.name%>'); /*_kmq.push(['record', cat_drpdown_analytics[<%=x.id%>][0],{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', cat_drpdown_analytics[<%=x.id%>][1], 'Click on Category/Services/<%= x.name%>']);*/addDelay(this,event);return false;"><%= x.name %></a></li>
+                    <%end%>
+                    <div class="cat_bottom"><a href="/items?category=all"> Goods & Services</a></div>
+                  </div>
+                  
+                </ul>
+                <!-- <div class="cat_bottom"><a href="/items?category=all"> All Goods and Services</a></div> -->
+              </div>
+            </div>
+          </span>
+        </div>
+        <div id="sign_in_block_div">
+          <%= render 'shared/sign_in_block'%>
+        </div>
+        <div id="change_location_section" class="inner_subhead">
+          <!-- <a href="#" class="pull-right change_loc stop_close_change_loc_div" >change</a> -->
+          <span class="city_name pull-right" onclick="$(this).siblings('.edit_loc_wrapper').toggleClass('show_locs');$('#error_zip').hide();$('.edit_loc_wrapper').css('height','32px'); return false;"><%=session[:user_location]%></span>
+          <div class="edit_loc_wrapper ">
+            <div class="controls_wrapper ">
+              <%= form_tag change_location_path,:id=> "change_location" do %>
+                <%= text_field_tag (:zip),nil,:class => "miles_text",:placeholder=>"City or Zip Code",:onkeydown=>"return ZipEnter(event); return false;", :autofocus=>true%>
+              <%end%>
+              <div id="error_zip"><%=flash[:msg] if flash[:msg].present?%></div>
+              <div class="result_list">
+                <ul class="loc_results">
+                  <li><a href="#">Locaton1</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Nav End -->
+<!-- Subhead Start -->
+<header class="subhead" id="overview">
+  <div class="breadcrumb_itempage">
+    <%if @breadcrumb.present? %>
+    <%= @breadcrumb.parent.name %> > <span class="current"><a href ="/items?category=<%=@breadcrumb.id%>"><%= @breadcrumb.name %><a></span>
+    <%end%>
+  </div>
+</header>
+<!-- Subhead End -->
+<!--Modals-->
+<% if user_signed_in? %>
+  <div id="wants_message_div"><%= render 'modals_shared/want_message_modal' %></div>
+  <!-- <div id="like_message_div"><%#= render 'modals_shared/like_msg_modal'%></div> -->
+  <div id="have_message_div"><%= render 'modals_shared/have_msg_modal'%></div>
+  <%if current_user and current_user.sign_in_count == 1 and !current_user.welcome_user%>
+    <div id="welcome_modal_div"><%= render 'modals_shared/welcome_modal'%></div>
+  <%end%>
+  <%if params[:item_saved].present?%>
+    <%=render 'modals_shared/add_item_sharing_modal', :item_id => params[:item_saved]%>
+  <%end%>
+<% else %>
+  <div id="sign_in_modal_div"><%= render 'modals_shared/login_form' %></div>
+  <!-- <div id="sign_up_modal_div"><%#= render 'modals_shared/signup_form' %></div> -->
+  <!-- <div id="sign_up_conf_modal_div"><%#=  render 'modals_shared/signup_confirmation'%> -->
+  <!-- <%#= render 'modals_shared/guest_signup_conf' %> -->
+  <!-- </div> -->
+<% end %>
+<div id="refresh_modal_div"></div>
+<noscript>
+  <%= render 'modals_shared/js_disabled' %>
+</noscript>
+<!--Modals-->
+<!-- scripts for change location top -->
+<script type="text/javascript">
+  $(function(){
+    $('a.auth_provider').click(function(e) {
+      var href = $(this).attr('href');
+      var width = 600, height = 400;
+      var left = (screen.width / 2) - (width / 2);
+      var top = (screen.height / 2) - (2 * height / 3);
+      var features = 'menubar=no,toolbar=no,status=no,width=' + width + ',height=' + height + ',toolbar=no,left=' + left + ',top=' + top;
+      var loginWindow = window.open(href, '_blank', features);
+      loginWindow.focus();
+      if (e.preventDefault) { e.preventDefault(); } else { e.returnValue = false; }
+      return false;
+    });
+  });
+</script>
+<!-- scripts for change location top -->
+<script>
+  <%if flash[:msg]%>
+    $(document).ready(function(){
+      $('.stop_close_change_loc_div').addClass('change_loc_selected');
+      $('.edit_loc_wrapper').addClass('show_locs');
+      $('.edit_loc_wrapper').css('height','32px');
+    })
+  <%end%>
+  $(document).ready(function() {
+    $("#haves_alert").fadeOut(8000);
+    $('input, textarea').placeholder();
+
+  });
+</script>
+<script type="text/javascript">
+  $("#top_nav_btn").click(function(){
+    $(".nav-collapse").toggleClass("top_nav_ht");
+   // $(".nav-collapse").toggleClass("in");
+  })
+  $('.change_loc').click(function(){
+    $(this).addClass('change_loc_selected'); 
+    $('.edit_loc_wrapper').show();
+    $('#error_zip').hide();
+    $('.edit_loc_wrapper').css('height','32px'); return false;
+  });
+  $(document).click(function(){
+    $('.edit_loc_wrapper').removeClass('show_locs');
+  })
+</script>
+<script>
+  $(document).ready(function(){
+    <%if params[:item_saved].present?%>
+      $('#sharing_prompt').modal('show');
+      analytics.track('Added item', {
+                        'Item type': '<%=item_saved(params[:item_saved]).category.parent.name%>',
+                        'Item category': '<%=item_saved(params[:item_saved]).category.name%>',
+                        'Item photos': '<%=item_saved(params[:item_saved]).item_photos.count%>'
+                      });
+    <%end%>
+  });
+ </script>

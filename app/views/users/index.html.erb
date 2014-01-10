@@ -1,0 +1,138 @@
+ <script>
+$(window).load(function() {
+	$('#itemcard').BlocksIt({
+		numOfCol: 5,
+		offsetX: 15,
+		offsetY: 15,
+		blockElement: '.user_card_right'
+	});
+});
+$(document).ready(function() {
+	$('#itemcard').BlocksIt({
+		numOfCol: 5,
+		offsetX: 15,
+		offsetY: 15,
+		blockElement: '.user_card_right'
+	});
+});
+  var page = 1;
+  var n = 1;
+  var total = <%=@i_total%>;
+  var search_txt,sort_by;
+  <%# if params["search"] %>
+    search_txt = '<%#= params["search"] %>';
+  <%# end %>
+  <%# if params["sort_by"] %>
+    sort_by = '<%#= params["sort_by"] %>';
+  <%# end %>
+  var slideCount = {};
+    $(function(){
+    for(var i=1;i<n;i++){
+      slideCompletedTrade(i,slideCount[i]);
+    }
+  });
+</script>
+
+<!--Content Start -->
+<div class="container">
+	<div class="span10 item_middle_section">
+		<div class="center_content">
+			<!--browse_items_wrapper-->
+			<div class="browse_items_wrapper">
+				<div class="browse_heading">
+					<span>Results For</span>
+					<span class="result_span">
+					    "<%=@results_for%>"
+					</span>
+					<div class="pull-right">
+						<ul class="sort_tab">
+							<%if params[:search].present?%>
+								<li class="fleft"><%= link_to "Items", { :action => "index", :controller => "items", :search => params[:search] }, :method => :get %></li>
+								<li class="fleft"><%= link_to "Users", { :action => "index", :search => params[:search] }, :method => :get, :class => "act"%></li>
+							<%end%>
+							<li id="sortby_drop">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									<div id ="tradeya_sort_element"><%=params[:sort_by].present? ? params[:sort_by].titleize : "Most Recent"%> <img src="http://d3md9h2ro575fr.cloudfront.net/images/sorting_arrow.png"> </div>
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<%= link_to "Distance", { :action => "index", :sort_by => "distance", :category => params[:category], :search => params[:search] }, :method => :get %>
+									</li>
+									<li>
+										<%= link_to "Most Recent", { :action => "index", :sort_by => "most recent", :category => params[:category], :search => params[:search] }, :method => :get %>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<!--pull-right-->
+				</div>
+				<!--browse heading-->
+				<!--browse_item_content-->
+				<div class="browse_item_content">
+					<!--wants_container-->
+					<div class="wants_container">
+						<!-- user cards here -->
+						<div id="itemcard">
+							<%= render "user_card" %>
+						</div>
+					</div>
+					<!--wants_container-->
+				</div>
+				<!--browse_item_content-->
+			</div>
+			<!--browse_items_wrapper-->
+		</div>
+		<!--center_content-->
+	</div>
+	<!--span10-->
+	<div id ="items_spinner" align="center" class="browse_det_left" style = "display:none">
+		<img src = "http://d3md9h2ro575fr.cloudfront.net/images/Ajax_loader.gif">
+	</div>
+	<!--Scroll Top Section Start -->
+	<div id="scroll_top">
+		<a href="#" onclick="$(window).scrollTo(0, { duration: 600 } ); return false;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/scroll_top_icon.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/scroll_top_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/scroll_top_icon.png';" /></a>
+	</div>
+	<!--Scroll Top Section End -->
+</div>
+<!-- Content End  -->
+
+<script type="text/javascript"> // Infinite Scrolling
+	$(window).scroll(function(){
+		if  ($(window).scrollTop() >= $(document).height() - $(window).height() - $('#footer').height()){
+			page = get_next_page_users(page,total,search_txt,sort_by);
+		}
+	});
+
+	var isLoadingNextPage = false;
+	var pageSize=20;
+
+	function get_next_page_users(page,total,search_txt,sort_by)
+	{
+		if (((page*pageSize) < total) && !isLoadingNextPage)
+		{
+			page = page + 1;
+			$('#items_spinner').show();
+			
+			isLoadingNextPage = true;
+			jQuery.ajax({
+				url: "/users",
+				data: "page=" + page + ((typeof(search_txt)=='undefined')? "" : "&search="+search_txt) + ((typeof(sort_by)=='undefined')? "" : "&sort_by="+sort_by),
+				success: function(data){
+					isLoadingNextPage = false;
+					$('#items_spinner').hide();
+				},
+				error: function(){
+					$('#items_spinner').hide();
+				},
+				complete: function(){
+					isLoadingNextPage = false;
+					$('#items_spinner').hide();
+				}
+			});
+			return page;
+		}
+		else
+			return page;
+	};
+</script>

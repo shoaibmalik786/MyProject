@@ -1,0 +1,79 @@
+<%= javascript_include_tag "adminscripts/admin" %>
+
+<table>
+	<tr>
+		<td>
+			<%= semantic_form_for :date_range, :builder => ActiveAdmin::FormBuilder do |f|
+			   f.inputs do
+			     f.input :from, :as => :datepicker
+			     f.input :to, :as => :datepicker
+			   end
+			   f.actions
+			end %>
+		</td>
+		<td>
+			<table style="width: 100%; height: 100%;">
+				<tr>
+					<th style="width: 50%;">Number of total signups</th>
+					<td><%= usr_signups_through_count %></td>
+				</tr>
+				<tr>
+					<th style="width: 50%;">Number of converted signups (reached onboarding)</th>
+					<td><%= signups_through_onboarding_count %></td>
+				</tr>
+				<tr>
+					<th style="width: 50%;">Number of users through Step 1</th>
+					<td><%= signups_through_step1_count %></td>
+				</tr>
+				<tr>
+					<th style="width: 50%;">Number of users through Step 2</th>
+					<td><%= signups_through_step2_count %></td>
+				</tr>
+				<tr>
+					<th>Number of users through Step 3</th>
+					<td><%= signups_through_step3_count %></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<table class="data_point_table" style="border: solid 1px; width: 90%; margin-left: auto; margin-right: auto;">
+	<tr>
+		<th style="width: 70px;">Date</th>
+		<th>No of Signups</th>
+		<th>% of total</th>
+		<th>No of fb signups</th>
+		<th>% of fb signups in day</th>
+		<th>% of fb signups of total</th>
+		<th>No of non fb signups</th>
+		<th>% of non fb signups in day</th>
+		<th>% of non fb signups of total</th>
+	</tr>
+	<% total = 0; total_fb = 0; total_non_fb = 0 %>
+	<% usr_signups_count.keys.each do |r| %>
+		<tr>
+			<td><%= r %></td>
+			<td><%= usr_signups_count[r][0] %></td>
+			<td><%= number_with_precision(usr_signups_count[r][1], :precision => 2) + '%' %></td>
+			<td><%= usr_signups_count[r][2] %></td>
+			<td><%= number_with_precision(usr_signups_count[r][3], :precision => 2) + '%' %></td>
+			<td><%= number_with_precision(usr_signups_count[r][4], :precision => 2) + '%' %></td>
+			<td><%= usr_signups_count[r][5] %></td>
+			<td><%= number_with_precision(usr_signups_count[r][6], :precision => 2) + '%' %></td>
+			<td><%= number_with_precision(usr_signups_count[r][7], :precision => 2) + '%' %></td>
+			<% total = total + usr_signups_count[r][0]; total_fb = total_fb + usr_signups_count[r][2]; total_non_fb = total_non_fb + usr_signups_count[r][5] %>
+		</tr>
+	<% end %>
+	<tr>
+		<td>Totals</td>
+		<td><%= total %></td>
+		<td><%= number_with_precision(total * (100.0 / t_usr_count), :precision => 2) + '%' %></td>
+		<td><%= total_fb %></td>
+		<td><%= number_with_precision(total_fb * (100.0 / total), :precision => 2) + '%' %></td>
+		<td><%= number_with_precision(total_fb * (100.0 / t_usr_count), :precision => 2) + '%' %></td>
+		<td><%= total_non_fb %></td>
+		<td><%= number_with_precision(total_non_fb * (100.0 / total), :precision => 2) + '%' %></td>
+		<td><%= number_with_precision(total_non_fb * (100.0 / t_usr_count), :precision => 2) + '%' %></td>
+	</tr>
+</table>

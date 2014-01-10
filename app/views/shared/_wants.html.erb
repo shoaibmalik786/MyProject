@@ -1,0 +1,10 @@
+<%= form_tag wants_item_path(:id => @item.id),:id => "wants_action", :remote=>true do %>
+  <%if current_user && current_user.wants_item?(@item.id)%>
+    <%= hidden_field_tag 'item_page_want', false %>
+    <%#= image_submit_tag('http://d3md9h2ro575fr.cloudfront.net/images/want-selected.png')%>
+    <a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/want-selected.png" onclick="$(this).parents('form').submit(); _gaq.push(['_trackEvent', 'Item Page', 'Clk_ItmWntd', 'Click Wanted on Item Page']);mixpanel.track('Click Wanted on Item Page'); return false;"></a>
+  <%else%>
+    <%= hidden_field_tag 'item_page_want', true %>
+    <a id="want_<%= @item.id%>" href = "#" onclick="wantsUser(<%=@item.id %>,$(this)); _gaq.push(['_trackEvent', 'Item Page', 'Clk_ItmWnt', 'Click Want on Item Page']);mixpanel.track('Click Want on Item Page'); return false;"><%= image_tag('http://d3md9h2ro575fr.cloudfront.net/images/Unselected-(want).png',:mouseover=>"http://d3md9h2ro575fr.cloudfront.net/images/want_hover.png", :mouseout=>'http://d3md9h2ro575fr.cloudfront.net/images/Unselected-(want).png')%></a>
+  <%end%>
+<%end%>

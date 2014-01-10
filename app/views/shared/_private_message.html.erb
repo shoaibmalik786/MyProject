@@ -1,0 +1,95 @@
+	<div class="new_message_block_right_wrapper" style="display:none;">
+		<%= form_tag reply_conversation_path, :id => "message_form", :method => 'post', :id => "new_message", :remote => true, :multipart => true do %>
+			<div class="pvt_msg_right_top_header">
+				<div class="new_msg_heading">New Message</div>
+			</div>
+			
+			<div class="new_msg_inner">
+				<div class = "reply_photo_size_error_msg alert" id = "new_photo_size_error_msg">
+				</div>
+					<div class="alert" id="alert_new" style="display:none;"></div>
+					<% if @flash %>
+				    	<div class="alert"><%= flash[:alert] %></div>
+				  	<% end %>
+					<p><span class="control_label">To:</span><span class="control_input">
+						<!-- <input type="text" class="to_msg"> -->
+						<%#= text_field_tag "recipients", nil, :class=>"to_msg"%>
+				   	<input type="text" id="demo-input-facebook-theme">
+
+					</span></p>
+					<p><span class="control_label">Subject:</span>
+						<span class="control_input">
+							<!-- <input type="text" class="new_msg_input"> -->
+							<%= text_field_tag "subject", nil, :class=>"new_msg_input", :id=>"new_message_subject" %>
+						</span></p>
+			</div>
+			<div class="textarea_wrapper">
+				<!-- <textarea class="chat_input" placeholder="Enter your Message..."></textarea> -->
+				<%= text_area_tag "body",nil, :placeholder=>"Enter your message...", 
+				:class=>"chat_input", :id => "sendNewTextArea" %>
+				<div class="chat_input_options">
+					<span class="file_wrapper">
+						<!-- <input type="file" class="chat_files" id="photo"> -->
+						<%= file_field_tag "photo", :name => 'attach[]', :class => 'multifile chat_files', :id => "newMessageAttachment" %>
+						<%#= file_field_tag "photo", :class => 'chat_files' %>
+						<span class="upload_button">Add Files</span>
+					</span>
+					<!-- <span class="crossimage"></span> -->
+					<!-- <input type="submit" value="Send" class="chat_send"> -->
+					<%= submit_tag 'Send', :name => 'new_message',  :id => "send_new_msg_button", :class => "chat_send" %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#demo-input-facebook-theme").tokenInput("/users_autocomplete", {
+            theme: "facebook"
+        });
+    });
+    
+    $("#new_message").submit(function() {
+    	$('#alert_new').empty();
+    	$('#alert_new').hide();
+    	 var messagesubject = $.trim($('#new_message_subject').val());
+    	 var bodyofmessage = $.trim($('#sendNewTextArea').val());
+    	 // alert(messagesubject);
+    	 // alert(bodyofmessage);
+    	 var tomessage = $.trim($('#demo-input-facebook-theme').val());
+
+    	if(tomessage === ''){
+    		$('#alert_new').show();
+    		$('#alert_new').append("Atleast one user must be specified");
+    		return false;
+    	} 
+    	
+    	if(messagesubject === ''){
+    		$('#alert_new').show();
+    		$('#alert_new').append("Subject must be specified.");
+    		return false;
+    	}
+    	$('#alert_new').empty();
+    	$('#alert_new').hide();
+    	if(bodyofmessage === ''){
+    		$('#alert_new').show();
+    		$('#alert_new').append("Body must be specified.");
+    		return false;
+    	}
+    	
+    	var selectedvalues = $("#demo-input-facebook-theme").tokenInput("get");
+    	for (var i=0; i<selectedvalues.length; i++) {
+    		$('<input />').attr('type', 'hidden')
+            	.attr('name', 'recipients[]')
+            	.attr('value', selectedvalues[i].id)
+            	.attr('style','display:none;')
+            	.appendTo('#new_message');
+    
+    }
+    	// $(this).submit();	
+    	 // :pause: the submission process
+  	 	//insert input[type=hiddens] with the serialized data
+   		//(easy to do with $.each())
+   		// $(this).submit();
+    });
+</script>

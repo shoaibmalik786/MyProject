@@ -1,0 +1,28 @@
+<div id="zip_popup" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" data-backdrop="static" data-keyboard="false">
+<div id="location">Facebook Location</div>
+<% if current_user %>
+	<% if session["facebook_zipcode"] %>
+	<div style="color: #666; font-size: 15px; text-align: center; margin-top: 20px;">Please confirm your Facebook Location:</div>
+	<div style="color:#ff6633; font-weight: bold; font-size: 15px; text-align: center; height: 46px;margin-top: 10px;"><%= session["facebook_zipcode"] %></div>		
+	<div style="color: #666; font-size: 15px; text-align: left; margin-left: 22px;">To modify your location enter your zip code:</div>
+	<% else %>
+	<div style="color: #666; font-size: 15px; text-align: center; margin-top: 20px;">We could not find your location on Facebook</div>
+	<div style="color: #666; font-size: 15px; text-align: left; margin-left: 22px;margin-top: 25px;padding-bottom: 20px;padding-left: 17px;">Please enter your location zip code:</div>
+	<% end %>
+	<%= form_for(current_user,  :url => {:controller=>"registrations", :action=>"update" }, :html => {:multipart => true, :id => "zipform", :onsubmit => "return false;"} ) do |f| %>
+	<% if session["facebook_zipcode"] %>
+		<%=  f.text_field :zip, :class => "zip click", :maxlength => 10, :id => "facebookzip" %>
+	<% else %>
+		<%=  f.text_field :zip, :class => "zip click", :maxlength => 10, :id => "facebookzip", :style=>"margin-top: -42px;margin-left: 280px;" %>
+	<% end  %>
+		<br />
+		<div id="zipcheckmessage"></div>
+		<p style="text-align: center;">
+	        <%= image_tag "https://s3.amazonaws.com/tradeya_prod/tradeya/images/continue.png",  :onmouseover=>"this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/continue_roll.png';", :onmouseout=>"this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/continue.png';", :onclick=>"checkzipform('#{session["facebook_zipcode"]}'); return false;" %>
+		</p>
+	<% end %> 
+<% end %>
+<% city = (current_user== nil or current_user.city== nil or current_user.city == "") ? "" : current_user.city%>
+<% zip = (current_user== nil or current_user.zip== nil or current_user.zip == "") ? "" : current_user.zip%>
+<div id="crossimg" style="position: absolute; top: 12px; right: 15px;"> <a href="#" onclick="zipcancelcheck(<%= current_user== nil ? nil : current_user.id%>,<%= (current_user== nil or current_user.authentications[0] == nil)? '' : current_user.authentications[0].id%>,'<%= zip %>','<%= city%>','<%= (session["facebook_zipcode"] and session["facebook_zipcode"] !="") ? session["facebook_zipcode"]: ""%>'); return false;">X</a></div>
+</div>

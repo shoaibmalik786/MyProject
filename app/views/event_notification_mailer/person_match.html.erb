@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+	</head>
+	<body style="background-color: #eeeeee; margin: 0px; font-family:  Arial, Helvetica, sans-serif;">
+		<div style="width: 704px;margin-left: auto;margin-right: auto;background-color: #55aad4;min-height: 820px;padding-top: 24px;padding-bottom: 26px;">
+			<div style="width: 650px;background-color: #ffffff;margin-left: auto;margin-right: auto; min-height: 820px;">
+				<div style="height: 5px;background-color: #333333;width: 650px;"></div>
+				<div style="min-height: 730px;">
+					<div style="margin-top: 37px;padding-left: 30px;padding-bottom: 30px;border-bottom: 1px solid #999999; padding-top: 30px">
+						<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/logo.png" />
+					</div>
+					<div style="color: #000000;font-weight: bold;font-size: 21px;padding-left: 32px;padding-top: 29px;padding-bottom: 25px;">
+					Hey <%= @user.title %>, we think we found a match for you!</div>
+					<div style="width: 585px;font-weight: bold;font-size: 16px;color: #999999;margin-left: 32px;padding-bottom: 7px;border-bottom: 1px dotted #CCCCCC;">A little about your match:</div>
+					<div style="margin-left: 30px;width: 585px;margin-right: auto;padding-top: 10px;padding-bottom: 22px;">
+						<table width="100%" style="border-collapse: collapse;">
+							<tr valign="top" style="border-collapse: collapse;">
+								<td width="25%" style="border-collapse: collapse;">
+									<div style="max-width: 185px; max-height: 185px; overflow: hidden;"><a href="<%=items_url%>?u=<%= @item.user.id%>" style="color: #55aad4;text-decoration: none;"><img src="<%= @match_user.user_image(:medium) %>"></a></div>
+								</td>
+								<td width="75%" style="padding-left: 17px;border-collapse: collapse;">
+									<div style="font-weight: bold;font-size: 20px;color: #55aad4;"><%= @match_user.title%></div>
+									<div style="font-size: 15px;color: #666666;padding-top: 2px;">
+										in <span id="email_usr_city"><%= @match_user.location%></span>
+									</div>
+									<div style="margin-top: 16px;margin-bottom: 7px;">
+										<a href="<%=items_url%>?u=<%= @item.user.id%>" ><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/view_tradeya.png" style="border: none;"></a>
+									</div>
+									<div style="width: 165px;float: left;">
+										<div style="font-weight: bold;font-size: 15px;color: #333333;">
+											Your Similarities with<br>
+											<%= @match_user.title%>:
+										</div>
+										<p style="line-height: 18px; color: #666666;font-size: 12px;">
+											<% @matched_interests.each_with_index do |m,index|%>
+												<% if index == 5 %>
+													<a href="<%=items_url%>?u=<%= @item.user.id%>&user_profile=true" style="color: #55aad4;text-decoration: none;">See more...</a><br/>
+													<% break %>
+												<% else %>
+													<%= m.name.initcaps %><br/>
+												<% end %>
+											<% end %>
+										</p>
+									</div>
+									<div style="width: 170px;float: right;margin-right: 26px;">
+										<div style="font-weight: bold;font-size: 15px;color: #333333;">
+											<%= @match_user.title %> wants:
+										</div>
+										<p style="line-height: 18px; color: #666666;font-size: 12px;">
+											<% count = 1 %>
+											<% @item.user.goods(false).each do |g| %>
+												<% if count == 6 %>
+													<% count = count + 1 %>
+													<a href="<%=items_url%>?u=<%= @item.user.id%>&user_profile=true" style="color: #55aad4;text-decoration: none;">See more...</a><br/>
+													<% break %>
+												<% else %>
+													<%= g.name.initcaps %><br/>
+													<% count = count + 1 %>
+												<% end %>
+											<% end %>
+										</p>
+										<% if count <= 6 %>
+										<p style="line-height: 18px; color: #666666;font-size: 12px;">
+											<% @item.user.services(false).each do |s| %>
+												<% if count == 6 %>
+													<% count = count + 1 %>
+													<a href="<%=items_url%>?u=<%= @item.user.id%>&user_profile=true" style="color: #55aad4;text-decoration: none;">See more...</a><br/>
+													<% break %>
+												<% else %>
+													<%= s.name.initcaps %><br/>
+													<% count = count + 1 %>
+												<% end %>
+											<% end %>
+										</p>
+										<% end %>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+			
+					<div style="width: 585px;font-weight: bold;font-size: 16px;color: #999999;margin-left: 32px;padding-bottom: 7px;border-bottom: 1px dotted #CCCCCC;">What <%= @match_user.title %> can trade you:</div>
+					<div style="padding-top: 12px;padding-bottom: 26px;margin-left: 30px;width: 585px;margin-right: auto;">
+						<table width="100%" style="border-collapse: collapse;">
+							<tr valign="top" style="border-collapse: collapse;">
+								<td width="25%" style="border-collapse: collapse;">
+									<div style="width: 186px;height: 140px;"><a href="<%= @item.item_url%>"><img src="<%= @item.item_image(:medium_mail) %>" /></a></div>
+								</td>
+								<td width="75%" style="padding-left: 20px;border-collapse: collapse;">
+									<div style="font-size: 14.33px;font-weight: bold;color: #333333;line-height: 17px;"><%= @item.title%></div>
+									<div style="font-size: 13.33px;color: #666666;padding-top: 10px;line-height: 18px;"><%=@item.desc %></div>
+									<div style="float: none; padding-top: 20px;">
+										<table>
+											<tr>
+												<td><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/timer_small.png"></td>
+												<td>
+													<div style="margin-left: 5px;text-align: left;">
+														<span style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-weight: bold;font-size: 15.23px;color: #333333;">Time Left to Offer</span><br>
+														<span id="timeleft" style="font-size: 12.69px;color: #333333;"><%= @item.time_remaining%></span>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</div>
+									<div style="margin-top: 15px;">
+									<a class="click" href="<%=items_url%>?u=<%= @item.user.id%>" style="font-size: 12px;font-weight: bold;color: #55aad4;text-decoration: none;text-align: left;margin-top: 18px;">See <%= @match_user.title_with_s %>  <%= @user_tradeya_count%> TradeYas ...</a>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div style="width: 585px;margin-left: auto;margin-right: auto;border-top: 1px dotted #cccccc;">
+						<div style="font-size: 14.66px;font-weight: bold;color: #999999;padding-top: 11px;">
+							<table>
+								<tr>
+									<td style="word-spacing: -2px;"><div style="margin-right: 12px; margin-left: 136px;">How did we do on the match?</div></td>
+									<td style="float: left;padding: 5px;padding-right: 8px;"><a href="<%= ThumbUpDown.up_down_url('up', @token) %>"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/thumbs_up.png" style="border: none;" alt = "thumbs-up"></a></td>
+									<td style="float: left;padding: 5px;padding-right: 8px;"><a href="<%= ThumbUpDown.up_down_url('down', @token) %>"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/thumbs_down.png" style="border: none;" alt="thumbs-down"></a></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div style="height: 30px;background-color: #333333;width: 650px;font-size: 10.67px;color: #999999;text-align: center;padding-top: 20px;">
+					TradeYa.com © 2012, All Rights Reserved <a href="<%= unsubscribe_mail_url %>">Unsubscribe/Change Notification</a>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

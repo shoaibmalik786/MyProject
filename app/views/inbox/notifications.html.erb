@@ -1,0 +1,21 @@
+<% if @user.present? %>
+	<% if @user == current_user %>
+		<%= render "users/user_page_common_top_own" %>
+	<% else %>
+		<%= render "users/user_page_common_top_new" %>
+	<% end %>
+<script>
+	$(function() {
+			$("#tab-content").html("<%= escape_javascript render('shared/inbox_tab') %>");
+			// $("#tab-content").html("<br>"+"<%#= escape_javascript render('shared/inbox_notifications') %>");
+			$("#tab_following").parent().removeClass('active');
+			$("#tab_haves").parent().removeClass('active');
+			$("#tab_wants").parent().removeClass('active');
+			$("#tab_likes").parent().removeClass('active');
+			$("#tab_myoffers").parent().removeClass('active');
+			$("#tab_past_trades").parent().removeClass('active');
+			$("#tab_reviews").parent().removeClass('active');
+			$("#tab_inbox").parent().addClass('active');
+	});
+</script>
+<% end %>

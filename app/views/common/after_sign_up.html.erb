@@ -1,0 +1,24 @@
+<script>
+	parent.stopSpinner();
+	if(parent.canSubmitCanNext == false) parent.canSubmitCanNext = true;
+</script>
+<% if @msg %>
+	<script>
+		parent.document.getElementById('error_explanation').innerHTML = "<%= @msg.html_safe %>";
+	</script>
+<% else %>
+	<script>
+		// parent.hideModal('signup_box', false);
+		parent.signupFormClose();
+		parent.window.location = '/thanks';
+		parent.$('#signup_confirm').modal('show');
+		// parent.showModal('signup_confirm');
+		if(parent.document.getElementById('user_id') != null) 
+			parent.document.getElementById('user_id').value = "<%= ((@user_signup) ? @user_signup.id.to_s : "") %>";
+		<% if current_user %>
+		parent.document.KM_user = '<%current_user.email%>';
+		if(parent.document.getElementById('signUpConfOK') != null) 
+			parent.document.getElementById('signUpConfOK').setAttribute('onclick', 'sign_in_callback(true,false,0,0)'); 
+		<% end %>
+	</script>
+<% end %>

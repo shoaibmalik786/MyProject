@@ -1,0 +1,7 @@
+// TODO to be deleted
+<% counter = (((params[:page].to_i) - 1 )* 10)+1 %>
+$("#livetab").append("<%= escape_javascript(render 'live_tab') %>");
+$("#completedtab").append("<%= escape_javascript(render 'completed_tab', :counter => counter) %>");
+for(var i=<%=counter%>;i<n;i++){
+	slideCompletedTrade(i,slideCount[i]);
+}

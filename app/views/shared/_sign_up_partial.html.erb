@@ -1,0 +1,38 @@
+<div class="signup_heading">Sign Up</div>
+
+<%= render 'devise/registrations/social_signup' %>
+
+<hr class="signup_hr">
+<div id = "emailSignUpDiv" class="signup_form_div">
+  <div class="recommend">OR Sign Up With Your Email Address</div>
+
+
+  <%= simple_form_for(resource, as: resource_name,
+                      url: {:controller =>"registrations", :action=>"create"},
+                      html: {:multipart => true,
+                             :id => "signUpForm",
+                             :remote => true,
+                             :class => "form-horizontal signup_form" },
+                      defaults: { input_html: { class: "inputPassword" } }) do |f| %>
+  <%= f.error_notification %>
+
+  <%= f.input :first_name, label: 'Name', hint:'TradeYa is built on trust, real names create trusting communities' %>
+
+  <%= f.input :email %>
+
+  <%= f.input :password, hint: 'By creating an account, I accept <strong>TradeYa’s Terms of Service</strong> and <strong>Privacy Policy</strong>.' %>
+
+  <%= f.submit "Create Account", :class => "create_account_btn" %>
+
+  <!-- <a href="#" onclick="submitSignUpFormNew(); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/create_account.png" id="submitSignUpFormImg" class="position-click"></a> -->
+<% end %>
+
+</div>
+
+<div class="clear"></div>
+<div class="signup_footer_text">We NEVER share your information. TradeYa is a community built on trust and we take that very seriously.</div>
+<hr class="signup_hr">
+
+<!-- <div class="sign_in_page_wrapper">
+  <%#= render "devise/links" %>
+</div> -->

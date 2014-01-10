@@ -1,0 +1,53 @@
+<div id="promote_now" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div id="crossimg"> <a class='cancel-click' href="#"  data-dismiss="modal" aria-hidden="true">X</a></div>
+	<div id="contact_heading" style="padding-top: 5px;">Get Better Offers!</div>
+	<div style="font-weight: bold; font-size: 13px; color: #000;margin-left: 25px;margin-top: 10px;">Did you know that almost 75% of successful trades happen with friends<br />
+	or friends of friends? Post your TradeYa on Facebook! Or Tweet it!</div>
+	<% if @item and @item.id %>
+	<div align="center" id="sharing">
+		<table width="100%" style="margin-top: 20px;">
+			<tr>
+				<td width="31%">Share it on Facebook</td>
+				<td width="7%">»</td>
+				<td><!-- <img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/fblike_promote.png" /> -->
+					<a href="#" onclick="/*_kmq.push(['record', 'Modal Promote Facebook Share Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'ActivityShare', 'Clk_FBPrmtMdl', 'Click FB Share on Promote Modal']);*/ window.open('http://www.facebook.com/sharer.php?s=100&p[title]='+ encodeURIComponent('Up for trade on TradeYa: <%= escape_javascript(@item.item_title) %>') + '&p[url]=' + encodeURIComponent('<%= escape_javascript(@item.pl_url) %>') + '&p[images][0]=' + encodeURIComponent('<%= escape_javascript(@item.item_image) %>') + '&p[summary]=' + encodeURIComponent('<%= escape_javascript(@item.desc) %>'), '_blank','height=400px, width=650px, left=' + ((screen.width/2)-(550/2)) + ', top=' + ((screen.height/2)-(420/2)), 'facebook'); return false;">
+						<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/fblike_promote.png" /> 
+					</a>
+				</td>
+			</tr>
+			<tr style="height: 36px;">
+				<td>Tweet it on Twitter </td>
+				<td>»</td>
+				<td>
+					<div style="float: left; width: 77px;">
+						<a href="https://twitter.com/share" onclick="/*_kmq.push(['record', 'Modal Promote Tweet ButtonModal Promote Tweet Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'ActivityShare', 'Clk_TwtrPrmtMdl', 'Click Twitter on Promote Modal']);*/" class="twitter-share-button" data-url="<%= @item.pl_url %>" data-text="Up for trade on TradeYa: <%= @item.item_title %>" target="_blank">Tweet</a>
+					</div>
+				</td>
+			</tr>
+			<tr style="height: 36px;">
+				<td>Share it on LinkedIn</td>
+				<td>»</td>
+				<td>
+					<a href="#" onclick="window.open('<%= linkedin_login_url %>?item_id=<%= @item.id %>', '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, left=' + ((screen.width/2)-(550/2)) + ', top=' + ((screen.height/2)-(420/2)) + ', width=550, height=420'); return false;">
+						<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/in_icon.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/in_icon.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/in_icon.png';" />
+					</a>
+				</td>
+			</tr>
+		</table>
+		<div id="copy_promote">
+			Copy & Paste your personalized offer URL below to plop anywhere<br />
+			<input type="text" class="url_text" value="<%= @item.pl_url %>" />
+		</div>
+		<div>
+			<a href="https://twitter.com/tradeya" class="twitter-follow-button" data-show-screen-name="true" data-show-count="false">Follow @tradeya</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+			<div id="tweet_text">To keep up with TradeYa</div>
+		</div>
+		<div style="margin-top: 42px;">
+			<!-- <img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/fb_share.png" /> -->
+			<div style="float: left"><fb:like href="<%= @item.pl_url %>" send="false" layout="button_count" width="100" show_faces="false" font=""></fb:like></div>
+			<div id="fb_text">To like us on Facebook</div>
+		</div>
+		<% end %>
+	</div>
+</div>

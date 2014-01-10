@@ -1,0 +1,45 @@
+<div class="review_described_bars">
+		<div class="rating_bar">
+			<span class="described_text">5</span>
+			<span class="described_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/small_stars/grey_star.png"></span>
+			<span id="<%= prefix %>_bar1" class="described_bar1"><%= review_sections[5] %></span>
+		</div>
+		<div class="rating_bar">
+			<span class="described_text">4</span>
+			<span class="described_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/small_stars/grey_star.png"></span>
+			<span id="<%= prefix %>_bar2" class="described_bar2"><%= review_sections[4] %></span>
+		</div>
+		<div class="rating_bar">
+			<span class="described_text">3</span>
+			<span class="described_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/small_stars/grey_star.png"></span>
+			<span id="<%= prefix %>_bar3" class="described_bar3"><%= review_sections[3] %></span>
+		</div>
+		<div class="rating_bar">
+			<span class="described_text">2</span>
+			<span class="described_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/small_stars/grey_star.png"></span>
+			<span id="<%= prefix %>_bar4" class="described_bar4"><%= review_sections[2] %></span>
+		</div>
+		<div class="rating_bar">
+			<span class="described_text">1</span>
+			<span class="described_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/small_stars/grey_star.png"></span>
+			<span id="<%= prefix %>_bar5" class="described_bar5"><%= review_sections[1] %></span>
+		</div>
+		<div class="rating_bar" style="margin-left: -7px;">
+			<span class="described_text"><1</span>
+			<span class="described_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/small_stars/grey_star.png"></span>
+			<span id="<%= prefix %>_bar6" class="described_bar6"><%= review_sections[0] %></span>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(function(){
+			<% unless review_sections.values.uniq.length == 1 and review_sections[0] == 0 %>
+				$("#<%= prefix %>_bar1").css("width", "<%= review_sections[5]/largest * 150 + 12 %>px");
+				$("#<%= prefix %>_bar2").css("width", "<%= review_sections[4]/largest * 150 + 12 %>px");
+				$("#<%= prefix %>_bar3").css("width", "<%= review_sections[3]/largest * 150 + 12 %>px");
+				$("#<%= prefix %>_bar4").css("width", "<%= review_sections[2]/largest * 150 + 12 %>px");
+				$("#<%= prefix %>_bar5").css("width", "<%= review_sections[1]/largest * 150 + 12 %>px");
+				$("#<%= prefix %>_bar6").css("width", "<%= review_sections[0]/largest * 150 + 12 %>px");
+			<% end %>
+		}); 
+	</script>

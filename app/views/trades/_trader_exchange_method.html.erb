@@ -1,0 +1,17 @@
+<div class="trader_shipping_type">
+	<span class="trader_name_ship">
+			<%=@right_user.first_name.titleize%>:
+	</span>
+	
+	<%case @trader_exchange_method%>
+	<%when I_WILL_BRING_IT_TO_YOU%>
+		I'll bring it to you
+	<%when YOU_COME_GET_IT%>
+		You come get it
+	<%when LET_US_MEET_UP%>
+		Let's meet up
+	<%when I_WILL_SHIP_IT%>
+		I'll ship it
+	<%else%>
+	<%end%>
+</div>

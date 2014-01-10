@@ -1,0 +1,18 @@
+<%if params[:like]%>
+	$("#like_div").html("<%= escape_javascript render('shared/like_button') %>");
+	$("#item_like_count").text("<%=@like_count %>");
+	<%if params[:like] == "true"%>
+		$('#lk_msg').show();
+	<%elsif params[:like] == "false"%>
+		$('#lk_msg').hide();
+	<%end%>
+<%elsif params[:item_card_like]%>
+	$("#item_card_like_<%=@item.id%>").html("<%= escape_javascript render('shared/item_card_like') %>");
+	<%if current_user && current_user.has_liked?(@item.id)%>
+		$("#like_message_modal").modal("show");
+	<%else%>
+		$("#like_message_modal").modal("hide");
+	<%end%>
+<%elsif params[:remove_item]%>
+	$("#tab-content").html("<%= escape_javascript render('shared/likes_tab') %>");
+<%end%>

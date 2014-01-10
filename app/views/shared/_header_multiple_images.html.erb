@@ -1,0 +1,35 @@
+<div style="width: 100%; overflow: hidden;">
+	<div align="center" style="width: 1700px;">
+	<table id="multiple_image">
+		<tr valign="middle">
+			<% counter = 1 %>
+			<% @tile_images.first(9).each do |x| %>
+				<% if x[0] == "img" %>
+					<td><a class = 'click' href="<%= x[1].item_url %>"><img src="<%= x[1].item_image%>"  style="width: <%= ((x[1].isImgAutoWidth) ? 'auto' : 'auto') %>; height: <%= ((x[1].isImgAutoWidth) ? '135px' : '135px') %>" /></a></td>
+				<% else %>
+					<td><a class = 'click' href="<%= x[1].item_url %>"><div style="position:absolute;height:135px;width:185px;filter:alpha(opacity=60);-moz-opacity: 0.6;opacity: 0.6;"></div></a><div style="display:block;width:185px;height:135px" id="itemPlayerTileImg_<%= counter %>"></div></td>
+					<script>$(function(){videoAsImage('itemPlayerTileImg_<%= counter %>', '<%= x[1].item_videos[0].video %>');});</script>
+				<% end %>
+				<% counter += 1 %>
+			<% end %>
+		</tr>
+	</table>
+	<table id="multiple_image_1">
+		<tr valign="top">
+			<% @tile_images.last(9).each do |x| %>
+				<% if x[0] == "img" %>
+					<td><a class = 'click' href="<%= x[1].item_url %>"><img src="<%= x[1].item_image%>" style="width: <%= ((x[1].isImgAutoWidth) ? 'auto' : 'auto') %>; height: <%= ((x[1].isImgAutoWidth) ? '135px' : '135px') %>" /></a></td>
+				<% else %>
+					<td><a class = 'click' href="<%= x[1].item_url %>"><div style="position:absolute;height:135px;width:185px;filter:alpha(opacity=60);-moz-opacity: 0.6;opacity: 0.6;"></div></a><div style="display:block;width:185px;height:135px" id="itemPlayerTileImg_<%= counter %>"></div></td>
+					<script>$(function(){videoAsImage('itemPlayerTileImg_<%= counter %>', '<%= x[1].item_videos[0].video %>');});</script>
+				<% end %>
+				<% counter += 1 %>
+			<% end %>
+		</tr>
+	</table>
+	</div>
+	<div id="header_orange" align="center">
+		<!-- <%#= InfoAndSetting.home_pg_title_text.html_safe %> -->
+		We make trading easy by finding people who have what<br /> you want and want what you have. <a class='click' href="/items/new" onclick="/*_kmq.push(['record', 'LearnMore',{ 'SignedIn' : get_KMSignedIn()}]);*/">Click here to get started!</a>
+	</div>
+</div>

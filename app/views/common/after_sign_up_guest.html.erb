@@ -1,0 +1,39 @@
+<script>
+	parent.signupGuestFormClose();
+	parent.stopSpinner();
+	if(parent.canSubmitCanNext == false) parent.canSubmitCanNext = true;
+	<% if not session[:is_guest_user].nil? and session[:is_guest_user] %>
+		if (parent.isQuiz)
+		{ parent.$('#quiz_box').modal('hide'); }
+		parent.$('#guest_validate').modal('show');
+		if(parent.document.getElementById('guest_signup_ok_btn') != null) 
+		{
+			if(parent.isSubmitTradeya){
+				parent.isSubmitTradeya = false;
+				parent.document.getElementById('guest_signup_ok_btn').setAttribute('onclick', 'submitItemForm()'); 
+			}
+			else if(parent.isSubmitOffer){
+				parent.isSubmitOffer = false;
+				parent.document.getElementById('guest_signup_ok_btn').setAttribute('onclick', 'submitItemForm()'); 
+			}
+			else if (parent.isQuiz){
+				parent.isQuizSignUp = true;
+				parent.moveNextQuiz(5);
+			}
+		}
+	<% elsif not session[:is_guest_user].nil? and not session[:is_guest_user] %>
+		var msg = "This Email Id has already been taken to post an item. Please use another Email Id.";
+		<% if session[:user_type] == "conf_regular" or session[:user_type] == "uconf_regular" %>
+			msg = "Email account exists, can not proceed as guest.";
+		<% elsif session[:user_type] == "fb" %>
+			msg = "Email account exists, login through facebook.";
+		<% end %>
+		if (parent.isQuiz)
+		{
+			if(parent.document.getElementById('error_explanation_quiz')) parent.document.getElementById('error_explanation_quiz').textContent = msg;
+		}else{
+			if(parent.document.getElementById('guest_user_msg_modal_div')) parent.document.getElementById('guest_user_msg_modal_div').textContent = msg;
+		}
+		// parent.showModal('guest_validate');
+	<% end %>
+</script>

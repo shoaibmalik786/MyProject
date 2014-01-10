@@ -1,0 +1,15 @@
+<% if @msg and @msg.length > 0 %>
+	<br/><br/>
+	<h1 style="padding-left: 142px; font-family: 'Century Gothic', CenturyGothic, 'AppleGothic', sans-serif; color: #F53B33; font-size: 30px">
+	ERROR
+	</h1>
+	<p style="text-align: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; font-size: 14px">
+		<%= @msg %>
+	</p>
+	<br/><br/><br/><br/>
+	<p style="text-align: center;">
+		<a href="#" onclick="window.close(); return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/ok.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/ok_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/ok.png';" /></a>
+	</p>
+<% else %>
+	<script type="text/javascript"> if(window.opener) window.close();</script>
+<% end %>

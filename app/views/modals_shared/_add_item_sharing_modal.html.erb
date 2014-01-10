@@ -1,0 +1,21 @@
+<% @item_saved = Item.find_by_id(item_id) %>
+<!-- Sharing Prompt Modal -->
+<div id="sharing_prompt" class="modal fade hide" aria-hidden="false" data-backdrop="static">
+  <a href="#" class="close" data-dismiss="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png"></a>
+  <div class="user_sub_heading in_center">Sharing on social media increases your chances of trading by almost 7x!</div>
+  <div class="sharing_prompt_subhead">Give it a whirl and see for yourself! </div>
+  <div class="social_login">
+    <a href="#" class="auth_provider position-click auth_provider_more">
+      <img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png'" onclick="/*_kmq.push(['record', 'Facebook Share Button',{ 'SignedIn' : get_KMSignedIn()}]);*/ _gaq.push(['_trackEvent', 'Item Added', 'Clk_shr_FB', 'Click FB Share on New Item Added Share Prompt']);mixpanel.track('Click FB Share on New Item Added Share Prompt');window.open('http://www.facebook.com/sharer.php?s=100&p[title]='+ encodeURIComponent('Up for trade on TradeYa: <%= escape_javascript(@item_saved.item_title) %>') + '&p[url]=' + encodeURIComponent('<%= escape_javascript(@item_saved.pl_url) %>') + '&p[images][0]=' + encodeURIComponent('<%= escape_javascript(@item_saved.item_image(:medium)) %>') + '&p[summary]=' + encodeURIComponent('<%= escape_javascript(@item_saved.desc) %>'), '_blank','height=400px, width=650px, left=' + ((screen.width/2)-(550/2)) + ', top=' + ((screen.height/2)-(420/2)), 'facebook'); $('#sharing_prompt').modal('hide'); return false;">
+    </a>
+    <a id="tw_login_icon" class="addthis_button_twitter" addthis:url="<%=@item_saved.item_url%>" addthis:title="Up for TradeYa : <%=@item_saved.title%>">
+      <img src="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png'" id="tw_login_img" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_shr_twitter', 'Click Twitter Share on Item Card']);mixpanel.track('Click On Twitter Share on Item Card'); $('#sharing_prompt').modal('hide');">
+    </a>
+  </div>
+  <!--<div class="social_checkbox">
+      <label class="checkbox">
+        <input id="share_item" name="share_item" type="checkbox" value="1">
+        <label>Share my item this way every time I post</label>
+      </label>
+    </div> -->
+  </div>

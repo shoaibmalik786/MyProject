@@ -1,0 +1,213 @@
+<div class="transaction_detail_div payment_div">
+  <div class="transaction_heading payment_heading">
+    <div class="heading_tick"><img src="http://d3md9h2ro575fr.cloudfront.net/images/tick_orange.png"></div>
+    3. Payment
+    <div class="tr_edit_btn">
+     <%= form_tag charge_cards_path, :id => "stripe-form-tag", :remote => true do %>
+    <a id="add_card" href="#" onclick="return false;">Add</a><% end %></div>
+    
+    <div class="tr_edit_btn">
+    <a href="#" id="edit_cards" onclick="return false;">Edit</a>
+  </div>
+  </div>
+  
+  
+
+  <!-- Step3 Form Start -->
+<!--   <form class="form-horizontal form_step3">
+    <div class="transaction_payment">
+      <div class="edit_login_text">Payment Method</div>
+      <hr class="password_control_group" />
+      <div class="control-group">
+        <div class="controls">
+          <label class="radio credit_card">
+            <input type="radio" name="cardtype" /><label>Credit Card</label>
+          </label>
+          <label class="radio credit_card">
+            <input type="radio" name="cardtype" /><label><img src="http://d3md9h2ro575fr.cloudfront.net/images/paypalicon.png" style="margin-top: -12px;"></label>
+          </label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputlname">Card Type</label>
+        <div class="controls">
+          <a href="#" class="edit_year t_year" onclick="$('#profile_card_type').toggleClass('hidedrop'); return false;">Visa</a>
+          <div class="profile_year t_card_drp hidedrop" id="profile_card_type">
+            <ul>
+              <li><a href="#">Visa</a></li>
+              <li><a href="#">Visa</a></li>
+              <li><a href="#">Visa</a></li>
+              <li><a href="#">Visa</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputlname">Card Number</label>
+        <div class="controls">
+          <input type="text" class="et_input">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputlname">Expiration Date</label>
+        <div class="controls">
+          <a href="#" class="edit_month t_month" onclick="$('#profile_month').toggleClass('hidedrop'); return false;">Month</a>
+          <div class="profile_month t_month_drp hidedrop" id="profile_month">
+            <ul>
+              <li><a href="#">Jan</a></li>
+              <li><a href="#">Feb</a></li>
+              <li><a href="#">Mar</a></li>
+              <li><a href="#">Apr</a></li>
+              <li><a href="#">May</a></li>
+              <li><a href="#">Jun</a></li>
+              <li><a href="#">Jul</a></li>
+              <li><a href="#">Aug</a></li>
+              <li><a href="#">Sep</a></li>
+              <li><a href="#">Oct</a></li>
+              <li><a href="#">Nov</a></li>
+              <li><a href="#">Dec</a></li>
+            </ul>
+          </div>
+          <a href="#" class="edit_year t_year" onclick="$('#profile_year').toggleClass('hidedrop'); return false;">Year</a>
+          <div class="profile_year t_year_drp hidedrop" id="profile_year">
+            <ul>
+              <li><a href="#">2000</a></li>
+              <li><a href="#">2001</a></li>
+              <li><a href="#">2002</a></li>
+              <li><a href="#">2003</a></li>
+              <li><a href="#">2004</a></li>
+              <li><a href="#">2005</a></li>
+              <li><a href="#">2006</a></li>
+              <li><a href="#">2007</a></li>
+              <li><a href="#">2008</a></li>
+              <li><a href="#">2009</a></li>
+              <li><a href="#">2010</a></li>
+              <li><a href="#">2011</a></li>
+              <li><a href="#">2012</a></li>
+              <li><a href="#">2013</a></li>
+            </ul>
+          </div>
+          <label class="control-label" for="inputfname">Security Code</label>
+          <input type="text" class="et_input security_code">
+        </div>
+      </div>
+
+      <div class="edit_login_text billing_detail_text">Billing Details</div>
+      <hr class="password_control_group" />
+      <div class="control-group">
+        <label class="control-label" for="inputfname">First Name<sup class="star_red">*</sup></label>
+        <div class="controls">
+          <input type="text" class="et_input">
+          <span class="text_under_input">TradeYa is a tight nit community, we call everybody by thier first names here.</span>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputlname">Last Name</label>
+        <div class="controls">
+          <input type="text" class="et_input">
+          <span class="text_under_input">This will only be shared once you have confirmed a TradeYa.</span>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputfname">Address</label>
+        <div class="controls">
+          <input type="text" class="et_input">
+          <input type="text" class="et_input add2">
+          <a href="#" class="bill_state t_bill" onclick="$('#bill_states').toggleClass('hidedrop'); return false;"><%#= current_user.state.present? ? current_user.state : 'State' %></a>
+          <div class="bill_states t_bill_drp hidedrop" id="bill_states">
+            <ul>
+              <li><a href="#">AL</a></li>
+              <li><a href="#">AL</a></li>
+              <li><a href="#">AL</a></li>
+              <li><a href="#">AL</a></li>
+              <li><a href="#">AL</a></li>
+              <li><a href="#">AL</a></li>
+              <li><a href="#">AL</a></li>
+              <li><a href="#">AL</a></li>
+              <li><a href="#">AL</a></li>
+            </ul>
+          </div>
+          <input type="text" class="et_input zip" placeholder="Zipcode">
+        </div>
+      </div>
+      <hr class="password_control_group" />
+      <div class="control-group">
+        <div class="controls save_cancel_btn next_step3">
+          <input type="submit" class="edit_save" onclick="return false;" value="Next Step">
+        </div>
+      </div>
+    </div>
+  </form> -->
+
+  <div class="complete_section form_step3" id="cardsinformation">
+    <%= render 'transactions/partials/update_card' %>
+
+  <!-- <div class="complete_section form_step3">
+   
+      <div class="control-group step1_control_group">
+        <label class="control-label" for="inputfname">Credit Card</label>
+        <div class="controls edit_payment_info" id="cardsinformation">
+          <label class="radio credit_card">
+            <input type="radio" name="cardtype" /><label><img src="http://d3md9h2ro575fr.cloudfront.net/images/visaicon.png" style="margin-top: -7px;"></span>
+            <span class="same_shipping_text">
+              <%if @my_transaction.user.charge_cards.present?%>
+                Ending in <%= @my_transaction.user.charge_cards.last.last_4 %>
+              <%end%>
+            </span>
+          </label>
+          </label>
+          <span class="billing_text">Billing address</span>&nbsp;&nbsp;<span class="same_shipping_text_right">Same as shipping</span>
+          <hr class="password_control_group" />
+        </div>
+        <div class="control-group">
+        <div class="controls save_cancel_btn next_step3">
+          <input type="submit" class="edit_save" onclick="return false;" value="Next Step">
+        </div>
+      </div>
+      </div>
+
+    </div> -->
+  
+  <script>
+  $('#add_card').click(function(){
+   /* var amount = $('#amount').val(); */
+
+   var token = function(res){
+     var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+      $('#stripe-form-tag').append($input);
+      $('#stripe-form-tag').append('<input type=hidden name=transid value=<%= @my_transaction.id %>>').submit();
+   };
+
+   StripeCheckout.open({
+         key:         '<%= ENV['STRIPE_PUBLIC_KEY'] %>',
+         address:     true,
+         currency:    'usd',
+         name:        'Add Your Credit Card',
+         description: 'you are safe with us!',
+         panelLabel:  'Add Card',
+         token:       token
+       });
+   return false;
+ });
+  </script>
+ 
+  
+  <!-- Step3 Form End -->
+
+  <!-- Completed Details -->
+  <div class="complete_section form3_complete">
+    <form class="form-horizontal">
+      <div class="control-group step1_control_group">
+        <label class="control-label" for="inputfname">Credit Card</label>
+        <div class="controls edit_payment_info">
+          <label class="radio credit_card">
+            <input type="radio" name="cardtype" /><label><img src="http://d3md9h2ro575fr.cloudfront.net/images/visaicon.png" style="margin-top: -7px;"></span><span class="same_shipping_text">Ending in 9807</span></label>
+          </label>
+          <span class="billing_text">Billing address</span>&nbsp;&nbsp;<span class="same_shipping_text_right">Same as shipping</span>
+          <hr class="password_control_group" />
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- Completed Details -->
+</div>

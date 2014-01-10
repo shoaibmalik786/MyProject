@@ -1,0 +1,9 @@
+$('#alert_icon_<%= params[:id] %>').remove();
+
+<% if @user_alert_count == 0 %>
+	$('#spn_new_alert_count').text("You have no alerts.");
+<% elsif @new_alert_count == 0 and @user_alert_count > 0 %>
+	$('#spn_new_alert_count').text("You have no new alerts.");
+<% elsif @new_alert_count > 0 %>
+	$('#spn_new_alert_count').text("You have <%= @new_alert_count.to_s %> new alerts.");
+<% end %>

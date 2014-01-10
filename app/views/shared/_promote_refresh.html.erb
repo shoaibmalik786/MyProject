@@ -1,0 +1,17 @@
+<% if @pub and current_user and @item.user.id == current_user.id %>
+	<% if @status == ACTIVE %>
+		<a href="#" onclick="/*_kmq.push(['record', 'TradeYa Page Main Promote Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'ActivityShare', 'Clk_PrmtNowBtn', 'Click Promote Now Button']);*/ return openPromoteNowPopup(<%= @item.id %>);" id="promote_btn">
+		<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/share_frnds.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/share_frnds_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/share_frnds.png'"/>
+		</a>
+	<% end %>
+	<a href="#" id="promotenowclicked_btn" style = "display:none" onclick="return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/share_frnds_selected.png" /></a>
+	
+<% else %>
+	<% if @status == ACTIVE %>
+		<a href="#" onclick="/*_kmq.push(['record', 'TradeYa Page Make an Offer Button',{ 'SignedIn' : get_KMSignedIn(), 'Make Offer': offerForm }]); _gaq.push(['_trackEvent', 'Activity', 'Clk_MkOfrBtn', 'Click Make an Offer Link']);*/ return showOfferForm();" id="makeoffer_btn" class="makeoffer_btn">
+		<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/make_offer.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/make_offer_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/make_offer.png'"/>
+		</a>
+	<%end%>
+	<a href="#" id="makeofferclicked_btn" class="hidedrop makeofferclicked_btn" onclick="showOfferForm();"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/make_offer_selected.png" /></a>
+<% end %>
+

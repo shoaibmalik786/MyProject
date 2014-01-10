@@ -1,0 +1,80 @@
+<% if @currentOffers.size <= 0 %>
+<!-- If no Current Offers Present -->
+<div class="user_no_tradeyas">You have <b>no</b> active offers. See <a class="click" href="/items?category=newest">what's happening today</a> and make an offer! </div>
+<% else %>
+<!-- Tool Tip Icon-->
+<% if current_user and current_user.tooltip %>
+	<div class="info_tip_icon"><a href="#" onclick="/*_kmq.push(['record', 'dashboard currentoffers tooltip for your current offers',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'tooltip_currentoffers', 'Icon for Your Current Offers']);*/ return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/info_tip_icon.png" onmouseover="user_current_offer_tooltip_show();" onmouseout="user_current_offer_tooltip_hide();" /></a></div>
+<% end %>
+<!-- Tool Tip Icon ends -->
+<% counter = 1 %>
+<% @currentOffers.each_with_index do |currentOffer, index| %>
+<div class="user_current_offers">
+	<table width="100%" class="current_offer_head">
+		<tr valign="top">
+			<td width="70%">
+				<% if index == 0 %>
+					<div class="tooltip_post current_offer_tooltip" style = "margin-left: -174px; margin-top: -29px;"><img src=<%= getToolTipImage(TOOL_TIP_NEW_OFFER) %> /></div>
+					<div class="tooltip_post current_offer_tooltip_right" style = "margin-left: 123px; margin-top: 8px;"><img src=<%= getToolTipImage(TOOL_TIP_NEW_OFFER_RIGHT) %> /></div>
+				<% end %>
+				<div class="current_offer_title_div" >
+					<a href="<%= currentOffer.item.item_url %>" class="current_offer_title click" onclick="/*_kmq.push(['record', 'dashboard currentoffers link tradeya title publisher',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_TryaLnkLdnPg', 'TradeYa Title Link Publisher']);*/"><%= currentOffer.item.item_title %></a> by <%= currentOffer.item.user.title %>
+				</div>
+			</td>
+			<td width="7%">
+				<div class="user_offer_comment">Comments</div>
+				<div class="comment_count"><%=currentOffer.item.comments.size%></div>
+			</td>
+		</tr>
+	</table>
+	<table width="100%" class="current_image_section">
+		<tr valign="middle">
+			<td width="15%" valign="middle" class="user_image_border" style="width:  136px; height: 102px;">
+				<% if not currentOffer.item.item_photos[0].nil? %>
+					<div style="max-height: 102px; width: 136px; text-align: center; margin-left: auto; margin-right: auto;"><img src="<%= currentOffer.item.item_image(:thumb) %>" /></div>
+				<% elsif not currentOffer.item.item_videos[0].nil? %>
+					<a href="#" onclick="return false;"><div style="position:absolute;height:100px;width:135px;filter:alpha(opacity=60);-moz-opacity: 0.6;opacity: 0.6;"></div></a>
+					<div style="display:block;width:135px;height:100px" id="itemVideo_<%= currentOffer.id %>"></div>
+					<script>$(function(){videoAsRedirect('itemVideo_<%= currentOffer.id %>', '<%= currentOffer.item.item_videos[0].video %>','<%= currentOffer.item.item_url %>');});</script>
+				<% else %>
+					<div style="max-height: 102px; width: 136px; text-align: center; margin-left: auto; margin-right: auto;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/default_img.png" /></div>
+				<% end %>
+			</td>
+			<td width="5%">
+				<div><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrow_left_grey.png" /></div>
+			</td>
+			<td width="10%">
+				<% if not currentOffer.offer.item_photos[0].nil? %>
+					<div class="alert_img user_image_border" style="margin-top: 20px; text-align: center;"><img src="<%= currentOffer.offer.item_image(:small) %>" /></div>
+				<% elsif not currentOffer.offer.item_videos[0].nil? %>
+					<a href="<%= item_path(currentOffer.item,:showMyOffer=>true,:poffset=>'offer_' + currentOffer.id.to_s) %>"><div style="margin-top: 20px;position:absolute;height:52px;width:72px;filter:alpha(opacity=60);-moz-opacity: 0.6;opacity: 0.6;"></div></a>
+					<div class="alert_img user_image_border" style="margin-top: 20px;" id="offerVideo_<%= currentOffer.id %>"></div>
+					<script>$(function(){videoAsRedirect('offerVideo_<%= currentOffer.id %>', '<%= currentOffer.offer.item_videos[0].video %>',"<%= item_path(currentOffer.item,:showMyOffer=>true,:poffset=>'offer_' + currentOffer.id.to_s) %>");});</script>
+				<% else %>
+					<div class="alert_img user_image_border" style="text-align: center; margin-left: auto; margin-right: auto;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/default_img.png" /></div>
+				<% end %>
+			</td>
+			<td width="75%">
+				<div class="current_offer_title_div">
+					Your <a href="<%= item_path(currentOffer.item,:showMyOffer=>true,:poffset=>'offer_' + currentOffer.id.to_s) %>"class="current_offer_title click" onclick="/*_kmq.push(['record', 'dashboard currentoffers link tradeya title offerer',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_TryaLnkLdnPg', 'TradeYa Title Link Offerer']);*/"><%= currentOffer.offer.item_title %></a>
+				</div>
+				<div class="current_trd_btns">
+					<div style="float: left;"><a class="position-click" href="#" onclick="/*_kmq.push(['record', 'dashboard currentoffers body button delete',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_DeleteOffer', 'Delete Button for Your Current Offers']);*/ return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/delete_button.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/delete_button_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/delete_button.png'" onclick="prepareDelete(<%= currentOffer.id%>,'CURRENT');"/></a></div>
+					<!-- If offer also exits as tradeya, then edit offer not present -->
+					<% if !currentOffer.offer.tod %>
+						<div style="float: left; margin-top: -2px;"><a class="click" href= "<%= item_path(currentOffer.item)%>?edit_offer=<%=currentOffer.offer.id%>" class="promote_mng" style="margin-top: -31px" onclick="/*_kmq.push(['record', 'dashboard currentoffers body button edit offer',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_OfferLdnPg', 'Edit Offer Button']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/edit_offer_btn.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/edit_offer_btn_roll.png';"  onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/edit_offer_btn.png';" /></a></div>
+					<% end %>
+					<!--  -->
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<% counter += 1 %>
+<% end %>
+<% end %>
+<script>
+	$(document).ready(function() {
+		bindAjaxSpinner();
+	});
+</script>

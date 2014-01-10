@@ -1,0 +1,8 @@
+<%if params[:haves]%>
+	$("#haves_div").html("<%= escape_javascript render('shared/haves') %>");
+	<%if params[:haves] == "true" %>
+		$('#hv_msg').show();
+	<%elsif params[:haves] == "false"%>
+		$('#hv_msg').hide();
+	<%end%>
+<%end%>

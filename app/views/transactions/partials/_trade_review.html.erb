@@ -1,0 +1,40 @@
+<div class="transaction_detail_div trade_review_div" id="trade_review">
+  <div class="transaction_heading trade_review_heading">
+    <div class="heading_tick"><img src="http://d3md9h2ro575fr.cloudfront.net/images/tick_orange.png"></div>
+    4. Trade Review
+    <div class="tr_edit_btn"><a href="#" onclick="return false;">Edit</a></div>
+  </div>
+
+  <!-- Step4 Form Start -->
+  <div class="form_step4">
+    <%= form_tag transactions_make_trade_path do%>
+    <div class="make_trade_section">
+      <div class="shipping_total">
+        <span>Shipping Total</span>
+        <span class="trade_cost"><%= number_to_currency((@my_transaction.ship_charge + @oth_transaction.ship_charge) / 2) %></span><br><br>
+        <span>Trade Points</span>
+        <span class="trade_cost"><%= number_to_currency(@my_transaction.user.points / 2) %></span><span class="trade_points"><%= @my_transaction.user.points%> Points = </span>
+        <hr class="cost_total_hr">
+        <span class="cost_total"><%= number_to_currency(((@my_transaction.ship_charge + @oth_transaction.ship_charge) / 2) - (@my_transaction.user.points / 2)) %> </span>
+        <input type="hidden" name="cost_total" value="<%= ((@my_transaction.ship_charge + @oth_transaction.ship_charge) / 2) * 100 %>">
+        <input type="hidden" name="trans_id" value="<%= @my_transaction.id %>">
+        <input type="hidden" name="card_id" value="<%= @card_id %>">
+      </div>
+
+      <div class="make_trade_text">
+        By Clicking the “Make Trade” button, you confirm that you have read, understood, and accept our <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a><br><br>
+
+        Your trade cannot be modified once it is placed.
+      </div>
+    </div>
+    <div class="clear"></div>
+    <div class="control-group">
+      <div class="controls make_trade_btn next_step4">
+        <%= submit_tag nil, :class=>"edit_save",:value=>"Make Trade" %>
+      </div>
+    </div>
+  <% end %>
+  </div>
+  <!-- Step4 Form End -->
+
+</div>

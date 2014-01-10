@@ -1,0 +1,16 @@
+<%if session[:have_saved]%>
+  <script>
+    $(function(){
+      $('#hv_msg_item_page').show();
+      $('#haves_div img').attr('src','http://d3md9h2ro575fr.cloudfront.net/images/(have)-Selected.png')
+      $('#haves_div img').attr('onMouseOut','http://d3md9h2ro575fr.cloudfront.net/images/(have)-Selected.png')
+    });
+  </script>
+  <%session[:have_saved] = nil%>
+<%elsif session[:delete_item]%>
+  <div class="alert alert-success" id="haves_alert">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+    Your item has been successfully deleted.
+    <%session[:delete_item] = nil%>
+  </div>
+<%end%>

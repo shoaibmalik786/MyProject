@@ -1,0 +1,22 @@
+<%= form_tag wants_item_path(:id => @item.id),:id => "wants_action", :remote=>true do %>
+  <%if current_user && current_user.wants_item?(@item.id)%>
+    <%= hidden_field_tag 'item_card_want', false %>
+    <%if @icon%>
+    	<a href = "#" id="want_<%=@item.id%>" onclick="$(this).parents('#wants_action').submit();_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmWntd', 'Click wanted on Item Card']);mixpanel.track('Click wanted on Item Card'); return false;"><%= image_tag('http://d3md9h2ro575fr.cloudfront.net/images/card_want_selected.png')%></a>
+    <%else%>
+    <div class="wanted_div">
+    	<a href = "#" id="want_<%=@item.id%>" onclick="$(this).parents('#wants_action').submit();_gaq.push(['_trackEvent', 'Item card', 'Clk_ItmWntd', 'Click wanted on Item Card']);mixpanel.track('Click wanted on Item Card'); return false;">Wanted</a>
+    </div>
+    <%end%>
+  <%else%>
+    <%= hidden_field_tag 'item_card_want', true %>
+    <%if @icon%>
+    	<a href = "#" id="want_<%=@item.id%>" onclick="wantsUser('<%=@item.id %>',this);_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmWnt', 'Click want on Item Card']);mixpanel.track('Click want on Item Card'); return false;"><%= image_tag('http://d3md9h2ro575fr.cloudfront.net/images/card_want.png', :mouseover=>"http://d3md9h2ro575fr.cloudfront.net/images/card_want_hover.png", :mouseout=>'http://d3md9h2ro575fr.cloudfront.net/images/card_want_selected.png')%></a>
+  	<%else%>
+    <div class="trade_div">
+  		<a href = "#" id="want_<%=@item.id%>" onclick="wantsUser('<%=@item.id %>',this);_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmWnt', 'Click want on Item Card']);mixpanel.track('Click want on Item Card'); return false;">Want</a>
+    </div>
+  	<%end%>
+  <%end%>
+<%end%>
+

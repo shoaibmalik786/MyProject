@@ -1,0 +1,7 @@
+<% if current_user %>
+	var usrGreet = "My Dashboard!"
+	<% if @new_alert_count > 0 %>
+		usrGreet = usrGreet + " (<%= @new_alert_count %>)"
+	<% end %>
+	$('#user_dash_link').text(usrGreet);
+<% end %>

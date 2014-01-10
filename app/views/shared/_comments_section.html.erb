@@ -1,0 +1,96 @@
+<div class="item_info_heading">
+	<span>Comments</span>
+  <span class="pull-right"><span class="like_count"><%=@comments.count%></span>
+  	<span class="right_text"> <%= "Comment".pluralize(@comments.count) %></span>
+	</span>	
+</div>
+<% if (@comments.count == 0 and current_user.blank?)%>
+	<!-- If no Current Offers -->
+		<div id="comments_table_new">
+			<div class="blank_comments">Please <a href="#signin_modal" data-toggle="modal" aria-labelledby="myModalLabel" onclick="/*_kmq.push(['record', 'Login', {'Show Login Modal': 'Global Top Nav Login Text Link','SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'register', 'login', 'Login Top Nav']);*/">Login</a> to post comments  </div>
+		</div>
+	<!-- If no Current Offers -->
+<% else %>
+ 	<% @comments.each do |c| %>
+ 		<%if c.user.present? and  c.parent_comment_id.blank? %>
+			<div class="comment_detail_div">
+			  	<%if current_user and c.user_id == current_user.id%>
+					<div class="inbox_cross">
+						<%if trade_id.present?%>
+							<%#= hidden_field_tag :t, trade_id %>
+							<%= link_to image_tag("http://d3md9h2ro575fr.cloudfront.net/images/inbox_cross.png"),{:t => trade_id, :id=> c.id, :action => "destroy", :controller=>"comments"}, method: :delete, :remote=>true%>
+						<%else%>
+							<%= link_to image_tag("http://d3md9h2ro575fr.cloudfront.net/images/inbox_cross.png"), c, :controller=>"comments", method: :delete, :remote=>true%>
+						<%end%>
+					</div>
+				<%end%>
+				
+				<div class="user_image_comment"><img src="<%=c.user.user_image%>" style="width: 50px;" /></div>
+				<div class="comments_right_section">
+					<div class="user_name_comment_reg"><%=c.user.title%></div>
+					<p class="user_comment_detail"><%= c.comment%></p>
+					<div class="comment_on_comment_wrapper">
+						<div class="comment_links">
+							<a href="#" class="open_comment" id="reply_<%=c.id%>" onclick="return false;">Comment</a>
+							<a href="#" class="report_link" onclick="return false;">Report</a>
+						</div>
+						<div id="reply_section_div_<%=c.id%>" class="reply_section_div">
+							<%=render 'shared/reply_section', :comment => c%>
+						</div>
+						<div class="comment_on_comment_text_wrapper" id="reply_wrapper_<%=c.id%>">
+							<%=form_tag reply_path,remote: true do%>
+								<%=hidden_field_tag 'item_id' , @item.id%>
+								<%=hidden_field_tag 'comment_id',c.id%>	
+								<%=text_field_tag 'reply', nil, :class => 'user_comment_on_textarea reply_text',:id=>"reply_text_#{c.id}", :placeholder =>'Reply here....'%>
+								<%#=submit_tag%>
+							<%end%>
+						</div>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<script type="text/javascript">
+				$(".comment_on_comment_text_wrapper").hide();
+				$("#reply_<%=c.id%>").click(function(){
+					$("#reply_wrapper_<%=c.id%>").show();
+				})
+			</script>
+		<%end%>
+	<%end%>
+	<div class="clear"></div>
+		
+
+  	<%if current_user%>
+		<div class="comment_detail_div_textarea">
+			<div class="user_image_comment"><img src="<%= current_user.user_image%>" style="width: 50px;" /></div>
+			<div class="current_user_name"><%=current_user.title%></div>
+		</div>
+		<%= form_for(:comment, :url => {:controller =>"comments", :action=>"create", :id=>@item.id },:html  =>{:id => "comment_action"},:remote => true) do |f| %>
+			<% if trade_id.present? %>
+				<%= hidden_field_tag :t, trade_id %>
+				<p class="user_comment_detail" id="comment_section_p_<%=trade_id%>" onkeypress="return addCommentOnEnter(event,<%=trade_id%>,$(this));return false;"><%= f.text_area :comment,:placeholder=>"Add a comment...", :id=>'comment_box'%></p>
+			<% else %>
+				<p class="user_comment_detail" id="comment_section_p_<%=@item.id%>" onkeypress="return addCommentOnEnter(event,<%=@item.id%>,$(this));return false;"><%= f.text_area :comment,:placeholder=>"Add a comment...", :id=>'comment_box'%></p>
+			<% end %>
+		<% end %>
+	<%else%>
+		<div id="comments_table_new">
+			<div class="blank_comments">Please <a href="#signin_modal" data-toggle="modal" aria-labelledby="myModalLabel" onclick="/*_kmq.push(['record', 'Login', {'Show Login Modal': 'Global Top Nav Login Text Link','SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'register', 'login', 'Login Top Nav']);*/return false;">Login</a> to post comments  </div>
+		</div>
+	<%end%>
+	<div id="error_comment" style="color:red;margin-left:80px;margin-top:-20px;padding-bottom:12px"></div>
+	<div class="clear"></div>
+<%end%>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('input, textarea').placeholder();
+})
+	// $(".comment_on_comment_text_wrapper").hide();
+	// $(".comment_links a.open_comment").click(function(){
+	// $(".comment_on_comment_text_wrapper").show();
+	// });
+	// $(function(){
+ //    $('.user_comment_detail textarea').text("");
+	// })
+</script>

@@ -1,0 +1,36 @@
+<% if @userReviews.size > 0 %>
+<div id = "user_reviews" class="usr_rev_back">
+	<div class="rev_abt_usr">
+		Reviews About <%= @item.user.title %>
+	</div>
+	<% @userReviews.each do |review| %>
+	<table width="100%" class="usr_review_table">
+		<tr valign="top">
+			<td width="16%">
+				<div class="ofr_rev_image_smaller user_image_border">
+					<img src="<%= review.reviewer.user_image(:small) %>"<%= (review.reviewer.isFacebookUser? ? ' width=50px' : "") %> />
+				</div>
+				<% if review.reviewer.active %>
+					<div class="ofr_rev_name" onclick="callHoverProfile(<%= review.reviewer_id %>);"><%= review.reviewer.title %><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/trd_icon.png" style="margin-left: 5px;" /></div>
+					<div class="ofr_rev_city"><%= review.reviewer.location %></div>
+				<% else %>
+					<div class="deleted_user" style="float: left; margin-top: 5px;">This user isn't here anymore</div>
+				<% end %>
+			</td>
+			<td>
+				<div class="right_arw_rev"></div>
+				<div class="usr_rev_desc">
+					<%= review.review_text %>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<%end%>
+</div>
+<%end%>
+<script>
+	$(".ofr_rev_name").click(function(e) {
+		e.stopPropagation(); 
+		return false;
+	});
+</script>

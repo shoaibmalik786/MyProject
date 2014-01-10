@@ -1,0 +1,8 @@
+<% counter = (((params[:page].to_i) - 1 )* 10)+1 %>
+$("#itemcard").append("<%= escape_javascript(render 'user_card') %>");
+$('#itemcard').BlocksIt({
+	numOfCol: 5,
+	offsetX: 15,
+	offsetY: 15,
+	blockElement: '.user_card_right'
+});

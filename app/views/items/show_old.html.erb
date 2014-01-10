@@ -1,0 +1,317 @@
+<!-- Content Start -->
+<div class="container" id="container">
+	<div class="span10 item_middle_section">
+		<div class="center_content">
+			<div class="center_top_content">
+				<div class="item_left">
+					<!-- Completed Tradeya -->
+				<%if @item.completed?%>
+					<div class="ribbon"><img src="/assets/version2/traded_icon.png" /></div>
+				<!-- Completed Tradeya -->
+			  <%elsif @item.created_at > Time.now - 7.days%>	
+					<div class="ribbon">
+						<img src="/assets/version2/ribbon_new.png">
+					</div>
+			  <%end%>
+		 			<div class="item_heading_wrapper">
+						<div class="item_top_heading">
+							<%= truncate(@item.title, :length => 72) %> 
+							<%#= truncate(@item.item_title, :length => 72) %> 
+						</div>
+						<!-- <div class="top_one_logo">
+							<img src="/assets/version2/top_trade_logo.png">
+						</div> -->
+						<div class="want_have_top" id="want_have_top_div">
+							<ul>
+								<%if current_user and @owner.id != current_user.id %>
+									<li id="offer_div"><a href="#" onclick="$('#item-tabs #tab_my_offers').click(); return false;"><img src="/assets/version2/offer.png" onmouseover="this.src='/assets/version2/offer_hover.png'" onmouseout="this.src='/assets/version2/offer.png'"></a>
+									<!-- message on Offer click div start -->
+										<div class="offer_message_div" id="ofr_msg">
+											<div class="offer_message_div_inner">
+												<div class="offer_message_div_heading">Item Added to Wants Wall</div>
+												<div class="message_content">
+													<p>We’ve let <%=@owner.first_name%> know that you want her item and have sent her a link to your haves wall. </p>
+													<p>	In the meantime, <span><a href="/items/new">Add TradeYa Items</a></span> to your haves wall!</p>	 
+												</div>
+											</div>
+										</div>
+										<!-- message on offer click div Ends -->
+									</li>
+									<li><div id="wants_div"><%=render 'shared/wants'%></div>
+										<!-- message on want click div start -->
+										<div class="want_message_div" id="want_msg_1">
+											<div class="want_message_div_inner">
+												<div class="want_message_div_heading">Success! You’ve added your first want!</div>
+												<div class="message_content">
+													<p>2 things just happened! Whoa.</p>
+													<p>1. We’ve let <%=@owner.first_name_in_caps%> know that you want their item and have invited them to check out your stuff and see if you have anything they want. </p>
+													<p>2. We’ve added <%=@owner.first_name_with_s%> item to your wants wall so other TradeYa users know what kind of stuff you want. </p>
+													<p class="org">
+														<a href="#" onclick="$('#want_msg_1 #update_wants_message_reminder_form').submit(); closeWantsMessages();return false;">Got it! Dont show me this again</a>
+														<%= form_tag update_wants_message_reminder_user_path(:id => current_user.id), :id => "update_wants_message_reminder_form", :remote => true do %>
+															<%= hidden_field_tag :want_message_reminder, :value => true %>
+														<% end %>
+													</p>
+													<p class="blue"><a href="#" onclick="closeWantsMessages(); return false;">Remind me next time</a> </p>
+												</div>									
+											</div>
+										</div>
+										<div class="want_message_div" id="want_msg_2">
+											<div class="want_message_div_inner">
+												<div class="want_message_div_heading">Success! You’ve added your first want!</div>
+												<div class="message_content">
+													<p>We’ve let <%=@owner.first_name_in_caps%> know that you want their item and have invited them to check out your stuff and see if you have anything they want. </p>
+													<p> But wait! You don’t have much to trade! <%=@owner.first_name_in_caps%> is going to be awfully disappointed. </p>
+													<p  ><span><a href="/items/new">Click here</a></span> to add a couple things you have. It only takes a few seconds.</a> </p>
+													<p class="org">
+														<a href="#" onclick="$('#want_msg_2 #update_wants_message_reminder_form').submit(); closeWantsMessages();return false;">Got it! Dont show me this again</a> 
+														<%= form_tag update_wants_message_reminder_user_path(:id => current_user.id), :id => "update_wants_message_reminder_form", :remote => true do %>
+															<%= hidden_field_tag :want_message_reminder, :value => true %>
+														<% end %>
+													</p>
+													<p class="blue"><a href="#" onclick="closeWantsMessages();return false;">Remind me next time</a> </p>
+												</div>
+											</div>
+										</div>
+										<div class="want_message_div" id="want_msg_3">
+											<div class="want_message_div_inner">
+												<div class="want_message_div_heading">You don’t have much in your haves wall.</div>
+												<div class="message_content">
+													<p>Looks like you don’t have much left in your haves wall. <%=@owner.first_name_in_caps%> is going to be awfully disappointed.</p>
+													<p ><span><a href="/items/new">Click here</a></span> to add a couple things you have. It only takes a few seconds.</a></p>
+													<p class="org">
+														<a href="#" onclick="$('#want_msg_3 #update_wants_message_reminder_form').submit(); closeWantsMessages();return false;">Got it! Dont show me this again</a> 
+														<%= form_tag update_wants_message_reminder_user_path(:id => current_user.id), :id => "update_wants_message_reminder_form", :remote => true do %>
+															<%= hidden_field_tag :want_message_reminder, :value => true %>
+														<% end %>
+													</p>
+													<p class="blue"><a href="#" onclick="closeWantsMessages();return false;">Remind me next time</a> </p>
+												</div>
+											</div>
+										</div>
+										<!-- message on want click div Ends -->
+									</li>
+									<li><div  id="like_div"><%=render 'shared/like_button'%></div>
+										<!-- message on Like click div start -->
+										<div class="like_message_div" id="lk_msg">
+											<div class="want_message_div_inner">
+												<div class="like_message_div_heading">Item Added to Like Wall</div>
+												<div class="message_content">
+													<p>We’ve added this item to your Likes wall. </p>
+													<p>	In the meantime, <span><a href="/items/new">Add TradeYa Items</a></span> to your haves wall!</p>
+												</div>
+											</div>
+										</div>
+										<!-- message on Like click div Ends -->
+									</li>
+									<li ><div id="haves_div">
+										<a href="/items/new?have=<%=@item.id%>"><img src="/assets/version2/Have-Unselected.png" onmouseover="this.src='/assets/version2/(have)-Selected.png'" onmouseout="this.src='/assets/version2/Have-Unselected.png'"></a></div>
+										<!-- message on Haves click div start -->
+										<div class="have_message_div" id="hv_msg">
+											<div class="have_message_div_inner">
+												<div class="have_message_div_heading">Item Added to your Haves Wall</div>
+												<div class="message_content">
+													<p>We’ve added this item to your Haves wall. </p>
+													<p>	In the meantime, <span><a href="/items/new">Add TradeYa Items</a></span> to your haves wall!</p>
+												</div>
+											</div>
+										</div>
+										<!-- message on Haves click div Ends -->
+									</li>
+								<%elsif current_user and @owner.id == current_user.id %>
+									<li><a href="<%=edit_item_path(@item.id)%>"><img src="/assets/version2/edit_icon.png" onmouseover="this.src='/assets/version2/edit_icon_hover.png'" onmouseout="this.src='/assets/version2/edit_icon.png'"></a></li>
+								<%end%> 
+							</ul>
+						</div>
+					</div>
+					<div class="item_image_wrapper">
+			 			<div class="large_image" id="large_image">
+			 				<img class="l_image" src="<%= @item.item_image(:large) %>" onclick="clickImage('<%= @item.item_image_full %>', <%= @item.isImgAutoWidth %>,true)" />
+						</div>
+						<%if @item.item_all_image.count > 1 %>
+							<!-- <div class="black_strip"></div> -->
+							<div class="image_thumbs">
+							  <ul>
+									<% @item.item_all_image(:large).each do |x|%> 
+										<li><img class="image_unselected" src="<%= x %>", onclick="clickAllImage('<%= x %>'); $(this).addClass('image_selected'); $(this).removeClass('image_unselected'); $('.image_thumbs ul li img').not(this).removeClass('image_selected'); $('.image_thumbs ul li img').not(this).addClass('image_unselected');"></li>	            
+									<%end%>
+								</ul>
+							</div>
+						<%end%>
+					</div>
+				</div>
+				<div class="user_card_right">
+					<%= render 'shared/user_card', :user => @owner %>
+				</div>
+				<div class="similar_items_wrapper">
+					<div class="similar_items_heading">
+						Similar Items
+					</div>
+					<div class="similar_images_wrapper">
+	            <% @similar_items.each do |similar_item| %>
+	            	<%#if similar_item.id != @item.id%>
+								  <%=link_to image_tag(similar_item.item_image(:thumb), :height=>"82", :width=>"82"), similar_item.item_url%>
+								<%#end%>
+							<%end%>
+					</div>
+
+				</div>
+				<div class="new_share_wrapper">
+					<span><a href="#" onclick="/*_kmq.push(['record', 'Modal Promote Facebook Share Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'ActivityShare', 'Clk_FBPrmtMdl', 'Click FB Share on Promote Modal']);*/ window.open('http://www.facebook.com/sharer.php?s=100&p[title]='+ encodeURIComponent('Up for trade on TradeYa: <%= escape_javascript(@item.item_title) %>') + '&p[url]=' + encodeURIComponent('<%= escape_javascript(@item.pl_url) %>') + '&p[images][0]=' + encodeURIComponent('<%= escape_javascript(@item.item_image) %>') + '&p[summary]=' + encodeURIComponent('<%= escape_javascript(@item.desc) %>'), '_blank','height=400px, width=650px, left=' + ((screen.width/2)-(550/2)) + ', top=' + ((screen.height/2)-(420/2)), 'facebook'); return false;"><img src="/assets/version2/facebook.png"></a></span>
+					<span><a href="https://twitter.com/intent/tweet?text=<%="Up for TradeYa : " + escape_javascript(@item.item_title) %>&tw_p=tweetbutton&url=<%= escape_javascript(@item.item_url)%>"><img src="/assets/version2/twitter.png"></a></span>
+					<span><a href='javascript:void((function()%7Bvar%20e=document.createElement(&apos;script&apos;);e.setAttribute(&apos;type&apos;,&apos;text/javascript&apos;);e.setAttribute(&apos;charset&apos;,&apos;UTF-8&apos;);e.setAttribute(&apos;src&apos;,&apos;http://assets.pinterest.com/js/pinmarklet.js?r=&apos;+Math.random()*99999999);document.body.appendChild(e)%7D)());'><img src="/assets/version2/pinterest.png"></a></span>
+					<span><a href="mailto:<%#= @owner.email %>?subject=Wanna%20trade%3F&body=<%=@item.item_url%>"><img src="/assets/version2/mail.png"></a></span>
+				</div>
+			</div>
+		</div>
+		<!-- If Completed TradeYa -->
+		<%if @item.completed?%>
+			<div class="completed_tradeya_ban"><img src="/assets/version2/completed_tradeya_ban.png" /></div>
+		<%end%>
+		<!-- If Completed TradeYa -->
+
+		<!-- REQUEST DIV START -->
+		<%if @item.live?%>
+			<%if current_user and @owner.id != current_user.id and !current_user.has_request_info?(@item.id)%>
+				<div class="request_info_wrapper" id="req_info">
+					<span>Is this item missing important information?</span>
+					<%=link_to 'Request Info', request_info_path(:id => @item),:id=>"info", :remote => true, :onclick => "$('#request').show(); $('#req_info').hide();"%>
+				</div>
+			<%end%>
+		<%end%>
+		<!-- REQUEST DIV ENDS-->
+
+		<!-- THIS MSG WILL SHOW AFTER REQUEST -->
+
+		<div class="info_bar_msg" id ="request" style="display:none">
+				<p>More information for this item has been requested. Thanks for helping the Tradeya Community stay in shape!</p>
+				<a href="#" onclick="$('#request').hide(); return false;"><img src="/assets/version2/inbox_cross.png"></a>
+		</div>
+		<!-- THIS MSG WILL SHOW AFTER REQUEST -->
+
+		<!-- Item info Section Start -->
+		<div class="item_info">
+			<div class="item_info_heading">
+				<span>Item Info</span>
+				<span class="pull-right"><span id="item_like_count" class="like_count"><%=@like_count %></span>	
+					<span> <%= "Like".pluralize(@like_count) %></span>
+			</div>
+			<div class="info_condition">
+				<%if !@item.category.present? or (@item.category.present? and @item.category.parent.name.downcase != "services") %>
+				  <span class="item_info_prop">Condition: </span>
+					<%if @item.condition == USED_CONDITION %>
+						<span class="item_info_type">Used</span>
+					<%elsif @item.condition == NEW_CONDITION %>
+						<span class="item_info_type">New</span>
+					<%end%>
+				<%end%>
+				<p class="item_info_detail">
+					<%=simple_format(@item.desc).html_safe%>
+				</p>
+			</div>
+			<hr />
+			<div class="info_delivery">
+				<span class="item_info_prop">Delivery: </span>
+				<%if @item.category.present? and @item.category.parent.name.downcase == "services" %>
+          <%if @item.delivery == AT_LOCATION %>
+				  	<span class="item_info_type">At Location</span>
+				  <%elsif @item.delivery == ANYWHERE%>
+				  	<span class="item_info_type">Anywhere</span>
+				  <%end%>
+				<%else%>
+          <%if @item.delivery == PICK_UP_ONLY %>
+				  	<span class="item_info_type">Pick Up Only</span>
+				  	<!-- <p class="item_info_detail">We will not trade it with someone who does not have proper moving supplies. </p> -->
+				  <%elsif @item.delivery == DELIVERY_ONLY%>
+				    <span class="item_info_type">Delivery only</span>
+				    <!-- <p class="item_info_detail">We will not trade it with someone who does not have proper moving supplies. </p> -->
+				  <%elsif @item.delivery == PICK_UP_AND_DELIVERY%>
+				  	<span class="item_info_type">Pick-up or Delivery</span>
+				  	<!-- <p class="item_info_detail">We will not trade it with someone who does not have proper moving supplies. </p> -->
+				  <%end%>
+				<%end%>
+				<p class="item_info_detail">
+					<%=simple_format(@item.delivery_desc).html_safe%>
+				</p>
+			</div>
+
+		</div>
+		<!-- Item info Section End -->
+
+		<!-- Comments Section Start -->
+		<div class="comments_section_div" id="comments_section_div_show">
+			<%= render "shared/comments_section", :trade_id => nil %>
+			<div class="clear"></div>
+		</div>
+		<!-- Comments Section End -->
+		
+		<!-- Trader Section Start -->
+		<!--div class="trader_section_div">
+			<div class="trader_section_image"><img src="<%= @item.user.user_image%>" /></div>
+			<div class="trader_info_section">
+				<div class="trader_name_bottom"><%#=@item.user.title%></div>
+				<div class="trader_city_bottom"><%#=@item.user.location%></div>
+				<%#if @item.user.location != "-"%>
+					<div class="trader_distance_bottom"><%#=@item.user.distance_between_users(session[:user_ll],@item.user)%> Miles from you</div>
+				<%#end%>
+				<div class="trader_comment_bottom"><%#=@item.desc%></div>
+			</div>
+			<div class="clear"></div>
+		</div-->
+		<!-- Trader Section End -->
+		
+		<!-- tabs start -->
+		<div class="item_tabs_wrapper">
+			<ul class="nav nav-tabs item-tabs" id="item-tabs">
+			  <li><%=link_to 'Trade Offers', trade_offers_item_path(@item.id),:data => {:toggle=>"tab" }, :id => "tab_trade_offers_tab", :remote=>true, :onclick => "item_tab_selected(this); return false;"%></li>
+			  <%if current_user and @owner.id != current_user.id %>
+			  	<li><%=link_to 'My Offers', my_offers_item_path(@item.id),:data => {:toggle=>"tab" }, :id => "tab_my_offers", :remote=>true , :onclick => "item_tab_selected(this); return false;"%></li>
+			  <%end%>
+			  <%#if @item.accepted_offers.present?%>
+			  	<li><%=link_to 'Accepted Offers', accepted_offers_item_path(@item.id),:data => {:toggle=>"tab" }, :id => "tab_accepted_offers", :remote=>true, :onclick => "item_tab_selected(this); return false;"%></li>
+			  <%#end%>
+			  <%#if @item.rejected_offers.present?%>
+			  	<li><%=link_to 'Rejected Offers', rejected_offers_item_path(@item.id),:data => {:toggle=>"tab" }, :id => "tab_rejected_offers", :remote=>true, :onclick => "item_tab_selected(this); return false;"%></li>
+			  <%#end%>
+			</ul>
+			<div class="item_tabs_content_wrapper">
+				<div class="tab-content" id="item-tab-content">	   
+				</div>
+			</div>
+		</div>
+		<!-- tabs Ends -->
+	</div>
+</div>
+<!-- Content End -->
+<script>
+	$(function() {	
+		<%if @item.completed? %>
+			$("#item-tabs #tab_accepted_offers").click();
+		<%elsif current_user and params[:tab] == "myoffers"%>
+			$("#item-tabs #tab_my_offers").click();
+		<% elsif %>
+			$("#item-tabs #tab_trade_offers_tab").click();
+		<% end %>
+  });
+
+  window.onload = function() {
+  	<%if params[:section] == "comments"%>
+			customScroll('#comments_section_div_show');
+		  // $('body').scrollTo('#comments_section_div_show');  
+		<%end%>
+	};
+</script>
+
+<script>
+	$(function(){
+		$("#wrap").click(function(){
+			$("#lk_msg").hide();
+			$("#hv_msg").hide();
+			$("#want_msg_1").hide();
+			$("#want_msg_2").hide();
+		})
+	});
+</script>
+<script type="text/javascript">
+$('.item_top_heading').boxfit({multiline: true});
+</script>

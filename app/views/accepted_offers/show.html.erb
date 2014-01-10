@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Trade:</b>
+  <%= @accepted_offer.trade_id %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @accepted_offer.user_id %>
+</p>
+
+<p>
+  <b>Recent TradeYa:</b>
+  <%= @accepted_offer.recent_tradeya %>
+</p>
+
+
+<%= link_to 'Edit', edit_accepted_offer_path(@accepted_offer) %> |
+<%= link_to 'Back', accepted_offers_path %>

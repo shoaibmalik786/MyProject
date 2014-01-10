@@ -1,0 +1,19 @@
+$("#tab-content").html("<%= escape_javascript render('shared/private_messaging') %>");
+$('textarea#sendNewTextArea').val("<%= @body_for_text %>");
+$('input#new_message_subject').val("<%= @subject_for_text %>");
+if(<%= @replyAction %>){
+	$('.pvt_msg_right_area_wrapper').show();
+	$('.empty_inbox_block_wrapper').hide();	
+} else if (<%= @newMessage %>){
+	if(<%= @flash %>){
+		$('.new_message_block_right_wrapper').show();
+		$('.empty_inbox_block_wrapper').hide();	
+	} else {
+		$('.new_message_block_right_wrapper').hide();
+		$('.empty_inbox_block_wrapper').show();
+	}
+} else if (<%= @trash %>) {
+	$('.pvt_msg_right_area_wrapper').show();
+	$('.empty_inbox_block_wrapper').hide();	
+} 
+$('#inboxlink').addClass("active");

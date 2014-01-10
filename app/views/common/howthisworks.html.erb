@@ -1,0 +1,60 @@
+<script>
+	$(window).load(function(){
+		$('#footer').css('z-index', '0');
+	});
+</script>
+<div id="how_back" style="width: 100%;">
+	<img alt="full screen background image" src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/how_bck.png" id="full-screen-background-image" />
+	<div align="center" id="htw_div" >
+		<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/howthisworks.png"/>
+		<div class="how_step1">
+			<span class="count">1.</span> <span><a href="#" onclick="/*_kmq.push(['record', 'Login', {'Show Login Modal': 'How this works tell us link','SignedIn' : get_KMSignedIn()}]);*/ return show_onboarding();">Tell us about yourself</a> so we can find you<br/>
+			awesome people to trade with.</span>
+		</div>
+		<a href="#" onclick="/*_kmq.push(['record', 'Login', {'Show Login Modal': 'How this works tell us image','SignedIn' : get_KMSignedIn()}]);*/ return show_onboarding();"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/how_step1.png" /></a>
+		<div class="how_step2">
+			<span class="count">2.</span> <span>Post what you have to trade and what you want<br/>
+			in exchange by clicking <a href="/items/new">Submit a TradeYa.</a>
+		</div>
+		<a href="/items/new"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/how_step2.png" /></a>
+		<div class="how_step3" style="margin-top: 15px;">
+			<span class="count">3.</span> <span><a href="/items?category=newest">Take a look though the marketplace</a> to see<br/>
+			amazing stuff you can get without spending money!</span>
+		</div>
+		<a href="/items?category=newest"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/how_step3.png" /></a>
+		<div style="text-align: center; margin-top: 40px;"><a href="#" onclick="/*_kmq.push(['record', 'Login', {'Show Login Modal': 'How this works get started','SignedIn' : get_KMSignedIn()}]);*/ return show_onboarding();"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/get_started.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/get_started_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/get_started.png'" /></a></div>
+		<div class="sharing_buttons">
+			<ul>
+				<li>
+					<fb:like href="http://<%= Tradeya::Application.config.action_mailer.default_url_options[:host]%>/" send="false" layout="button_count" width="100" show_faces="false" font=""></fb:like>
+				</li>
+				<li>
+					<div class="fb-send" data-href="http://<%= Tradeya::Application.config.action_mailer.default_url_options[:host]%>/" overflow="visible"></div>
+				</li>
+				<li>
+					<a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2F<%= Tradeya::Application.config.action_mailer.default_url_options[:host] %>&media=http%3A%2F%2Fassets.pinterest.com%2Fimages%2FPinExt.png" class="pin-it-button" count-layout="horizontal"><img border="0" src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images.pinterest.com/images/PinExt.png" title="Pin It" /></a>
+				</li>
+				<li>
+					<div style="float: left; width: 56px;">
+						<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://<%= Tradeya::Application.config.action_mailer.default_url_options[:host]%>/" data-count="none">Tweet</a>
+					</div>
+				</li>
+				<li>
+					<div class="g-plus" data-action="share" data-annotation="none" data-href="http://<%= Tradeya::Application.config.action_mailer.default_url_options[:host]%>/"></div>
+					<script type="text/javascript">
+  						(function() {
+    						var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    						po.src = 'https://apis.google.com/js/plusone.js';
+    						var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  						})();
+					</script>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<script>
+	$(function(){
+		try{FB.XFBML.parse();}catch(err){}
+	});
+</script>

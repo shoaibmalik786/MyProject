@@ -1,0 +1,73 @@
+	<% if params[:itemimg] == 'true' %>if (!parent.isCancelSubmitOffer){<% end %>
+	// parent.document.getElementById('<%= params[:img_prev_id] %>').setAttribute('src', '<%= escape_javascript(URI.encode(@path.gsub('public/', '/'))) %>');
+	<% if @f_f_error %>
+		parent.document.getElementById('<%= params[:fld_id] %>').value = '';
+		<% if not @p.nil? %>
+			if(parent.document.getElementById('photomessage')) parent.document.getElementById('photomessage').textContent = "Image file not valid";
+		<% end %>
+		<% if params[:itemimg] == 'true' and not @p.nil? and not @p.photo_file_name.nil? and @p.valid? and (@p.photo_geometry(:original).width < 50 or @p.photo_geometry(:original).height < 50) %>
+			<% @p.destroy %>
+			if(!parent.isCancelSubmitOffer && parent.document.getElementById('photomessage')) parent.document.getElementById('photomessage').textContent = "Oops! That image is too small. Please try again...";
+		<% elsif not @p.nil? and not @p.photo_file_name.nil? and @p.valid? and (@p.photo_geometry(:original).width < 50 or @p.photo_geometry(:original).height < 50) %>
+			<% @p.destroy %>
+			if(parent.document.getElementById('photomessage')) parent.document.getElementById('photomessage').textContent = "Oops! That image is too small. Please try again...";
+		<% end %>
+		if(parent.document.getElementById('selected_photo_file')) parent.document.getElementById('selected_photo_file').textContent = "No file selected";
+		if(parent.document.getElementById('upload_img_div')) parent.document.getElementById('upload_img_div').style.display = 'none';
+	<% else  %>
+		<% if params[:itemimg] == 'true' %>
+			$('#progress .bar').css('width','100%');
+			parent.document.getElementById("item_item_photo_id").value = "<%=@p.id%>";
+			parent.AddItemPhoto("<%=@p.photo %>");
+			$("#photo_upload_modal").modal("hide");
+			<%if @item.present?%>
+				$("#edit_image_div").html("<%= escape_javascript render('shared/edit_image_section',:photos=>@item.item_photos) %>");
+			<%end%>
+			// if(parent.document.getElementById('photomessage')) parent.document.getElementById('photomessage').textContent = "";
+			// if(parent.document.getElementById('upload_img_div')) parent.document.getElementById('upload_img_div').style.display = 'block';
+
+			// parent.document.getElementById('tradeya_img_prev_small').setAttribute('src', '<%#= escape_javascript(URI.encode(@path.gsub('public/', '/'))) %>');
+
+			// var preview_w = 136;
+			// var preview_h = 102;
+			// var showCropPreview = true;
+		<% else %>
+			// if(parent.document.getElementById('error_explanation_epi')) parent.document.getElementById('error_explanation_epi').textContent = "";
+			// if(parent.document.getElementById('error_explanation')) parent.document.getElementById('error_explanation').textContent = "";
+			// if(parent.document.getElementById('tradeya_img_prev_small'))parent.document.getElementById('tradeya_img_prev_small').setAttribute('src', '<%= escape_javascript(URI.encode(@path.gsub('public/', '/'))) %>');
+
+			// var preview_w = 150;
+			// var preview_h = 150;
+			// var showCropPreview = true;
+			$('#progress .bar').css('width','100%');
+			// parent.document.getElementById("user_user_photo_id").value = "<%=@p.id%>";
+			$("#photo_upload_modal").modal("hide");
+			<%if params[:refreshModal].blank?%>
+				parent.AddUserPhoto("<%=@p.photo(:large) %>", <%=@p.id %>);
+			<%else%>		
+			<%end%>
+			$("#edit_image_section_div").html("<%= escape_javascript render('shared/edit_image_section',:photos => current_user.user_photos) %>");
+		<% end %>
+		// if(parent.document.getElementById('<%#= params[:item_photo_id] %>'))parent.document.getElementById('<%#= params[:item_photo_id] %>').value = <%#= @p.id %>;
+		// if(parent.jcrop_api)parent.jcrop_api.destroy();
+		// setTimeout(function() {
+		// 	parent.document.getElementById('<%#= params[:fld_id] %>').value = '';
+		// 	parent.cropReady('<%#= params[:img_prev_id] %>', <%#= @p.photo_geometry(:original).width %>, <%#= @p.photo_geometry(:crop_large).width %>, <%#= @p.photo_geometry(:crop_large).height %>, preview_w, preview_h, showCropPreview, '<%#= params[:form_id] %>', <%#= (params[:itemimg] == 'true' ? 'true' : 'false') %>);
+		// }, 2500);
+	<% end %>
+	// <%# if not @isImgAutoWidth.nil? and @isImgAutoWidth %>
+	// 	parent.document.getElementById('<%#= params[:img_prev_id] %>').style.width = 'auto';
+	// 	parent.document.getElementById('<%#= params[:img_prev_id] %>').style.height = '254px';
+	// <%# elsif not @isImgAutoWidth.nil? and not @isImgAutoWidth %>
+	// 	parent.document.getElementById('<%#= params[:img_prev_id] %>').style.width = '350px';
+	// 	parent.document.getElementById('<%#= params[:img_prev_id] %>').style.height = 'auto';
+	// <%# end %>
+	// if(parent.document.getElementById('ind_<%#= params[:img_prev_id] %>')) parent.document.getElementById('ind_<%#= params[:img_prev_id] %>').style.display = 'none';
+
+	// if(parent.document.getElementById('image_spinner'))parent.document.getElementById('image_spinner').style.display = 'none';
+	// if(parent.document.getElementById('profile_spinner'))parent.document.getElementById('profile_spinner').style.display = 'none';
+	<% if params[:itemimg] == 'true' %>}<% end %>
+
+	if(parent.canSubmitCanNext == false) parent.canSubmitCanNext = true;
+	parent.isImageUploading = false;	
+	$('#progress .bar').css('width','0');

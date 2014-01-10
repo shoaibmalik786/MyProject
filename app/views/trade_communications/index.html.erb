@@ -1,0 +1,21 @@
+<h1>Listing trade_communications</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @trade_communications.each do |trade_communication| %>
+  <tr>
+    <td><%= link_to 'Show', trade_communication %></td>
+    <td><%= link_to 'Edit', edit_trade_communication_path(trade_communication) %></td>
+    <td><%= link_to 'Destroy', trade_communication, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Trade communication', new_trade_communication_path %>

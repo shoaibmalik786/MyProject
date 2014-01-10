@@ -1,0 +1,42 @@
+# environments:
+#   Staging_20:
+#     migrate: false                            # run migration command on every deploy
+#     migration_command: rake fancy:migrate     # default migration command
+#     # branch: master                            # default branch to deploy
+#     default: true                             # make this environment default
+#     bundle_without: test development mygroup  # exclude groups on bundle install
+#     copy_exclude:                             # don't rsync the following dirs
+#     - .git
+#     maintenance_on_restart: false             # show maintenance page during app restart (default: false except for glassfish and mongrel)
+#     maintenance_on_migrate: false             # show maintenance page during migrations (default: true)
+#     precompile_assets: true                   # enables rails assets precompilation (default: inferred using app/assets and config/application.rb)
+#     asset_roles: :all                         # specify on which roles to compile assets (default: [:app, :app_master, :solo] - must be an Array)
+#     asset_roles:                              # (Array input for multiple roles) - Use hook deploy/before_compile_assets.rb for finer grained control.
+#     - :app
+#     - :app_master
+#     ignore_database_adapter_warning: true     # hide database adapter warning if you don't use MySQL or PostgreSQL (default: false)
+#   tradeya:
+#     migrate: false
+#     precompile_assets: true
+---
+defaults:
+  bundler: detect
+  maintenance_on_migrate: true
+  precompile_assets: true
+  precompile_unchanged_assets: false
+  asset_dependencies:
+  - app/assets
+  - lib/assets
+  - vendor/assets
+  - Gemfile.lock
+  - config/routes.rb
+  - config/application.rb
+  assets_strategy: shifting
+  asset_roles:
+    - :solo
+    - :app
+    - :app_master
+  ignore_database_adapter_warning: true
+  migrate: false
+environments:
+  Staging_20: {}

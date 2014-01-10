@@ -1,0 +1,359 @@
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+<script src="/assets/jquery-ui-timepicker-addon.js" type="text/javascript"></script>
+<script>
+	$(function() {
+		$("#exchange_date_1").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
+		$("#exchange_date_2").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
+		$("#exchange_date_3").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
+		$("#exchange_time_1").timepicker({
+                        controlType: 'select',
+                        timeFormat: "h:mm TT",
+                        ampm: true
+                });
+		$("#exchange_time_2").timepicker({
+                        controlType: 'select',
+                        timeFormat: "h:mm TT",
+                        ampm: true
+                });
+		$("#exchange_time_3").timepicker({
+                        controlType: 'select',
+                        timeFormat: "h:mm TT",
+                        ampm: true
+                });
+	});
+</script>
+
+
+<!-- Exchange Method Modal 1: I'll Bring it to You Starts -->
+<div id="exchange_method_modal4" class="iwill_bring modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div class="exchange_heading">I’ll bring it to you...</div>
+	<div class="exchange_otherheading">Please enter a date and time below.</div>
+	<div class="exchange_body">
+		<%if @passive_trade.present?%>
+  		<%= form_for :transactions, :url =>passive_trade_transactions_path(@passive_trade), :html=>{:id => "i_will_bring_it_to_you_form"}, :remote=>true do |f| %>
+  			<%= f.hidden_field :passive_trade_id, :value => @passive_trade.id %>
+  			<%= f.hidden_field :exchange_method, :value => I_WILL_BRING_IT_TO_YOU %>
+  			<%= f.text_field :exchange_date, :class=>"exchange_date", :id=>"exchange_date_1", :placeholder=>"Date"%>
+  			<%= f.text_field :exchange_time, :class=>"exchange_time", :id=>"exchange_time_1", :placeholder=>"Time"%>
+  			<%= f.text_area :exchange_note, :class=>"exchange_textarea", :placeholder=>"Note..."%>
+			<%end%>
+  	<%elsif @trade.present?%>
+  		<%= form_for :transactions, :url =>trade_transactions_path(@trade), :html=>{:id => "i_will_bring_it_to_you_form"}, :remote=>true do |f| %>
+  			<%= f.hidden_field :trade_id, :value => @trade.id %>
+  			<%= f.hidden_field :exchange_method, :value => I_WILL_BRING_IT_TO_YOU %>
+  			<%= f.text_field :exchange_date, :class=>"exchange_date", :id=>"exchange_date_1", :placeholder=>"Date"%>
+  			<%= f.text_field :exchange_time, :class=>"exchange_time", :id=>"exchange_time_1", :placeholder=>"Time"%>
+  			<%= f.text_area :exchange_note, :class=>"exchange_textarea", :placeholder=>"Note..."%>
+			<%end%>
+  	<%end%>
+		<input type="submit" value="Submit" class="exchange_submit" onclick="$('#i_will_bring_it_to_you_form').submit();$('#exchange_method_modal4').modal('hide');">
+		<input type="submit" value="Cancel" class="exchange_cancel" onclick="$('#exchange_method_modal4').modal('hide');">
+	</div>
+</div>
+<!-- Exchange Method Modal 1: I'll Bring it to You Ends -->
+
+
+<!-- Exchange Method Modal 2: You Come Get It Starts -->
+<div id="exchange_method_modal2" class="you_come modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div class="exchange_heading">You come to me...</div>
+	<div class="exchange_subheading">Please enter your information below so that can bring his item over.</div>
+	<div class="exchange_body">
+		<%if @passive_trade.present?%>
+  		<%= form_for :transactions, :url =>passive_trade_transactions_path(@passive_trade), :html=>{:id => "you_come_get_it_form"}, :remote=>true do |f| %>
+  			<%= f.hidden_field :passive_trade_id, :value => @passive_trade.id %>
+  			<%= f.hidden_field :exchange_method, :value => YOU_COME_GET_IT %>
+
+  			<%= fields_for :addresses do |address| %>
+    			<%= address.text_field :address_line_1, :class=>"exchange_add1"%>
+    			<%= address.text_field :city, :class=>"exchange_add2"%>
+    			<%stateslist = ['AL','AK','AZ','AR','CA','CO','CT','DC','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY']+['AB','BC','LB','MB','NB','NF','NS','NU','NW','ON','PE','QC','SK','YU']%>
+	        <a href="#" class="exchange_state" onclick="$('#exchange_state_drp1').toggleClass('hidedrop'); return false;">State</a>
+	        <div class="exchange_state_drp hidedrop" id="exchange_state_drp1">
+	          <ul>
+	            <%stateslist.each do |state|%>
+	            <li><a href="#" onclick="selectExchangeState1(this); return false;"><%=state%></a></li>
+	            <%end%>
+	          </ul>
+	        </div>
+	        <%= address.hidden_field :state%>
+	        <%= address.text_field :zipcode, :class => "exchange_zip", :placeholder => "Zip Code" %>
+  			<% end %>
+
+  			<%= f.text_field :exchange_date, :class=>"exchange_date", :id=>"exchange_date_2", :placeholder=>"Date"%>
+  			<%= f.text_field :exchange_time, :class=>"exchange_time", :id=>"exchange_time_2", :placeholder=>"Time"%>
+  			<%= f.text_area :exchange_note, :class=>"exchange_textarea", :placeholder=>"Note..."%>
+			<%end%>
+  	<%elsif @trade.present?%>
+  		<%= form_for :transactions, :url =>trade_transactions_path(@trade), :html=>{:id => "you_come_get_it_form"}, :remote=>true do |f| %>
+  			<%= f.hidden_field :trade_id, :value => @trade.id %>
+  			<%= f.hidden_field :exchange_method, :value => YOU_COME_GET_IT %>
+  			
+  			<%= fields_for :addresses do |address| %>
+    			<%= address.text_field :address_line_1, :class=>"exchange_add1"%>
+    			<%= address.text_field :city, :class=>"exchange_add2"%>
+    			<%stateslist = ['AL','AK','AZ','AR','CA','CO','CT','DC','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY']+['AB','BC','LB','MB','NB','NF','NS','NU','NW','ON','PE','QC','SK','YU']%>
+	        <a href="#" class="exchange_state" onclick="$('#exchange_state_drp1').toggleClass('hidedrop'); return false;">State</a>
+	        <div class="exchange_state_drp hidedrop" id="exchange_state_drp1">
+	          <ul>
+	            <%stateslist.each do |state|%>
+	            <li><a href="#" onclick="selectExchangeState1(this); return false;"><%=state%></a></li>
+	            <%end%>
+	          </ul>
+	        </div>
+	        <%= address.hidden_field :state%>
+	        <%= address.text_field :zipcode, :class => "exchange_zip", :placeholder => "Zip Code" %>
+  			<% end %>
+
+  			<%= f.text_field :exchange_date, :class=>"exchange_date", :id=>"exchange_date_2", :placeholder=>"Date"%>
+  			<%= f.text_field :exchange_time, :class=>"exchange_time", :id=>"exchange_time_2", :placeholder=>"Time"%>
+  			<%= f.text_area :exchange_note, :class=>"exchange_textarea", :placeholder=>"Note..."%>
+			<%end%>
+  	<%end%>
+		
+		<input type="submit" value="Submit" class="exchange_submit" onclick="$('#you_come_get_it_form').submit(); $('#exchange_method_modal2').modal('hide');">
+		<input type="submit" value="Cancel" class="exchange_cancel" onclick="$('#exchange_method_modal2').modal('hide');">
+	</div>
+</div>
+<!-- Exchange Method Modal 2: You Come Get It Ends -->
+
+
+<!-- Exchange Method Modal 3: Let's Meet Up Starts -->
+<div id="exchange_method_modal1" class="let_meet modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div class="exchange_heading">Let's meet up...</div>
+	<div class="exchange_subheading">Please enter the details for meeting up.</div>
+	<div class="exchange_body">
+		<%if @passive_trade.present?%>
+  		<%= form_for :transactions, :url =>passive_trade_transactions_path(@passive_trade), :html=>{:id => "let_us_meet_up_form"}, :remote=>true do |f| %>
+  			<%= f.hidden_field :passive_trade_id, :value => @passive_trade.id %>
+  			<%= f.hidden_field :exchange_method, :value => LET_US_MEET_UP %>
+
+  			<%= fields_for :addresses do |address| %>
+    			<%= address.text_field :address_line_1, :class=>"exchange_add1"%>
+    			<%= address.text_field :city, :class=>"exchange_add2"%>
+    			<%stateslist = ['AL','AK','AZ','AR','CA','CO','CT','DC','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY']+['AB','BC','LB','MB','NB','NF','NS','NU','NW','ON','PE','QC','SK','YU']%>
+	        <a href="#" class="exchange_state" onclick="$('#exchange_state_drp2').toggleClass('hidedrop'); return false;">State</a>
+	        <div class="exchange_state_drp hidedrop" id="exchange_state_drp2">
+	          <ul>
+	            <%stateslist.each do |state|%>
+	            <li><a href="#" onclick="selectExchangeState2(this); return false;"><%=state%></a></li>
+	            <%end%>
+	          </ul>
+	        </div>
+	        <%= address.hidden_field :state%>
+	        <%= address.text_field :zipcode, :class => "exchange_zip", :placeholder => "Zip Code" %>
+  			<% end %>
+
+  			<%= f.text_field :exchange_date, :class=>"exchange_date", :id=>"exchange_date_3", :placeholder=>"Date"%>
+  			<%= f.text_field :exchange_time, :class=>"exchange_time", :id=>"exchange_time_3", :placeholder=>"Time"%>
+  			<%= f.text_area :exchange_note, :class=>"exchange_textarea", :placeholder=>"Note..."%>
+			<%end%>
+  	<%elsif @trade.present?%>
+  		<%= form_for :transactions, :url =>trade_transactions_path(@trade), :html=>{:id => "let_us_meet_up_form"}, :remote=>true do |f| %>
+  			<%= f.hidden_field :trade_id, :value => @trade.id %>
+  			<%= f.hidden_field :exchange_method, :value => LET_US_MEET_UP %>
+
+  			<%= fields_for :addresses do |address| %>
+    			<%= address.text_field :address_line_1, :class=>"exchange_add1"%>
+    			<%= address.text_field :city, :class=>"exchange_add2"%>
+    			<%stateslist = ['AL','AK','AZ','AR','CA','CO','CT','DC','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY']+['AB','BC','LB','MB','NB','NF','NS','NU','NW','ON','PE','QC','SK','YU']%>
+	        <a href="#" class="exchange_state" onclick="$('#exchange_state_drp2').toggleClass('hidedrop'); return false;">State</a>
+	        <div class="exchange_state_drp hidedrop" id="exchange_state_drp2">
+	          <ul>
+	            <%stateslist.each do |state|%>
+	            <li><a href="#" onclick="selectExchangeState2(this); return false;"><%=state%></a></li>
+	            <%end%>
+	          </ul>
+	        </div>
+	        <%= address.hidden_field :state%>
+	        <%= address.text_field :zipcode, :class => "exchange_zip", :placeholder => "Zip Code" %>
+  			<% end %>
+
+  			<%= f.text_field :exchange_date, :class=>"exchange_date", :id=>"exchange_date_3", :placeholder=>"Date"%>
+  			<%= f.text_field :exchange_time, :class=>"exchange_time", :id=>"exchange_time_3", :placeholder=>"Time"%>
+  			<%= f.text_area :exchange_note, :class=>"exchange_textarea", :placeholder=>"Note..."%>
+			<%end%>
+  	<%end%>
+  	
+		<input type="submit" value="Submit" class="exchange_submit" onclick="$('#let_us_meet_up_form').submit();$('#exchange_method_modal1').modal('hide');">
+		<input type="submit" value="Cancel" class="exchange_cancel" onclick="$('#exchange_method_modal1').modal('hide');">
+	</div>
+</div>
+<!-- Exchange Method Modal 3: Let's Meet Up Ends -->
+
+
+<!-- Exchange Method Modal 4: I'll Ship It Starts -->
+<div id="exchange_method_modal5" class="youaredone modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div class="exchange_heading">You’re done...</div>
+	<div class="exchange_otherheading">Now we just need to wait for <%=@right_user.first_name.titleize%> to complete<br> his end of the trade. <br>
+	In the meantime, this trade can be found in the <br>Pending section of the Activity tab.</div>
+	<div class="exchange_body">
+		<!-- <input type="submit" value="Pending Trades" class="exchange_submit"> -->
+		<%=link_to "Pending Trades", active_trades_user_path(current_user), :class=>'exchange_submit'%>
+		<input type="submit" value="Gotcha" class="exchange_cancel" onclick="$('#exchange_method_modal5').modal('hide');">
+	</div>
+</div>
+<!-- Exchange Method Modal 4: I'll Ship It Ends -->
+
+
+<!-- Exchange Method Modal 4: I'll Ship It - Other User Starts -->
+<div id="exchange_method_modal3" class="other_will_ship modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div class="exchange_heading">Jared will ship!</div>
+	<div class="exchange_otherheading">Great! Now just enter your address so that he<br> can ship his item to you...</div>
+	<div class="exchange_body">
+		<input type="text" class="exchange_add1">
+		<input type="text" class="exchange_add2">
+		<a href="#" class="exchange_state" onclick="$('#exchange_state_drp').toggleClass('hidedrop'); return false;">State</a>
+		<div class="exchange_state_drp hidedrop" id="exchange_state_drp">
+      <ul>
+        <li><a href="#" onclick="return false;">AL</a></li>
+        <li><a href="#" onclick="return false;">AK</a></li>
+        <li><a href="#" onclick="return false;">AZ</a></li>
+        <li><a href="#" onclick="return false;">AR</a></li>
+        <li><a href="#" onclick="return false;">CA</a></li>
+      </ul>
+    </div>
+		<input type="text" class="exchange_zip" placeholder="Zip Code">
+		<input type="submit" value="Submit" class="exchange_submit">
+		<input type="submit" value="Cancel" class="exchange_cancel">
+	</div>
+</div>
+<!-- Exchange Method Modal 4: I'll Ship It - Other User Ends -->
+
+
+<!-- No Exchange Method Modal Starts -->
+<div id="exchange_method_modal6" class="no_exchange_method modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div class="exchange_heading">No exchange method...</div>
+	<div class="exchange_otherheading">Please select a preferred exchange method<br> before proceeding.</div>
+	<div class="exchange_body">
+		<input type="submit" value="Gotcha" class="exchange_submit" onclick="$('#exchange_method_modal6').modal('hide');">
+	</div>
+</div>
+<!-- No Exchange Method Modal Ends -->
+
+
+<!-- Item No Longer Available Modal Starts -->
+<div id="modal_traded_item" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div class="modal_cross"><a href="#" data-dismiss="modal" aria-hidden="true">X</a></div>
+	<div class="traded_item_left"><img src="http://d3md9h2ro575fr.cloudfront.net/images/trade_image1.png"></div>
+	<div class="traded_item_right">
+		<div class="traded_item_heading">Item No Longer Available</div>
+		<div class="traded_item_subheading">Jared just traded this item with another user.</div>
+		<div class="trade_something_else"><a href="#">Trade Something Else</a></div>
+		<div class="message_trader"><a href="#">Message Jared</a></div>
+		<div class="cancel_trade"><a href="#">Cancel Trade</a></div>
+	</div>
+</div>
+<!-- Item No Longer Available Modal Ends -->
+
+
+<!-- Trade Not Happening Modal Starts -->
+<div id="trade_not_happening" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div class="modal_cross"><a href="#" data-dismiss="modal" aria-hidden="true">X</a></div>
+	<div class="happening_head">Trade Not Happening?</div>
+	<div class="happening_body">It seems like you guys can’t settle on a trade agreement. Would you like to cancel the trade or take another stab at it? </div>
+	<input type="submit" value="Cancel" class="take_cancel">
+	<input type="submit" value="Take Another Stab" class="take_another">
+</div>
+<!-- Trade Not Happening Modal Ends -->
+
+
+<!-- Review Trade Terms Modal Starts -->
+<div id="exchange_method_modal7" class="review_trade_terms modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div class="trade_terms_heading">Review Trade Terms</div>
+
+	<%if @trade.present? and @trade.trade_terms.present?%>
+		<div class="agreed_terms_modal">
+			<div class="review_heading_terms"><img src="http://d3md9h2ro575fr.cloudfront.net/images/agreed_terms.png">Agreed Terms</div>
+			<div class="agreed_terms_trade">
+				<ol>
+					<%c = @trade.trade_terms.count%>
+					<%@trade.trade_terms.each_with_index do |tt,i|%>
+						<%if i == c-1%>
+						<li style="border-bottom: none;">
+						<%else%>
+						<li>
+						<%end%>
+							<span><%=tt.communication_text%></span>
+						</li>
+					<%end%>
+				</ol>	
+			</div>
+		</div>
+	<%end%>
+
+	<div class="agreed_terms_modal">
+		<div class="review_heading_modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/exchange_icon.png">Exchange Method</div>
+		<div class="exchange_terms_trade">
+			
+			<div class="exchange_trader1">
+				<div class="exchange_name"><%=@left_user.first_name.titleize%></div>
+				<div class="exchange_detail">
+					<%if @my_exchange_method.present?%>
+						<div class="exchange_method_user">
+							<%case @my_exchange_method%>
+							<%when I_WILL_BRING_IT_TO_YOU%>
+								I'll bring it to you
+							<%when YOU_COME_GET_IT%>
+								You come get it
+							<%when LET_US_MEET_UP%>
+								Let's meet up
+							<%when I_WILL_SHIP_IT%>
+								I'll ship it
+							<%else%>
+							<%end%>
+						</div>
+					<%end%>
+					<%if @my_exchange_address.present? and (@my_exchange_method==YOU_COME_GET_IT or @my_exchange_method==LET_US_MEET_UP)%>
+						<div class="exchage_address1"><%=@my_exchange_address.address_line_1%></div>
+						<div class="exchage_address2"><%=@my_exchange_address.city%>, <%=@my_exchange_address.state%> <%=@my_exchange_address.zipcode%></div>	
+					<%end%>
+					<%if @my_exchange_note.present? and @my_exchange_method!=I_WILL_SHIP_IT%>
+						<div class="exchage_notes"><%=@my_exchange_note%></div>
+					<%end%>
+					<%if @my_exchange_method==I_WILL_SHIP_IT and !@trader_exchange_address.present?%>
+					  <div class="exchage_notes">Waiting on other users address input...</div>
+					<%end%>
+				</div>
+			</div>
+
+			<div class="exchange_trader1">
+				<div class="exchange_name">Jared K.</div>
+				<div class="exchange_detail">
+					<%if @trader_exchange_method.present?%>
+						<div class="exchange_method_user">
+							<%case @trader_exchange_method%>
+							<%when I_WILL_BRING_IT_TO_YOU%>
+								I'll bring it to you
+							<%when YOU_COME_GET_IT%>
+								You come get it
+							<%when LET_US_MEET_UP%>
+								Let's meet up
+							<%when I_WILL_SHIP_IT%>
+								I'll ship it
+							<%else%>
+							<%end%>
+						</div>
+					<%end%>
+					<%if @trader_exchange_address.present? and (@trader_exchange_method==YOU_COME_GET_IT or @trader_exchange_method==LET_US_MEET_UP)%>
+						<div class="exchage_address1"><%=@trader_exchange_address.address_line_1%></div>
+						<div class="exchage_address2"><%=@trader_exchange_address.city%>, <%=@trader_exchange_address.state%> <%=@trader_exchange_address.zipcode%></div>	
+					<%end%>
+					<%if @trader_exchange_note.present? and @trader_exchange_method!=I_WILL_SHIP_IT%>
+						<div class="exchage_notes"><%=@trader_exchange_note%></div>
+					<%end%>
+				</div>
+			</div>
+
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<div class="exchange_body">
+		<%if @trade.present?%>
+			<%=link_to "Accept Terms", accept_terms_trade_path(@trade), :class=>"exchange_submit"%>
+		<%end%>
+		<input type="submit" value="Edit Terms" class="exchange_cancel" onclick="$('#exchange_method_modal7').modal('hide');$('#communication_tab').click()">
+	</div>
+	<div class="review_terms_footer">By clicking Accept Terms, I accept <strong>TradeYa’s Terms of Service</strong> and <strong>Privacy Policy</strong>.</div>
+</div>
+<!-- Review Trade Terms Modal Ends -->

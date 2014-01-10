@@ -1,0 +1,48 @@
+<script>
+$(document).ready(function(){
+	$('.wants_container').css('width','1200px');
+	$('.wants_container').css('position','relative');
+	$('.wants_container').BlocksIt({
+		numOfCol: 5,
+		offsetX: 12,
+		offsetY: 10,
+		blockElement: '.user_wants_card'
+	});
+	$("img").one("load",function(){
+		 $('.wants_container').BlocksIt({
+				numOfCol: 5,
+				offsetX: 12,
+				offsetY: 10,
+				blockElement: '.user_wants_card'
+			});
+	});
+});
+</script>
+<div class="tab_content_inner">
+	<div class="haves_wrapper">
+		<div id="my_haves_tab" class="wants_container">
+			<div class="user_wants_card">
+				<a href="/items/new?my_haves_by=<%=current_user.first_name%>"><img src="http://d3md9h2ro575fr.cloudfront.net/images/add_item.png"></a>
+			</div>
+			<% @my_haves.each do |have|%>
+			  <%=render 'trades/trade_page_item_card', :item => have%>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<!-- Script for draggable -->
+<script>
+$(document).ready(function(){
+	<%if @passive_trade.present? and !@left_item.present?%>
+		$('#my_haves_tab .user_wants_card').draggable({ 
+			appendTo: 'body',
+			scroll: true, 
+			revert: true, 
+			helper: "clone", 
+			cursor: "move", 
+			cursorAt: { top: 25, left: 25 }
+		});
+	<%end%>
+});
+</script>

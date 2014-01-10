@@ -1,0 +1,100 @@
+<div class="transaction_detail_div your_detail_div">
+  <div class="transaction_heading your_detail_heading">
+    <div class="heading_tick"><img src="http://d3md9h2ro575fr.cloudfront.net/images/tick_orange.png"></div>
+    1. Your Details
+    <div class="tr_edit_btn"><a href="#" onclick="return false;">Edit</a></div>
+  </div>
+
+  <!-- Step1 Form Start -->
+  <!-- <form class="form-horizontal form_step1"> -->
+  <%#= form_for(@my_transaction, url: {action: "update_address"}, html: {method: "put", class: "form-horizontal form_step1", remote: "true"}) do |f| %>
+  <form action="/transactions/update_address" method="post" data-remote="true" class="form-horizontal form_step1">
+    <div class="control-group">
+      <label class="control-label" for="inputfname">First Name<sup class="star_red">*</sup></label>
+      <div class="controls">
+        <input type="text" name ="name" class="et_input">
+        <span class="text_under_input">TradeYa is a tight nit community, we call everybody by their first names here.</span>
+      </div>
+    </div>
+    <!-- <div class="control-group">
+    <label class="control-label" for="inputlname">Last Name</label>
+    <div class="controls">
+    <input type="text" class="et_input">
+    <span class="text_under_input">This will only be shared once you have confirmed a TradeYa.</span>
+    </div>
+    </div> -->
+    <div class="control-group">
+      <label class="control-label" for="inputfname">Address</label>
+      <div class="controls relative_pos">
+        <%#= f.text_field :address, :class => "" %>
+        <input type="text" name="address_line1" class="et_input add1" >
+        <input type="text" name="address_line2" class="et_input add2">
+         <input type="text" name="city" class="et_input city" placeholder = 'City'>
+        <%#= f.text_field :city, :class => "e_input " %>
+        <%stateslist = ['AL','AK','AZ','AR','CA','CO','CT','DC','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY']+['AB','BC','LB','MB','NB','NF','NS','NU','NW','ON','PE','QC','SK','YU']%>
+        <a href="#" class="edit_state" onclick="$('#profile_states').toggleClass('hidedrop'); return false;"><%= @my_transaction.address.present? ? @my_transaction.address.state : 'State' %></a>
+        <div class="profile_states hidedrop" id="profile_states">
+          <ul>
+            <%stateslist.each do |state|%>
+            <li><a href="#" onclick="selectState(this); return false;"><%=state%></a></li>
+            <%end%>
+          </ul>
+        </div>
+        <input type="text" name="zipcode" class="et_input_zip" placeholder="Zipcode">
+        <span class="text_under_input">We keep this info on record so that IF you choose to share it after a TradeYa you can do so with one click. Otherwise it’s PRIVATE. </span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="inputemail">Email<sup class="star_red">*</sup></label>
+      <div class="controls">
+        <input type="text" name="email" id="email" class="et_input_email">
+        <span class="text_under_input">This will only be shared once you have confirmed a TradeYa so they can contact you.</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="inputfname">Phone Number</label>
+      <div class="controls">
+        <input type="text" name="phone" id="phone_number" class="et_input_phone">
+      </div>
+    </div>
+    <input type = "hidden" name = "id" value = "<%= @my_transaction.id%>">
+    <div class="control-group">
+      <div class="controls save_cancel_btn next_step1">
+        <input type="submit" class="edit_save" value="Next Step">
+      </div>
+    </div>
+  </form>
+  <%# end %>
+  <!-- Step1 Form End -->
+
+  <!-- Completed Details -->
+  <div class="complete_section form1_complete" id="updatedaddress">
+
+   
+    <%= render 'transactions/partials/updatedaddress' %>
+
+<!--     <%if @my_transaction.address.present?%>
+      <div class="detail_form_left">
+        <div class="detail_name">
+          <%= @my_transaction.address.name %>
+        </div>
+        <div class="detail_address1"> <%= @my_transaction.address.address_line_1 %></div>
+        <% if @my_transaction.address.address_line_2.present? %>
+          <div class="detail_address1"><%= @my_transaction.address.address_line_2 %></div>
+        <% end %>
+          <div class="detail_address2">
+            <%= @my_transaction.address.city+", "+@my_transaction.address.state+" "+@my_transaction.address.zipcode %>
+          </div>
+        <div class="clear"></div>
+      </div>
+      <div class="detail_form_right">
+        <div class="detail_phone"><%= @my_transaction.address.phone %></div>
+        <div class="detail_website"><%= current_user.email %></div>
+      </div>
+    <%end%>
+    <div class="clear"></div> -->
+
+  </div>
+  <!-- Completed Details -->
+
+</div>

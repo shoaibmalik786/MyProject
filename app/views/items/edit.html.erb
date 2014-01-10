@@ -1,0 +1,28 @@
+<% if @st_pg %>
+<script>
+  isSubmitTradeyaPg = true;
+</script>
+<% end %>
+<div class="container">
+  <div id="submit_tradeya_div">
+    <%= render 'form', :isOffer => false %>
+  </div>
+</div>
+<!-- <div id="item_new_back" style="width: 100%; background-color: #eee;padding-bottom: 20px;">
+     <img alt="full screen background image" src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/trade_bckgrnd.jpg" id="full-screen-background-image" />
+     <div id="submit_tradeya_div">
+       <div id="submit_nav">
+         <div class="submit_tradeya_nav">
+           <ul>
+             <li id="have_link" onclick="haveLink();" style=""><a href="#" onclick="return false;" id="have_anchor"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/have_selected_new.png" /></a></li>
+             <li id="want_link" style="padding-left: 24px; padding-top: 13px;"><a href="#" onclick="return false;" id="want_anchor"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/want_new.png" /></a></li>
+           </ul>
+         </div>
+         <div id="head_bar"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/bar1.png" /></div>
+       </div>
+       <%#= render 'form', :isOffer => false %>
+     </div>
+</div> -->
+<!-- for editing item want -->
+<input id="edit_item_want_index" type="hidden" />
+<input id="edit_item_flag" type="hidden">

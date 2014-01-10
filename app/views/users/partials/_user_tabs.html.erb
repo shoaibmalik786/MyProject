@@ -1,0 +1,347 @@
+<!-- Basic info tab -->
+<div class="tab-pane active" id="basic_info_tab">
+  <div class="fb_connect_div">
+    <div>Fill your profile faster with Facebook</div>
+    <div><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/fb_user_connect.png"></a></div>
+    <div class="cross_right"></div>
+  </div>
+  <%= form_for((@user), :html =>{:multipart => true, :id => 'user_settings_form', :class=>"form-horizontal"}) do |f| %>
+    <div class="edit_profile_controls">
+      <div class="control-group">
+        <label class="control-label" for="inputfname">First Name<sup class="star_red">*</sup></label>
+        <div class="controls">
+          <%= f.text_field :first_name, :class => "e_input"%>
+          <span class="text_under_input">TradeYa is a tight nit community, we call everybody by their first names here.</span>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputlname">Last Name</label>
+        <div class="controls">
+          <%= f.text_field :last_name, :class => "e_input"%>
+          <span class="text_under_input">This will only be shared once you have confirmed a TradeYa.</span>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputemail">Email<sup class="star_red">*</sup></label>
+        <div class="controls">
+          <%= f.text_field :email, :class => "e_input"%>
+          <span class="text_under_input">This will only be shared once you have confirmed a TradeYa so they can contact you.</span>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputgender">Gender</label>
+        <div class="controls">
+          <label class="radio gender_list">
+            <%= f.radio_button :gender,"male",:onclick=>'needToConfirm=false' %><%= label :gender, 'Male' %>
+          </label>
+          <label class="radio gender_list">
+            <%= f.radio_button :gender, "female",:onclick=>'needToConfirm=false' %><%= label :gender, 'Female' %>
+          </label>
+          <label class="radio gender_list">
+            <%= f.radio_button :gender, "none", :onclick=>'needToConfirm=false' %><%= label :gender, 'Unspecified' %>
+          </label>
+          <span class="text_under_input">People like to know what to expect, this helps.</span>
+        </div>
+      </div>
+
+      <div class="edit_login_text">Login</div>
+      <hr class="password_control_group" />
+      <div class="control-group">
+        <label class="control-label" for="inputpwd">Password<sup class="star_red">*</sup></label>
+        <div class="controls">
+          <p class="c_input text_password"><a href="#c_pwd_modal" data-toggle="modal" class="cp_link">Change Your Password</a></p>
+          <div class="clear"></div>
+        </div>
+      </div>
+      <hr class="password_control_group" />
+      <div class="control-group">
+        <label class="control-label required_label"><sup class="star_red">*</sup>Required</label>
+      </div>
+      <div class="control-group">
+        <div class="controls save_cancel_btn">
+          <%= f.submit "Save", class: "edit_save", onclick: "needToConfirm = true;" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<!-- about me tab -->
+
+<div class="tab-pane" id="about_me_tab">
+  <%= form_for((@user), :html =>{:multipart => true, :id => 'user_settings_form', :class=>"form-horizontal"}) do |f| %>
+  <form  class="form-horizontal">
+    <div class="edit_profile_controls">
+      <div class="control-group">
+        <label class="control-label" for="inputfname">About You</label>
+        <div class="controls">
+          <!-- <textarea class="e_textarea"></textarea> -->
+          <%= f.text_area :about, class: "e_textarea", placeholder: "Some stuff about you." %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputfname">Website</label>
+        <div class="controls">
+          <%= f.text_field :website, class: "e_input" %>
+
+          <!-- <input type="text" class="e_input"> -->
+          <!-- <div class="text_under_input">This will only be shared once you have confirmed a TradeYa so they can contact you.</div> -->
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputfname">Children</label>
+        <div class="controls">
+          <label class="radio gender_list">
+            <%= f.radio_button :children, true, :onclick=>'needToConfirm=false' %><%= label :children, 'Yes' %>
+          </label>
+          <label class="radio gender_list">
+            <%= f.radio_button :children, false, :onclick=>'needToConfirm=false' %><%= label :children, 'No' %>
+          </label>
+          <label class="radio gender_list">
+          </label>
+          <div class="text_under_input">Helps users offer more relevant trades</div>
+        </div>
+      </div>
+      <hr class="password_control_group" />
+    </div>
+    <div class="control-group">
+      <div class="controls save_cancel_btn">
+        <%= f.submit "Save", class: "edit_save", onclick: "needToConfirm = false;" %>
+      </div>
+    </div>
+  </form>
+  <% end %>
+
+</div>
+
+<!-- Verification tab -->
+
+<div class="tab-pane" id="verification_tab">
+  <div class="edit_profile_controls">
+    <div class="control-group">
+      <div class="edit_login_text">Social Verification</div>
+      <hr class="password_control_group" />
+
+      <!-- <label class="control-label" for="inputfname">Social Connect</label> -->
+      <div class="controls veri_images" id="veri_images">
+        <% if current_user.facebook_authenticated? %>
+          <img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_on.png">
+        <% else %>
+          <a href="/auth/facebook?add_verification=true"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png'" onclick="_gaq.push(['_trackEvent', 'User Card', 'clk_Fb_verify', 'Click Fb icon to Verify from Edit Profile']);mixpanel.track_links('#veri_images a', 'Click Fb icon to Verify from Edit Profile');"></a>
+        <% end %>
+
+        <% if current_user.twitter_authenticated? %>
+          <img src="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_on.png">
+        <% else %>
+          <a href="/auth/twitter?add_verification=true"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png'" onclick="_gaq.push(['_trackEvent', 'User Card', 'clk_Twtr_verify', 'Click Twitter icon to Verify from Edit Profile']);mixpanel.track_links('#veri_images a', 'Click Twitter icon to Verify from Edit Profile');"></a>
+        <% end %>
+        <!-- <a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_google_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_google_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_google_off.png'" ></a> -->
+        <div class="clear"></div>
+        <p class="c_input share_text">
+          <span class="text_under_input">This is the easiest way to gain trust in the TradeYa community.</span>
+        </p>
+        <div class="clear"></div>
+      </div>
+    </div>
+    <br/>
+    <div class="control-group">
+      <div class="edit_login_text">Phone Number Verification</div>
+      <hr class="password_control_group" />
+
+      <label class="control-label" for="inputfname">Phone Number</label>
+      <div class="controls">
+        <input type="text" name="phone" id="phone_number" class="e_input_phone">
+        <span class="ph_verify">Verify</span>
+
+        <span  class="ph_no_remove"><a href="#remove_ph_no" data-toggle="modal">Remove</a> </span>
+
+        <span class="ph_verify_submit">Submit</span>
+        <span style="width:100px">
+          <input type="text" class="confirm_box" id="verification_code" placeholder="Enter Pin">
+        </span>
+
+        <span class="pin_resend" ><a href="#resend_modal" data-toggle="modal">Resend</a> </span>
+        <div class="clear"></div>
+      </div>
+
+      <div class="controls" id="verification_options">
+        <label class="radio gender_list">
+          <input id="verify_via_call" type="radio" name="verification_mode" value="verify_via_call" onclick="needToConfirm=true"><label for="verify_via_call">Call</label>
+        </label>
+        <label class="radio gender_list">
+          <input checked="checked" id="verify_via_sms" type="radio" name="verification_mode" value="verify_via_sms" onclick="needToConfirm=true"><label for="verify_via_sms">SMS</label>
+        </label>
+        <div class="clear"></div>
+        <div class="text_under_input">This will only be shared once you have confirmed a TradeYa so they can contact you.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- script for phone no verify -->
+<script type="text/javascript">
+  $(function(){
+    <%if @user.unverified_phone_number.present?%>
+      $(".pin_resend").show();
+      $(".ph_verify_submit").show();
+      $(".confirm_box").show();
+      $(".ph_verify").hide();
+      $(".ph_no_remove").hide();
+      $("#verification_options").hide();
+      $('#phone_number').val("<%=@user.unverified_phone_number.phone_number%>");
+    <%elsif @user.verified_phone_number.present?%>
+      $(".pin_resend").hide();
+      $(".ph_verify_submit").hide();
+      $(".confirm_box").hide();
+      $(".ph_verify").hide();
+      $(".ph_no_remove").show();
+      $("#verification_options").hide();
+      $('#phone_number').val("<%=@user.verified_phone_number.phone_number%>");
+      $('#phone_number').attr('disabled','disabled');
+    <%else%>
+      $(".ph_no_remove").hide();
+      $(".pin_resend").hide();
+      $(".ph_verify_submit").hide();
+      $(".confirm_box").hide();
+    <%end%>
+
+    $(".ph_verify").click(function(){
+      if ($('#verify_via_call').is(':checked'))
+      {
+        verifyViaSMS();
+      }
+      else
+      {
+        verifyViaSMS();
+      }
+    });
+
+    $(".pin_resend").click(function(){
+      verifyViaSMS();
+    });
+
+    $(".ph_verify_submit").click(function(){
+      verifyPhoneNumber();
+    });
+
+    $("#remove_phone_verification").click(function(){
+      remove_number_verification($('#phone_number').val());
+    });
+
+    $("#verification_code").keypress(function(e){
+      if(e.keyCode == 13){
+        verifyPhoneNumber();
+      }
+    });
+  
+  }); 
+</script>
+<!-- script for phone no verify -->
+
+<!-- Shipping info -->
+
+<div class="tab-pane" id="shipping_info_tab">
+  <%= form_for((@user), :html =>{:multipart => true, :id => 'user_settings_form', :class=>"form-horizontal"}) do |f| %>
+  <div class="edit_profile_controls">
+    <div class="control-group">
+      <label class="control-label" for="inputfname">Address</label>
+      <div class="controls">
+        <%= f.text_field :address, :class => "e_input" %>
+
+        <!-- <input type="text" class="e_input"> -->
+        <!-- <input type="text" class="e_input add2"> -->
+        <%= f.text_field :city, :class => "e_input add2" %>
+        <%stateslist = ['AL','AK','AZ','AR','CA','CO','CT','DC','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY']+['AB','BC','LB','MB','NB','NF','NS','NU','NW','ON','PE','QC','SK','YU']%>
+        <a href="#" class="edit_state" onclick="$('#profile_states').toggleClass('hidedrop'); return false;"><%= @user.state.present? ? @user.state : 'State' %></a>
+        <div class="profile_states hidedrop" id="profile_states">
+          <ul>
+            <%stateslist.each do |state|%>
+            <li><a href="#" onclick="selectState(this); return false;"><%=state%></a></li>
+            <%end%>
+          </ul>
+        </div>
+        <%= f.text_field :zip, :class => "e_input zip", :placeholder => "Zipcode" %>
+        <!-- <input type="text" class="e_input zip" placeholder="Zipcode"> -->
+        <span class="text_under_input">We keep this info on record so that IF you choose to share it after a TradeYa you can do so with one click. Otherwise it’s PRIVATE. </span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="inputfname">Shipping Notes</label>
+      <div class="controls">
+        <!-- <textarea class="e_textarea">Basic info like buzzer number, notes for delivery preferences. Dog on Premisses.</textarea> -->
+        <%= f.text_area  :shipping_notes, :class => "e_textarea", :placeholder =>"Basic info like buzzer number, notes for delivery preferences. Dog on Premisses." %>
+      </div>
+    </div>
+    <hr class="password_control_group" />
+  </div>
+  <div class="control-group">
+    <div class="controls save_cancel_btn">
+      <%= f.submit "Save", class: "edit_save", onclick: "needToConfirm = false;" %>
+    </div>
+  </div>
+  <% end %>
+</div>
+
+<!-- Payment Tab -->
+
+<div class="tab-pane" id="payment_info_tab">
+
+    <div class="edit_profile_controls">
+      <div class="step1_edit_profile">
+        <div class="control-group step1_control_group">
+          <label class="control-label" for="inputfname">Credit Card</label>
+          <div class="controls edit_payment_info" id="cards_list">
+            <label class="radio credit_card">
+              <% if @user.charge_cards.present? %>
+                <% @user.charge_cards.each do |card| %>
+
+              <input type="radio" name="cardtype" /><label><img src="http://d3md9h2ro575fr.cloudfront.net/images/visaicon.png" style="margin-top: -7px;"></span><span class="same_shipping_text">Ending in <%= card.last_4 %></span>&nbsp;&nbsp;<%= link_to "X", charge_card_path(card.id), method: :delete, class: "remove_card shipping_cross", data: {confirm: "Are you sure you want to delete the card?", remote: true}
+ %></label>
+              
+           <!--  <span class="billing_text">Billing address</span><span class="same_shipping_text_right">Same as shipping</span><span class="edit_shipping_text"><a href="#" onclick="return false;">Edit</a></span> -->
+        
+              <% end %>
+            <% end %>
+           </label> 
+            <hr class="password_control_group" />
+          </div>
+        </div>
+        <div class="control-group addnew_div">
+          <div class="controls">
+            <%= form_tag charge_cards_path, :id => "stripe-form-tag", :remote => true do %>
+            <div class="add_new_btn"><a href="#" onclick="return false;">Add New</a></div>
+            <% end %>
+          </div>
+        </div>
+        <hr class="password_control_group" />
+        <div class="control-group">
+          <!-- <div class="controls save_cancel_btn">
+          <input type="submit" class="edit_save" value="Save">
+          <input type="submit" class="edit_cancel" value="Cancel">
+          </div> -->
+        </div>
+      </div>
+      <script>
+      $('.add_new_btn a').on("click",function(){
+       var token = function(res){
+         var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+         $('#stripe-form-tag').append($input).submit();
+       };
+
+       StripeCheckout.open({
+         key:         '<%= ENV['STRIPE_PUBLIC_KEY'] %>',
+         address:     true,
+         currency:    'usd',
+         name:        'Add Your Credit Card',
+         description: 'you are safe with us!',
+         panelLabel:  'Add Card',
+         token:       token
+       });
+
+       return false;
+       // $('input[name="email"]').val("lpankit@gmail.com");
+     });
+      </script>
+</div>
+
+
+

@@ -1,0 +1,74 @@
+<% if @current_tradeyas and @current_tradeyas.count > 0 %>
+<!-- Tool Tip Icon-->
+<% if current_user and current_user.tooltip %>
+	<div class="info_tip_icon" style = "margin-left: 248px;"><a href="#" onclick="return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/info_tip_icon.png" onmouseover="current_tradeya_tooltip_show();"  onmouseout="current_tradeya_tooltip_hide();" onclick="/*_kmq.push(['record', 'dashboard currenttradeyas tooltip for your current tradeyas',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'tooltip_currenttradeyas', 'Activate Tooltip Next to Your Current TradeYas in Dashboard']);*/" /></a></div>
+<% end %>
+<!--  -->
+<table width="100%" class="user_current_tradeyas">
+	<% counter = 1 %>
+	<% timer_tool_tip = 0 %>
+	<% @current_tradeyas.each_with_index do |item, index| %>
+		<tr valign="top" style="height: 80px;">
+			<td width="10%">
+				<% if index == 0 %>
+						<div class="tooltip_post current_tradeyas_tooltip" style = "margin-left: -160px; margin-top: -30px;"><img src=<%= getToolTipImage(TOOL_TIP_NEW_TRADEYA) %> /></div>
+						<div class="tooltip_post current_tradeyas_tooltip_right" style = "margin-left: 58px; margin-top: -30px;"><img src=<%= getToolTipImage(TOOL_TIP_NEW_TRADEYA_RIGHT) %> /></div>
+				<% end %>
+				<% if not item.item_photos[0].nil? %>
+					<div class="alert_img user_image_border" style="text-align: center"><img src="<%= item.item_image(:small) %>" /></div>
+				<% elsif not item.item_videos[0].nil? %>
+					<a href="<%= item.item_url %>"><div style="position:absolute;height:52px;width:72px;filter:alpha(opacity=60);-moz-opacity: 0.6;opacity: 0.6;"></div></a>
+					<div class="alert_img user_image_border" id="item_video<%= item.id %>"></div>
+					<script>$(function(){videoAsRedirect('item_video<%= item.id %>', '<%= item.item_videos[0].video %>','<%= item.item_url %>');});</script>
+				<% else %>
+					<div class="alert_img user_image_border" style="text-align: center"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/default_img.png" /></div>
+				<% end %>
+			</td>
+			<td width="56%">
+				<div class="current_trd_title"><a class = 'click' href="<%= item.item_url %>" onclick="/*_kmq.push(['record', 'dashboard currenttradeyas body link tradya title',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_TryaLnkLdnPg', 'Click on Any TradeYa title in Manage TradeYas of Dashboard']);*/"><%= item.item_title %></a></div>
+				<div class="current_trd_btns">
+					<ul class="current_trd_btns_ul">
+						<% if item.trades.count == 0 %>
+							<li style="margin-top: 1px;"><a class='click' href="<%= edit_item_path(item) %>" onclick="/*_kmq.push(['record', 'dashboard currenttradeyas body button edit',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_editTradeYa', 'Click on Edit button for TradeYa created from Offer']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/edit_button.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/edit_button_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/edit_button.png'" /></a></li>
+						<% end %>
+						<li>
+							<% if index == 1 %>
+								<div class="tooltip_post current_tradeyas_tooltip" style = "margin-left: -160px; margin-top: -25px;"><img src=<%= getToolTipImage(TOOL_TIP_SPREAD_THE_WORD) %> /></div>
+								<div class="tooltip_post current_tradeyas_tooltip_right" style = "margin-left: 102px; margin-top: -25px;"><img src=<%= getToolTipImage(TOOL_TIP_SPREAD_THE_WORD_RIGHT) %> /></div>
+							<% end %>
+							<a href="#" class='position-click' onclick="/*_kmq.push(['record', 'dashboard currenttradeyas body button share with friends',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_PrmtNowBtn', 'Click on Share with Friends!']);*/ return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/share_manage.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/share_manage_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/share_manage.png'" onclick="return openPromoteNowPopup(<%= item.id %>);" /></a></li>
+						<li style="margin-top: 1px;">
+							<% if index == 0 %>
+								<div class="tooltip_post current_tradeyas_tooltip" style = "margin-left: -160px; margin-top: -25px;"><img src=<%= getToolTipImage(TOOL_TIP_POSTPONE_TRADEYA) %> /></div>
+								<div class="tooltip_post current_tradeyas_tooltip_right" style = "margin-left: 104px; margin-top: -25px;"><img src=<%= getToolTipImage(TOOL_TIP_POSTPONE_TRADEYA_RIGHT) %> /></div>
+							<% end %>
+							<a href="#" class='position-click' onclick="/*_kmq.push(['record', 'dashboard currenttradeyas body button postpone',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_PostponeTradeya', 'Click on Postpone TradeYa button']);*/ return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/postpone_button.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/postpone_button_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/postpone_button.png'" onclick="$('#post_trd_id').val(<%= item.id %>); $('#post_trd').modal('show');" /></a>
+						</li>
+					</ul>
+				</div>
+			</td>
+			<td width="8%">
+				<div class="current_trd_comment">Comments</div>
+				<div class="comment_count"><%= item.comments_by_others %></div>
+			</td>
+			<td width="8%">
+				<div class="current_trd_offer">Offers</div>
+				<div class="offer_count"><%= item.trades.count %></div>
+			</td>
+			<td width="20%">
+			</td>
+		</tr>
+		<% counter += 1 %>
+	<% end %>
+</table>
+<% else %>
+	<!-- If no Tradeyas Present -->
+	<div class="user_no_tradeyas">You have <b>no</b> active TradeYas. Do you want to <a class="click" href="<%= new_item_path %>">submit a TradeYa?</a> </div>
+<% end %>
+<!-- for postponing tradeya -->
+<input type="hidden" id="post_trd_id">
+<script>
+	$(document).ready(function() {
+		bindAjaxSpinner();
+	});
+</script>

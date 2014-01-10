@@ -1,0 +1,227 @@
+<div id="offer_heading">
+	<a name="offers_section" id="offers_section_current"  onclick="currentOffers();">
+		<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/arrow_<%= ((params[:isDivOpen] or params[:isOO]) ? 'open' : 'close') %>.png" id="newarrow" /> 
+		<div class="offercount">See <%= @trades.count %> <%= @status == COMPLETED ? 'other' : 'current'%> offer<%= @trades.count == 1 ? '' : 's' %></div>
+	</a>
+	<% if !@item.is_single_tradeya %>
+		<div class="mult_srv_com">(*<%= @item.user.title %> will trade this <%= if @item.category.parent.id == 2 then 'good' elsif @item.category.parent.id == 3 then 'service' else 'item' end%> multiple times.)</div>
+	<% end %>
+	<!-- Tool Tip Icon -->
+	<% if @pub and @status == ACTIVE and @trades.count > 0 and (current_user and current_user.tooltip) %>
+		<div class="tool_tip_info" style = "margin-left: <%= if @item.is_single_tradeya then 175 else 530 end %>px ;margin-top:-20px;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/info_tip_icon.png" onmouseover="publisher_page_offer_tooltip_show();" onmouseout="publisher_page_offer_tooltip_hide();$('.publisher_page_tooltip').css('display','none');" ></div>
+	<%end %>
+	<!-- Tool Tip ends -->
+</div>
+<!-- If no Current Offers -->
+	<% if @trades.count == 0 and @status == ACTIVE%>
+		<div class="kick_off_back <%= ((params[:isDivOpen] or params[:isOO]) ? '' : 'hidedrop') %>" id="current_offer" style="font-size: 15px;margin-top: 20px;margin-bottom: 20px">
+			<% if @pub %>
+			<div class="kick_off">
+				<div>Kick off the trading by telling your friends about your TradeYa!</div>
+				<div style="margin-left: 525px; margin-top: -24px;">
+					<a href="#" onclick="return showPromote();">
+						<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/share_small.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/share_small_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/share_small.png'" onclick="customScroll(header)"/>
+					</a>						
+				</div>
+			</div>
+			<% else %>		
+				<div class="kick_off">Kick off the trading by being the first to <a href="#" onclick="showOfferForm(); return false;">make an offer !</a></div>
+			<% end %>
+		</div>
+	<% end %>
+<!-- If no Current Offers -->
+<table id="current_offer" class="<%= ((params[:isDivOpen] or params[:isOO] or params[:showMyOffer]) ? '' : 'hidedrop') %>">
+<% counter = 1 %>
+	<% even = true %>
+	<% counter = 1 %>
+	<% @trades.each_with_index do |trd, index| %>
+	<% @offerer_name = trd.offer.user.title %>
+	<a name="cos_section_<%= trd.offer.user.id %>" id="cos_section_<%= trd.offer.user.id %>"></a>
+	<tr id = "offer_<%= trd.id%>" valign="top" class="<%= even ? 'even' : 'odd' %>" style="border-bottom: 0px;">
+		<td width="25%" style="text-align: center;padding-bottom: 0px;">
+			<div class="user_image_border" style="height: 102px; width: 136px; margin-left: auto; margin-right: auto">
+				<% if not trd.offer.item_videos[0].nil? %>
+					<div style="position:absolute;height:100px;width:185px;filter:alpha(opacity=60);-moz-opacity: 0.6;opacity: 0.6; cursor: pointer;" onmouseover="clickVideo('<%= trd.offer.item_videos[0].video %>')"></div><a href="#" style="display:block;width:135px;height:100px" id="offerPlayer_<%= counter %>" onclick="return false;"></a>
+				<% else %>
+					<img src="<%= trd.offer.item_image(:thumb) %>" onclick="clickImage('<%= trd.offer.item_image_full %>', <%= trd.offer.isImgAutoWidth %>);" />
+				<% end %>
+			</div>
+		</td>
+		<td width="19%" style="padding-bottom: 0px;">
+			<% if index == 0 %>
+				<div class="tooltip_post publisher_page_tooltip" style = "margin-left: -316px; margin-top: -25px;"><img src=<%= getToolTipImage(TOOL_TIP_PUBLISHER_OFFER_1) %> /></div>
+				<div class="tooltip_post publisher_page_tooltip_right" style = "margin-left: -33px; margin-top: -25px;"><img src=<%= getToolTipImage(TOOL_TIP_PUBLISHER_OFFER_1_RIGHT) %> /></div>
+			<% end %>
+			<% if index == 1 %>
+				<div class="tooltip_post publisher_page_tooltip" style = "margin-left: -316px; margin-top: -25px;"><img src=<%= getToolTipImage(TOOL_TIP_PUBLISHER_OFFER_2) %> /></div>
+				<div class="tooltip_post publisher_page_tooltip_right" style = "margin-left: -33px; margin-top: -25px;"><img src=<%= getToolTipImage(TOOL_TIP_PUBLISHER_OFFER_2_RIGHT) %> /></div>
+			<% end %>
+			<div class="user_image_smaller user_image_border"><img src="<%= trd.offer.user.user_image(:small) %>"<%= ( trd.offer.user.isFacebookUser? ? ' width=50px' : "") %> /></div>
+			<% if trd.offer.user.active %>
+				<div class="offerer_name" onclick="callHoverProfile(<%= trd.offer.user_id %>);"><%= trd.offer.user.title %><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/trd_icon.png" style="margin-left: 5px;" /></div>
+				<div class="offerer_city"><!-- onmouseout="hideModal('usr_rev_box_s'); hideModal('usr_rev_box');"> --><%= trd.offer.user.location %></div>
+			<% else %>
+				<div class="deleted_user">This user isn't here anymore</div>
+			<% end %>
+		</td>
+		<td width="60%" style="padding-bottom: 0px;">
+			<div>
+				<div class="offer_title"><%= trd.offer.item_title %></div>
+				<% if @pub or (@offerer and trd.offer.user.id == current_user.id) %>
+					<div class="remove_offer" onmouseover="$('#trd_<%= trd.id %>').css('display','block');" onmouseout="$('#trd_<%= trd.id %>').css('display','none');" style="margin-right: 9px;">
+							<% if @pub %>
+							<a href="#" class='click' onclick="return removeOffer(<%= trd.id %>,'');">
+								<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/flag.png" />
+							<% elsif @offerer  and params[:edit_offer].nil? %>
+							<a href="#" onclick="prepareDelete(<%= trd.id%>); return false;">
+								<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/cross.png" />
+							<% end %>
+						</a>
+					</div>
+					<div id="trd_<%= trd.id %>" class="flagremove">
+						<% if @pub %>
+							<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/flagRemove.png" />
+						<% elsif @offerer %>
+							<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/remove.png" style="margin-left: 18px;" />
+						<% end %>
+					</div>
+				<% end %>
+			</div>
+			<div class="offer_service"><%= trd.offer.category_title %></div>
+			<div class="offer_desc">
+				<%= auto_link(simple_format(trd.offer.desc), :html => { :target => '_blank' }) %>
+			</div>
+			<div class="time_n_rev">
+				<span class="current_time_ago"><%= time_ago(trd.created_at) %></span>
+				<% @reviews = @offererReviews[counter-1] %>
+				<% if @reviews.length > 0 %>
+				<span class="show_rev">
+					<a href="#" onclick="showHideReview(<%= trd.id %>); return false;" id="showReview_<%= trd.id %>">Show Reviews <%=@reviews.length %></a>
+					<a href="#" onclick="showHideReview(<%= trd.id %>); return false;" id="hideReview_<%= trd.id %>" style="display: none;">Hide Reviews <%=@reviews.length%></a>
+				</span>
+				<%end%>
+				<% if @pub and @mc[trd.offer.user.id] and @mc[trd.offer.user.id].length > 0%>
+					<span class="show_mutual_con">
+						<a href="#" onclick="showHideConnect(<%= trd.id %>); return false;" id="showConnect_<%= trd.id %>">Show Mutual Connections <%= @mc[trd.offer.user.id].length %></a>
+						<a href="#" onclick="showHideConnect(<%= trd.id %>); return false;" id="hideConnect_<%= trd.id %>" style="display: none;">Hide Mutual Connections <%= @mc[trd.offer.user.id].length %></a>
+					</span>
+				<% end %>
+			</div>
+			<% if @reviews.length > 0 %>
+			<!-- Reviews Section Start -->
+				<div id="review_section_div_<%= trd.id %>" class="review_section_div" style="display: none;">
+					<div id="review_section_div_arw"></div>
+					<%= render "shared/offerer_review" %>
+				</div>
+			<!-- Reviews Section End -->
+			<%end%>
+			<!-- Mutual Connections -->
+			<% if @pub and @mc[trd.offer.user.id] and @mc[trd.offer.user.id].length > 0 %>
+				<div id="mutual_connect_div_<%= trd.id %>" class="mutual_connect_div" style="display: none;">
+					<div id="mutual_connect_div_arw"></div>
+					<%= render "shared/mutual_connections", :counter => trd.id, :mutualConn => @mc[trd.offer.user.id]  %>
+				</div>
+			<%end%>
+			<!-- Mutual Connections -->
+			
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="padding-top: 0px;">
+			<% if current_user and @item and @item.user.id == current_user.id %>
+				<div class="acceptoffer" id="acceptoffer_<%= trd.id %>" style="margin-top: 0px;">
+					<% if @status == ACTIVE %>
+						<% if !trd.rejected? %>
+						<%# if @item.is_single_tradeya %>
+							<div class="will_trade">Will you accept this offer?</div>
+							<a href="#" class='click' onclick="/*_kmq.push(['record', 'TradeYa Page Main Current Offers Accept Offer Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_AcceptOfferBtn', 'click Accept Offer on TradeYa Page, logged in as Publisher']);*/ return acceptOfferPopup(<%= trd.id %>, <%= trd.item_id %>, '<%= ((current_user) ? current_user.email : "") %>', 'RE: <%= escape_javascript(trd.offer.item_title) %>');">
+								<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/yes_offer.png" />
+							</a>
+							<a href="#" onclick = "rejectOffer(<%= trd.id %>); return false;">
+								<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/no_offer.png" />
+							</a><br />
+						<% else %>
+							<div class="will_trade">You rejected this offer.</div>
+						<% end %>
+						<%# else %>
+						<!-- <div style="margin-top: 0px;">
+							<!-- Multiple Offers Checkbox 
+								<input type="checkbox" id="accept_check_<%#= counter%>" class="check_this" />
+								<input type="hidden" id="selected_offer_<%#= counter%>" value="<%#= trd.id%>">
+								<span class="acc_ofr_text">Accept offer</span> -->	
+							<!-- Multiple Offers Checkbox -->
+						</div>
+						<%# end %>
+					<%end%>
+				</div>
+			<% end %>
+		</td>
+		<td colspan="2" style="padding-top: 0px;padding-bottom: 20px;">
+			<% if current_user and @item and @item.user.id == current_user.id %>
+				<% if @status == ACTIVE %>
+					<div class="contact" id="contact_<%= trd.id %>" style="margin-top: -24px;">
+						<a href="#" class='position-click' onclick="/*_kmq.push(['record', 'TradeYa Page Main Current Offers Contact Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_ContactBtn', 'click Contact on TradeYa Page, logged in as Publisher']);*/ return contactpopup(<%= trd.id %>,<%= trd.offer.id %>, '<%= ((current_user) ? current_user.email : "") %>', 'RE: <%= escape_javascript(trd.offer.title) %>');">
+						<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/contact_btn.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/contact_btn_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/contact_btn.png';" />
+						</a>
+					</div>
+				<%end%>
+				<% if @status == COMPLETED %>
+					<div class="contact" id="contact_<%= trd.id %>" style="margin-top: 0px;">
+						<a href="#" class='click' onclick="/*_kmq.push(['record', 'TradeYa Page Main Current Offers Contact Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_ContactBtn', 'click Contact on TradeYa Page, logged in as Publisher']);*/ return contactpopup(<%= trd.id %>, <%= trd.offer.id %>, '<%= ((current_user) ? current_user.email : "") %>', 'RE: <%= escape_javascript(trd.offer.item_title) %>');">
+						<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/contact_btn.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/contact_btn_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/contact_btn.png';" />
+						</a>
+					</div>
+				<%end%>
+			<% end %>
+			<% if @pub or (current_user and current_user.id == trd.offer.user_id) %>
+			<div id="private_comments_section_<%= trd.id %>" >
+				<%= render "shared/private_comments_section", :offer => trd %>
+			</div>
+			<% end %>
+		</td>
+		<td></td>
+	</tr>
+	<% if not trd.offer.item_videos[0].nil? %>
+		<script>$(function(){playVideo('offerPlayer_<%= counter %>', '<%= trd.offer.item_videos[0].video %>', false);});</script>
+	<% end %>
+	<% counter += 1 %>
+	<% even = even ? false : true %>
+	<% end %>
+</table>
+<!-- Multiple Offers Acception Button -->
+<% if !@item.is_single_tradeya and @trades.count > 0 and @pub and @status == ACTIVE%>
+	<div id="confrm_select_div" style="display: <%= params[:isDivOpen] ? 'block' : 'none' %>">
+		<!-- Multiple Offers Checkbox -->
+		<div style="float: left; margin-top: 10px; margin-left: 2px; margin-right: 10px;">
+			<input type="checkbox" id="selectall" />
+			<span class="acc_ofr_text">Select All</span>
+		</div>
+		<!-- Multiple Offers Checkbox -->
+		<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/confrm_select.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/confrm_select_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/confrm_select.png';" onclick="validateMultipleOffers(<%= counter %>,<%= @item.id%>); return false;" />
+	</div>
+<% end %>
+<!-- for modals -->
+<input type="hidden" id="multi_offers_selected" />
+<!-- <input type="hidden" id="tradeya_exp_date" value="<%#= @item.exp_date %>"> -->
+<!-- for modals -->
+
+<%= render "modals_shared/contact_modal"%>
+<div id="accept_offer_modal_parent">
+</div>
+<%= render "modals_shared/hover_modals"%>
+
+<script>
+	$(document).ready(function() {
+		isHoverVideo = false;
+		bindAjaxSpinner();
+	});
+	$(function () {
+	 $('#selectall').click(function () {
+	  $('.check_this').attr('checked', this.checked);
+	 });
+	});
+	$(".offerer_name").click(function(e) {
+		e.stopPropagation(); 
+		return false;
+	});
+</script>

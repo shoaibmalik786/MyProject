@@ -1,0 +1,48 @@
+<% counter = 6 %>
+<% @tradeyas_by_category.each do |item| %>
+	<div class="tycarousel_complete">
+		<table width="100%">
+			<tr valign="top">
+				<td colspan="2">
+					<div class="item_title" style="padding-top: 0px;"><a class='click' href="<%= item.item_url %>" onclick="/*_kmq.push(['record', 'TryaLnkLdngPg',{ 'SignedIn' : get_KMSignedIn()}]);*/"><%= truncate(item.item_title, :length => 72) %></a></div>
+					<div class="service" style="padding-bottom: 18px;"><%= item.category_title %></div>
+				</td>
+			</tr>
+		</table>
+		<table width="100%">
+			<tr valign="top">
+				<td rowspan="2" valign="middle" class="user_image_border" style="width: 340px; height: 256px; text-align: center; background-color: #fff;">
+					<% if not item.item_videos[0].nil? %>
+						<div class="item_image">
+							<a href="#" onclick="return false;" style="display:block;width:338px;height:251px;vertical-align: middle;" id="itemPlayerCatTrd_<%= counter %>"></a>
+						</div>
+					<% else %>
+						<div class="item_image">
+							<img src="<%= item.item_image(:large) %>" style="vertical-align: middle;" />
+						</div>
+					<% end %>
+				</td>
+				<td style="width: 110px;padding-left: 16px;">
+					<div class="user_image user_image_border" style="margin-bottom: 15px;"><img src="<%= item.user.user_image(:thumb) %>"<%= (item.user.isFacebookUser? ? ' width=100px' : "") %> /></div>
+					<div class="user_name"><%= item.user.title %></div>
+					<div class="user_city"><%= item.user.location %></div>
+				</td>
+				<td>
+					<div class="item_desc_cat"><%= auto_link(truncate(item.desc, :length => 140, :omission => '').strip + '<a class="click" href="' + item.item_url + '"><img class="item_desc_img" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/ellipses.png" /></a>', :html => { :target => '_blank' }) %></div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3" style="padding-left: 16px;">
+					<div class="dot_line" style="margin-top: -8px;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/dottedline.png" /></div>
+					<div class="cat_desc">
+						<a class='click' href='<%=items_path%>?category=<%=@current_category.id%>' >see more <%=@current_category.name%> TradeYas</a>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<% if not item.item_videos[0].nil? %>
+			<script>$(function(){playVideo('itemPlayerCatTrd_<%= counter %>', '<%= item.item_videos[0].video %>', false, 'tradeyacarousel');});</script>
+		<% end %>
+	</div>
+	<% counter += 1 %>
+<% end %>

@@ -1,0 +1,113 @@
+<div id="signup_box" class="signup_content">
+	<div id="crossimg"> <a href="#" onclick="return signupFormClose();">X</a></div>
+	<div id="signup_heading">Sign Up for TradeYa</div>
+	<%= form_for(:user, :url => {:controller =>"registrations", :action=>"create"}, :html => {:multipart => true, :id => "signUpFormie", :target => 'if_ip_upload', :onSubmit => "if($(this).attr('action').indexOf('image_preview') < 0 && !$('#user_captcha').is(':checked')){alert('Please check spambot check box'); submitSignUpFormie(); return false;}"}) do |f| %>
+		<div id="signupmessage">
+		    <div id="error_explanation"></div>
+		</div>
+		<table align="center" width="100%" id="signup_table">
+			<tr>
+				<td width="18%" style="text-align: right;"><span class="contact_text">FIRST NAME</span></td>
+				<td width="2%"></td>
+				<td>
+					<%= f.text_field :first_name, :value => "", :TABINDEX => "1",:class => 'addborder', :onFocus => "clearText(this); $('#user_first_name').addClass('addborder'); $('#user_first_name').removeClass('removeborder')", :onBlur => "clearText(this); $('#user_first_name').addClass('removeborder'); $('#user_first_name').removeClass('addborder');" %>
+					<!-- <input type="text" id="signup_email" /> -->
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right;"><span class="contact_text">LAST NAME</span></td>
+				<td></td>
+				<td>
+					<%= f.text_field :last_name, :value => "", :class => "signup_textbox removeborder", :TABINDEX => "2", :onFocus => "$('#user_last_name').addClass('addborder'); $('#user_last_name').removeClass('removeborder');", :onBlur => "clearText(this); $('#user_last_name').addClass('removeborder'); $('#user_last_name').removeClass('addborder');" %>
+					<!-- <input type="text" id="signup_text" /> -->
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right;"><span class="contact_text">EMAIL</span></td>
+				<td></td>
+				<td>
+					<%= f.email_field :email, :id => 'signup_email', :value => "", :class => "signup_textbox removeborder", :TABINDEX => "3",:onFocus => "$('#signup_email').addClass('addborder'); $('#signup_email').removeClass('removeborder');", :onBlur => "clearText(this); $('#signup_email').addClass('removeborder'); $('#signup_email').removeClass('addborder');" %>
+					<!-- <input type="text" id="signup_text" /> -->
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right;"><span class="contact_text">RE-ENTER EMAIL</span></td>
+				<td></td>
+				<td>
+					<%= f.email_field :email, :id => 'signup_conf_email', :value => "", :class => "signup_textbox removeborder", :TABINDEX => "4",:onFocus => "$('#signup_conf_email').addClass('addborder'); $('#signup_conf_email').removeClass('removeborder');", :onBlur => "clearText(this); $('#signup_conf_email').addClass('removeborder'); $('#signup_conf_email').removeClass('addborder');" %>
+					<div id="fbconnect">
+						<div id="fbor">or</div>
+						<a href="/auth/facebook" class="auth_provider" style="margin: 0px;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/connect_fb.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/connect_fb_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/connect_fb.png';" onclick="/*_kmq.push(['record', 'facebook signupmodal',{ 'SignedIn' : get_KMSignedIn()}]);*/"/></a>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right;"><span class="contact_text">PASSWORD</span></td>
+				<td></td>
+				<td>
+					<%= f.password_field :password, :id => "signup_pass", :value => "", :class => "signup_textbox removeborder", :TABINDEX=>"5", :onKeyPress=>"submitOnEnterSignupForm(event);",:onFocus => "$('#signup_pass').addClass('addborder'); $('#signup_pass').removeClass('removeborder');", :onBlur => "clearText(this); $('#signup_pass').addClass('removeborder'); $('#signup_pass').removeClass('addborder');" %>
+					<!-- <input type="text" id="signup_text" /> -->
+					<div id="click_tc">By clicking ‘Connect with Facebook”, you agree<br />to the <a href="#" onclick="return false;">Terms and Conditions</a></div>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right;"><span class="contact_text">ZIP/POSTAL CODE</span></td>
+				<td></td>
+				<td>
+					<%= f.text_field :zip, :id => "signup_zip", :class => "userzip removeborder",:maxlength => 10,:TABINDEX=>"6", :value => "",:onFocus => "$('#signup_zip').addClass('addborder'); $('#signup_zip').removeClass('removeborder');", :onBlur => "clearText(this); $('#signup_zip').addClass('removeborder'); $('#signup_zip').removeClass('addborder');" %>
+					<!-- <input type="text" id="zip_text" /> -->
+					<div id="exist_user"><a href="#" onclick="hideModal('signup_box', false); showModal('signin_modal'); return false;">Are you an existing user? Log In</a></div>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td style="text-align: right;padding-top: 5px;"><span class="contact_text">PROFILE PICTURE</span></td>
+				<td></td>
+				<td>
+					<%= f.fields_for :user_photo do |fp| %>
+						<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/choose_photo.png" onclick="jQuery('#user_user_photo_photo').click(); return false;" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/choose_photo_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/choose_photo.png'" style="float: left;" />
+						<%= fp.file_field :photo, {:style => "height:20px; width:200px;filter: alpha(opacity=0);opacity: .70;", :onChange => "imagePreviewie(this, 'signUpFormie', 'user_img_prew', 'usr')"} %>
+						<div style="float: left;">
+							<input type="submit" value="Submit Photo" onclick="imagePreviewie(this, 'signUpFormie', 'user_img_prew', 'usr')"/>
+						</div>
+						<div id="user_photo_upload">
+							<div style="height: 55px; overflow: hidden;">
+								<img id="user_img_prew" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/TY_DefaultUser_sm.gif" style="width:50px;height:auto;"/><br />
+							</div>
+							<div align="center" class="img_indicator" id="ind_user_img_prew"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/newajax-loader.gif"/></div>
+							<a href="#" onclick="jQuery('#user_user_photo_photo').click(); return false;">Change Photo</a>
+						</div>
+					<% end %>
+				</td>
+			</tr>
+			<tr valign="bottom">
+	  			<td></td>
+	  			<td></td>
+	  			<td>
+	    			<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/checkbox.png" onclick="checkUncheck(this,'', 'tandc')"  onkeypress="checkUncheck(this,'', 'tandc')" TABINDEX="9"/>
+					<input type="checkbox" id="tandc" name="chk" style="display:none" value="0" />
+					&nbsp;<div class="agreenew">Agree to the <a href="#" onclick="return false;">Terms and Conditions</a></div>
+	  			</td>
+			</tr>
+			<tr valign="bottom" style="height: 26px">
+	  			<td></td>
+	  			<td></td>
+	  			<td>
+	  				<div id="user_spambot_div"></div>
+	    			<img id="chkb_u_cpt" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/checkbox.png" onclick="checkUncheck(this,'', 'user_captcha')"  onkeypress="checkUncheck(this,'', 'user_captcha')" TABINDEX="9"/>
+					&nbsp;<div class="agreenew">Check this box if you are NOT a spambot</div>
+	  			</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td style="padding-top: 25px;">
+					<input class='position-click' type="image" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/signup.png" onclick="/*_kmq.push(['record', 'SignupMdl',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'register', 'signup', 'Signup Modal']);*/" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/signup_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/signup.png';" /> 
+					<!-- <img onclick="submitSignUpForm();" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/signup.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/signup_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/signup.png';"/> -->
+					<div class="cancel_div" style="margin-left: 124px; margin-top: -40px;">
+						<span class="or">or</span> <span class="cancel"><a class='cancel-click' href="#" onclick="return signupFormClose();">cancel</a></span>
+					</div>
+				</td>
+			</tr>
+		</table>
+	<% end %>
+</div>

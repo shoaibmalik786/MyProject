@@ -1,0 +1,6 @@
+<%if params[:accepted_offer_id]%>
+	$('#rev_<%=params[:accepted_offer_id] %>').html("<%=escape_javascript render('shared/sorted_reviews', :reviews => @user_reviews)%>");
+<%else%>
+	$("#sorted_reviews").html("<%= escape_javascript render('shared/sorted_reviews', :reviews => @user_reviews) %>");
+	$("#sorted_review_of_user").html("<%= escape_javascript render('shared/sorted_review_of_user') %>");
+<%end%>

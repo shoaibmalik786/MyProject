@@ -1,0 +1,54 @@
+<%if offer.private_conversations.count > 0%>
+<div id="private_comments_heading" onclick="privateSection(<%= offer.id%>); return false;">
+	<a href="#" name="private_comments_section" id="private_comments_section"><div id="hide_conversation_<%=offer.id %>" style="font-size:12px;">Hide Conversation Thread</div></a>
+</div>
+<%end%>
+<div class="private_comments_table" id = "private_comments_table_<%= offer.id%>">
+	<table width="100%">
+		<% eo = true %>
+		<% offer.private_conversations.each do |c| %>
+			<tr valign="top" class="<%= ((eo) ? 'even_comment' : 'odd_comment') %>">
+				<td>
+					<% if (current_user and current_user.id == c.user.id) or (@pub) %>
+						<div id="remove_<%= c.id %>" class="remove" style="margin-left: 502px; margin-top: -37px;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/remove.png" /></div>
+						<div class="remove_comment" onmouseover="$('#remove_<%= c.id %>').css('display','block');" onmouseout="$('#remove_<%= c.id %>').css('display','none');">
+							<a href="#" class="position-click" onclick="return showDeleteCommentConfirm(<%= c.id %>);"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/cross.png"/></a>
+						</div>
+					<% end %>
+					<div class="<%= ((c.user.id == c.item.user.id) ? 'private_answer' : 'private_question') %>">
+						<b style="float: left"><%= c.user.title %> <%= ((c.user_id == c.item.user_id) ? 'said' : 'said') %>:</b>
+						 <div style="width: 350px; float: left; padding-left: 5px;">“<%= c.comment %>”</div>
+					</div>
+				</td>
+			</tr>
+			<% eo = eo ? false : true %>
+		<% end %>
+	</table>
+	
+	<% if @status == ACTIVE and !offer.rejected? and (@pub or (current_user and current_user.id == offer.offer.user_id and offer.private_conversations.count > 0)) %>
+	<%= form_for(:comment, :url => {:controller =>"comments", :action=>"create"}, :html => {:id => "newCommentForm", :onSubmit => "return false;", :class=>"comments_form"}) do |f| %>
+		<div>
+			<!-- <div id="comments_spinner" style="display:none;text-align:center;">
+   				<%#= image_tag "spinner.gif"%>
+   			</div> -->
+			<div class="private_question_text removeborder" onFocus="" onBlur="">
+				<input id="input_comment_<%=offer.id %>" class="private_question_text_input" onkeypress="return addCommentOnEnter(this, <%= @item.id %>, event, <%= offer.id %>);" type="text" value="Write your comment here" onFocus="clearText(this);$('.question_text').addClass('addborder'); $('.question_text').removeClass('removeborder');" onBlur="clearText(this);$('.question_text').addClass('removeborder'); $('.question_text').removeClass('addborder');"/>
+			</div>
+			<div style="float: right; margin-top: -72px; margin-right: 1px; position: relative;">
+				<img class='position-click' src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/submit_comment.png" onclick="/*_kmq.push(['record', 'TradeYa Page Main Submit Comment Button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SbmCmnt', 'Click Submit in Comments Section']);*/ return addComment($('#input_comment_<%=offer.id %>'), <%= @item.id %>, <%= offer.id %>);" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/submit_comment_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/submit_comment.png'" />
+			</div>
+		</div>
+	<% end %>
+	<%end%>
+</div>
+<!-- for removing comment -->
+<input type="hidden" id="rmv_cmt_id">
+
+<script>
+	$(function() {
+		<% if params[:isDivOpen] or params[:isOC] %>
+			jQuery('#input_comment').focus(); clearText(jQuery('#input_comment')[0]);
+		<% end %>
+		bindAjaxSpinner();
+	});
+</script>

@@ -1,0 +1,72 @@
+// $("#rating_text").html("<%#=escape_javascript(render ('user_page_common_top') )%>");
+// // $(".rating_text").html("<%#=escape_javascript(simple_format(@user.about).html_safe) %>");
+// $(".update_about_wrapper").hide();
+// $("a.edit_pencil").show();
+// $(".rating_text").show();
+// $(".rating_text").text('<%#=@user.about%>');
+// $(".show_text").show();
+// $('.rating_text').animate({
+//         'height': '64px'
+// });
+// <%#if current_user and (@user == current_user)%>
+//       <%#if @user.about != "" %>
+//   			$('.rating_text').css('box-shadow','none');
+//   		<%#else%>
+//   			$('.rating_text').attr('style',"display: block;");
+//   		<%#end%>
+// <%#else%>
+//   		$('.rating_text').css('box-shadow','none');
+// <%#end%>
+$(".rating_text").html("<%=escape_javascript(simple_format(@user.about).html_safe) %>");
+var truncate = 167;
+var about_text = $(".rating_text").text();
+if(about_text.length	>	truncate){
+	var less_text = about_text.substr(0,truncate)+'...';
+	$(".rating_text").html(less_text);
+	$('a.hide_text').hide();
+	$('a.show_text').show();
+	$('.rating_text').animate({
+      'height': '64px'
+  }); 
+}else{
+	$(".rating_text").html(about_text);
+	$("a.hide_text").hide();
+	$('a.show_text').hide();
+}
+$('a.show_text').click(function(e) {
+    e.stopPropagation();
+    $(".rating_text").html(about_text);
+    $('.profile_tab_wrapper').css('margin-top','0px');  
+    $(this).hide();
+    $("a.hide_text").show();
+    $("a.hide_text").css("float","right");
+    $("a.hide_text").css("font-size","11px");
+});
+$("a.hide_text").click(function(e) {
+    e.stopPropagation();
+    $(".rating_text").html(less_text);
+    $('.rating_text').animate({
+        'height': '64px'
+    });
+    
+    $(this).hide();
+    $("a.show_text").show();
+    $('.profile_tab_wrapper').css('margin-top','-38px');
+})
+$(".update_about_wrapper").hide();
+$("a.edit_pencil").show();
+$(".rating_text").show();
+
+$('#user_settings_tab li').removeClass('active');
+$('#user_settings_tab li:first').addClass('active');
+//$('#profile_updated').hide();
+$('#profile_updated').show();
+ setTimeout(function() {
+        $("#profile_updated").hide('blind', {}, 500)
+    }, 1000);
+//$('#profile_updated').delay(5000).fadeOut('slow');
+$("#tab-content").html("<%= escape_javascript(render 'users/tabs/basic_info_tab') %>");
+$("#tab-content").append("<%= escape_javascript(render 'users/tabs/about_me_tab') %>");
+$("#tab-content").append("<%= escape_javascript(render 'users/tabs/verification_tab') %>");
+$("#tab-content").append("<%= escape_javascript(render 'users/tabs/shipping_tab') %>");
+$("#tab-content").append("<%= escape_javascript(render 'users/tabs/payment_tab') %>");

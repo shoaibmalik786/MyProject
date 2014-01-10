@@ -1,0 +1,53 @@
+<div id="signup_box_guest" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="return signupGuestFormClose();">&times;</button>
+		<h3><div id="signin_heading">Sign Up as Guest for TradeYa</div></h3>
+	</div>
+	<div class="modal-body">
+		<div id="signupmessage"><div id="error_explanation_guest"></div></div>
+		<%= form_for(:user, :url => {:controller =>"registrations", :action=>"create_guest"}, :html => {:multipart => true, :id => "signUpGuestForm", :target => 'if_ip_upload', :onSubmit => "", :class => "form-horizontal"}) do |f| %>
+			<table align="center" width="100%" id="signup_table">
+				<tr>
+					<td style="text-align: right;"><span class="contact_text">FIRST NAME</span></td>
+					<td></td>
+					<td>
+						<input type="text" id="signup_guest_f_name" name="user[signup_guest_f_name]" class="input-large signup_textbox removeborder" onFocus="$('#signup_guest_f_name').addClass('addborder'); $('#signup_guest_f_name').removeClass('removeborder');" onBlur="$('#signup_guest_f_name').addClass('removeborder'); $('#signup_guest_f_name').removeClass('addborder');" />
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;"><span class="contact_text">EMAIL</span></td>
+					<td></td>
+					<td>
+						<input type="text" id="signup_guest_email" name="user[signup_guest_email]" class="input-large signup_textbox removeborder" onFocus="$('#signup_guest_email').addClass('addborder'); $('#signup_guest_email').removeClass('removeborder');" onBlur="$('#signup_guest_email').addClass('removeborder'); $('#signup_guest_email').removeClass('addborder');" />
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;"><span class="contact_text">ZIP/POSTAL CODE</span></td>
+					<td></td>
+					<td>
+						<input type="text" id="signup_guest_zip" name="user[signup_guest_zip]" class="input-large signup_textbox removeborder" onFocus="$('#signup_guest_zip').addClass('addborder'); $('#signup_guest_zip').removeClass('removeborder');" onBlur="$('#signup_guest_zip').addClass('removeborder'); $('#signup_guest_zip').removeClass('addborder');" />
+					</td>
+				</tr>
+				<tr style="height: 20px;">
+					<td></td>
+					<td></td>
+					<td>
+						<div style="font-size:10px;margin-top:-2px;">
+							This is so that we can help you find local trades!
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td style="padding-top: 5px; padding-bottom: 10px;">
+						<img class="position-click" onclick="submitSignUpGuestForm();" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/continue.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/continue_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/continue.png'" />
+						<div class="cancel_div" style="margin-left: 124px; margin-top: -40px;">
+							<span class="or">or</span> <span class="cancel"><a class='cancel-click' href="#" onclick="/*_kmq.push(['record', 'Modal Guest Signup Cancel Button',{ 'SignedIn' : get_KMSignedIn()}]);*/ return signupGuestFormClose(); ">cancel</a></span>
+						</div>
+					</td>
+				</tr>
+			</table>
+		<% end %>
+	</div>
+</div>

@@ -1,0 +1,68 @@
+<% if current_user %>
+<div id="usr_profile_pic" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div id="crossimg"> <a href="#" onclick="cancelUpdatePhoto(); deleteThisPhoto(true); /*_kmq.push(['record', 'modal upload profile image close x icon',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'modal', 'Clk_UploadModalCloseIcn', 'clicks on x close icon in Upload Profile Image Modal']);*/ return false;">X</a></div>
+	<div class="usr_profile_head">Upload a Profile Image</div>
+	<div id="user_profile_photo_upload_div">
+		<div class="file_div">
+			<div id="photo_upload_div">
+				<span class="select_file" id="selected_photo_file" style="position: absolute; z-index: 0">No file selected</span>
+				<span class="fileupload_img">
+					<%= form_for current_user, :url => edit_user_image_path,:html => {:multipart => true,:target => "if_ip_upload", :id => "user_profile_photo"} do |f| %>
+						<div style="width: 105px; height: 26px; overflow: hidden; position: absolute; margin-left: -104px; z-index: 2">
+							<img id="icp_img" style="float: left" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse.png" />
+							<%= f.fields_for :user_photo do |fp| %>
+								<%= fp.file_field :photo, {:style=>"opacity: 0; filter: alpha(opacity = 0); -moz-opacity:0; position: absolute;top: 0; left: 0; width: 102px;height:26px;", :onmouseover=>"$('#icp_img').attr('src', 'https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse_roll.png')", :onmouseout=>"$('#icp_img').attr('src', 'https://s3.amazonaws.com/tradeya_prod/tradeya/images/browse.png')", :onChange => "jQuery('#selected_photo_file').text(jQuery(this).val().substring(jQuery(this).val().lastIndexOf('\\\\') + 1));",:TABINDEX=>"4", :onClick => "/*_kmq.push(['record', 'modal upload profile image browse button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'modal', 'Clk_UploadModalBrwseBtn', 'clicks on browse button in Upload Profile Image Modal']);*/"} %>
+								<% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+									<%= fp.hidden_field attribute, :id => attribute %>
+								<% end %>
+							<% end %>
+							<input id="user_edit_user_photo_id" name="user[user_photo][id]" type="hidden">
+						</div>
+						<div id="profile_spinner" style ="display:none;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/spinner.gif" style="height: 20px;"></div>
+					<% end %>
+				</span>
+			</div>
+		</div>
+		<div id="requirements">
+			<div id="photo_req">Photo requirements:</div>
+			<div id="photo_det" style="margin-top: 4px;">Minimum size: 230 x 230 pixels. <span id="error_explanation_epi" style="color: red; font-weight: bold;"></span></div>
+		</div>
+		<div style="margin-top: 10px">
+			<div>
+				<img src="/assets/upload_image.png" onmouseover="this.src='/assets/upload_image_roll.png'" onmouseout="this.src='/assets/upload_image.png'" onclick="var v = $('#user_profile_photo input[id=user_user_photo_photo]').val(); if(v.length > 0 && v != 'No file selected') imagePreview('user_user_photo_photo', 'user_profile_photo', 'user_img_prev', 'usr', 'user_edit_user_photo_id'); /*_kmq.push(['record', 'modal upload profile image upload image button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'modal', 'Clk_UploadModalUploadBtn', 'clicks on upload image button in Upload Profile Image Modal']);*/"/>
+			</div>
+			<div style="margin-left: 135px; margin-top: -34px;">
+				<img src="/assets/close_button.png" onmouseover="this.src='/assets/close_button_roll.png'" onmouseout="this.src='/assets/close_button.png'" onclick = "cancelUpdatePhoto(); deleteThisPhoto(true); /*_kmq.push(['record', 'modal upload profile image close button',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'modal', 'Clk_UploadModalCloseBtn', 'clicks on close button in Upload Profile Image Modal']);*/" />
+			</div>
+		</div>
+	</div>
+	<div id="user_profile_photo_crop_div" class="hidedrop">
+		<div>
+			<div style="float: left">
+				<img id="user_img_prev" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/img_prev_default.png"/><br />
+			</div>
+			<div id="crop_preview" style="float: right; text-align: left;">
+				<h4 style="font-size: 16px; font-weight: bold;">Crop Your Image</h4>
+				<div class="delete_photo_text" style="clear: both;">
+					To switch this with a new file.<br/>you must <a href="#" onclick="return deleteThisPhoto(true);">Delete this photo</a>
+					<div align="center" class="img_indicator" id="ind_user_prof_img_crop">
+						<img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/spinner.gif"/>
+					</div>
+				</div>
+				<div style="width: 150px; height: 150px; overflow: hidden;">
+					<img id="tradeya_img_prev_small" src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/img_prev_default.png"/><br />
+				</div>
+				<img style="margin-top:10px;" src="/assets/crop.png" onclick="cropImage('user_edit_user_photo_id', 'user_profile_image', false);" onmouseover="this.src='/assets/crop_roll.png';" onmouseout="this.src='/assets/crop.png';" />
+			</div>
+		</div>
+	</div>
+</div>
+<% end %>
+<script>
+function cancelUpdatePhoto()
+{
+	jQuery('#selected_photo_file').text("No file selected");
+	$('#usr_profile_pic').modal('hide');
+	return false;
+}
+</script>

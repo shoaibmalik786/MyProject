@@ -1,0 +1,46 @@
+<div class="tab-pane" id="about_me_tab">
+  <%= form_for((@user), :html =>{:multipart => true, :id => 'user_settings_form', :class=>"form-horizontal", :remote=>true}) do |f| %>
+  <form  class="form-horizontal">
+    <div class="edit_profile_controls">
+      <div class="control-group">
+        <label class="control-label" for="inputfname">About You</label>
+        <div class="controls">
+          <!-- <textarea class="e_textarea"></textarea> -->
+          <%= f.text_area :about, class: "e_textarea", placeholder: "Some stuff about you." %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputfname">Website</label>
+        <div class="controls">
+          <%= f.text_field :website, class: "e_input" %>
+
+          <!-- <input type="text" class="e_input"> -->
+          <!-- <div class="text_under_input">This will only be shared once you have confirmed a TradeYa so they can contact you.</div> -->
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputfname">Children</label>
+        <div class="controls">
+          <label class="radio gender_list">
+            <%= f.radio_button :children, true, :onclick=>'needToConfirm=false' %><%= label :children, 'Yes' %>
+          </label>
+          <label class="radio gender_list">
+            <%= f.radio_button :children, false, :onclick=>'needToConfirm=false' %><%= label :children, 'No' %>
+          </label>
+          <label class="radio gender_list">
+          </label>
+        </div>
+        <div class="clear"></div>
+        <div class="text_under_input help_text">Helps users offer more relevant trades</div>
+      </div>
+      <hr class="password_control_group" />
+    </div>
+    <div class="control-group">
+      <div class="controls save_cancel_btn">
+        <%= f.submit "Save", class: "edit_save", onclick: "needToConfirm = false;" %>
+      </div>
+    </div>
+  </form>
+  <% end %>
+
+</div>

@@ -1,0 +1,3 @@
+<%if params[:search_user]%>
+ 	$("#searched_users").html("<%= escape_javascript render('shared/following_tab_search') %>");
+ <%end%>

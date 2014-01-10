@@ -1,0 +1,144 @@
+<script>
+var user_photo_count = 0;
+var user_photos = [];
+window.onload = function() {
+ <% if params[:verify] == "true" %>
+ customScroll('#veri_images');
+ <% end %>
+}
+</script>
+<script src="https://checkout.stripe.com/v2/checkout.js"></script>
+<div class="container">
+  <div id="editor_wrapper"></div>
+  <div class="span10 item_middle_section">
+    <div class="center_content">
+      <div class="edit_outer">
+        <div class="edit_profile_wrapper">
+          <div class="heading"> Edit Profile</div>
+          <div id="profile_updated" style="font-size:14px;text-align:center;display:none;color:red;">Profile updated successfully</div>
+          <div id="card_added" style="font-size:14px;text-align:center;display:none;color:red;">Card added successfully</div>
+          <div id="edit_photo"></div>
+          <div class="edit_profile_top">
+            <%=render 'image_row'%>
+            <div id="edit_image_section_div">
+              <%if current_user.present?%>
+                <%=render 'shared/edit_image_section', :photos => current_user.user_photos%>
+              <%end%>
+            </div>
+
+            <div class="user_tabs_wrapper">
+              <ul class="nav nav-tabs user-tabs" id="user_settings_tab">
+                <li class="active"><a href="#basic_info_tab" data-toggle="tab">Basic Info</a></li>
+                <li><a href="#about_me_tab" data-toggle="tab">About me</a></li>
+                <li><a href="#verification_tab" data-toggle="tab">Verification</a></li>
+                <li><a href="#shipping_info_tab" data-toggle="tab">Shipping info</a></li>
+                <li><a href="#payment_info_tab" data-toggle="tab">Payment info</a></li>
+              </ul>
+              <div class="tab-content user_settings_content_wrapper" id="tab-content">
+
+                <!-- Basic Info Tab Start -->
+                <%= render "users/tabs/basic_info_tab" %>
+                <!-- Basic Info Tab End -->
+
+                <!-- About Me Tab Start -->
+                <%= render "users/tabs/about_me_tab" %>
+                <!-- About Me Tab End -->
+
+                <!-- Verification Tab Start -->
+                <%= render "users/tabs/verification_tab" %>
+                <!-- Verification Tab End -->
+
+                <!-- Shipping Info Tab Start -->
+                <%= render "users/tabs/shipping_tab" %>
+                <!-- Shipping Info Tab End -->
+                
+                <!-- Payment Info Tab Start -->
+                <%= render "users/tabs/payment_tab" %>
+                <!-- Payment Info Tab End -->
+
+              </div>
+            </div>
+            <%= render "users/photo_upload_modal" %>              
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- modal for Main Photo delete Confirmation  start-->
+<%= render "users/delete_photo_confirm" %>
+</div>
+
+<script>
+$(function () {
+ $('#user_user_photo_photo').fileupload({
+   url: '/image_preview?img_prev_id=' + 'tradeya_img_prev' + '&itemimg=usr' + "&fld_id=" + 'user_user_photo_photo' + "&user_photo_id=" + 'user_user_photo_id' + "&form_id=" + 'item_form',
+   dataType: 'script',
+   add: function (e, data) {
+               // $(".file_div").hide();
+               $("#progress .bar").text($("#selected_photo_file").text());
+               $("#selected_photo_file").text("");
+               $(".image_uploading").show();
+               data.submit();
+             },
+             done: function (e, data) {
+               $("#selected_photo_file").text('No file selected');
+               $(".image_uploading").hide();
+               $(".file_div").show();
+               $("#progress .bar").text("");
+               $("#progressmessage").text("");
+             },
+             progressall: function (e, data) {
+               var progress = parseInt(data.loaded / data.total * 100, 10);
+               // $("#progressmessage").text(progress);
+               $('#progress .bar').css(
+                 'width',
+                 progress + '%'
+                 );
+             }
+           });
+})
+$("#user_images_row").sortable({
+ users: "> td.sortable ",
+ stop: function( event, ui ) {
+   rearrangeUserPhotos("<%=current_user.id%>");
+   var imgUrl = $(".inner_image_uploaded img").attr('src');
+   $(".topnav_user_img img").attr('src', imgUrl);
+ }
+});
+$( "#user_images_row" ).disableSelection();
+</script>
+<script>
+$(function(){
+ <%current_user.user_photos.by_main_photo.each do |up|%>
+ AddUserPhoto("<%= escape_javascript(up.photo(:large))%>", <%=up.id%>);
+ <%end%>
+});
+</script>
+<script>
+var needToConfirm;
+window.onbeforeunload = confirmExit;
+function confirmExit()
+{
+ if (needToConfirm)
+   return 'Have you saved all the changes?';
+}
+</script>
+
+<script>
+$('#user_settings_form input').keypress(function(){
+ needToConfirm = true;
+})
+         // $('#user_settings_form input').change(function(){
+         //   needToConfirm = true;
+         // })
+</script>
+<!-- Add an edit button, passing the HTML id of the image and the public URL of the image -->
+<script type="text/javascript">
+$('.step2_edit_profile').hide();
+$('.edit_shipping_text a').click(function(){
+ $('.step1_edit_profile').hide();
+ $('.step2_edit_profile').show();
+});
+
+/* TODO: enter amount and char desc */
+
+</script>

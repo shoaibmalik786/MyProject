@@ -1,0 +1,23 @@
+<script src="https://checkout.stripe.com/v2/checkout.js"></script>
+<script>
+$('.payment_heading .tr_edit_btn').click(function(){
+   var amount = $('#amount').val();
+   var token = function(res){
+     var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+     $('form').append($input).submit();
+   };
+
+   StripeCheckout.open({
+     key:         <%= ENV[STRIPE_PUBLIC_KEY]% >
+     address:     true,
+     amount:      35.00,
+     currency:    'usd',
+     name:        'Chocolates',
+     description: 'A bag of Chocolates',
+     panelLabel:  'Checkout',
+     token:       token
+      });
+
+   return false;
+ });
+</script>

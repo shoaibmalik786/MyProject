@@ -1,0 +1,17 @@
+<%= form_for(@trade_communication) do |f| %>
+  <% if @trade_communication.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@trade_communication.errors.count, "error") %> prohibited this trade_communication from being saved:</h2>
+
+      <ul>
+      <% @trade_communication.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

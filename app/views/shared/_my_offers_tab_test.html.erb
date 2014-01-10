@@ -1,0 +1,381 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.you_haves_wants_container').BlocksIt({
+		numOfCol: 4,
+		offsetX: 10,
+		offsetY: 10,
+		blockElement: '.want_card'
+	});
+});
+$("img").one("load", function(){
+	$('.you_haves_wants_container').BlocksIt({
+		numOfCol: 4,
+		offsetX: 10,
+		offsetY: 10,
+		blockElement: '.want_card'
+	});
+
+$('#notice').fadeIn(2000);
+ function offerWantedTradeya(){
+			canSubmitCanNext = false;
+			var offer_id = <%=params[:wanted_item].to_i%>;
+			if((offer_id>0) && (offer_id != 'undefined'))
+			{
+				$("#new_offer_section").html($(".draggable[v="+offer_id+"]").html());
+				$(".draggable").removeClass("draggable");
+				$("#make_an_offer_form > #trade_offer_id").val(offer_id);
+				$('#new_offer_section').find('.confirm_wrapper').show();
+				$('#my_offers_tab').find('.info_alert').hide();
+
+				$("#new_offer_section").html($("#user_wants_card_"+offer_id).html());	
+				// $('.new_offer_left').find('#confirm_wrapper').hide();		
+				$('#new_offer_section').find('.confirm_wrapper_wanted').show();
+
+
+			}
+ 	}
+<%if params[:wanted_item].present? %>
+	offerWantedTradeya();
+<%end%>
+
+});
+
+</script>
+
+<div id="my_offers_tab">
+  <div class="offer_section">
+  	
+  	<% if flash[:notice] %>
+  		<div class="info_alert success_msg" id ="notice" style="display:none;">
+        <p><%= flash[:notice] %></p>
+        <a href="#" class="info_cross" onclick="$('#notice').fadeOut(1000); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/info_cross.png"></a>
+      </div>
+    <% elsif flash[:error]%>
+    	<div class="info_alert error_msg" id ="notice" style="display:none;">
+        <p><%= flash[:error] %></p>
+        <a href="#" class="info_cross" onclick="$('#notice').fadeOut(1000); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/info_cross.png"></a>
+      </div>
+  	<% end %>
+
+
+  	<div class="new_offer_left_wrapper">
+		  <!-- User Card Start-->
+			<div class="user_wants_card" id="user_wants_card_<%=@item.id%>">
+				<div class="user_card_heading">
+					<div class="clip">
+						<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+					</div>
+					<div class="item_title_card"><%=link_to @item.title, item_path(@item)%></div>
+					<div class="card_heading_middle_left">
+						<a href="<%=user_path(@item.user)%>"><img src="<%=@item.user.user_image(:thumb)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrImg', 'Click User image on Item Card']);mixpanel.track('Click User image on Item card');preventDefault();"></a>
+					</div>
+					<div class="card_heading_middle_right">
+							<div class="item_card_name" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrTtl', 'Click User Title on Item Card']);mixpanel.track('Click User Title on Item card');preventDefault();"><a href="<%=user_path(@item.user)%>"><%=@item.user.title%></a></div>
+							<div class="item_city_card"><%=@item.user.city%></div>
+							<%if @item.user.location != "-" and @item.user != current_user%>
+								<div class="item_distance_card"><%=@item.user.user_distance(session[:user_ll])%> miles</div>
+							<%end%>
+					</div>
+
+					<%if current_user.present? and @item.user == current_user %>
+					<%else%>
+						<div class="item_heading_bottom">
+							<!-- <div class="card_details" >Details</div> -->
+							<div class="heading_trade_want_like">
+								
+									<div id="item_card_want_icon_<%=@item.id%>">
+										<%= render 'shared/item_card_want', :@item => @item, :@icon => true%>
+									</div>
+									<div><a href="<%=my_offers_item_path(@item)%>"> <img src="http://d3md9h2ro575fr.cloudfront.net/images/card_trade.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_trade_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_trade.png'" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_Trd', 'Click Trade on Item Card']);mixpanel.track('Click Trade on Item card'); preventDefault();"></a>
+									</div> 
+									<div><a href ="/items/new?have=<%=@item.id%>"><img src="http://d3md9h2ro575fr.cloudfront.net/images/card_have.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_have_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_have.png'"></a> </div>
+									<div id="item_card_like_<%=@item.id%>">
+									  <%= render 'shared/item_card_like', :@item => @item%>
+									</div>
+							</div>
+						</div>
+					<%end%>
+				</div>
+				<div class="item_wants_image">
+					<%=link_to image_tag(@item.item_image), item_path(@item)%>
+				</div>
+			</div>
+			<!-- User Card Ends -->
+
+	  	<div class="my_offer_arrow">
+				<img src="http://d3md9h2ro575fr.cloudfront.net/images/my_offer_arrow.png">
+			</div>
+	  
+		  <div class="new_offer_left droppable">
+		  	<%=form_for(@trade, :html => {:id => "make_an_offer_form"})  do |f| %>
+		  		<%= f.hidden_field :item_id, :value => @item.id %>
+		  		<%= f.hidden_field :offer_id %>
+		  	<% end %>
+		  	<div id="new_offer_section">
+		   		<a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/new_offer.png"></a>
+		   	</div>
+		  </div>
+	  </div>
+	  
+	  <% alreadyOfferedIds = [] %>
+	  <div class="new_offer_right">
+	  	<div class="new_offer_right_inner">
+			  	<!-- current user's offers for the displayed items start -->
+			  	<%if @wanted_items.present? %>
+			  		<%@wanted_items.each_with_index do |wi,index|%>
+				  		<%cancelled = wi.item.want_cancelled(wi.item.id,@item.user.id).present? ? wi.item.want_cancelled(wi.item.id, @item.user.id) : nil %>
+			  			<%if (cancelled.present? and cancelled.exclude?(@item.id.to_s)) or (!cancelled.present?) %>
+					  		<%if @wantedItemInTrades.exclude?(wi.item.id)%>
+					  			<%#unless index ==0%>
+					  				<!-- <span class="or">Or</span> -->
+					  			<%#end%>
+					  			<div class="user_wants_card" >
+
+					  				<div class="confirm_controls_wrapper">
+					  					<%=form_for(@trade, :html=> {:id=>"confirm_offer"}) do |f|%>
+					  						<%=f.hidden_field :item_id, :value => @item.id%>
+					  						<%=f.hidden_field :offer_id, :value => wi.item.id%>
+													<input class="drag_submit" value="Offer" onclick="$(this).parents('form').submit(); return false;" type="submit">
+													<!-- <div class="drag_submit"><a href="#" onclick="$(this).parents('form').submit(); return false;">Offer</a></div> -->
+											<%end%>
+											<%=form_tag want_cancel_item_path, :id=>"cancel" do%>
+												<%=hidden_field_tag :item_id, @item.id%>
+												<%=hidden_field_tag :want_id, wi.item.id%>
+												<%=hidden_field_tag :user_id, @item.user.id%>
+												<input class="drag_cancel" value="Cancel" onclick="$('#cancel').submit();"type="submit">
+											<%end%>
+										</div>
+										<div class="user_card_heading">
+											<div class="clip">
+												<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+											</div>
+											<div class="item_title_card"><a href="<%=item_path(wi.item)%>"><%= wi.item.title%></div>
+											<div class="item_city_card"><%= wi.item.user.location %></div>
+											<div class="item_distance_card"><%= wi.item.user.user_distance(session[:user_ll])%> miles</div>
+										</div>
+										<div class="item_wants_image">
+											<a href="<%=item_path(wi.item)%>"><img src="<%= wi.item.item_image(:medium)%>" /></a>
+										</div>
+									</div>
+									<%end%>
+									<%if index == @wanted_items.last and @offeredItemsAsTrades.present?%>
+										<span class="or">Or</span>
+									<%end%>
+					  		<%end%>
+					  	<%end%>
+			  	<%end%>
+			  	<% if @offeredItemsAsTrades.present? %>
+			  		<% @offeredItemsAsTrades.each_with_index do |trade,i| %>
+			  			<% if trade.item_user_id == current_user.id %>
+			  				<% item = trade.item %>
+			  			<% elsif trade.offer_user_id == current_user.id %>
+			  				<% item = trade.offer %>
+			  			<% end %>
+			  			<% if item.present? %>
+			  			 <% alreadyOfferedIds[alreadyOfferedIds.count] = item.id %>
+			  			<!-- User Card Start-->
+			  			<%unless i == 0%>
+			  				<span class="or">Or</span>
+			  			<%end%>
+								<div class="user_wants_card">
+									<div class="user_card_heading">
+										<div class="clip">
+											<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+										</div>
+										<div class="item_title_card"><a href="<%=item_path(item)%>"><%= item.title%></div>
+										<div class="item_city_card"><%= item.user.location %></div>
+										<div class="item_distance_card"><%= item.user.user_distance(session[:user_ll])%> miles</div>
+									</div>
+									<div class="item_wants_image">
+										<a href="<%=item_path(item)%>"><img src="<%= item.item_image(:medium)%>" /></a>
+									</div>
+									<% if trade.item_user_id == current_user.id %>
+										<div class="accept_offer">
+											<%= form_tag accepted_offers_path do %>
+          							<%= hidden_field_tag 'trade_id', trade.id %>
+							          <a onclick="$(this).parents('form').submit(); return false;">Accept</a>
+							        <%end%>
+										</div>
+
+										<div class="remove_div">
+											<%= form_tag reject_trade_path(:id => trade.id) do %>
+	          						<a onclick="$(this).parents('form').submit(); return false;">Remove</a>
+	          					<%end%>
+          					</div>
+									<% else %>
+										<%= form_tag remove_offer_item_path(:id => item.id),:id => "remove_offer_action" do %>
+										    <%= hidden_field_tag 'remove_offer', true%>
+							    				<div class="remove_div" onclick="$(this).parents('form').submit(); return false;">Remove</div>
+										<%end%>
+									<% end %>
+								</div>
+								<!-- User Card End-->
+							<% end %>
+			  		<% end %>
+			  	<% end %>
+			</div>
+	  </div>
+	</div>
+	<div class="you_haves_section">
+		<div class="you_haves_heading">
+			Your Haves
+		</div>
+		<div class="you_haves_content">		
+			<div class="you_haves_right">
+        <%if @have_items.present?%>
+          <div class="you_haves_wants_container">	
+          	<div class="want_card">
+							<a href="<%=new_item_path%>?offer_for=<%=@item.id%>"><img src="http://d3md9h2ro575fr.cloudfront.net/images/add_item.png"></a>
+						</div>
+	          <% @have_items.each do |have|%>
+		          <%cancelled = have.want_cancelled(have.id,@item.user.id).present? ? have.want_cancelled(have.id, @item.user.id) : nil %>
+	          	<% if @item_array.exclude?(have.id) or (cancelled.present? and cancelled.include?(@item.id.to_s))%>
+			          <% if !alreadyOfferedIds.include?(have.id) %>
+			          	<div class="draggable want_card" v="<%=have.id%>">
+										<div class="user_wants_card">
+											<!-- confirmation div start-->
+												<div class="confirm_wrapper" style="display:none">
+													<div class="confirm_controls_wrapper">
+														<input class="drag_submit" value="Confirm" onclick="$('#make_an_offer_form').submit();" type="submit">
+														<input class="drag_cancel" value="Cancel" onclick="<%params.delete :offered_item%>;window.location=$(location).attr('href').split('?')[0];"type="submit">
+													</div>
+												</div>
+												<!-- confirmation div end-->
+
+									      <div class="user_card_heading">
+										      <div class="clip">
+											      <img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+										      </div>
+										      <div class="item_title_card">
+										      	<a href="<%=have.item_url%>"><%= have.title%></a>
+										      </div>
+										      <div class="item_city_card">
+										      	<%= have.user.location%>
+										      </div>
+										      <%if have.user.location != "-" and have.user != current_user%>
+											      <div class="item_distance_card">
+											      	<%=have.user.user_distance(session[:user_ll])%> miles
+											      </div>
+										      <%end%>
+									      </div>
+									      <div class="item_wants_image">
+										      <a href="<%=have.item_url%>"><img src="<%= have.item_image(:medium)%>" /></a>
+									      </div>
+									      
+												<%# if @item_array.include?(have.id)%>
+													<!-- <div class="wanted_div"><a href="#" onclick="return false;">Wanted</a></div> -->
+												<%#end%>
+							    	</div>
+							  	</div>
+								<% end %>
+							<%end%>
+			    	<% end %> <!--loop-->
+			    </div>
+	      <%end%>
+			</div> <!-- you haves right -->
+
+		</div> <!-- you haves content -->
+	</div> <!-- you haves section -->
+</div>
+<!-- script for my offers have hover start -->	
+		<script type="text/javascript">
+		$(document).ready(function(){
+			// $(".you_haves_wants_container .user_wants_card").children(".remove_div").hide();
+			$(".you_haves_wants_container .user_wants_card").children(".add_comment").hide();
+
+			$(".you_haves_wants_container .user_wants_card").hover(function(){
+
+			// $(this).children(".remove_div").show();
+			$(this).children(".add_comment").show();
+
+			},function(){
+			// $(".you_haves_wants_container .user_wants_card").children(".remove_div").hide();
+			$(".you_haves_wants_container .user_wants_card").children(".add_comment").hide();
+
+			});		 
+		})	 
+		</script>
+<!-- script for my offers have hover ends-->
+
+<!-- script for my offers > offers hover start -->
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$(".new_offer_right").children(".new_offer_right_inner").children(".user_wants_card").children(".accept_offer").hide();
+			$(".new_offer_right").children(".new_offer_right_inner").children(".user_wants_card").children(".remove_div").hide();
+			$(this).find(".remove_div").hide();
+			$(".new_offer_right").children(".new_offer_right_inner").children(".user_wants_card").hover(function(){
+
+			$(this).children(".accept_offer").show();
+			$(this).children(".remove_div").show();
+			$(this).find(".remove_div").show();
+			},function(){
+			$(".new_offer_right").children(".new_offer_right_inner").children(".user_wants_card").children(".accept_offer").hide();
+			$(".new_offer_right").children(".new_offer_right_inner").children(".user_wants_card").children(".remove_div").hide();
+			$(this).find(".remove_div").hide();
+			});
+		});
+		$(function(){
+			$( ".draggable" ).draggable({ 
+				appendTo: 'body',
+				scroll: true, 
+				revert: true, 
+				helper: "clone", 
+				cursor: "move", 
+				cursorAt: { top: 25, left: 25 }
+			});
+		 	$( ".droppable" ).droppable({
+		 		drop: function( event, ui ){
+		 			if(canSubmitCanNext)
+		 			{
+		 				canSubmitCanNext = false;
+		 				var offer_id = ui.draggable.attr("v");
+			 			if((offer_id>0) && (offer_id != 'undefined'))
+			 			{
+			 				$(".draggable").removeClass("draggable");
+			 				var html = $(ui.draggable).html();
+			 				$("#new_offer_section").html($(ui.draggable).html());
+			 				// uncomment next line to remove "remove" button
+			 				// $("#new_offer_section").find("#remove_haves_action").html("");
+			 				$("#make_an_offer_form > #trade_offer_id").val(offer_id);
+			 				$('#new_offer_section').find('.confirm_wrapper').show();
+			 				$('#my_offers_tab').find('.info_alert').hide();
+			 				// $("#make_an_offer_form").submit();
+			 			}
+		 			}
+		 		}
+			});
+		});
+		</script>
+<!-- script for my offers > hover Ends -->
+
+<!-- script for dynamically calculating width for horizontal scrolling start -->
+<script type="text/javascript">
+
+	$(function(){
+	var width = 0;
+	var width2 = 0;
+	$('.new_offer_right .new_offer_right_inner .user_wants_card').each(function() {
+	    width += $(this).outerWidth( true );
+	});
+	$('.new_offer_right .new_offer_right_inner  span.or').each(function() {
+	    width2 += $(this).outerWidth( true );
+	});
+	$('.new_offer_right_inner').css('width', width+width2 +2+ "px");
+	});
+</script>
+<!-- script for dynamically calculating width for horizontal scrolling ends -->
+
+<!-- add item rollover start -->
+<script type="text/javascript">
+// $(document).ready(function() { 
+// 	$(".you_haves_add_item").children("img").attr("src" ,"http://d3md9h2ro575fr.cloudfront.net/images/add_tradeya.png");
+//     $(".you_haves_add_item a").hover(
+//       function(){
+//         $(".you_haves_add_item a").children("img").attr("src" ,"http://d3md9h2ro575fr.cloudfront.net/images/add_tradeya_hover.png");
+//       },
+//       function(){
+//     	  $(".you_haves_add_item a").children("img").attr("src" ,"http://d3md9h2ro575fr.cloudfront.net/images/add_tradeya.png");
+//       });
+// });
+// </script>
+<!-- add item rollover Ends -->

@@ -1,0 +1,33 @@
+<%if !@users_display.present?%>
+	<!-- Empty Following content start -->
+	<div id="empty_haves" >
+		<%if current_user and current_user != @user%>
+		  <div class="heading">It looks like <%=@user.first_name.titleize%> is not following anybody yet.</div>
+		<%else%>
+			<div class="following_empty_friends_div">
+	      <div class="following_empty">Where are all your friends? </div>
+	      <div class="following_empty_bottom">Connect and follow friends via Facebook and Twitter</div>
+	      <div class="social_login">
+	      	<%if current_user and current_user.facebook_authenticated? %>
+	      	<%=link_to image_tag("http://d3md9h2ro575fr.cloudfront.net/images/login_fb_on.png"), facebook_friends_user_path(:facebook_registered_friends => (@facebook_registered_friends.present? ? @facebook_registered_friends : nil)),:onclick=>"$('#sl_verified_fb').addClass('social_selected');_gaq.push(['_trackEvent', 'Following Tab', 'clk_Fb_FndFrnds', 'Click Fb icon to find friends on empty tab']);mixpanel.track('Click Fb icon to find friends on empty tab'); return false;" ,:remote => true%>
+	      	<%else%>
+	        	<a href="/auth/facebook?add_verification=true" onclick="mixpanel.track('Click FB icon to Verify from Empty Following Tab');_gaq.push(['_trackEvent', 'Following tab', 'Clk_FB_verify', 'Click FB icon to Verify from Empty Following Tab']); addDelay(this,event); return false; "><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png'" id="fb_login_img" <="" a=""></a>
+	        <%end%>
+	        
+	        <%if current_user and current_user.twitter_authenticated? %>
+	        	<%=link_to image_tag("http://d3md9h2ro575fr.cloudfront.net/images/login_tw_on.png"), twitter_friends_user_path(:twitter_registered_friends => (@twitter_registered_friends.present? ? @twitter_registered_friends : nil)),:onclick=>"$('#sl_verified_twt').addClass('social_selected');_gaq.push(['_trackEvent', 'Following Tab', 'clk_Twtr_FndFrnds', 'Click Twitter icon to find friends on empty tab']);mixpanel.track('Click Twitter icon to find friends on empty tab'); return false;" , :remote => true%>
+	        <%else%>
+	        	<a href="/auth/twitter?add_verification=true&twitter=true" onclick="mixpanel.track('Click Twitter icon to Verify from Empty Following Tab');_gaq.push(['_trackEvent', 'Following tab', 'Clk_Twtr_verify', 'Click Twitter icon to Verify from Empty Following Tab']); addDelay(this,event); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png'" id="tw_login_img"></a>
+	        <%end%>
+        </div>
+      </div>
+		<%end%>
+	</div>
+	<!-- Empty Following content end -->
+<%else%>
+	<!-- Followed Users start -->
+	<%@users_display.each do |follow|%>
+		<%= render 'shared/user_card_piece', :follow => follow %>
+	<%end%>
+	<!-- Followed Users end -->
+<%end%>

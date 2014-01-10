@@ -1,0 +1,12 @@
+<%activity_feed.each do |activity|%>
+	<%if activity.trackable_type == "Like"%>
+		<%=render 'shared/inbox_activity_like', :activity => activity %>
+	<%elsif activity.trackable_type == "Comment"%>	
+		<%=render 'shared/inbox_activity_comment', :activity => activity %>
+	<%elsif activity.trackable_type == "Item"%>
+	  <%=render 'shared/inbox_activity_item_added', :activity => activity %>
+	<%elsif activity.trackable_type == "Want"%>
+	  <%=render 'shared/inbox_activity_want', :activity => activity %>
+	<%end%> <!-- Activity Type -->
+<%end%> <!-- Activities Loop -->
+<%#=will_paginate @activity_feed%>

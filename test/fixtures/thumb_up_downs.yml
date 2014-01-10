@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user_id: 1
+  item_id: 1
+  person_id: 
+  up_down: 
+  token: MyString
+
+two:
+  user_id: 1
+  item_id: 1
+  person_id: 
+  up_down: 
+  token: MyString

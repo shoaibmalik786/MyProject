@@ -1,0 +1,36 @@
+<label class="radio credit_card">
+              <% if @user.charge_cards.present? %>
+                <% @user.charge_cards.each do |card| %>
+
+              <input type="radio" name="cardtype" /><label><img src="http://d3md9h2ro575fr.cloudfront.net/images/visaicon.png" style="margin-top: -7px;"></span><span class="same_shipping_text">Ending in <%= card.last_4 %></span>&nbsp;&nbsp;<%= link_to "X", charge_card_path(card.id), method: :delete, class: "remove_card shipping_cross", data: {confirm: "Are you sure you want to delete the card?", remote: true}%>
+              <!-- <a href="#edit_card_info" class="edit_card" data-id="<%= card.card_id %>" data-toggle="modal">edit</a> -->
+            </label>
+              
+           <!--  <span class="billing_text">Billing address</span><span class="same_shipping_text_right">Same as shipping</span><span class="edit_shipping_text"><a href="#" onclick="return false;">Edit</a></span> -->
+        
+              <% end %>
+            <% end %>
+           </label> 
+
+           <!-- <div id="edit_card_info" class="modal fade hide">
+                    <a href="#" class="close" data-dismiss="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png"></a>
+                  <div id="card_form"></div>
+                  </div> -->
+
+<script>
+
+  
+
+    // $('.edit_card').on('click', function () {
+        
+
+    //     //do all your operation populate the modal and open the modal now. DOnt need to use show event of modal again
+    //     $('#edit_card_info #card_form').empty();
+    //     $('#edit_card_info #card_form').append(('<b style="font-size:14px">Order Id selected: ' + $(this).data('id') + '</b>'));
+    //     //$('#edit_card_info').modal('show');
+
+
+
+    // });
+
+</script>

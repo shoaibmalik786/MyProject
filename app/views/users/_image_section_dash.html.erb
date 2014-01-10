@@ -1,0 +1,94 @@
+<div id="profile_image_section_div">
+  <div class="profile_user_images">
+    <div class="profile_large_image" id="profile_large_image">
+      <img src="<%= @user.user_image(:large)%>" />
+    </div>
+    <% if current_user %>
+      <div class="profile_image_thumbs_owndash">
+    <% else %>
+      <div class="profile_image_thumbs_dash">
+    <% end %>
+    <%if @user_images.count > 1 %>
+    <%@user_images.each do |ph|%>
+    <a href="#"><img src="<%=ph%>" onclick='clickProfileImage("<%=ph%>"); return false;'></a>
+    <%end%>
+    <% if current_user && @user.id == current_user.id && @user.user_all_image.size < 4%>
+     <a href="#photo_upload_modal" data-toggle="modal">
+      <img src="http://d3md9h2ro575fr.cloudfront.net/images/pr_thumb1.png">
+    </a>
+    <% end %>
+    <%end%>
+  </div>
+</div>
+</div>
+<%if current_user && current_user.id == @user.id%>
+<%= form_for((current_user), :html =>{:multipart => true, :id => 'user_settings_form'}) do |f| %>
+<!-- modal for photo Upload Starts-->
+<div id="photo_upload_modal" class="modal hide fade">
+  <a href="#" class="close del_close" data-dismiss="modal">X</a>
+  <div class="heading">Upload a photo from your computer...</div>
+  <%= f.fields_for :user_photo do |up| %>
+  <div class="file_div">
+    <div id="photo_upload_div">
+      <span class="fileupload_img">
+        <div style="overflow: hidden; position: absolute; z-index: 0">
+          <div id="icp_img" style="float: left">Select File</div>
+          <%= up.file_field :photo, {:class => "file_up", :accept => "image/*", :onChange => "canSubmitCanNext = false;jQuery('#selected_photo_file').text(jQuery(this).val().substring(jQuery(this).val().lastIndexOf('\\\\') + 1));",:TABINDEX=>"4", :style=>"opacity: 0; filter: alpha(opacity = 0); -moz-opacity:0; position: absolute;top: 0; left: 0; width: 119px;height:32px;  cursor: pointer;"} %>
+          <input id="user_edit_user_photo_id" name="user[user_photo][id]" type="hidden">
+        </div>
+      </span>
+      <span class="select_file" id="selected_photo_file">No file selected</span>
+    </div>
+  </div>
+  <div class="clear"></div>
+  <div class="image_uploading" style="display:none;">
+    <div style="overflow: hidden; position: absolute; z-index: 0">
+      <div id="" class="icon_uploading" style="float: left"><img src="http://d3md9h2ro575fr.cloudfront.net/images/image_icon_upload.gif" /></div>
+      <div id="progress" style="float: left;width: 192px;">
+        <div class="bar" style="width: 0%; "></div>
+      </div>
+    </div>
+  </div>
+  <% end %>
+  <div id="photomessage" style="margin-top: 3px;"></div>
+  <div id="progressmessage" style="margin-top: 36px; margin-left: 30px;"></div>
+</div>
+<%end%>
+<script>
+  $(function () {
+    $('#user_user_photo_photo').fileupload({
+      url: '/image_preview?img_prev_id=' + 'tradeya_img_prev' + '&itemimg=usr' + "&fld_id=" + 'user_user_photo_photo'+ "&refreshModal=true" + "&user_photo_id=" + 'user_user_photo_id' + "&form_id=" + 'item_form',
+      dataType: 'script',
+      add: function (e, data) {
+        $(".file_div").hide();
+        $("#progress .bar").text($("#selected_photo_file").text());
+        $(".image_uploading").show();
+        data.submit();
+      },
+      done: function (e, data) {
+        $("#selected_photo_file").text('No file selected');
+        $(".image_uploading").hide();
+        $(".file_div").show();
+        $("#progress .bar").text("");
+        $("#progressmessage").text("");
+        refreshModal("profile_image_section");
+      },
+      progressall: function (e, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+  // $("#progressmessage").text(progress);
+  $('#progress .bar').css(
+    'width',
+    progress + '%'
+    );
+}
+});
+  })
+  // $("#user_images_row").sortable({
+  // users: "> td.sortable ",
+  // stop: function( event, ui ) {
+  // rearrangeUserPhotos("<%=current_user.id%>");
+  // }
+  // });
+  // $( "#user_images_row" ).disableSelection();
+</script>
+<%end%>

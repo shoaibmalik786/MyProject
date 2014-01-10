@@ -1,0 +1,9 @@
+<%= form_tag haves_item_path(:id => @item.id),:id => "haves_action", :remote=>true do %>
+  <%if current_user && current_user.has_item?(@item.id)%>
+    <%= hidden_field_tag 'haves', false %>
+    <%= image_submit_tag('http://d3md9h2ro575fr.cloudfront.net/images/(have)-Selected.png')%>
+  <%else%>
+    <%= hidden_field_tag 'haves', true %>
+    <a href = "#" onclick="havesUser(); return false;"><%= image_tag('http://d3md9h2ro575fr.cloudfront.net/images/Have-Unselected.png',:mouseover=>"http://d3md9h2ro575fr.cloudfront.net/images/(have)-Selected.png", :mouseout=>'http://d3md9h2ro575fr.cloudfront.net/images/Have-Unselected.png')%></a>
+  <%end%>
+<%end%>

@@ -1,0 +1,184 @@
+<%if @user.present?%>
+<!--Content Start -->
+<div class="container">
+	<%if session[:have_saved]%>
+	<script>
+		$(function(){
+			$('#have_message_modal').modal("show");
+		});
+	</script>
+	<%session[:have_saved] = nil%>
+	<%end%>
+	<div class="span10 item_middle_section">
+		<div class="center_content">
+			<div class="dashboard_main_wrapper ">
+				<% if params[:wanted_item] or params[:review_reminder] and flash[:error] or flash[:info]%>
+				<div class="info_alert error_msg" id ="notice">
+					<%wanted_item = Item.find_by_id(params[:wanted_item])%>
+					<%if wanted_item.present? and wanted_item.deleted?%>
+					<p>Whoops! Looks you have deleted "<%=wanted_item.title%>"! But, all is not lost. Check out <%=@user.title%>'s stuff to see if there's anything you want!</p>
+					<%elsif wanted_item.present? and wanted_item.completed?%>
+					<p>Whoops! Looks you already traded "<%=wanted_item.title%>"! But, all is not lost. Check out <%=@user.title%>'s stuff to see if there's anything you want!</p>
+					<%elsif flash[:info] and params[:delete]%>
+					<%delete_item = Item.find(params[:delete])%>
+					<p><span class="msg_item_name">"<%=delete_item.title%>"</span> has been removed from your Haves Board</p>
+					<%else%>
+					<p><%= flash[:error] %></p>
+					<%end%>
+					<a href="#" class="info_cross" onclick="$('#notice').fadeOut(1000); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/info_cross.png"></a>
+				</div>
+				<% end %>
+				<div class="my_profile_rating_wrapper">
+					<div class="nav-collapse1 profile_tabs_collapse">
+						<div class="profile_tab_wrapper">
+							<ul class="nav nav-tabs profile_tabs_dash" id="profile_tab">
+								<%if current_user == @user%>
+								<li>
+									<%=link_to 'Dashboard', dashboard_user_path(@user), :data => {:toggle=>"tab", :push => true, :target => "#tab-content"}, :id => "tab_dashboard"%> 
+									<span class="bubble">99</span>
+								</li>
+								<li class="tab_inbox">
+									<%=link_to 'Activity', active_trades_user_path(@user), :data => {:toggle=>"tab", :push => true, :target => "#tab-content"}, :id => "tab_activity"%>
+									<!--<ul class="nav nav-tabs reviews_sub_tabs" id="inbox_tab_div" style="display:none">
+										<li><a href="#" class="inbox_messages">Messages</a></li>
+										<li class="review_by_user_li"><a href="#" class="inbox_notifications">Notifications</a></li>
+									</ul> -->
+								</li>
+								<%end%>
+								<li class="tab_review">
+									<%=link_to 'Inbox',messaging_user_path(@user),:data => {:toggle=>"tab",:push => true, :target => "#tab-content"}, :id => "tab_inbox" %>
+									<!-- <ul class="nav nav-tabs reviews_sub_tabs reviews_tabs" id="reviews_tab_div" style="display:none">
+										<li><a href="#" class="reviews_by_trades">Reviews of <%=@user.first_name.capitalize%>'s Trades (<%=@user.reviews.count%>)</a></li>
+										<%#if current_user == @user%>
+											<li class="review_by_user_li"><a href="#" class="reviews_by_user active">My Reviews (<%=@user.user_reviews.count%>)</a></li>
+										<%#else%>
+											<li class="review_by_user_li"><a href="#" class="reviews_by_user active">Reviews by <%=@user.first_name.titleize %> (<%=@user.user_reviews.count%>)</a></li>
+										<%#end%>
+									</ul> -->
+								</li>
+								<li><%=link_to 'Haves', haves_user_path(@user),:data => {:toggle=>"tab", :push => true, :target => "#tab-content" }, :id => "tab_haves"%></li>
+								<li><%=link_to 'Likes', likes_user_path(@user),:data => {:toggle=>"tab", :push => true, :target => "#tab-content"}, :id => "tab_likes"%></li>
+								<%# if current_user == @user %>
+								<!--  <li id=my-offers-tab><a href="#">My Offers</a></li> -->
+								<!-- <li><%#=link_to 'Offers', myoffers_user_path(@user),:data => {:toggle=>"tab",:push => true, :target => "#tab-content"}, :id => "tab_myoffers"%></li> -->
+								<%#end%>
+								<li><%=link_to "Past Trades",past_trades_user_path(@user),:data => {:toggle=>"tab",:push => true, :target => "#tab-content"}, :id => "tab_past_trades" %></li>
+								<li class="f_search_outer"><%=link_to 'Friends', following_user_path(@user),:data => {:toggle=>"tab",:push => true, :target => "#tab-content"}, :id => "tab_following"%></li> 
+							</ul>
+						</div>
+					</div>
+					<div class="tab-content" id="tab-content"></div>
+				</div>
+			</div>
+			<div id="spinner" style="top: 90%; display: none"></div>
+		</div>
+	</div>
+	<div class="review-content" id="review-content"></div>
+</div>
+<!-- Content End-->
+<%end%>
+
+<% if current_user and current_user.id == @user.id %>
+<!-- modal for photo Upload Starts-->
+	<!-- <div id="photo_upload_modal" class="modal hide fade">
+	  <a href="#" class="close del_close" data-dismiss="modal">X</a>
+	  <div class="heading">Upload a photo from your computer</div>
+	  <input type="file" class="file_up">
+	</div> -->
+	<!-- modal for photo Upload Ends-->
+<% end %>
+<script type="text/javascript">
+	$('.profile_tabs li a').click(function(){
+		$('.profile_tabs li').removeClass('active');
+		$(this).parent().addClass('active');
+		$("#reviews_tab_div").hide();
+		// $("#inbox_tab_div").hide();
+		$("#inbox_options").hide();
+		$(".reviews_by_user").addClass("active");
+
+		$('#tab_haves').text("Haves");
+		$('#tab_wants').text("Wants");
+		$('#tab_likes').text("Likes");
+		$('#tab_myoffers').text("My Offers");
+		$('#tab_past_trades').text("Past Trades");
+		$('#tab_reviews').text("Inbox");
+		$('#tab_following').text("Friends");
+	});
+	// var opts = {
+	// 	size: 75,           // Width and height of the spinner
+	// 	factor: 0.25,       // Factor of thickness, density, etc.
+	// 	color: "#FF5447",      // Color #rgb or #rrggbb
+	// 	speed: 1.0,         // Number of turns per second
+	// 	clockwise: true     // Direction of rotation
+	// };
+	// var ajaxLoader = new AjaxLoader("spinner", opts);
+	$('.profile_tabs li:not("#tab_dashboard") a').click(function(){
+		$('#spinner').show();
+		$('.tab_div_overlay').show();
+	});
+
+	$('.d_star_rating_large').raty({
+		size:  '20',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/d_star_on.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/d_star_off.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png'
+	});
+	$('#d_overall_rating').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/orangestar.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/whitestar.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(@overall_rating.present?)? @overall_rating : 0%>
+	});
+	$('#d_item_described').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/orangestar.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/whitestar.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(@describe_rating.present?)? @describe_rating : 0%>
+	});
+	$('#d_item_communication').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/orangestar.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/whitestar.png',
+		starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		halfShow: true,
+		readOnly: true,
+		score: <%=(@communication_rating.present?)? @communication_rating : 0%>
+	});
+	$('#rating_star_dash').raty({
+		size:  '25',
+		starOn:    'http://d3md9h2ro575fr.cloudfront.net/images/green_star_dash.png',
+		starOff:   'http://d3md9h2ro575fr.cloudfront.net/images/grey_star_dash.png',
+		// starHalf:   'http://d3md9h2ro575fr.cloudfront.net/images/half_color.png',
+		// halfShow: true,
+		readOnly: true,
+		score: <%=(@describe_rating.present?)? @describe_rating : 0%>
+	});
+</script>
+<script>
+	// $('#my-offers-tab').click(function(){
+	// 	$('#spinner').hide();
+	// });
+	$('#tab_dashboard').click(function(){
+		$('#spinner').hide();
+		$('.tab_div_overlay').hide();
+	});
+
+	$(function(){
+		<%if current_user and (@user == current_user)%>
+		<%if @user.about != "" %>
+		$('.rating_text').css('box-shadow','none');
+		<%else%>
+		$('.rating_text').attr('style',"display: block;");
+		<%end%>
+		<%else%>
+		$('.rating_text').css('box-shadow','none');
+		<%end%>
+	});
+
+</script>

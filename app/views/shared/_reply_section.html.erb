@@ -1,0 +1,17 @@
+<% comment.replies.each do |reply| %>
+		<%if reply.user.present? %>
+		<div class="comment_detail_div">
+		  	<%#if current_user and reply.user_id == current_user.id%>
+					<!-- <div class="inbox_cross">
+							<%#= link_to image_tag("http://d3md9h2ro575fr.cloudfront.net/images/inbox_cross.png"),reply , method: :delete, :remote=>true%>
+					</div> -->
+				<%#end%>	
+			<div class="user_image_comment"><img src="<%=reply.user.user_image%>" style="width: 50px;" /></div>
+			<div class="comments_right_section">
+				<div class="user_name_comment_reg"><%=reply.user.title%></div>
+				<p class="user_comment_detail"><%= reply.comment%></p>				
+			</div>
+			<div class="clear"></div>
+		</div>
+	<%end%>
+<%end%>

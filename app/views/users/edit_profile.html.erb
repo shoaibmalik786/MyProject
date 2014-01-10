@@ -1,0 +1,301 @@
+<div class="container">
+  <div class="span10 item_middle_section">
+    <div class="center_content">
+      <div class="edit_outer">
+        <div class="edit_profile_wrapper">
+          <div class="heading"> Edit Profile</div>
+          <div class="edit_profile_top">
+            <div class="main_image">
+              <a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/edit_user_img.png"></a>
+              <a href="#">Main Photo</a>
+              <a href="#delete_modal" data-toggle="modal" class="main_image_cross">X</a>
+              <a href="#edit_photo_modal" data-toggle="modal"  class="edit_link">Edit</a>
+            </div>
+            <div class="cam_images">
+              <a href="#photo_upload_modal" data-toggle="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/cam_img.png"></a>
+              <a href="#photo_upload_modal" data-toggle="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/cam_img.png"></a>
+            </div>
+          </div>
+          <div class="edit_profile_controls">
+            <%= form_for((@user), :html =>{:multipart => true, :id => 'user_settings_form'}) do |f| %>
+            <div class="controls_left">
+              <p class="c_label">First Name<span>*</span></p>
+              <p class="c_input">
+                <%= f.text_field :first_name, :class => "e_input"%> <br/>
+                <!-- <input type="text" name="fname" class="e_input"> -->
+                <span>TradeYa is a tight nit community, we call everybody by their first names here.</span>
+              </p>
+              <p class="c_label">Last Name</p>
+              <p class="c_input">
+                <%= f.text_field :last_name, :class => "e_input" %><br/>
+                <!-- <input type="text" name="lname" class="e_input"> -->
+                <span>This will only be shared once you have confirmed a TradeYa.</span>
+              </p>
+              <p class="c_label">Email<span>*</span></p>
+              <p class="c_input">
+                <%= f.text_field :email, :class => "e_input" %><br/>
+                <!-- <input type="text" name="email" class="e_input"> -->
+                <span>This will only be shared once you have confirmed a TradeYa so they can contact you.</span>
+              </p>
+              <p class="c_label">Gender<span></span></p>
+              <div class="controls">
+
+                <label class="radio">
+                <%= f.radio_button :gender,"male" %><%= label :gender, 'Male' %>
+                  <!-- <input id="item_condition_2" name="item[condition]" type="radio" value="2"> -->
+                  <!-- <label for="item_condition">Male</label><br> -->
+                </label>
+                <label class="radio">
+                <%= f.radio_button :gender, "female" %><%= label :gender, 'Female' %>
+                  <!-- <input  id="item_condition_1" name="item[condition]" type="radio" value="1"> -->
+                  <!-- <label for="item_condition">Female</label><br> -->
+                </label>
+                <label class="radio">
+                <%= f.radio_button :gender, "none" %><%= label :gender, 'Unspecified' %>
+                <!--   <input checked="checked"  id="item_condition_2" name="item[condition]" type="radio" value="3"> -->
+                <!--   <label for="item_condition">Unspecified</label><br> -->
+                </label>
+
+                <div class="clear"></div>
+</p>
+
+<div class="clear"></div>
+</div>
+<div class="controls_left">
+  <div class="user_setting_hr"></div>
+
+  <p class="c_label">Password<span>*</span></p>
+  <p class="c_input"><a href="" class="cp_link">Change Your Password</a></p>
+  <div class="user_setting_hr"></div>
+
+
+
+  <div class="clear"></div>
+</div>
+<div class="controls_left">
+
+  <p class="c_label">Address<span></span></p>
+  <div class="address_outer">
+    <p class="c_input"><input type="text" name="address1" class="e_input" /></p>
+    <p class="c_input">
+                <%= f.text_field :city, :class => "e_input" %><br/>
+                <%= f.text_field :state, :class => "e_input" %><br/>
+                <%= f.text_field :zip, :class => "e_input" %><br/>
+      <!-- <input type="text" name="address2" class="e_input"> -->
+      <span>We keep this info on record so that IF you choose to share it after a TradeYa you can do so with one click. Otherwise it’s PRIVATE. </span>
+    </p>
+  </div>
+  <p class="c_label">About You </p>
+  <p class="c_input">
+    <%= f.text_area :about, :class => "e_textarea" %><br/>
+    <!-- <textarea class="e_textarea" name="about_you"></textarea> -->
+  </p>
+  <div class="clear"></div>
+</div>
+<div class="controls_left">
+
+  <div class="user_setting_hr"></div>
+  <p class="c_label">Phone Number</p>
+  <p class="c_input">
+    <input type="text" name="phone" class="e_input_phone"><span class="ph_verified">Verify</span>
+    <span style="width:100px"><input type="text" class="confirm_box"></input></span>
+    <span style="width:100px"><a href="">Remove</a> </span>
+    <span>This will only be shared once you have confirmed a TradeYa so they can contact you.</span></p>
+  <p class="c_label">Social Verification</p>
+  <p class="veri_images">
+    <% if current_user.facebook_authenticated? %>
+    <img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_on.png">
+    <% else %>
+    <a href="/auth/facebook?add_verification=true">
+      <img src="http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_fb_off.png'" >
+    </a>
+    <% end %>
+
+    <a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_tw_off.png'" ></a>
+    <a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/login_google_off.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_google_on.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/login_google_off.png'" ></a>
+  </p>
+  <p class="c_input" style="margin-left:138px">
+
+	<% if !current_user.facebook_authenticated? %>
+	<a href="/auth/facebook?add_verification=true" class= 'auth_provider position-click' onclick="/*_kmq.push(['record', 'dashboard editverifications button connect facebook  ',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_addfacebook', 'Connect Facebook button in Your Verifications']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/fb_verif.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/fb_verif_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/fb_verif.png'" /></a>
+	<% end %>
+	<% if !current_user.twitter_authenticated? %>
+	<a href="/auth/twitter?add_verification=true" class= 'auth_provider position-click' onclick="/*_kmq.push(['record', 'dashboard editverifications button connect twitter',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_addtwitter', 'Connect Twitter in Your Verifications']);*/"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/tw_verif.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/tw_verif_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/tw_verif.png'" /></a>
+	<% end %>
+	<% if !current_user.linkedin_authenticated? %>
+	<a href="#" class="position-click" onclick="/*_kmq.push(['record', 'dashboard editverifications button connect linkedin',{ 'SignedIn' : get_KMSignedIn()}]);_gaq.push(['_trackEvent', 'dashboard', 'Clk_addlinkedin', 'Connect LinkedIn in Your Verifications']);*/ window.open('<%= linkedin_login_url %>?add_verification=true', '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, left=' + ((screen.width/2)-(550/2)) + ', top=' + ((screen.height/2)-(420/2)) + ', width=550, height=420'); return false; "><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/in_verif.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/in_verif_roll.png'" onmouseout="this.src='https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/in_verif.png'" />
+	<% end %>
+
+
+    <span>This is the easiest way to gain trust in the TradeYa community.</span>
+  </p>
+  <div class="user_setting_hr"></div>
+  <div class="clear"></div>
+</div>
+<p class="req"><span>*</span>Required</p>
+
+
+</div>
+
+<div class="clear"></div>
+
+</div>
+<div class="sub_wrapper">
+  <%= f.submit "Save", :class => "e_sub" %>
+  <!-- <a href="#" class="e_sub">Save</a> -->
+</div>
+<!-- modal for photo Upload Starts-->
+  <div id="photo_upload_modal" class="modal hide fade">
+      <a href="#" class="close del_close" data-dismiss="modal">X</a>
+      <div class="heading">Upload a photo from your computer...</div>
+      <%= f.fields_for :user_photo do |up| %>
+      <div class="file_div">
+        <div id="photo_upload_div">
+          <span class="fileupload_img">
+            <div style="overflow: hidden; position: absolute; z-index: 0">
+              <div id="icp_img" style="float: left">Select File</div>
+              <%= up.file_field :photo, {:class => "file_up", :accept => "image/*", :onChange => "canSubmitCanNext = false;jQuery('#selected_photo_file').text(jQuery(this).val().substring(jQuery(this).val().lastIndexOf('\\\\') + 1));",:TABINDEX=>"4", :style=>"opacity: 0; filter: alpha(opacity = 0); -moz-opacity:0; position: absolute;top: 0; left: 0; width: 119px;height:32px;  cursor: pointer;"} %>
+              <input id="user_edit_user_photo_id" name="user[user_photo][id]" type="hidden">
+            </div>
+          </span>
+          <span class="select_file" id="selected_photo_file" style="position: absolute; z-index: 0">No file selected</span>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <div class="image_uploading" style="display:none;">
+        <div style="overflow: hidden; position: absolute; z-index: 0">
+          <div id="" class="icon_uploading" style="float: left"><img src="http://d3md9h2ro575fr.cloudfront.net/images/image_icon_upload.gif" /></div>
+          <div id="progress" style="float: left;width: 192px;">
+            <div class="bar" style="width: 0%; "></div>
+          </div>
+        </div>
+      </div>
+      <% end %>
+      <div id="photomessage" style="margin-top: 36px; margin-left: 30px;"></div>
+      <div id="progressmessage" style="margin-top: 36px; margin-left: 30px;"></div>
+  </div>
+  <div id="photo_upload_modal" class="modal hide fade">
+    <a href="#" class="close del_close" data-dismiss="modal">X</a>
+    <div class="heading">Upload a photo from your computer</div>
+    <input type="file" class="file_up">
+  </div>
+<!-- modal for photo Upload Ends-->
+  <% end %>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- modal for Main Photo delete Confirmation  start-->
+<div id="delete_modal" class="modal hide fade">
+  <a href="#" class="close del_close "  data-dismiss="modal">X</a>
+  <div class="heading">Delete Main Photo?</div>
+  <div class="delete_modal_body">
+    <div class="btn_left"><a href="#" class="close" data-dismiss="modal"> NO! Take me back</a></div>
+    <div class="btn_right"><a href="#">YES, Delete it</a> </div>
+  </div>
+
+</div>
+<!-- modal for Main Photo delete Confirmation  Ends-->
+
+<!-- Edit Photo Modal Start-->
+
+<div id="edit_photo_modal" class="modal hide fade">
+  <div class="edit_photo_top">
+    <div class="done_btn"><a href="#">Done</a></div>
+    <div class="heading">Edit Photo</div>
+    <div class="close" data-dismiss="modal">X</div>
+  </div>
+  <div class="edit_user_img"><img src="http://d3md9h2ro575fr.cloudfront.net/images/edit_img_big.jpg"></div>
+  <div class="edit_user_img_tabs">
+    <ul class="nav nav-tabs edit_img_tabs">
+      <li><a href="#crop_tab" data-toggle="tab"><i class="crop_img"></i>Crop</a></li>
+      <li><a href="#rotate_tab" data-toggle="tab"><i class="rotate_img"></i>Rotate</a></li>
+      <li><a href="#auto_tab" data-toggle="tab"><i class="auto_img"> </i>Auto</a></li>
+      <li><a href="#contrast_tab" data-toggle="tab"><i class="contrast_img"></i>Contrast</a></li>
+    </ul>
+  </div>
+  <div class="user_img_tab_content tab-content">
+    <div id="crop_tab" class="img_effect_tab tab-pane active">
+      <ul>
+        <li><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/effect_img1.png"></a></li>
+        <li><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/effect_img2.png"></a></li>
+        <li><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/effect_img3.png"></a></li>
+        <li><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/effect_img1.png"></a></li>
+        <li><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/effect_img2.png"></a></li>
+        <li><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/effect_img3.png"></a></li>
+        <li><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/effect_img1.png"></a></li>
+        <li><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/effect_img2.png"></a></li>
+        <li><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/effect_img3.png"></a></li>
+        <li><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/effect_img1.png"></a></li>
+        <li><a href="#"><img src="http://d3md9h2ro575fr.cloudfront.net/images/effect_img2.png"></a></li>
+        <li><a href="#"><img src="assets/version2/effect_img3.png"></a></li>
+      </ul>
+    </div>
+    <div id="rotate_tab" class="img_effect_tab tab-pane">
+
+    </div>
+    <div id="auto_tab" class="img_effect_tab tab-pane">
+
+    </div>
+    <div id="contrast_tab" class="img_effect_tab tab-pane">
+
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>
+<!-- Edit Photo Modal Ends-->
+
+
+
+<!-- script for phone no verify -->
+
+<script type="text/javascript">
+  $(function(){
+  $("p.c_input span.ph_verified").click(function(){
+  $(this).addClass("verified");
+  $(this).text("verified");
+  $(".confirm_box").hide();
+  })
+
+  });
+</script>
+<!-- script for phone no verify -->
+
+<script>
+  $(function () {
+  $('#user_user_photo_photo').fileupload({
+  url: '/image_preview?img_prev_id=' + 'tradeya_img_prev' + '&itemimg=usr' + "&fld_id=" + 'user_user_photo_photo' + "&user_photo_id=" + 'user_user_photo_id' + "&form_id=" + 'item_form',
+  dataType: 'script',
+  add: function (e, data) {
+  $(".file_div").hide();
+  $("#progress .bar").text($("#selected_photo_file").text());
+  $(".image_uploading").show();
+  data.submit();
+  },
+  done: function (e, data) {
+  $("#selected_photo_file").text('No file selected');
+  $(".image_uploading").hide();
+  $(".file_div").show();
+  $("#progress .bar").text("");
+  $("#progressmessage").text("");
+  },
+  progressall: function (e, data) {
+  var progress = parseInt(data.loaded / data.total * 100, 10);
+  // $("#progressmessage").text(progress);
+  $('#progress .bar').css(
+  'width',
+  progress + '%'
+  );
+  }
+  });
+  $("#images_row").sortable({
+  items: "> td.sortable ",
+  stop: function( event, ui ) {
+  rearrangeItemPhotos();
+  }
+  });
+  });
+  $( "#images_row" ).disableSelection();
+</script>
+

@@ -1,0 +1,29 @@
+<div class="ofr_rev_back">
+	<div class="rev_abt_ofr">
+		Reviews About <%= @offerer_name %>
+	</div>
+	<% @reviews.each do |review| %>
+	<table width="100%" class="ofr_review_table">
+		<tr valign="top">
+			<td width="18%">
+				<div class="ofr_rev_image_smaller user_image_border">
+					<img src="<%=review.reviewer.user_image(:small) %>"<%= (review.reviewer.isFacebookUser? ? ' width=50px' : "") %> />
+				</div>
+				<div class="ofr_rev_name" onclick="callHoverProfile(<%= review.reviewer_id %>);"><%= review.reviewer.title %><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/trd_icon.png" style="margin-left: 5px;" /></div>
+				<div class="ofr_rev_city"><%= review.reviewer.location %></div>
+			</td>
+			<td>
+				<div class="ofr_rev_desc">
+					<%= review.review_text %>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<%end %>
+</div>
+<script>
+	$(".ofr_rev_name").click(function(e) {
+		e.stopPropagation(); 
+		return false;
+	});
+</script>

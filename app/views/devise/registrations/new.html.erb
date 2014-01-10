@@ -1,0 +1,12 @@
+<% content_for :head do %>
+  <script>
+   $(document).ready(function(){
+     analytics.page('Signup', {providers:{All: false, Mixpanel: true}});
+   });
+  </script>
+<% end %>
+
+<div id='signUpPartial'>
+  <div id="sign_up_conf_modal_div"><%=  render 'modals_shared/signup_confirmation'%></div>
+  <%= render 'shared/sign_up_partial' %>
+</div>

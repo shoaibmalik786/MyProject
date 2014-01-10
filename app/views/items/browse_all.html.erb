@@ -1,0 +1,138 @@
+<script>
+  var page = 1;
+  var total = <%=@i_total%>;
+  var n = 1;
+  var user='',category='',search_txt='';
+  var slideCount = {};
+    $(function(){
+    for(var i=1;i<n;i++){
+      slideCompletedTrade(i,slideCount[i]);
+    }
+  });
+</script>
+<% counter = 1 %>
+<div class="browse_back container">
+  <!-- <div id="azk96021" style="width: 160px; height: 600px; float: left; position: absolute;"></div> -->
+  <div class="browse_det">
+    <table id="browse_table" width="100%">
+      <tr valign="top">
+        <td>
+          <div class="browse_det_left">
+            <!-- If no Tradeyas -->
+            <% if !params[:search].present? and @i_total == 0 and @c_total == 0%>
+                <div class="browse_nav">
+                  <div class="error_msg_br">Oh noes! There's nothing here, but there could be if you <a class = 'click' href="<%= new_item_path(:cat => params[:category]) %>">Submit a TradeYa</a> now.</div>
+                </div>
+            <!-- If no Tradeyas -->
+            <% else %>
+              <div class="browse_nav">
+                <ul>
+                  <% if params[:search].present? %>
+                    <% if @i_total > 0 or @c_total > 0 %>
+                      <li style="width: 240px;"><b><span id="browse_category_count"><%= @i_total %> Result<%= (@i_total > 1)? "s":"" %></span></b> for <%= truncate(params[:search], :length => 16, :omission => '...') %>
+                      </li>
+                    <% else %>
+                      <li><b><span id="browse_category_count">0 Results</span></b> for <%= truncate(params[:search], :length => 16, :omission => '...') %></li>
+                      <div style="padding-top: 30px;text-align: center;">
+                        <div class="error_msg_br" style = "padding-top:15px;">Oh no! No items have been found!<br/>
+                          <span style="font-size:15px;">Search again or select one of our categories on the right.</span>
+                        </div>
+                      </div>
+                    <% end %>
+                  <% else %>
+                    <li style="width: 240px;">Browse All <b><span id="browse_category_count"><%= (@user)? @user.first_name_with_s : @i_total %></span></b> TradeYas
+                    </li>
+                  <% end %>
+                  <% if @i_total > 0 %>
+                    <li id="livetablink" style="margin-left: 0px;" onclick="/*_kmq.push(['record', 'Browse Sort Menu Live Text Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_LiveTextLink', 'Click on See All of <username>s TradeYas text link']);*/ setBrowseTotalLive();return false;"><a href="#" onclick="return false"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/live_selected.png" /></a></li>
+                  <% end %>
+                  <%if @c_total > 0 and @i_total == 0%>
+                    <li id="completedtablink" style="margin-top: 3px; margin-left: 38px;" onclick="/*_kmq.push(['record', 'Browse Sort Menu Completed Text Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_CompletedTextLink', 'Click on live in sorting menu of browse page']);*/ setBrowseTotalComplete();return false;"><a href="#" onclick="return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/completed.png"></a></li>
+                  <% elsif @c_total > 0 %>
+                    <li id="completedtablink" style="margin-top: 3px; margin-left: 30px;" onclick="/*_kmq.push(['record', 'Browse Sort Menu Completed Text Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_CompletedTextLink', 'Click on completed in sorting menu of browse page']);*/ setBrowseTotalComplete();return false;"><a href="#" onclick="return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/completed.png"></a></li>
+                  <%end%>
+                </ul>
+              </div>
+            <% end %>
+
+            <div id="livetab">
+              <%= render "live_tab" %>
+            </div>
+            <div id="completedtab" style="display: none;">
+              <%= render "completed_tab", :counter => counter %>
+            </div>
+          </div>
+        </td>
+        <td id="browse_right_nav" style="background-color: #EEE;">
+          <div class="browse_det_right">
+            <div id="right_top"></div>
+            <div class="cat_right_head">
+              Available for Trade
+            </div>
+            <hr style="width: 241px; height: 1px; border: 0; background-color: #999999;" />
+            <div id="cat_right_list_div">
+              <%= render "shared/categories_right_list" %>
+            </div>
+          </div>
+          <!--Scroll Top Section Start -->
+          <div id="scroll_top">
+            <a href="#" onclick="$(window).scrollTo(0, { duration: 600 } ); return false;"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/scroll_top_icon.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/scroll_top_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/scroll_top_icon.png';" /></a>
+          </div>
+          <!--Scroll Top Section End -->
+        </td>
+      </tr>
+      <tr style="background-color: #eee;">
+        <td valign="middle" style="background-color: #fff;">
+          <div id ="items_spinner" align="center" class="browse_det_left" style = "display:none">
+            <img src = "https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/Ajax_loader.gif">
+          </div>
+        </td>
+        <td valign="middle" style="background-color: #eee;">
+        </td>
+        <id="browse_right_nav">
+          <div class="browse_det_right">
+          </div>
+        </td>
+    </table>
+  </div>
+</div>
+<% if @i_total == 0%>
+  <script>
+    setDefaultSelect();
+    <% if @user.nil? %>
+      <% if params[:search].present? %>
+        $('#browse_category_count').text("<%= @completed.count %> Result<%= (@completed.count == 1)? "":"s" %>");
+      <% else %>
+        $('#browse_category_count').text("<%= @completed.count %>");
+      <% end %>
+    <% end %>
+    total = <%=@c_total%>;
+  </script>
+<% end %>
+<script type="text/javascript">
+  function setBrowseTotalLive(){
+    <% if @user.nil? %>
+      <% if params[:search].present? %>
+        $('#browse_category_count').text("<%= @i_total %> Result<%= (@i_total==1)? "":"s" %>");
+      <% else %>
+        $('#browse_category_count').text("<%= @i_total %>");
+      <% end %>
+    <% end %>
+    total = <%=@i_total%>;
+  }
+  function setBrowseTotalComplete(){
+    <% if @user.nil? %>
+      <% if params[:search].present? %>
+        $('#browse_category_count').text("<%= @c_total %> Result<%= (@c_total==1)? "":"s" %>");
+      <% else %>
+        $('#browse_category_count').text("<%= @c_total %>");
+      <% end %>
+    <% end %>
+    total = <%=@c_total%>;
+  }
+  $(window).scroll(function(){
+      if  ($(window).scrollTop() >= $(document).height() - $(window).height() - $('#footer').height()){
+          page = get_next_page_items(page,total,user,category,search_txt);
+        }
+    });
+</script>

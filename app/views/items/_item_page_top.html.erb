@@ -1,0 +1,478 @@
+<!-- Content Start -->
+<div class="container" id="container">
+  <%= render 'shared/alert_message'%>
+  <div class="span10 item_middle_section">
+    <div class="center_content">
+      <!-- info alert for success msg start -->
+      <div class="info_alert success_msg" style="display:none">
+        <p>More information for this item has been requested. Thanks for helping the TradeYa Community stay in shape!</p>
+        <a href="#" class="info_cross"><img src="http://d3md9h2ro575fr.cloudfront.net/images/info_cross.png"></a>
+      </div>
+      <!-- info alert for success msg ends-->
+      <!-- info alert for error msg start -->
+      <div class="info_alert error_msg" style="display:none">
+        <p>More information for this item has been requested. Thanks for helping the TradeYa Community stay in shape!</p>
+        <a href="#" class="info_cross"><img src="http://d3md9h2ro575fr.cloudfront.net/images/info_cross.png"></a>
+      </div>
+      <!-- info alert for error msg ends -->
+
+      <div class="center_top_content">
+        <div class="item_left">
+
+          <div class="item_heading_wrapper">
+            <div class="item_top_heading">
+              <%= truncate(@item.title, :length => 72) %>
+              <%#= truncate(@item.item_title, :length => 72) %>
+              <!-- Completed Tradeya -->
+              <%if @item.completed?%>
+              <div class="ribbon_traded"><img src="http://d3md9h2ro575fr.cloudfront.net/images/traded_ribbon.png" /></div>
+              <!-- Completed Tradeya -->
+              <%elsif @item.created_at > Time.now - 7.days%>
+              <div class="ribbon">
+                <img src="http://d3md9h2ro575fr.cloudfront.net/images/ribbon_new_shadow.png">
+              </div>
+              <%end%>
+            </div>
+          </div>
+
+          <%if @item.item_all_image.count > 1 %>
+          <script type="text/javascript">
+            // var ss = $(window).width();
+            //   if (ss > 1200) {
+            //     $('.center_top_content').css('min-height', '700px');
+            //   }else if ((ss > 978) && (ss < 1200)){
+            //     $('.center_top_content').css('min-height', '696px');
+            //   }else if ((ss > 768) && (ss < 978)){
+            //     $('.center_top_content').css('min-height', '653px');
+            //   }
+            </script>
+            <!-- <div class="black_strip"></div> -->
+            <div class="image_thumbs">
+              <ul>
+                <% @item.item_all_image(:large).each do |x|%>
+                <li><a href="#"><img class="image_unselected" src="<%= x %>", onclick='clickAllImage("<%= x %>"); $(this).addClass("image_selected"); $(this).removeClass("image_unselected"); $(".image_thumbs ul li img").not(this).removeClass("image_selected"); $(".image_thumbs ul li img").not(this).addClass("image_unselected");return false;'></a></li>
+                <%end%>
+              </ul>
+            </div>
+            <%end%>
+            <div class="item_image_wrapper">
+              <div class="large_image" id="large_image">
+                <img class="l_image" src="<%= @item.item_page_image(:large) %>" onclick="clickImage('<%= @item.item_image_full %>', <%= @item.isImgAutoWidth %>,true)" />
+              </div>
+            </div>
+            <div class="want_have_top_heading">
+              <%if current_user and @owner.id != current_user.id %>
+              <div class="want_have_top" id="want_have_top_div">
+                <ul>
+                  <li>
+                    <%if not @item.completed?%>
+                    <div id="wants_div"><%=render 'shared/wants'%></div>
+                    <%end%>
+                    <!-- message on want click div start -->
+                    <div class="want_message_div" id="want_msg_1">
+                      <div class="want_message_div_inner">
+                        <div class="want_message_div_heading">Success! You've added this to your Wants Board.</div>
+                        <div class="message_content">
+                          <p>2 things just happened! Whoa.</p>
+                          <p>1. We let <%=@owner.first_name_in_caps%> know you want "<%=@item.title%>" and invited <%=@owner.first_name_in_caps%> to check out your stuff to see what you have to trade.</p>
+                          <p>2. We added "<%=@item.title%>" to your Wants Board so other TradeYa users can see what kind of stuff you want. <a href="<%=wants_user_path(current_user)%>">Click here</a> to review your Wants Board.</p>
+                          <p class="org">
+                            <a href="#" onclick="$('#want_msg_1 #update_wants_message_reminder_form').submit(); closeWantsMessages();return false;">Got it! Don't show me this again</a>
+                          </p>
+                          <%= form_tag update_wants_message_reminder_user_path(:id => current_user), :id => "update_wants_message_reminder_form", :remote => true do %>
+                          <%= hidden_field_tag :want_message_reminder, :value => true %>
+                          <% end %>
+                          <p class="blue"><a href="#" onclick="closeWantsMessages(); return false;">Remind me next time</a> </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="want_message_div" id="want_msg_2">
+                      <div class="want_message_div_inner">
+                        <div class="want_message_div_heading">Success! You’ve added your first want!</div>
+                        <div class="message_content">
+                          <p>1. We let <%=@owner.first_name_in_caps%> know you want "<%=@item.title%>" and invited <%=@owner.first_name_in_caps%> to check out your stuff to see what you have to trade.</p>
+                          <p> But wait! You don’t have much to trade! <%=@owner.first_name_in_caps%> is going to be awfully disappointed. </p>
+                          <p><span><a href="/items/new">Click here</a></span> to add a couple things you have. It only takes a few seconds. </p>
+                          <p class="org">
+                            <a href="#" onclick="$('#want_msg_2 #update_wants_message_reminder_form').submit(); closeWantsMessages();return false;">Got it! Don't show me this again</a>
+                            <%= form_tag update_wants_message_reminder_user_path(:id => current_user), :id => "update_wants_message_reminder_form", :remote => true do %>
+                            <%= hidden_field_tag :want_message_reminder, :value => true %>
+                            <% end %>
+                          </p>
+                          <p class="blue"><a href="#" onclick="closeWantsMessages();return false;">Remind me next time</a> </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="want_message_div" id="want_msg_3">
+                      <div class="want_message_div_inner">
+                        <div class="want_message_div_heading">You don’t have much in your haves board</div>
+                        <div class="message_content">
+                          <p>Looks like you don’t have much left in your haves board. <%=@owner.first_name_in_caps%> is going to be awfully disappointed.</p>
+                          <p ><span><a href="/items/new">Click here</a></span> to add a couple things you have. It only takes a few seconds.</p>
+                          <p class="org">
+                            <a href="#" onclick="$('#want_msg_3 #update_wants_message_reminder_form').submit(); closeWantsMessages();return false;">Got it! Don't show me this again</a>
+                            <%= form_tag update_wants_message_reminder_user_path(:id => current_user), :id => "update_wants_message_reminder_form", :remote => true do %>
+                            <%= hidden_field_tag :want_message_reminder, :value => true %>
+                            <% end %>
+                          </p>
+                          <p class="blue"><a href="#" onclick="closeWantsMessages();return false;">Remind me next time</a> </p>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- message on want click div Ends -->
+                  </li>
+                  <li>
+                    <div  id="like_div"><%=render 'shared/like_button'%></div>
+                    <!-- message on Like click div start -->
+                    <div class="like_message_div" id="lk_msg">
+                      <div class="want_message_div_inner">
+                        <div class="like_message_div_heading">You've added this to your Likes Board!</div>
+                        <div class="message_content">
+                          <p><span><a href="<%=likes_user_path(current_user)%>">Click here</a></span> to review your Likes Board. </p>
+                          <p><span><a href="/items/new">Click here</a></span> to add more to your Haves Board.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- message on Like click div Ends -->
+                  </li>
+                  <li >
+                    <div id="haves_div">
+                      <%if current_user and current_user.has_item?(@item.id)%>
+                      <img src="http://d3md9h2ro575fr.cloudfront.net/images/(have)-Selected.png">
+                      <%else%>
+                      <a href="/items/new?have=<%=@item.id%>" onclick="_gaq.push(['_trackEvent', 'Item Page', 'Clk_Hv', 'Click Have on Item Page']);mixpanel.track('Click Have on Item Page');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/Have-Unselected.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/(have)-Selected.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/Have-Unselected.png'" ></a>
+                      <%end%>
+                    </div>
+                    <!-- message on Haves click div start -->
+                    <div class="have_message_div" id="hv_msg_item_page">
+                      <div class="have_message_div_inner">
+                        <div class="have_message_div_heading">Item Added to your Haves Board</div>
+                        <div class="message_content">
+                          <p>We’ve added this item to your Haves board. </p>
+                          <p>     In the meantime, <span><a href="/items/new">Add TradeYa Items</a></span> to your haves board!</p>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- message on Haves click div Ends -->
+                  </li>
+                  <%if not @item.completed?%>
+                  <li id="offer_div">
+                    <!-- <a href="#" onclick="$('#item-tabs #tab_my_offers').click();_gaq.push(['_trackEvent', 'Item Page', 'Clk_Ofr', 'Click Offer on Item Page']);mixpanel.track('Click Offer on Item Page');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/offer_new.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/offer_hover_new.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/offer_new.png'" ></a> -->
+                    <%= form_for :passive_trade, :url => {:controller => :passive_trades, :action => :create}, :html => {:id => "passive_trade_form_"+@item.id.to_s} do |f| %>
+                    <%= f.hidden_field :item_id, :value => @item.id %>
+                    <%= f.hidden_field :user_id, :value => current_user.id %>
+                    <a href=#><img src="http://d3md9h2ro575fr.cloudfront.net/images/offer_new.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/offer_hover_new.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/offer_new.png'" onclick="$('#passive_trade_form_<%=@item.id.to_s%>').submit();return false;"></a>
+                    <%end%>
+                    <!-- message on Offer click div start -->
+                    <div class="offer_message_div" id="ofr_msg">
+                      <div class="offer_message_div_inner">
+                        <div class="offer_message_div_heading">Item Added to Wants Board</div>
+                        <div class="message_content">
+                          <p>We’ve let <%=@owner.first_name.titleize unless @owner.first_name.blank?%> know that you want her item and have sent her a link to your haves board. </p>
+                          <p>     In the meantime, <span><a href="/items/new">Add TradeYa Items</a></span> to your haves board!</p>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- message on offer click div Ends -->
+                  </li>
+                  <%end%>
+                </ul>
+              </div>
+              <%elsif current_user and @owner.id == current_user.id and not @item.completed? %>
+              <div class="item_edit_icon"><a href="<%=edit_item_path(@item.id,:item_user => current_user.id )%>" onclick="_gaq.push(['_trackEvent', 'Item Page', 'Clk_Edt', 'Click Edit on Item Page']);mixpanel.track('Click Edit on Item Page');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/edit_icon.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/edit_icon_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/edit_icon.png'"></a></div>
+              <%end%>
+            <!-- <div id="flag_icon_div">
+                <a href="#report_item_modal" data-toggle="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/flag_icon.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/flag_icon_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/flag_icon.png'" ></a>
+            </div> -->
+            </div>
+          </div>
+          <div class="user_card_right">
+            <%= render 'shared/user_card', :user => @owner %>
+          </div>
+        <!-- <div class="similar_items_wrapper">
+          <div class="similar_items_heading">
+            Similar Items
+          </div>
+          <div class="similar_images_wrapper">
+            <%# @similar_items.each do |similar_item| %>
+              <%#=link_to image_tag(similar_item.item_image(:thumb), :height=>"82", :width=>"82"),item_path(similar_item),:onclick=>"_gaq.push(['_trackEvent', 'Activity', 'Clk_ItmImg', 'Click On Item Image']);mixpanel.track('Click On Item Image');addDelay(this,event);return false;"%>
+            <%#end%>
+          </div>
+        </div> -->
+        <div class="new_share_wrapper">
+          <div class="fleft">
+            <div class="cd-dropdown">
+              <span>Share</span>
+              <ul>
+                <li><span class="icon-fb">Facebook</span></li>
+                <li><span class="icon-twitter">Twitter</span></li>
+                <li><span class="icon-pinterest">Pinterest</span></li>
+                <li><span class="icon-email">Email</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <!-- If Completed TradeYa -->
+    <%if @item.completed?%>
+    <div class="completed_tradeya_ban"><img src="http://d3md9h2ro575fr.cloudfront.net/images/completed_banner.png" /></div>
+    <%end%>
+    <!-- If Completed TradeYa -->
+
+    <!-- REQUEST DIV START -->
+    <%#if @item.live?%>
+    <%#if current_user and @owner.id != current_user.id and !current_user.has_request_info?(@item.id)%>
+        <!-- <div class="request_info_wrapper" id="req_info">
+          <span>Is this item missing important information?</span>
+          <%#=link_to 'Request Info', request_info_path(:id => @item),:id=>"info", :remote => true, :onclick => "$('#request').show(); $('#req_info').hide();"%>
+        </div> -->
+        <%#end%>
+        <%#end%>
+        <%if @item.live?%>
+        <%if current_user and @owner.id != current_user.id %>
+        <div class="request_info_wrapper" id="req_info">
+          <span>Is this item missing important information?</span>
+          <%#=link_to 'Request Info', request_info_path(:id => @item),:id=>"info", :remote => true, :onclick => "$('#request').show(); $('#req_info').hide();"%>
+          <a href="#" onclick="$('#request_info_modal').modal('show');$('#request').hide();$('#more_photos').removeAttr('checked');$('#additional_description').removeAttr('checked');$('#verify_condition').removeAttr('checked');$('#ask_question').val(''); return false;">Request Info</a>
+        </div>
+        <%end%>
+        <%end%>
+        <!-- REQUEST DIV ENDS-->
+        <div class="clear"></div>
+        <!-- THIS MSG WILL SHOW AFTER REQUEST -->
+
+        <div class="info_bar_msg" id ="request" style="display:none">
+          <p>More information for this item has been requested. Thanks for helping the TradeYa Community stay in shape!</p>
+          <a href="#" onclick="$('#request').hide(); return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/inbox_cross.png"></a>
+        </div>
+        <!-- THIS MSG WILL SHOW AFTER REQUEST -->
+
+        <!-- Item info Section Start -->
+        <%= render 'item_info_detail'%>
+        <!-- Item info Section End -->
+
+        <!-- Comments Section Start -->
+        <div class="comments_section_div" id="comments_section_div_show">
+         <%= render "shared/comments_section", :trade_id => nil %>
+         <div class="clear"></div>
+       </div>
+       <!-- Comments Section End -->
+
+       <!-- Trader Section Start -->
+    <!--div class="trader_section_div">
+      <div class="trader_section_image"><img src="<%#= @item.user.user_image%>" /></div>
+      <div class="trader_info_section">
+        <div class="trader_name_bottom"><%#=@item.user.title%></div>
+        <div class="trader_city_bottom"><%#=@item.user.location%></div>
+        <%#if @item.user.location != "-"%>
+          <div class="trader_distance_bottom"><%#=@item.user.distance_between_users(session[:user_ll],@item.user)%> Miles from you</div>
+        <%#end%>
+        <div class="trader_comment_bottom"><%#=@item.desc%></div>
+      </div>
+      <div class="clear"></div>
+    </div-->
+    <!-- Trader Section End -->
+
+    <!-- tabs start -->
+    <div class="item_tabs_wrapper">
+      <ul class="nav nav-tabs item-tabs" id="item-tabs">
+        <%#if current_user and @owner.id != current_user.id and !@item.completed? %>
+       <!--   <li><%#=link_to 'Make an Offer', my_offers_item_path(@item),:data => {:toggle=>"tab",:push => true, :target => "#tab-content" }, :id => "tab_my_offers"%></li> -->
+       <%#end%>
+       <%if not @item.completed?%>
+       <li><%=link_to 'Current Offers', trade_offers_item_path(@item),:data => {:toggle=>"tab",:push => true, :target => "#tab-content"}, :id => "tab_trade_offers_tab"%>
+       </li>
+       <%end%>
+       <%#if @item.accepted_offers.present?%>
+       <li><%=link_to 'Accepted Offers', accepted_offers_item_path(@item),:data => {:toggle=>"tab",:push => true, :target => "#tab-content" }, :id => "tab_accepted_offers"%></li>
+       <%#end%>
+       <%#if @item.rejected_offers.present?%>
+       <li><%=link_to 'Rejected Offers', rejected_offers_item_path(@item),:data => {:toggle=>"tab",:push => true, :target => "#tab-content" }, :id => "tab_rejected_offers", :onclick => "item_tab_selected(this); return false;"%></li>
+       <%#end%>
+     </ul>
+     <div class="item_tabs_content_wrapper">
+      <div class="tab-content" id="tab-content">
+       <div class="tab_div_overlay"></div>
+     </div>
+   </div>
+ </div>
+ <!-- tabs Ends -->
+</div>
+</div>
+<!-- Content End -->
+<%= render 'modals_shared/request_info_modal'%>
+<div id="first_want" class="first_want_modal modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+  <div class="modal_cross"><a href="#" data-dismiss="modal" aria-hidden="true">X</a></div>
+  <div class="first_want_head">Success! You’ve added your first Wants!</div>
+  <div class="first_want_body">We let Boris know that you want his <span>“$300 Whole Foods Gift Card”</span> and invited him to check out your stuff to see what you have to trade. </div>
+  <div class="first_want_subhead">But you don’t have any items to trade with.</div>
+  <div class="first_want_bottom">Please add some items to your haves</div>
+  <input type="submit" value="Upload a New Item" class="upload_item">
+  <input type="submit" value="Add Common Items" class="add_common">
+</div>
+<script>
+$('#item-tabs li a').click(function(){
+  $('.tab_div_overlay').show();
+  $('#spinner').show();
+});
+$(function(){
+  $("#wrap").click(function(){
+    $("#lk_msg").hide();
+    $("#hv_msg_item_page").hide();
+    $("#want_msg_1").hide();
+    $("#want_msg_2").hide();
+  })
+});
+
+</script>
+<script type="text/javascript">
+  // $('.item_top_heading').boxfit({multiline: true});
+  </script>
+  <script type="text/javascript" src="/assets/jquery.dropdown.js"></script>
+  <script type="text/javascript">
+  $( function() {
+    $( '#cd-dropdown' ).dropdown();
+    $('.icon-fb').click(function(event){
+      event.preventDefault();
+          //_kmq.push(['record', 'Modal Promote Facebook Share Button',{ 'SignedIn' : get_KMSignedIn()}]); 
+          _gaq.push(['_trackEvent', 'Item Page', 'Clk_shr_FB', 'Click FB Share on Item Page']); 
+          analytics.track('Shared item', {
+                                              <% if @item.user==current_user %>
+                                                'Shared by': 'Owner',
+                                              <%else%>
+                                                'Shared by': 'NonOwner',
+                                              <%end%>
+                                              'Shared to': 'Facebook',
+                                              'Item type': '<%=@item.category.parent.name%>',
+                                              'Item category': '<%=@item.category.name%>'
+                                          });
+          window.open('http://www.facebook.com/sharer.php?s=100&p[title]='+ encodeURIComponent('Up for trade on TradeYa: <%= escape_javascript(@item.item_title) %>') + '&p[url]=' + encodeURIComponent('<%= escape_javascript(@item.pl_url) %>') + '&p[images][0]=' + encodeURIComponent('<%= escape_javascript(@item.item_image(:medium)) %>') + '&p[summary]=' + encodeURIComponent('<%= escape_javascript(@item.desc) %>'), '_blank','height=400px, width=650px, left=' + ((screen.width/2)-(550/2)) + ', top=' + ((screen.height/2)-(420/2)), 'facebook'); return false;
+    });
+    $('.icon-twitter').click(function(event){
+      event.preventDefault();
+          //_kmq.push(['record', 'Twitter Share Button',{ 'SignedIn' : get_KMSignedIn()}]); 
+          //_gaq.push(['_trackEvent', 'Item Page', 'Clk_shr_Twtr', 'Click Twitter Share on Item Page']); 
+          analytics.track('Shared item', {
+                                              <% if @item.user==current_user %>
+                                                'Shared by': 'Owner',
+                                              <%else%>
+                                                'Shared by': 'NonOwner',
+                                              <%end%>
+                                              'Shared to': 'Twitter',
+                                              'Item type': '<%=@item.category.parent.name%>',
+                                              'Item category': '<%=@item.category.name%>'
+                                          });
+      window.location.href = 'https://twitter.com/intent/tweet?text=<%="Up for TradeYa : " + escape_javascript(@item.item_title) %>&tw_p=tweetbutton&url=<%= escape_javascript(item_url(@item))%>';
+    });
+    $('.icon-pinterest').click(function(event){
+      event.preventDefault();
+      return popitup('http://pinterest.com/pin/create/button/?url=<%=@item.item_url%>&media=<%=@item.item_image(:medium)%>&description='+ encodeURIComponent('<%= escape_javascript(@item.desc) %>'));
+          //_kmq.push(['record', 'Pinterest Share Button',{ 'SignedIn' : get_KMSignedIn()}]); 
+          //_gaq.push(['_trackEvent', 'Item Page', 'Clk_shr_pin', 'Click PinIt Share on Item Page']); 
+          analytics.track('Shared item', {
+                                              <% if @item.user==current_user %>
+                                                'Shared by': 'Owner',
+                                              <%else%>
+                                                'Shared by': 'NonOwner',
+                                              <%end%>
+                                              'Shared to': 'Pinterest',
+                                              'Item type': '<%=@item.category.parent.name%>',
+                                              'Item category': '<%=@item.category.name%>'
+                                          });
+
+          // window.location.href = "javascript:void((function()%7Bvar%20e=document.createElement('script');e.setAttribute('type','text/javascript');e.setAttribute('charset','UTF-8');e.setAttribute('src','http://assets.pinterest.com/js/pinmarklet.js?r='+Math.random()*99999999);document.body.appendChild(e)%7D)());";
+        });
+    $('.icon-email').click(function(event){
+      event.preventDefault();
+          //_kmq.push(['record', 'Email Share Button',{ 'SignedIn' : get_KMSignedIn()}]); 
+          //_gaq.push(['_trackEvent', 'Item Page', 'Clk_shr_Email', 'Click Email Share on Item Page']);
+          analytics.track('Shared item', {
+                                              <% if @item.user==current_user %>
+                                                'Shared by': 'Owner',
+                                              <%else%>
+                                                'Shared by': 'NonOwner',
+                                              <%end%>
+                                              'Shared to': 'Email',
+                                              'Item type': '<%=@item.category.parent.name%>',
+                                              'Item category': '<%=@item.category.name%>'
+                                          });
+      window.location.href = 'mailto:<%#= @owner.email %>?subject=Wanna%20trade%3F&body=<%=item_url(@item)%>';
+    });
+  });
+</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5232f83737705aa2"></script>
+
+<%if @item.completed?%>
+<script type="text/javascript">
+$('#like_div').css('border-left','1px solid #C6C5C1');
+$('#like_div').css('margin-left','75px');
+</script>
+<%end%>
+<!-- <div id="report_item_modal" class="modal fade hide  delete_confirm_modal"   aria-hidden="false">
+  <a href="#" class="close" data-dismiss="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/modal_cross.png"></a>
+      <div class="report_sub_heading in_center">Why are you reporting this item?</div>
+  <div class="report_inner_div">
+    <div class="controls">
+      <label class="checkbox">
+        <input type="checkbox" value="1">
+        <label>Spam</label>
+      </label>
+    </div>
+    <div class="controls">
+      <label class="checkbox">
+        <input type="checkbox" value="1">
+        <label>Nudity or Pornography</label>
+      </label>
+    </div>
+    <div class="controls">
+      <label class="checkbox">
+        <input checked="checked" type="checkbox" value="1">
+        <label>Graphic Violence</label>
+      </label>
+    </div>
+    <div class="controls">
+      <label class="checkbox">
+        <input checked="checked" type="checkbox" value="1">
+        <label>Actively promotes self-harm</label>
+      </label>
+    </div>
+    <div class="controls">
+      <label class="checkbox">
+        <input type="checkbox" value="1">
+        <label>Attacks a group or individual</label>
+      </label>
+    </div>
+    <div class="controls">
+      <label class="checkbox">
+        <input type="checkbox" value="1">
+        <label>Hateful Speech or Symbols</label>
+      </label>
+    </div>
+    <div class="controls">
+      <label class="checkbox">
+        <input checked="checked" type="checkbox" value="1">
+        <label>Others</label>
+      </label>
+    </div>
+    <div>
+      <div class="report_message_text">Message</div>
+      <textarea></textarea>
+    </div>
+  </div>
+  <div class="resend_footer pull-left">  
+    <div class="delete_modal_footer">
+      <a href="#" class="delete_cancel_btn" onclick="$('#report_item_modal').modal('hide');">
+        <img src="http://d3md9h2ro575fr.cloudfront.net/images/cancel_button.png" >
+      </a>
+   </div>
+  </div>
+  <div class="report_footer pull-left">  
+    <div class="delete_modal_footer">
+      <a href="#" class="save_report_btn" onclick="$('#report_item_modal').modal('hide');">Submit</a>
+      <a href="#" class="delete_cancel_btn" onclick="$('#report_item_modal').modal('hide');">Cancel</a>
+    </div>
+  </div>
+</div>-->

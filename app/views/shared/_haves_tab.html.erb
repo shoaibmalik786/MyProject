@@ -1,0 +1,364 @@
+<!-- On window resizing start -->
+
+<script type="text/javascript">
+
+		var currentWidth = 980;
+		$(window).resize(function() {
+
+			var winWidth = $(window).width();
+			var conWidth;
+			if(winWidth<480){
+					conWidth=225;
+					col=1
+				}
+				else if(winWidth<730){
+					conWidth=480;
+					col=2;
+					ox=7.5,
+					oy = 9
+				}
+				else if(winWidth < 980 ){
+					conWidth = 730;
+					col = 3,
+					ox = 9,
+					oy = 10
+					 
+				}
+				else if(winWidth >980) {
+					conWidth = 960;
+					col = 4;
+					ox = 9.8;
+					oy = 9
+				}  
+				if(conWidth != currentWidth) {
+				currentWidth = conWidth;
+				$('.wants_container').width(conWidth);
+				$('.wants_container').BlocksIt({
+					numOfCol: col,
+					offsetX: ox,
+					offsetY: oy
+				});
+			}
+		})
+</script>
+<!-- On window resizing end -->
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		var currentWidth = 980;
+		var winWidth = $(window).width();
+			var conWidth;
+			if(winWidth<480){
+					conWidth=225;
+				}
+			else if(winWidth<730){
+				conWidth=480;
+				col=2;
+				ox=7.5,
+				oy = 9
+				}
+			else if(winWidth < 980 ){
+				conWidth = 730;
+				col = 3,
+				ox = 9,
+				oy = 10
+			}
+			else if(winWidth >980) {
+				conWidth = 960;
+				col = 4;
+				ox = 9.8;
+				oy = 9
+			}  
+			if(conWidth != currentWidth) {
+			currentWidth = conWidth;
+			$('.wants_container').width(conWidth);
+			$('.wants_container').BlocksIt({
+				numOfCol: col,
+				offsetX: ox,
+				offsetY: oy,
+				blockElement: '.user_wants_card'
+			});
+
+		}
+		$("img").one("load",function(){
+			 $('.wants_container').BlocksIt({
+					numOfCol: col,
+					offsetX: ox,
+					offsetY: oy,
+					blockElement: '.user_wants_card'
+				});
+		});
+
+	})
+</script>
+<!-- on window load start -->
+<script type="text/javascript">	
+	$(window).load(function() {
+		 
+		$(".want_have_like_wrapper").hide();
+		$(".trade_div").hide();
+		$(".wanted_div").hide();
+		$(".remove_div").hide();
+		$(".add_comment").hide(); 
+		$(".user_wants_card").hover(function(){			 
+			$(this).find(".want_have_like_wrapper").show();
+			$(this).find(".trade_div").show();
+			$(this).find(".wanted_div").show();
+			$(this).find(".remove_div").show();
+			$(this).find(".add_comment").show();
+		},function(){
+		$(this).find(".want_have_like_wrapper").hide();
+		$(this).find(".trade_div").hide();
+		$(this).find(".wanted_div").hide();
+		$(this).find(".remove_div").hide();
+		$(this).find(".add_comment").hide();
+
+		});
+  	$('#tab_haves').text("Haves (<%=@have_items.count%>)");
+		});
+</script>
+<!-- on window load ends -->
+
+<!-- on img load start -->
+<script type="text/javascript">
+	// $("img").one("load",function(){
+	// 		 $('.wants_container').BlocksIt({
+	// 				numOfCol: 4,
+	// 				offsetX: 10,
+	// 				offsetY: 10,
+					
+	// 			});
+	// 	});
+
+</script>
+<!-- on img load ends -->
+<div class="tab_div_overlay"></div>
+	<%if @have_items.count == 0%>
+		<!-- Empty Haves content start -->
+		<div id="empty_haves">
+			<%if current_user != @user%>
+			  <!-- <div class="heading">Oh no! It looks like <%#=@user.first_name%> doesn’t Have any TradeYa’s to offer...</div> -->
+			  <div class="heading">Oh no! Looks like <%=@user.first_name%> hasn't uploaded any haves yet. </div>
+			  <div class="empty_text">Click <a href="<%=inbox_messaging_user_path(current_user,:send_to => @user.id)%>">here</a> to send "<%=@user.first_name%>" a message. </div>
+			<%elsif current_user and current_user.id = @user.id and current_user.sign_in_count == 1%>
+				<div class="heading">Oh no! Looks like you don't have anything on your Haves Board! </div>
+				<div class="empty_text">Not to worry, it's super easy to upload something you would like to trade by clicking on the tile below.</div>
+				<div class="empty_have_card_section">
+				  <div class="empty_haves_img">
+					  <a href="/items/new?haves_by=<%=current_user.first_name%>" onclick="_gaq.push(['_trackEvent', 'Haves Tab', 'clk_AddItm', 'Click Add Item on Empty Haves Tab']);mixpanel.track('Click Add Item on Empty Haves Tab');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/add_tradeya.png"></a>
+				  </div>
+			  </div>
+			  <div class="empty_text">Don't forget to fill out <a href="<%=edit_user_path(current_user)%>">your profile</a> with great photos and a little bit about yourself. More info about you equals better offers on your stuff! Seriously, give it a try!</div>
+			<%else%>
+			  <div class="heading">Oh no! Looks like you don't have anything on your Haves Board!</div>
+			  <div class="empty_text">Not to worry, it's super easy to upload something you would like to trade by clicking on the tile below.</div>
+			  <div class="empty_have_card_section">
+				  <div class="empty_haves_img">
+					  <a href="/items/new?haves_by=<%=current_user.first_name%>" onclick="_gaq.push(['_trackEvent', 'Haves Tab', 'clk_AddItm', 'Click Add Item on Empty Haves Tab']);mixpanel.track('Click Add Item on Empty Haves Tab');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/add_tradeya.png"></a>
+				  </div>
+			  </div>
+			<%end%>
+		</div>
+		<!-- Empty Haves content end -->
+	<%else%>
+		<!-- Haves tab content start -->
+		<div id="haves_tab" class="wants_container">
+			<%if current_user and @user.id == current_user.id %>
+				<div class="user_wants_card">
+					<a href="/items/new?haves_by=<%=current_user.first_name%>" onclick="_gaq.push(['_trackEvent', 'Haves Tab', 'clk_AddItm', 'Click Add Item on Haves Tab']);mixpanel.track('Click Add Item on Haves Tab');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/add_item.png"></a>
+				</div>
+			<%end%>
+			<!-- User Card Start-->
+			<% @have_items.each do |have|%>
+				<div class="user_wants_card" id="_<%=have.id%>">
+					<!-- Item Card Heading starts -->
+					<div class="user_card_heading">
+						
+						<div class="clip">
+							<img src="http://d3md9h2ro575fr.cloudfront.net/images/clip.png" >
+						</div>
+
+						<div class="item_title_card">
+							<%if params[:wanted_item]%>
+					    	<a href="<%=my_offers_item_path(have)+"?wanted_item="+params[:wanted_item]%>"><%= have.title%></a>
+					  	<%else%>
+								<a href="<%=item_path(have)%>"><%= have.title%></a>
+							<%end%>
+						</div>
+
+						<div class="card_heading_middle_left user_img_<%=@user.id%>">
+							<a href="<%=user_path(have.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrImg', 'Click User image on Item Card']);mixpanel.track('Click User image on Item card');addDelay(this,event); return false;"><img src="<%=have.user.user_image(:thumb)%>"></a>
+						</div>
+
+						<div class="card_heading_middle_right">
+							<div class="item_card_name"><a href="<%=user_path(have.user)%>" onclick="_gaq.push(['_trackEvent', 'Activity', 'Clk_UsrTtl', 'Click User Title on Item Card']);mixpanel.track('Click User Title on Item card');addDelay(this,event);return false;"><%=truncate((have.user.title).html_safe,:length => 22,:omission => "...")%></a></div>
+							<div class="item_city_card"><%=have.user.city%></div>
+							<%if have.user.location != "-" and have.user != current_user%>
+								<div class="item_distance_card"><%=have.user.user_distance(session[:user_ll])%> miles</div>
+							<%end%>
+						</div>
+
+						<div class="item_heading_bottom">
+							<%if current_user.present? and have.user == current_user %>
+								<!-- <div class="trash_icon">
+									<a href="#delete_modal_<%=have.id%>" data-toggle="modal"><img src="http://d3md9h2ro575fr.cloudfront.net/images/Trash.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/Trash_rollover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/Trash.png'" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_Trash', 'Click Trash on Item Card']);mixpanel.track('Click Trash on Item card');"></a>
+								</div> -->
+								<div class="edit_share_icon">
+									<a href="<%= edit_item_path(have.id,have_user: current_user.id) %>"><img src="http://d3md9h2ro575fr.cloudfront.net/images/share_edit.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/share_edit_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/share_edit.png'"></div></a>
+								<div class="card_share_icon">
+									<img src="http://d3md9h2ro575fr.cloudfront.net/images/card_share_icon.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_share_icon_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_share_icon.png'">
+								</div>
+							<%else%>
+								<!-- <div class="card_details" >Details</div> -->
+								<div class="heading_trade_want_like">
+									<div id="item_card_want_icon_<%=have.id%>">
+										<%= render 'shared/item_card_want', :@item => have, :@icon => true%>
+									</div>
+
+									<!-- Trade Link -->
+									<div>
+										<%#if params[:wanted_item]%>
+											<!-- <a href="<%#=my_offers_item_path(have)+"?wanted_item="+params[:wanted_item]%>" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmTrd', 'Click Trade on Item Card via email']);mixpanel.track('Click Trade on Item card via email');addDelay(this,event);return false;"> -->
+										<%#else%>
+										  <!-- <a href="<%#=my_offers_item_path(have)%>" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmTrd', 'Click Trade on Item Card']);mixpanel.track('Click Trade on Item card');addDelay(this,event);return false;"> -->
+										<%#end%>
+										<%= form_for :passive_trade, :url => {:controller => :passive_trades, :action => :create}, :html => {:id => "passive_trade_form_"+have.id.to_s} do |f| %>
+											<%= f.hidden_field :item_id, :value => have.id %>
+											<%= f.hidden_field :user_id, :value => current_user.id %>
+											<a href=#><img src="http://d3md9h2ro575fr.cloudfront.net/images/card_trade.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_trade_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_trade.png'" onclick="$('#passive_trade_form_<%=have.id.to_s%>').submit();return false;"></a>
+										<%end%>
+												<!-- <img src="http://d3md9h2ro575fr.cloudfront.net/images/card_trade.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_trade_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_trade.png'"> -->
+											<!-- </a> -->
+									</div> 
+										
+									<div>
+										<%if current_user and current_user.has_item?(have.id)%>
+											<img src="http://d3md9h2ro575fr.cloudfront.net/images/card_have_selected.png">
+										<%else%>
+										 <a href ="/items/new?have=<%=have.id%>" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmHv', 'Click Have on Item Card']);mixpanel.track('Click Have on Item card');addDelay(this,event);return false;"><img src="http://d3md9h2ro575fr.cloudfront.net/images/card_have.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_have_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/card_have.png'"></a> 
+										<%end%>
+									</div>
+
+									<div id="item_card_like_<%=have.id%>">
+									  <%= render 'shared/item_card_like', :@item => have%>
+									</div>
+
+								</div><!-- want like-->
+							<%end%>
+						</div> <!-- Item heading bottom-->
+
+					</div>
+					<!-- Item Card Heading ends -->
+					
+					<!-- Item Image Starts -->
+					<div class="item_wants_image">
+						<!-- Card Share Box for User's own haves Start -->
+						<%if current_user.present? and have.user == current_user %>
+							<div class="card_share_box">
+								<a href="#">
+									<img src="http://d3md9h2ro575fr.cloudfront.net/images/facebook_icon.png" onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/facebook.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/facebook_icon.png'" onclick="window.open('http://www.facebook.com/sharer.php?s=100&p[title]='+ encodeURIComponent('Up for trade on TradeYa: <%= escape_javascript(have.item_title) %>') + '&p[url]=' + encodeURIComponent('<%= escape_javascript(have.pl_url) %>') + '&p[images][0]=' + encodeURIComponent('<%= escape_javascript(have.item_image(:medium)) %>') + '&p[summary]=' + encodeURIComponent('<%= escape_javascript(have.desc) %>'), '_blank','height=400px, width=650px, left=' + ((screen.width/2)-(550/2)) + ', top=' + ((screen.height/2)-(420/2)), 'facebook'); return false;">
+								</a>
+
+								<a class="addthis_button_twitter" addthis:url="<%=have.item_url%>" addthis:title="Up for TradeYa : <%=have.title%>">
+									<img src="http://d3md9h2ro575fr.cloudfront.net/images/tweet_icon.png"  onmouseover="this.src='http://d3md9h2ro575fr.cloudfront.net/images/tweet_icon_hover.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/tweet_icon.png'">
+								</a>
+								
+								<a href="mailto:<%#= @owner.email %>?subject=Wanna%20trade%3F&body=<%=item_url(have)%>"><img src="/assets/mail_icon.png" onmouseover="this.src='/assets/mail_icon_hover.png'" onmouseout="this.src='/assets/mail_icon.png'" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_shr_email', 'Click Email share on Item Card']);mixpanel.track('Click Email Share on Item Card');"></a>
+								<a href="#" onclick="return popitup('http://pinterest.com/pin/create/button/?url=<%=have.item_url%>&media=<%=have.item_image(:medium)%>&description='+ encodeURIComponent('<%= escape_javascript(have.desc) %>'));" class="pin-it-button" count-layout="horizontal">
+						    <img border="0" src="http://d3md9h2ro575fr.cloudfront.net/images/pinterest_icon.png" onmouseover="this.src='/assets/Pinterest.png'" onmouseout="this.src='http://d3md9h2ro575fr.cloudfront.net/images/pinterest_icon.png'" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_PShareItm', 'Click On Pin It share on Item Card']);mixpanel.track('Click On Pin It Share on Item Card');" />
+								</a>
+								
+							</div>
+						<%end%>
+						<!-- Card Share Box for User's own haves End -->
+						<%if params[:wanted_item]%>
+							<a href="<%=my_offers_item_path(have)+"?wanted_item="+params[:wanted_item]%>" onclick="_gaq.push(['_trackEvent', 'Item card', 'Clk_ItmImg_wntFlow', 'Click Item Image on Item Card want flow']);mixpanel.track('Click Item Image on Item card want flow');addDelay(this,event);return false;"><img src="<%= have.item_image(:medium)%>"/></a>
+						<%else%>
+							<a href="<%=item_path(have)%>" onclick="_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmImg', 'Click On Item Image']);mixpanel.track('Click On Item Image');addDelay(this,event);return false;"><img src="<%= have.item_image(:medium)%>"/></a>
+						<%end%>
+					</div>
+					<!-- Item Image Ends -->
+
+					<!-- Item Hover Starts -->
+					<%if @user != current_user%>				
+					  <%if params[:wanted_item]%>
+					    <div class="trade_div icon_change">
+					    	<%#=link_to 'Trade', my_offers_item_path(have)+"?wanted_item="+params[:wanted_item], :onclick=>"_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmTrd_wantFlow', 'Click Trade on Item Card want flow']);mixpanel.track('Click Trade on Item card want flow');addDelay(this,event);return false;"%>
+					    	<%= form_for :passive_trade, :url => {:controller => :passive_trades, :action => :create}, :html => {:id => "passive_trade_form_"+have.id.to_s} do |f| %>
+									<%= f.hidden_field :item_id, :value => have.id %>
+									<%= f.hidden_field :user_id, :value => current_user.id %>
+									<a href="#" onclick="$('#passive_trade_form_<%=have.id.to_s%>').submit();return false;">Trade</a>
+								<%end%>
+					    </div>
+					  <%elsif params[:from_email]%>
+					    <div class="trade_div icon_change"><%=link_to 'Trade', my_offers_item_path(have), :onclick=>"_gaq.push(['_trackEvent', 'Item Card', 'Clk_ItmTrd', 'Click Trade on Item Card via']);mixpanel.track('Click Trade on Item card via email');addDelay(this,event);return false;"%></div>
+					  <%else%>
+					    <div id="item_card_want_<%=have.id%>">
+								<%= render 'shared/item_card_want', :@item => have, :@icon => false%>
+							</div>
+					  <%end%>		
+					<%#else%>				  		
+					  <%#= form_tag remove_have_item_path(:id => have.id),:id => "remove_haves_action" do %>
+	            <%#if current_user && current_user.items%>
+	              <%#= hidden_field_tag 'remove_have', true%>
+	              <%#= hidden_field_tag 'from_haves_tab', true%>
+	     <!--            <div class="remove_div" style="display:none" onclick="$(this).parents('form').submit(); return false;">Remove</div>
+	      -->       <%#end%>
+	          <%#end%> 
+					<%end%>
+					<div class="traded_div" style="display:none"><a href="#">See Offer</a></div>
+					<!-- Item Hover Ends -->
+
+				</div> <!--user wants card-->
+			<% end %> <!--haves loop -->
+		</div>  <!-- haves tab wants container-->
+		<!-- Haves tab content End-->
+	<%end%>
+
+<script>
+	$("#spinner").hide();
+	$(".tab_div_overlay").hide();
+</script>
+<!-- add item rollover start -->
+<script type="text/javascript">
+	$(document).ready(function() { 
+		$(".empty_haves_img a").children("img").attr("src" ,"http://d3md9h2ro575fr.cloudfront.net/images/add_tradeya.png");
+	    $(".empty_haves_img").hover(
+	      function(){
+	        $(".empty_haves_img a").children("img").attr("src" ,"http://d3md9h2ro575fr.cloudfront.net/images/add_tradeya_hover.png");
+	      },
+	      function(){
+	    	  $(".empty_haves_img a").children("img").attr("src" ,"http://d3md9h2ro575fr.cloudfront.net/images/add_tradeya.png");
+	      });
+	});
+</script>
+<!-- add item rollover Ends -->
+<!-- share rollover start -->
+<script type="text/javascript">
+	$(function(){
+		$(".user_wants_card").hover(function(){
+			$(this).find(".card_share_box").slideDown(200);
+			$(this).find(".card_share_icon img").attr("src" ,"http://d3md9h2ro575fr.cloudfront.net/images/card_share_icon_hover.png");
+		},
+		function(){
+			$(this).find(".card_share_box").slideUp(200);
+			$(this).find(".card_share_icon img").attr("src" ,"http://d3md9h2ro575fr.cloudfront.net/images/card_share_icon.png");
+		});
+		// $(".card_share_icon").addClass("clk")
+		// $(".card_share_icon").click(function(){			
+		// 	if($(this).hasClass("clk")){
+		// 		$(".user_wants_card").children(".item_wants_image").children(".card_share_box").slideUp(200);
+		// 		$(this).parent(".item_heading_bottom").parent(".user_card_heading").next(".item_wants_image").children(".card_share_box").slideDown(200);
+		// 		$(this).removeClass("clk");
+		// 	}
+		// 	else{
+		// 		$(this).addClass("clk");
+		// 		$(this).parent(".item_heading_bottom").parent(".user_card_heading").next(".item_wants_image").children(".card_share_box").slideUp(200);
+		// 	}
+		// })
+	})
+</script>
+<!-- share rollover Ends -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5232f83737705aa2"></script>
+
+

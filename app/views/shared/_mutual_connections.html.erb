@@ -1,0 +1,45 @@
+<div class="">
+	<table width="100%" class="mutual_connect_table mutual_connect_back">
+		<tr valign="middle">
+			<% if mutualConn.length > 14%>
+				<td style="padding-top: 8px; padding-bottom: 1px;">
+					<a href="#" id="gallery-prev_<%=counter%>" style = "display:none;" onclick="return false;" ><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrow_scroll_left.png" /></a>
+					<div id="gallery-prev-grey_<%=counter%>" ><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrowgrey_scroll_left.png" /></div>
+				</td>
+			<% end %>
+			<td style="padding-top: 0px; padding-bottom: 0px;">
+				<div id = "gallery-wrap_<%=counter%>" class = "gallery-mutual-connection-wrap" >
+					<ul id="gallery_<%=counter%>" class = "gallery-mutual-connection">
+						<% mutualConn.each do |connection| %>
+							<li style = "width:35px; height: 30px;">
+								<div class = 'mutual_conn_image_1' onmouseover="facebook_name_tooltip_show(this, '<%= connection["name"] %>', '<%=counter%>' );" onmouseout="facebook_name_tooltip_hide(this, '<%=counter%>' );">
+									<div class="user_image_border" style="width: 30px; height: 30px; overflow: hidden;">
+										<img src= '<%= connection["image"] %>'  style = "width:30px; height:auto;"/>
+									</div>
+								</div>
+							</li>
+						<% end%>
+					</ul>
+				</div>
+			</td>
+			<% if mutualConn.length > 14 %>
+				<td style="padding-top: 8px; padding-bottom: 1px;">
+					<a href="#" id="gallery-next_<%=counter%>" onclick="return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrow_scroll_right.png" /></a>
+					<div id="gallery-next-grey_<%=counter%>" style="display:none;" ><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/arrowgrey_scroll_right.png" /></div>
+				</td>
+			<% end %>
+			<div class="facebook_name_1" id="facebook_hide_<%=counter%>" style = "display:none">
+				<span id="facebook_name_1_span_<%=counter%>"></span>
+				<div class="black_arw_dwn_1"></div>
+			</div>
+		</tr>
+	</table>
+</div>
+
+<script>
+
+$(document).ready(function(){ 
+	setTimeout(function(){mutualConnectionCarousel(<%=counter%>);}, 3000);
+});
+
+</script>

@@ -1,0 +1,44 @@
+<script>
+	<% if @st_pg %>
+		isSubmitTradeyaPg = true;
+	<% end %>
+	<% if params[:abtestemail] %>
+		$(function(){showSignUpForm();$('#signup_email').val('<%= params[:abtestemail] %>'); $('#signup_conf_email').val('<%= params[:abtestemail] %>');});
+	<% end %>
+	<% if params[:abtestlogin] %>
+		$(function(){$('#login_box').modal('show');});
+	<% end %>
+</script>
+
+<div class="container">
+	<div id="submit_tradeya_div">
+		<%# if session[:item_saved] and session[:item_saved][:title] and session[:item_saved][:url]%>
+		<% if @item_saved.present?%>
+			<div class="submit_tradeya_nav_submitted">You submitted <%=link_to @item_saved.title, item_path(@item_saved) %> successfully! We sent you an email.</div>
+			<div class="submit_tradeya_nav">On a roll and want to trade something else?</div>
+			<%# session[:item_saved] = nil %>
+		<%# elsif session[:item_edited_tradeya] and session[:item_edited_tradeya][:title] and session[:item_edited_tradeya][:url] %>
+		<%elsif @item_edited_tradeya.present?%>
+			<div class="submit_tradeya_nav_submitted">You updated <%=link_to @item_edited_tradeya.title, item_path(@item_edited_tradeya) %> successfully!</div>
+			<%# session[:item_edited_tradeya] = nil %>
+		<% else %>
+			<div class="submit_tradeya_nav">Add something to your Haves Board...</div>
+		<% end %>
+		<%= render 'form', :isOffer => false %>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function(){
+		// <%# if @item_saved.present?%>
+		// 	$('#sharing_prompt').modal('show');
+		// 	analytics.track('Added item', {
+  //                       Item type: '<%#=@item_saved.category.parent.name%>',
+  //                       Item category: '<%#=@item_saved.category.name%>',
+  //                       Item photos: '<%#=@item_saved.item_photos.count%>',
+  //                      });
+		// <%# end %>
+		analytics.page('Add item');
+	});
+</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5232f83737705aa2"></script>

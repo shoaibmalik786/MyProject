@@ -1,0 +1,9 @@
+<div id="signup_box" class="modal hide fade" aria-hidden="false">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="/*_kmq.push(['record', 'modal signup form close X icon',{ 'SignedIn' : get_KMSignedIn(), 'ErrorMessage' : $('#signupmessage > #error_explanation').text()}]);*/ _gaq.push(['_trackEvent', 'register', 'Clk_SignUpModalCancelIcn', 'clicks on x icon on Sign Up form']); return signupFormClose();">&times;</button>
+
+  <div id="signUpPartial">
+    <%= render 'shared/sign_up_partial' %>
+  </div>
+
+  <div class="already_account">already have an account? <span><a href="#" onclick="$('#signin_modal').modal('show');$('#signup_box').modal('hide'); return false;">Log In</a></span></div>
+</div>

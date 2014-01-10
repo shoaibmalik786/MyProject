@@ -1,0 +1,79 @@
+<script>
+	var n = 1;
+	var slideCount = {};
+		$(function(){
+		for(var i=1;i<n;i++){
+			slideCompletedTrade(i,slideCount[i]);
+		}
+	});
+</script>
+<% counter = 1 %>
+<div class="browse_back container">
+	<div class="browse_det">
+		<table id="browse_table">
+			<tr valign="top">
+				<td>
+					<div id="azk71567" style="width:728px; height: 90px;margin-left: auto;margin-right: auto;padding-top: 20px; padding-left: 20px;padding-right: 20px;clear: both;">
+					</div>
+					<div class="browse_det_left">
+						<div style="margin-top: 10px;margin-left:20px;padding-bottom:20px;font-size: 15px;">
+							<span>Search results for <%= params[:zipcode]%></span>
+						</div>
+						<!-- If no Tradeyas -->
+						<% if @items.count == 0 and @completed.count == 0%>
+							<div class="browse_nav">
+									<div class="error_msg_br">Oh noes! There's nothing here, but there could be if you <a href="<%= new_item_path %>">Submit a TradeYa</a> now.</div>
+							</div>
+						<!-- If no Tradeyas -->
+						<% else %>
+							<div class="browse_nav">
+								<ul>
+									<li><a href="#" onclick="return false;">Browse All <b><span id="browse_category_count"><%= @items.count %></span></b> TradeYa</a></li>
+									<%# if @items.count > 0 %>
+										<!-- <li id="livetablink" style="margin-left: 91px;" onclick="setBrowseTotalLive();return false;"><a href="#" onclick="return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/live_selected.png" /></a></li> -->
+									<%# end %>
+									<%#if @completed.count > 0%>
+										<!-- <li id="completedtablink" style="margin-top: 3px; margin-left: 30px;" onclick="setBrowseTotalComplete();return false;"><a href="#" onclick="return false;"><img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/completed.png"></a></li> -->
+									<%#end%>
+								</ul>
+							</div>
+						<% end %>
+						<div id="livetab">
+							<%= render "live_tab" %>
+						</div>
+						<!-- <div id="completedtab" style="display: none;">
+							<%#= render "completed_tab", :counter => counter %>
+						</div> -->
+					</div>					
+				</td>
+				<td id="browse_right_nav" style="background-color: #EEE;">
+					<div class="browse_det_right">
+						<div id="right_top"></div>
+						<div class="cat_right_head">
+							Available for Trade
+						</div>
+						<hr style="width: 241px; height: 1px; border: 0; background-color: #999999;" />
+						<div id="cat_right_list_div">
+							<%= render "shared/categories_right_list" %>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<% if @items.count == 0%>
+	<script>
+		setDefaultSelect();
+		$('#browse_category_count').text("<%= @completed.count %>");
+	</script>
+<% end %>
+<script type="text/javascript">
+	function setBrowseTotalLive(){
+		$('#browse_category_count').text("<%= @items.count %>");		
+	}
+	
+	function setBrowseTotalComplete(){
+		$('#browse_category_count').text("<%= @completed.count %>");		
+	}
+</script>

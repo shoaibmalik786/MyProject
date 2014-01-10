@@ -1,0 +1,2 @@
+module PassiveTradesHelper
+end

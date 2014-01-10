@@ -1,0 +1,28 @@
+<%= javascript_include_tag "adminscripts/admin" %>
+<table>
+	<tr>
+		<td width="75%">
+			<table class="data_point_table" style="border: solid 1px; width: 50%; margin-left: auto; margin-right: auto;">
+				<tr><th>Date</th><th>No of Reviews</th></tr>
+				<% total = 0; %>
+				<% count_reviews.each do |r| %>
+					<tr>
+						<td><%= r[0] %></td>
+						<td><%= r[1] %></td>
+						<% total = total + r[1]; %>
+					</tr>
+				<% end %>
+				<tr><td>Total Reviews</td><td><%= total %></td></tr>
+			</table>
+		</td>
+		<td>
+			<%= semantic_form_for :date_range, :builder => ActiveAdmin::FormBuilder do |f|
+			   f.inputs do
+			     f.input :from, :as => :datepicker
+			     f.input :to, :as => :datepicker
+			   end
+			   f.actions
+			end %>
+		</td>
+	</tr>
+</table>

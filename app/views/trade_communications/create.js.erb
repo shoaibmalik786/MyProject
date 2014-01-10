@@ -1,0 +1,5 @@
+<%if params[:trade_communications][:communication_type] == "COMMENT"%>
+	$("#trade_communication_comments_area").html("<%= escape_javascript(render('comments_area'))%>");
+<%elsif params[:trade_communications][:communication_type] == "TnC"%>
+	$("#agreed_terms_area").html("<%= escape_javascript(render('agreed_terms_area'))%>");
+<%end%>

@@ -1,0 +1,31 @@
+production:
+  solr:
+    hostname: index.websolr.com
+    port: 80
+    path: '/solr/d4adc8bd503'
+    Log_level: WARNING
+    # hostname: localhost
+    # port: 8983
+    log_level: WARNING
+
+development:
+  solr:
+    hostname: localhost
+    port: 8982
+    log_level: INFO
+
+test:
+  solr:
+    hostname: localhost
+    port: 8981
+    log_level: WARNING
+
+staging_20:
+  solr:
+    hostname: index.websolr.com
+    port: 80
+    path: '/solr/8d6c64f13a0'
+    # hostname: localhost
+    # port: 8983
+    log_level: WARNING
+    

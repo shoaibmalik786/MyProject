@@ -1,0 +1,73 @@
+
+<script type="text/javascript">
+	function validateForm() {
+		if($("#subject").val() == null || $("#subject").val() == "" || $("#sendNewTextArea").val() == null || $("#sendNewTextArea").val() == "") {
+ 			if($("#alert_message").length == 0) {
+ 				$("#contact_modal_dash").append("<div id=\"alert_message\" class=\"alert\" style=\"width: 420px; !important\"><%= "Fill out both fields before submitting" %></div>");
+		 	}
+		 	return false;
+	 	} else {
+	 		$('#contact_modal_dash').modal('hide');
+	 		return true;
+	 	}
+	}
+
+	$('#newMessageAttachment').change(function() {
+ 	//function checkAttachmentSize(){
+ 		//alert(this.files[0]);
+ 		if(this.files[0].size > 5242880){
+		    //$('.chat_files').val(''); 
+		    //$(this).next('.chat_files').val('');
+		    $('#new_photo_size_error_msg').show();
+		    $('#new_photo_size_error_msg').text('File size cannot be greater than 5MB.');
+		    $(this).val('');
+	    return false;
+		}
+	});
+
+	function confirmdelete(){
+		var bReturn = false;	
+		$('#remove_ph_no').modal('show');
+	}
+
+	$('.multifile').multifile({
+
+		container: ".add_file_contact",
+		template: function(file){
+
+			var fileName = file.name;
+			var fileExtension = file.name.split('.').pop();
+			var result =
+			'<p class="uploaded_image">' +
+			'<span class="filename">$fileName ($fileExtension)</span>' +
+			'<a href="#" class="multifile_remove_input">X</a>' +
+
+			'</p>';
+			result = result.replace('$fileExtension', fileExtension).replace('$fileName', fileName)
+			return $(result);
+	// }
+		}
+	});
+
+</script> 
+
+<div id="contact_modal_dash" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<%= form_tag reply_conversation_path, :method => 'post', :id => "new_message", :remote => true, :multipart => true, :onSubmit => "return validateForm();" do %>
+	<div class = "reply_photo_size_error_msg alert" id = "new_photo_size_error_msg"></div>
+
+	<div class="contact_user_modal">Hey <%= @user.first_name %>,</div>
+	<div class="contact_textarea_wrapper">
+		<%= text_field_tag "subject", nil, :class=>"about_contact_dash", placeholder: "About", :required => true %>
+		<%= text_area_tag "body", nil, :class=>"chat_input_contact", :placeholder=>"Enter your message...", :class=>"chat_input_contact", :id => "sendNewTextArea", :required => true %>
+		<%= hidden_field_tag "recipients[]", @user.email %>
+		<div class="add_file_contact">
+			<span class="file_wrapper">
+				<%= file_field_tag "photo", :name => 'attach[]', :class => 'multifile chat_files', :id => "newMessageAttachment" %>
+				<span class="upload_button">Add Files</span>
+			</span>
+			<input type="submit" value="Cancel" class="chat_cancel" onclick="$('#contact_modal_dash').modal('hide');">
+			<%= submit_tag 'Send', :name => 'new_message',  :id => "send_new_msg_button", :class => "chat_send_contact" %>
+		</div>
+	</div>
+	<% end %>
+</div>

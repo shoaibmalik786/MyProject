@@ -1,0 +1,29 @@
+<h1>Listing transactions</h1>
+
+<table>
+  <tr>
+    <th>Trade</th>
+    <th>Charge</th>
+    <th>Trans charge</th>
+    <th>Ship charge</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @transactions.each do |transaction| %>
+  <tr>
+    <td><%= transaction.trade_id %></td>
+    <td><%= transaction.charge_id %></td>
+    <td><%= transaction.trans_charge %></td>
+    <td><%= transaction.ship_charge %></td>
+    <td><%= link_to 'Show', transaction %></td>
+    <td><%= link_to 'Edit', edit_transaction_path(transaction) %></td>
+    <td><%= link_to 'Destroy', transaction, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Transaction', new_transaction_path %>

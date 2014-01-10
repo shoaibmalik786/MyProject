@@ -1,0 +1,106 @@
+<div id="usr_rev_box" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div class="modal-body">
+		<div id="crossimg" style="height: 15px;"><a href="#" onclick="return hideUserProfileModal();">X</a></div>
+		<table align="center" width="100%">
+			<tr>
+				<td width="22%" valign="top">
+					<div class="usr_rv_imgdiv user_image_border">
+						<img id = "upImage" src="" />
+					</div>
+					<div class="ph_ver" id="phone_verified_div">
+						<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/ph_org.png" />
+						<div class="ph_text">
+							Phone Number Verified
+						</div>
+					</div>
+					<div id = "facebook_connect" class="fb_connect">
+						<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/fb_icon.png" />
+						<div class="fb_text">
+							Facebook Connected
+						</div>
+					<div class="fb_frnds" id="fb_frnds"></div>
+					<div class="fb_mutual_frnds" id="fb_mutual_conn"></div>
+					</div>
+				</td>
+				<td width="4%"></td>
+				<td width="74%" valign="top">
+					<div class="usr_rv_detail">
+						<div class="usr_info">
+							<div id = "upName" class="usr_rv_name">
+							</div> 
+							<div class="usr_rv_city">
+								in <span id = "upLoc"></span>
+							</div>
+							<div id = "user_tradeyas_count" class="see_all_user_trd_hover" onclick="/*_kmq.push(['record', 'Modal Profile See All TradeYas Text Link',{ 'SignedIn' : get_KMSignedIn()}]); _gaq.push(['_trackEvent', 'Activity', 'Clk_SeeAllTradesModal', 'Click on See All of <username>s TradeYas text link']);*/"></div>
+						</div>
+						<div class="user_pro_detail" id="user_pro_detail_id">
+							<div class="dash_user_abt">My Wish</div>
+							<div id = "user_wish" class="dash_usr_abt_detail"></div>
+
+							<div class="dash_user_abt">Goods I Want</div>
+							<div id="user_goods" class="dash_usr_abt_detail"></div>
+
+
+							<div class="dash_user_abt">Services I Want</div>
+							<div id = "user_services" class="dash_usr_abt_detail"></div>
+
+							<div class="dash_user_abt">My Interests</div>
+							<div id = "user_interests" class="dash_usr_abt_detail" style="margin-bottom:10px"></div>
+							<!-- <div class="abt_me">
+								About Me
+							</div>
+							<div id = "upAboutMe">
+							</div> -->
+						
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<!-- If User Info Not Present -->
+<div id="usr_rev_box_s" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+	<div class="modal-body">
+		<div id="crossimg" style="height: 15px;"><a href="#" onclick="return hideUserProfileModal();">X</a></div>
+		<table align="center" width="100%">
+			<tr valign="top">
+				<td width="22%" valign="top">
+					<div class="usr_rv_imgdiv user_image_border">
+						<img src="" id="upImageS" />
+					</div>
+				</td>
+				<td width="4%"></td>
+				<td width="74%">
+					<div class="usr_rv_detail">
+						<div class="usr_info">
+							<div class="usr_rv_name" id="upNameS">
+							
+							</div>
+							<div class="usr_rv_city">
+								in <span id="upLocS"></span>
+							</div>
+							<div id = "user_tradeyas_count_s" class="see_all_user_trd_hover"></div>
+						</div>
+						<div class="ph_ver" id="phone_verified_div_s">
+							<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/ph_org.png" />
+							<div class="ph_text">
+								Phone Number Verified
+							</div>
+						</div>
+						<div class="fb_connect" id ="facebook_connect_s">
+							<img src="https://s3.amazonaws.com/tradeya_stg_2/tradeya/images/fb_icon.png" />
+							<div class="fb_text">
+								Facebook Connected
+							</div>
+							<div id = "fb_frnds_s" class="fb_frnds"></div>
+							<div id="fb_mutual_conn_s" class="fb_mutual_frnds"></div>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<!-- If User Info Not Present -->

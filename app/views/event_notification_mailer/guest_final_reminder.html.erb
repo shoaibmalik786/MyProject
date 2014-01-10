@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+	</head>
+	<body style="font-size:15px; padding: 0px; margin: 0px; font-family:  Arial, Helvetica, sans-serif; height: auto;">
+		<div style="font-weight:bold; font-size:20px;"><span style="color:#55aad4;">Message from</span> Trade<span style="color:#55aad4;">Ya</span><br/></div>
+
+		<p>Dear <%=@user.first_name.capitalize%>,</p>
+
+		<p>Yikes! You have 24 hours left before we deactivate your Guest account.  We hope you'll sign up for real and stick around for all the trading magic.<p><br/>
+			
+		<p><a href="<%=home_url%>?guest_user_signup=true&guest_user_token=<%=@user.guest_user_token%>"><img src="https://s3.amazonaws.com/tradeya_prod/tradeya/images/sign_me_up.png" onmouseover="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/sign_me_up_roll.png';" onmouseout="this.src='https://s3.amazonaws.com/tradeya_prod/tradeya/images/sign_me_up.png';"/></a></p>
+
+		<p>Cheers,</p>
+		<p>Jared TradeYa</p><br/>
+		<p>If you don't want anymore of these emails, <a href="<%=guest_deactivate_account_url%>?guest_user_token=<%=@user.guest_user_token %>">click here to unsubscribe</a> from your TradeYa Guest account.</p>
+	</body>
+</html>
